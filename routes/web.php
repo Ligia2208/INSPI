@@ -122,7 +122,134 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('gastos', ExpenseController::class)->parameters(['gastos' => 'expense'])->names('expense');
 
 
+    /* =========================== INVENTARIO =========================== */
+    Route::group(['namespace' => 'App\Http\Controllers\InventarioReactivo'], function(){
 
+        Route::get('/inventario', 'InventarioController@index')->name('inventario'); //vista principal
+
+        Route::get('inventario/marca', 'InventarioController@listMarca')->name('inventario.marca');
+        Route::post('/inventario/saveMarca', 'InventarioController@saveMarca')->name('inventario.saveMarca');
+        Route::post('/inventario/deleteMarca', 'InventarioController@deleteMarca')->name('inventario.deleteMarca');
+        Route::get('/inventario/obtenerMarca/{id}', 'InventarioController@obtenerMarca')->name('inventario.obtenerMarca');
+        Route::put('/inventario/actualizarMarca/{id}', 'InventarioController@actualizarMarca')->name('inventario.actualizarMarca');
+
+        Route::get('/inventario/obtenerKit/{id}', 'InventarioController@obtenerKit')->name('inventario.obtenerKit');
+        Route::get('inventario/get_proveedor', 'InventarioController@get_proveedor')->name('inventario.get_proveedor');
+
+        Route::get('inventario/categoria', 'InventarioController@listCategoria')->name('inventario.categoria');
+        Route::post('/inventario/saveCategoria', 'InventarioController@saveCategoria')->name('inventario.saveCategoria');
+        Route::post('/inventario/deleteCategoria', 'InventarioController@deleteCategoria')->name('inventario.deleteCategoria');
+        Route::get('/inventario/obtenerCategoria/{id}', 'InventarioController@obtenerCategoria')->name('inventario.obtenerCategoria');
+        Route::put('/inventario/actualizarCategoria/{id}', 'InventarioController@actualizarCategoria')->name('inventario.actualizarCategoria');
+
+
+        Route::get('inventario/articulo', 'InventarioController@listArticulo')->name('inventario.articulo');
+        Route::post('/inventario/saveArticulo', 'InventarioController@saveArticulo')->name('inventario.saveArticulo');
+        Route::post('/inventario/deleteArticulo', 'InventarioController@deleteArticulo')->name('inventario.deleteArticulo');
+        Route::get('/inventario/obtenerArticulo/{id}', 'InventarioController@obtenerArticulo')->name('inventario.obtenerArticulo');
+        Route::put('/inventario/actualizarArticulo/{id}', 'InventarioController@actualizarArticulo')->name('inventario.actualizarArticulo');
+        Route::get('inventario/obtenerMarcas', 'InventarioController@obtenerMarcas')->name('inventario.obtenerMarcas');
+
+        Route::get('inventario/movimiento', 'InventarioController@listMovimiento')->name('inventario.listMovimiento');
+        Route::get('inventario/crearMovimiento', 'InventarioController@crearMovimiento')->name('inventario.crearMovimiento');
+
+        Route::get('inventario/crearAjuste', 'InventarioController@crearAjuste')->name('inventario.crearAjuste');
+        Route::post('inventario/saveAjuste', 'InventarioController@saveAjuste')->name('inventario.saveAjuste');
+
+        Route::get('inventario/editarMovimiento/{id}', 'InventarioController@editarMovimiento')->name('inventario.editarMovimiento');
+        Route::get('inventario/getMoviemientos/{id}', 'InventarioController@getMoviemientos')->name('inventario.getMoviemientos');
+        Route::post('inventario/editMovimiento', 'InventarioController@editMovimiento')->name('inventario.editMovimiento');
+        Route::post('inventario/editTransferencia', 'InventarioController@editTransferencia')->name('inventario.editTransferencia');
+
+        Route::get('inventario/obtenerArticulos', 'InventarioController@obtenerArticulos')->name('inventario.obtenerArticulos');
+        Route::post('inventario/saveMovimiento', 'InventarioController@saveMovimiento')->name('inventario.saveMovimiento');
+        Route::post('inventario/import', 'InventarioController@import')->name('inventario.import');
+        Route::post('inventario/report1', 'InventarioController@report1')->name('inventario.report1');
+        Route::post('inventario/report2', 'InventarioController@report2')->name('inventario.report2');
+        Route::post('inventario/report3', 'InventarioController@report3')->name('inventario.report3');
+        Route::get('inventario/articuloLote/{id}', 'InventarioController@articuloLote')->name('inventario.articuloLote');
+        Route::get('inventario/articuloLoteExa/{id}', 'InventarioController@articuloLoteExa')->name('inventario.articuloLoteExa');
+        Route::get('inventario/articuloLoteIdLab', 'InventarioController@articuloLoteIdLab')->name('inventario.articuloLoteIdLab');
+        Route::get('inventario/unidadLote/{id}', 'InventarioController@unidadLote')->name('inventario.unidadLote');
+        Route::get('inventario/unidadLoteIdLab', 'InventarioController@unidadLoteIdLab')->name('inventario.unidadLoteIdLab');
+
+        Route::get('inventario/exportarPlantilla', 'InventarioController@exportarPlantilla')->name('exportarPlantilla');
+
+        Route::get('inventario/laboratorio', 'InventarioController@laboratorio')->name('inventario.laboratorio');
+        Route::get('inventario/bodega', 'InventarioController@bodega')->name('inventario.bodega');
+        Route::get('/inventario/filtrar', 'InventarioController@filtrar')->name('inventario.filtrar');
+        Route::get('/inventario/filtrarReporte', 'InventarioController@filtrarReporte')->name('inventario.filtrarReporte');
+
+        Route::get('inventario/crearEgreso', 'InventarioController@crearEgreso')->name('inventario.crearEgreso');
+        Route::post('inventario/saveMovimientoEgre', 'InventarioController@saveMovimientoEgre')->name('inventario.saveMovimientoEgre');
+        Route::get('inventario/transferencia', 'InventarioController@createTransferencia')->name('inventario.createTransferencia');
+        Route::get('inventario/obtenerArticulosLab', 'InventarioController@obtenerArticulosLab')->name('inventario.obtenerArticulosLab');
+        Route::get('inventario/obtenerArticulosIdLab', 'InventarioController@obtenerArticulosIdLab')->name('inventario.obtenerArticulosIdLab');
+        Route::get('inventario/obtenerArticulosExa', 'InventarioController@obtenerArticulosExa')->name('inventario.obtenerArticulosExa  ');
+        Route::get('inventario/agregarUnidades', 'InventarioController@agregarUnidades')->name('inventario.agregarUnidades');
+        Route::post('inventario/saveTransferencia', 'InventarioController@saveTransferencia')->name('inventario.saveTransferencia');
+
+        Route::get('inventario/crearEgresoInm', 'InventarioController@crearEgresoInm')->name('inventario.crearEgresoInm');
+        Route::post('inventario/saveCorrida', 'InventarioController@saveCorrida')->name('inventario.saveCorrida');
+        Route::post('inventario/saveCorridaManInm', 'InventarioController@saveCorridaManInm')->name('inventario.saveCorridaManInm');
+
+        Route::get('inventario/muestrasLaborat/{id}', 'InventarioController@muestrasLaborat')->name('inventario.muestrasLaborat');
+        Route::post('inventario/saveCorridaInm', 'InventarioController@saveCorridaInm')->name('inventario.saveCorridaInm');
+        Route::post('inventario/saveCorridaMan', 'InventarioController@saveCorridaMan')->name('inventario.saveCorridaMan');
+        Route::get('inventario/obtenerExamenLab', 'InventarioController@obtenerExamenLab')->name('inventario.obtenerExamenLab');
+        Route::get('inventario/obtenerControlLab', 'InventarioController@obtenerControlLab')->name('inventario.obtenerControlLab');
+        Route::get('inventario/list_corrida', 'InventarioController@listCorrida')->name('inventario.listCorrida');
+        Route::get('/inventario/obtenerUsuariosLab/{id_usuario}', 'InventarioController@obtenerUsuariosLab')->name('inventario.obtenerUsuariosLab');
+        Route::get('inventario/reportHexa', 'InventarioController@reportHexa')->name('inventario.reportHexa');
+        Route::get('inventario/reportMono', 'InventarioController@reportMono')->name('inventario.reportMono');
+
+        Route::get('inventario/obtenerArticulosCate/{id}', 'InventarioController@obtenerArticulosCate')->name('inventario.obtenerArticulosCate');
+        Route::get('inventario/list_ajuste', 'InventarioController@list_ajuste')->name('inventario.list_ajuste');
+        Route::get('inventario/validaAjuste', 'InventarioController@validaAjuste')->name('inventario.validaAjuste');
+
+        Route::post('inventario/updateValor', 'InventarioController@updateValor')->name('inventario.updateValor');
+
+        Route::post('inventario/updateKit', 'InventarioController@updateKit')->name('inventario.updateKit');
+        Route::post('inventario/updateNameReactivo', 'InventarioController@updateNameReactivo')->name('inventario.updateNameReactivo');
+        Route::post('inventario/updateSubcategoria', 'InventarioController@updateSubcategoria')->name('inventario.updateSubcategoria');
+        Route::post('inventario/deleteSubcategoria', 'InventarioController@deleteSubcategoria')->name('inventario.deleteSubcategoria');
+
+        Route::get('inventario/unidad', 'InventarioController@listUnidad')->name('inventario.unidad');
+        Route::post('/inventario/saveUnidad', 'InventarioController@saveUnidad')->name('inventario.saveUnidad');
+        Route::post('/inventario/deleteUnidad', 'InventarioController@deleteUnidad')->name('inventario.deleteUnidad');
+        Route::get('/inventario/obtenerUnidad/{id}', 'InventarioController@obtenerUnidad')->name('inventario.obtenerUnidad');
+        Route::put('/inventario/actualizarUnidad/{id}', 'InventarioController@actualizarUnidad')->name('inventario.actualizarUnidad');
+
+        Route::get('/inventario/generate-pdf_in', 'InventarioController@generatePDF_IN')->name('inventario.generatePDF_IN');
+        Route::get('/inventario/generate-pdf_out', 'InventarioController@generatePDF_OUT')->name('inventario.generatePDF_OUT');
+        Route::get('/inventario/generate-pdf_ajuste', 'InventarioController@generatePDF_AJ')->name('inventario.generatePDF_AJ');
+
+
+        Route::get('inventario/crearEgresoInf', 'InventarioController@crearEgresoInf')->name('inventario.crearEgresoInf');
+        Route::post('inventario/saveCorridaManInf', 'InventarioController@saveCorridaManInf')->name('inventario.saveCorridaManInf');
+        Route::get('inventario/reportReactivo', 'InventarioController@reportReactivo')->name('inventario.reportReactivo');
+        Route::get('inventario/reportBodegaInvetario', 'InventarioController@reportBodegaInvetario')->name('inventario.reportBodegaInvetario');
+        Route::get('inventario/reportReactivoKardex', 'InventarioController@reportReactivoKardex')->name('inventario.reportReactivoKardex');
+
+        Route::get('inventario/kardexInventario', 'InventarioController@kardexInventario')->name('inventario.kardexInventario');
+        Route::get('/inventario/pdf_corrida', 'InventarioController@pdf_corrida')->name('inventario.pdf_corrida');
+
+        Route::get('inventario/reportInventario', 'InventarioController@reportInventario')->name('inventario.reportInventario');
+        Route::get('inventario/reportInventarioStock', 'InventarioController@reportInventarioStock')->name('inventario.reportInventarioStock');
+        Route::get('inventario/reportMovimientoGeneral', 'InventarioController@reportMovimientoGeneral')->name('inventario.reportMovimientoGeneral');
+        Route::get('inventario/reportInventarioGeneral', 'InventarioController@reportInventarioGeneral')->name('inventario.reportInventarioGeneral');
+
+        Route::get('inventario/reportInventarioStockGeneral', 'InventarioController@reportInventarioStockGeneral')->name('inventario.reportInventarioStockGeneral');
+
+        Route::get('inventario/get_tranferir', 'InventarioController@get_tranferir')->name('inventario.get_tranferir');
+        Route::post('/inventario/sendTransferencia', 'InventarioController@sendTransferencia')->name('inventario.sendTransferencia');
+
+        Route::get('/inventario/pdf', 'InventarioController@pdf')->name('inventario.pdf');
+
+        Route::get('/download/{fileName}', 'InventarioController@downloadExcel')->name('download.excel');
+
+    });
+    /* =========================== INVENTARIO =========================== */
 
 
 
