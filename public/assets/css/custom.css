@@ -1,100 +1,3 @@
-<<<<<<< HEAD
-    .image-edit {
-        cursor: pointer;
-        position: absolute;
-        right: -10px;
-        top: -10px;
-    }
-    .image-remove {
-        cursor: pointer;
-        position: absolute;
-        right: -10px;
-        bottom: -10px;
-    }
-
-    .aside-menu .menu-nav > .menu-item > .menu-heading .menu-text, .aside-menu .menu-nav > .menu-item > .menu-link .menu-text{
-        color: #3f4254;
-        font-weight: 500;
-    }
-
-    .border-gray-300 {
-        border-color: #e4e6ef!important;
-    }
-
-    .border-dashed {
-        border-style: dashed!important;
-        border-color: #e4e6ef;
-    }
-
-    .rounded {
-        border-radius: .475rem!important;
-    }
-
-    .table > tbody > tr {
-        border-bottom-width: 1px;
-        border-bottom-style: dashed;
-        border-bottom-color: #eff2f5;
-    }
-
-    .badge{
-        white-space: break-spaces;
-    }
-
-    .spinner-center{
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-    }
-
-    .content {
-        background-color: #f5f8fa;
-    }
-
-    /* Stars */
-    /* use reverse flexbox to take advantage of flex-direction: reverse */
-    .star-rating {
-        display: flex;
-        align-items: center;
-        width: 160px;
-        flex-direction: row-reverse;
-        justify-content: space-between;
-        position: relative;
-    }
-        /* hide the inputs */
-    .star-rating input {
-        display: none;
-    }
-        /* set properties of all labels */
-    .star-rating > label {
-        width: 30px;
-        height: 30px;
-        font-family: Arial;
-        font-size: 30px;
-        transition: 0.2s ease;
-        color: orange;
-    }
-        /* give label a hover state */
-    .star-rating label:hover {
-        color: #ff69b4;
-        transition: 0.2s ease;
-    }
-    .star-rating label:active::before {
-        transform:scale(1.1);
-    }
-        
-    /* set shape of unselected label */
-    .star-rating label::before {
-        content: '\2606';
-        position: absolute;
-        top: 0px;
-        line-height: 26px;
-    }
-    /* set full star shape for checked label and those that come after it */
-    .star-rating input:checked ~ label:before {
-        content:'\2605';
-    }
-=======
 :root {
     --bs-accordion-border-radius: 0.375rem;
 
@@ -107,7 +10,7 @@
     --bs-primary-text-emphasis: #052c65;
     --bs-primary-bg-subtle: #cfe2ff;
 
-}    
+}
 
 .image-edit {
     cursor: pointer;
@@ -192,7 +95,7 @@
 .star-rating label:active::before {
     transform:scale(1.1);
 }
-    
+
 /* set shape of unselected label */
 .star-rating label::before {
     content: '\2606';
@@ -228,13 +131,13 @@
     height: 34px;
 }
 
-  
-.switch2 input { 
+
+.switch2 input {
     opacity: 0;
     width: 0;
     height: 0;
 }
-  
+
 .slider {
     position: absolute;
     cursor: pointer;
@@ -246,7 +149,7 @@
     -webkit-transition: .4s;
     transition: .4s;
 }
-  
+
 .slider:before {
     position: absolute;
     content: "";
@@ -258,26 +161,26 @@
     -webkit-transition: .4s;
     transition: .4s;
 }
-  
+
 input:checked + .slider {
     background-color: #2196F3;
 }
-  
+
 input:focus + .slider {
     box-shadow: 0 0 1px #2196F3;
 }
-  
+
 input:checked + .slider:before {
     -webkit-transform: translateX(26px);
     -ms-transform: translateX(26px);
     transform: translateX(26px);
 }
-  
+
   /* Rounded sliders */
 .slider.round {
     border-radius: 34px;
 }
-  
+
 .slider.round:before {
     border-radius: 50%;
 }
@@ -425,4 +328,3 @@ input:checked + .slider:before {
 .accordion-body {
     padding: var(--bs-accordion-body-padding-y) var(--bs-accordion-body-padding-x);
 }
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15

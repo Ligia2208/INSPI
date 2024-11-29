@@ -122,9 +122,6 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('gastos', ExpenseController::class)->parameters(['gastos' => 'expense'])->names('expense');
 
 
-<<<<<<< HEAD
-
-=======
     /* =========================== INVENTARIO =========================== */
     Route::group(['namespace' => 'App\Http\Controllers\InventarioReactivo'], function(){
 
@@ -253,7 +250,6 @@ Route::middleware(['auth'])->group(function () {
 
     });
     /* =========================== INVENTARIO =========================== */
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
 
 
 

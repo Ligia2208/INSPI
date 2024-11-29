@@ -8,11 +8,6 @@
                     <span class="text-muted mt-3 font-weight-bold font-size-sm">@yield('title')<span
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span></span>
                 </h3>
-<<<<<<< HEAD
-=======
-                <a href="{{ route('resultado.create') }}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i
-                        class="fa fa-sticky-note"></i> Agregar</a>
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -118,24 +113,12 @@
                             </div>
                             <div class="col-lg-12 col-xl-12">
                                 <div class="row align-items-center">
-<<<<<<< HEAD
                                     <div class="col-md-6 my-2 my-md-0">
-=======
-                                    <div class="col-md-5 my-2 my-md-0">
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
-                                        <div class="input-icon">
                                             <input wire:model="search" type="search" class="form-control"
-                                                placeholder="Muestra...">
-                                            <span>
-                                                <i class="flaticon2-search-1 text-muted"></i>
                                             </span>
                                         </div>
                                     </div>
-<<<<<<< HEAD
                                     <div class="col-md-6 my-2 my-md-0">
-=======
-                                    <div class="col-md-5 my-2 my-md-0">
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">Mostrar:</label>
                                             <select class="form-control" wire:model="perPage">
@@ -148,17 +131,6 @@
                                             </select>
                                         </div>
                                     </div>
-<<<<<<< HEAD
-=======
-                                    <div class="col-md-2 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <button class="btn btn-success font-weight-bold mr-2"
-                                                onclick="exportToExcel('data', 'resultados-data')"><i
-                                                    class="fa fa-file-excel" aria-hidden="true"></i>
-                                                {{ __('Exportar a Excel') }}</button>
-                                        </div>
-                                    </div>
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
                                 </div>
                             </div>
                         </div>
@@ -175,10 +147,7 @@
                                 <th>Código Muestra</th>
                                 <th>Fecha Toma muestra</th>
                                 <th>Fecha Recepción muestra</th>
-<<<<<<< HEAD
                                 <th>Sede</th>
-=======
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
                                 <th>Técnica</th>
@@ -192,19 +161,11 @@
                                 <tr>
                                     <td>
                                         <span
-<<<<<<< HEAD
                                             class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $objRes->anio_registro }}-{{ $objRes->codigo_muestra }}</span>
                                     </td>
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_toma }}</span>
-=======
-                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $objRes->codigo_muestra }}</span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_toma_muestra }}</span>
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
                                     </td>
                                     <td>
                                         <span
@@ -212,18 +173,14 @@
                                     </td>
                                     <td>
                                         <span
-<<<<<<< HEAD
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->sedes->descripcion }}</span>
                                     </td>
                                     <td>
                                         <span
-=======
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->crns->descripcion }}</span>
                                     </td>
                                     <td>
                                         <span
-<<<<<<< HEAD
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->evento->simplificado }}</span>
                                     </td>
                                     <td>
@@ -237,21 +194,6 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_publicacion }}</span>
-=======
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->evento->descripcion }}</span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->tecnica->descripcion }}</span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->resultado->descripcion }}</span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->created_at }}</span>
->>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
                                     </td>
                                     <td align="center">
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
