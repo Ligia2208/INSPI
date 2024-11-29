@@ -2,6 +2,26 @@
 
 All notable changes to `laravel-backup` will be documented in this file.
 
+## 6.16.5 - 2021-09-12
+
+- fix undefined constant GLOB_BRACE on alpine (#1370)
+
+## 6.16.4 - 2021-09-10
+
+- fix windows compat
+
+## 6.16.3 - 2021-09-01
+
+- avoid full path on db dumps (#1386)
+
+## 6.16.2 - 2021-08-11
+
+- fix bugs (#1366)
+
+## 6.16.1 - 2021-07-09
+
+- detect write failures (#1347)
+
 ## 6.16.0 - 2021-04-15
 
 - Add DumpingDatabase event v6 (#1293)

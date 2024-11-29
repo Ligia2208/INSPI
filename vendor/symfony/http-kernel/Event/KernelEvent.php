@@ -16,7 +16,7 @@ use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Contracts\EventDispatcher\Event;
 
 /**
- * Base class for events thrown in the HttpKernel component.
+ * Base class for events dispatched in the HttpKernel component.
  *
  * @author Bernhard Schussek <bschussek@gmail.com>
  */
@@ -79,7 +79,7 @@ class KernelEvent extends Event
     /**
      * Checks if this is a master request.
      *
-     * @return bool True if the request is a master request
+     * @return bool
      *
      * @deprecated since symfony/http-kernel 5.3, use isMainRequest() instead
      */

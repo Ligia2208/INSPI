@@ -30,9 +30,9 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
     private $charset;
 
     /**
-     * @param string $globalDefaultTemplate The global default content (it can be a template name or the content)
+     * @param string|null $globalDefaultTemplate The global default content (it can be a template name or the content)
      */
-    public function __construct(Environment $twig = null, UriSigner $signer = null, string $globalDefaultTemplate = null, string $charset = 'utf-8')
+    public function __construct(?Environment $twig = null, ?UriSigner $signer = null, ?string $globalDefaultTemplate = null, string $charset = 'utf-8')
     {
         $this->twig = $twig;
         $this->globalDefaultTemplate = $globalDefaultTemplate;
@@ -43,7 +43,7 @@ class HIncludeFragmentRenderer extends RoutableFragmentRenderer
     /**
      * Checks if a templating engine has been set.
      *
-     * @return bool true if the templating engine has been set, false otherwise
+     * @return bool
      */
     public function hasTemplating()
     {

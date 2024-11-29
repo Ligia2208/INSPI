@@ -34,10 +34,10 @@ use Google\Client;
  */
 class Docs extends \Google\Service
 {
-  /** See, create, and edit all Google Docs documents you have access to. */
+  /** See, edit, create, and delete all your Google Docs documents. */
   const DOCUMENTS =
       "https://www.googleapis.com/auth/documents";
-  /** View your Google Docs documents. */
+  /** See all your Google Docs documents. */
   const DOCUMENTS_READONLY =
       "https://www.googleapis.com/auth/documents.readonly";
   /** See, edit, create, and delete all of your Google Drive files. */
@@ -51,6 +51,7 @@ class Docs extends \Google\Service
       "https://www.googleapis.com/auth/drive.readonly";
 
   public $documents;
+  public $rootUrlTemplate;
 
   /**
    * Constructs the internal representation of the Docs service.
@@ -63,6 +64,7 @@ class Docs extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://docs.googleapis.com/';
+    $this->rootUrlTemplate = $rootUrl ?: 'https://docs.UNIVERSE_DOMAIN/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
     $this->version = 'v1';
@@ -96,6 +98,10 @@ class Docs extends \Google\Service
                   'location' => 'path',
                   'type' => 'string',
                   'required' => true,
+                ],
+                'includeTabsContent' => [
+                  'location' => 'query',
+                  'type' => 'boolean',
                 ],
                 'suggestionsViewMode' => [
                   'location' => 'query',

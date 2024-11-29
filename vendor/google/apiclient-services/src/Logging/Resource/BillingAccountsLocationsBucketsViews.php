@@ -26,23 +26,26 @@ use Google\Service\Logging\LoggingEmpty;
  * Typical usage is:
  *  <code>
  *   $loggingService = new Google\Service\Logging(...);
- *   $views = $loggingService->views;
+ *   $views = $loggingService->billingAccounts_locations_buckets_views;
  *  </code>
  */
 class BillingAccountsLocationsBucketsViews extends \Google\Service\Resource
 {
   /**
-   * Creates a view over logs in a bucket. A bucket may contain a maximum of 50
-   * views. (views.create)
+   * Creates a view over log entries in a log bucket. A bucket may contain a
+   * maximum of 30 views. (views.create)
    *
    * @param string $parent Required. The bucket in which to create the view
-   * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" Example:
-   * "projects/my-logging-project/locations/my-location/buckets/my-bucket"
+   * `"projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"` For
+   * example:"projects/my-project/locations/global/buckets/my-bucket"
    * @param LogView $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string viewId Required. The id to use for this view.
+   * @opt_param string viewId Required. A client-assigned identifier such as "my-
+   * view". Identifiers are limited to 100 characters and can include only
+   * letters, digits, underscores, hyphens, and periods.
    * @return LogView
+   * @throws \Google\Service\Exception
    */
   public function create($parent, LogView $postBody, $optParams = [])
   {
@@ -51,14 +54,17 @@ class BillingAccountsLocationsBucketsViews extends \Google\Service\Resource
     return $this->call('create', [$params], LogView::class);
   }
   /**
-   * Deletes a view from a bucket. (views.delete)
+   * Deletes a view on a log bucket. If an UNAVAILABLE error is returned, this
+   * indicates that system is not in a state where it can delete the view. If this
+   * occurs, please try again in a few minutes. (views.delete)
    *
    * @param string $name Required. The full resource name of the view to delete: "
    * projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW
-   * _ID]" Example: "projects/my-project-id/locations/my-location/buckets/my-
-   * bucket-id/views/my-view-id".
+   * _ID]" For example:"projects/my-project/locations/global/buckets/my-
+   * bucket/views/my-view"
    * @param array $optParams Optional parameters.
    * @return LoggingEmpty
+   * @throws \Google\Service\Exception
    */
   public function delete($name, $optParams = [])
   {
@@ -67,20 +73,38 @@ class BillingAccountsLocationsBucketsViews extends \Google\Service\Resource
     return $this->call('delete', [$params], LoggingEmpty::class);
   }
   /**
-   * Lists views on a bucket. (views.listBillingAccountsLocationsBucketsViews)
+   * Gets a view on a log bucket. (views.get)
+   *
+   * @param string $name Required. The resource name of the policy: "projects/[PRO
+   * JECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_ID]" For
+   * example:"projects/my-project/locations/global/buckets/my-bucket/views/my-
+   * view"
+   * @param array $optParams Optional parameters.
+   * @return LogView
+   * @throws \Google\Service\Exception
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], LogView::class);
+  }
+  /**
+   * Lists views on a log bucket. (views.listBillingAccountsLocationsBucketsViews)
    *
    * @param string $parent Required. The bucket whose views are to be listed:
    * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize Optional. The maximum number of results to return
-   * from this request. Non-positive values are ignored. The presence of
+   * from this request.Non-positive values are ignored. The presence of
    * nextPageToken in the response indicates that more results might be available.
    * @opt_param string pageToken Optional. If present, then retrieve the next
    * batch of results from the preceding call to this method. pageToken must be
    * the value of nextPageToken from the previous response. The values of other
    * method parameters should be identical to those in the previous call.
    * @return ListViewsResponse
+   * @throws \Google\Service\Exception
    */
   public function listBillingAccountsLocationsBucketsViews($parent, $optParams = [])
   {
@@ -89,13 +113,16 @@ class BillingAccountsLocationsBucketsViews extends \Google\Service\Resource
     return $this->call('list', [$params], ListViewsResponse::class);
   }
   /**
-   * Updates a view. This method replaces the following fields in the existing
-   * view with values from the new view: filter. (views.patch)
+   * Updates a view on a log bucket. This method replaces the value of the filter
+   * field from the existing view with the corresponding value from the new view.
+   * If an UNAVAILABLE error is returned, this indicates that system is not in a
+   * state where it can update the view. If this occurs, please try again in a few
+   * minutes. (views.patch)
    *
    * @param string $name Required. The full resource name of the view to update "p
    * rojects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]/views/[VIEW_
-   * ID]" Example: "projects/my-project-id/locations/my-location/buckets/my-
-   * bucket-id/views/my-view-id".
+   * ID]" For example:"projects/my-project/locations/global/buckets/my-
+   * bucket/views/my-view"
    * @param LogView $postBody
    * @param array $optParams Optional parameters.
    *
@@ -103,9 +130,10 @@ class BillingAccountsLocationsBucketsViews extends \Google\Service\Resource
    * in view that need an update. A field will be overwritten if, and only if, it
    * is in the update mask. name and output only fields cannot be updated.For a
    * detailed FieldMask definition, see https://developers.google.com/protocol-
-   * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskExample:
-   * updateMask=filter.
+   * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskFor example:
+   * updateMask=filter
    * @return LogView
+   * @throws \Google\Service\Exception
    */
   public function patch($name, LogView $postBody, $optParams = [])
   {

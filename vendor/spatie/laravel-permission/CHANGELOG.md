@@ -2,6 +2,24 @@
 
 All notable changes to `laravel-permission` will be documented in this file
 
+## 4.4.1 - 2021-09-01
+- Avoid Roles over-hydration #1834
+
+## 4.4.0 - 2021-08-28
+- Avoid BC break (removed interface change) on cache change added in 4.3.0 #1826
+- Made cache even smaller #1826
+- Avoid re-sync on non-persisted objects when firing Eloquent::saved #1819
+
+## 4.3.0 - 2021-08-17
+- Speed up permissions cache lookups, and make cache smaller #1799
+
+## 4.2.0 - 2021-06-04
+- Add hasExactRoles method #1696
+
+## 4.1.0 - 2021-06-01
+- Refactor to resolve guard only once during middleware
+- Refactor service provider by extracting some methods
+
 ## 4.0.1 - 2021-03-22
 - Added note in migration for field lengths on MySQL 8. (either shorten the columns to 125 or use InnoDB)
 

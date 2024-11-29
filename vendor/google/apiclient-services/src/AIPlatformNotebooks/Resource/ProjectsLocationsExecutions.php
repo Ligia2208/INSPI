@@ -26,14 +26,13 @@ use Google\Service\AIPlatformNotebooks\Operation;
  * Typical usage is:
  *  <code>
  *   $notebooksService = new Google\Service\AIPlatformNotebooks(...);
- *   $executions = $notebooksService->executions;
+ *   $executions = $notebooksService->projects_locations_executions;
  *  </code>
  */
 class ProjectsLocationsExecutions extends \Google\Service\Resource
 {
   /**
-   * Creates a new Scheduled Notebook in a given project and location.
-   * (executions.create)
+   * Creates a new Execution in a given project and location. (executions.create)
    *
    * @param string $parent Required. Format:
    * `parent=projects/{project_id}/locations/{location}`
@@ -68,7 +67,7 @@ class ProjectsLocationsExecutions extends \Google\Service\Resource
    * Gets details of executions (executions.get)
    *
    * @param string $name Required. Format:
-   * `projects/{project_id}/locations/{location}/schedules/{execution_id}`
+   * `projects/{project_id}/locations/{location}/executions/{execution_id}`
    * @param array $optParams Optional parameters.
    * @return Execution
    */
@@ -87,8 +86,8 @@ class ProjectsLocationsExecutions extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Filter applied to resulting executions. Currently
-   * only supports filtering executions by a specified schedule_id. Format:
-   * "schedule_id="
+   * only supports filtering executions by a specified `schedule_id`. Format:
+   * `schedule_id=`
    * @opt_param string orderBy Sort by field.
    * @opt_param int pageSize Maximum return size of the list call.
    * @opt_param string pageToken A previous returned page token that can be used

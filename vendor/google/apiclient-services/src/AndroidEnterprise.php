@@ -54,6 +54,7 @@ class AndroidEnterprise extends \Google\Service
   public $storelayoutpages;
   public $users;
   public $webapps;
+  public $rootUrlTemplate;
 
   /**
    * Constructs the internal representation of the AndroidEnterprise service.
@@ -66,6 +67,7 @@ class AndroidEnterprise extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://androidenterprise.googleapis.com/';
+    $this->rootUrlTemplate = $rootUrl ?: 'https://androidenterprise.UNIVERSE_DOMAIN/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
     $this->version = 'v1';
@@ -228,6 +230,32 @@ class AndroidEnterprise extends \Google\Service
                   'type' => 'string',
                 ],
               ],
+            ],'createEnrollmentToken' => [
+              'path' => 'androidenterprise/v1/enterprises/{enterpriseId}/createEnrollmentToken',
+              'httpMethod' => 'POST',
+              'parameters' => [
+                'enterpriseId' => [
+                  'location' => 'path',
+                  'type' => 'string',
+                  'required' => true,
+                ],
+                'deviceType' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'enrollmentToken.duration' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'enrollmentToken.enrollmentTokenType' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+                'enrollmentToken.token' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
+              ],
             ],'createWebToken' => [
               'path' => 'androidenterprise/v1/enterprises/{enterpriseId}/createWebToken',
               'httpMethod' => 'POST',
@@ -252,6 +280,10 @@ class AndroidEnterprise extends \Google\Service
               'path' => 'androidenterprise/v1/enterprises/signupUrl',
               'httpMethod' => 'POST',
               'parameters' => [
+                'adminEmail' => [
+                  'location' => 'query',
+                  'type' => 'string',
+                ],
                 'callbackUrl' => [
                   'location' => 'query',
                   'type' => 'string',

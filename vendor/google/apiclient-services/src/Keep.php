@@ -23,8 +23,8 @@ use Google\Client;
  * Service definition for Keep (v1).
  *
  * <p>
- * This API is an enterprise-only API used to create and manage the Keep notes
- * within your domain, including resolving issues identified by CASB software.</p>
+ * The Google Keep API is used in an enterprise environment to manage Google
+ * Keep content and resolve issues identified by cloud security software.</p>
  *
  * <p>
  * For more information about this service, see the API
@@ -38,10 +38,14 @@ class Keep extends \Google\Service
   /** See, edit, create and permanently delete all your Google Keep data. */
   const KEEP =
       "https://www.googleapis.com/auth/keep";
+  /** View all your Google Keep data. */
+  const KEEP_READONLY =
+      "https://www.googleapis.com/auth/keep.readonly";
 
   public $media;
   public $notes;
   public $notes_permissions;
+  public $rootUrlTemplate;
 
   /**
    * Constructs the internal representation of the Keep service.
@@ -54,6 +58,7 @@ class Keep extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://keep.googleapis.com/';
+    $this->rootUrlTemplate = $rootUrl ?: 'https://keep.UNIVERSE_DOMAIN/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
     $this->version = 'v1';

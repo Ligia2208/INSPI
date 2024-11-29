@@ -43,10 +43,10 @@ class Sheets extends \Google\Service
   /** See and download all your Google Drive files. */
   const DRIVE_READONLY =
       "https://www.googleapis.com/auth/drive.readonly";
-  /** See, edit, create, and delete your spreadsheets in Google Drive. */
+  /** See, edit, create, and delete all your Google Sheets spreadsheets. */
   const SPREADSHEETS =
       "https://www.googleapis.com/auth/spreadsheets";
-  /** View your Google Spreadsheets. */
+  /** See all your Google Sheets spreadsheets. */
   const SPREADSHEETS_READONLY =
       "https://www.googleapis.com/auth/spreadsheets.readonly";
 
@@ -54,6 +54,7 @@ class Sheets extends \Google\Service
   public $spreadsheets_developerMetadata;
   public $spreadsheets_sheets;
   public $spreadsheets_values;
+  public $rootUrlTemplate;
 
   /**
    * Constructs the internal representation of the Sheets service.
@@ -66,6 +67,7 @@ class Sheets extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://sheets.googleapis.com/';
+    $this->rootUrlTemplate = $rootUrl ?: 'https://sheets.UNIVERSE_DOMAIN/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
     $this->version = 'v4';

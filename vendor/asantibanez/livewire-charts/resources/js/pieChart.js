@@ -20,13 +20,14 @@ const pieChart = () => {
             const onSliceClickEventName = component.get('pieChartModel.onSliceClickEventName')
             const data = component.get('pieChartModel.data')
             const sparkline = component.get('pieChartModel.sparkline')
+            const type = component.get('pieChartModel.type')
 
             const options = {
                 series: data.map(item => item.value),
 
                 chart: {
                     height: '100%',
-                    type: 'pie',
+                    type: type,
 
                     ...sparkline,
 
@@ -72,6 +73,14 @@ const pieChart = () => {
                 ],
 
                 legend: component.get('pieChartModel.legend') || {},
+
+                tooltip: {
+                    y: {
+                        formatter: function(value, series) {
+                            return data[series.dataPointIndex].extras.tooltip || value;
+                        }
+                    }
+                },
             };
 
             const colors = component.get('pieChartModel.colors');

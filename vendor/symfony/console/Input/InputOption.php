@@ -53,17 +53,15 @@ class InputOption
     private $description;
 
     /**
-     * @param string                    $name        The option name
-     * @param string|array|null         $shortcut    The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
-     * @param int|null                  $mode        The option mode: One of the VALUE_* constants
-     * @param string                    $description A description text
-     * @param string|string[]|bool|null $default     The default value (must be null for self::VALUE_NONE)
+     * @param string|array|null                $shortcut The shortcuts, can be null, a string of shortcuts delimited by | or an array of shortcuts
+     * @param int|null                         $mode     The option mode: One of the VALUE_* constants
+     * @param string|bool|int|float|array|null $default  The default value (must be null for self::VALUE_NONE)
      *
      * @throws InvalidArgumentException If option mode is invalid or incompatible
      */
-    public function __construct(string $name, $shortcut = null, int $mode = null, string $description = '', $default = null)
+    public function __construct(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null)
     {
-        if (0 === strpos($name, '--')) {
+        if (str_starts_with($name, '--')) {
             $name = substr($name, 2);
         }
 
@@ -71,7 +69,7 @@ class InputOption
             throw new InvalidArgumentException('An option name cannot be empty.');
         }
 
-        if (empty($shortcut)) {
+        if ('' === $shortcut || [] === $shortcut || false === $shortcut) {
             $shortcut = null;
         }
 
@@ -80,10 +78,10 @@ class InputOption
                 $shortcut = implode('|', $shortcut);
             }
             $shortcuts = preg_split('{(\|)-?}', ltrim($shortcut, '-'));
-            $shortcuts = array_filter($shortcuts);
+            $shortcuts = array_filter($shortcuts, 'strlen');
             $shortcut = implode('|', $shortcuts);
 
-            if (empty($shortcut)) {
+            if ('' === $shortcut) {
                 throw new InvalidArgumentException('An option shortcut cannot be empty.');
             }
         }
@@ -112,7 +110,7 @@ class InputOption
     /**
      * Returns the option shortcut.
      *
-     * @return string|null The shortcut
+     * @return string|null
      */
     public function getShortcut()
     {
@@ -122,7 +120,7 @@ class InputOption
     /**
      * Returns the option name.
      *
-     * @return string The name
+     * @return string
      */
     public function getName()
     {
@@ -175,11 +173,7 @@ class InputOption
     }
 
     /**
-     * Sets the default value.
-     *
-     * @param string|string[]|bool|null $default The default value
-     *
-     * @throws LogicException When incorrect default value is given
+     * @param string|bool|int|float|array|null $default
      */
     public function setDefault($default = null)
     {
@@ -201,7 +195,7 @@ class InputOption
     /**
      * Returns the default value.
      *
-     * @return string|string[]|bool|null The default value
+     * @return string|bool|int|float|array|null
      */
     public function getDefault()
     {
@@ -211,7 +205,7 @@ class InputOption
     /**
      * Returns the description text.
      *
-     * @return string The description text
+     * @return string
      */
     public function getDescription()
     {

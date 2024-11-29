@@ -20,6 +20,7 @@ namespace Google\Service\Logging\Resource;
 use Google\Service\Logging\ListBucketsResponse;
 use Google\Service\Logging\LogBucket;
 use Google\Service\Logging\LoggingEmpty;
+use Google\Service\Logging\Operation;
 use Google\Service\Logging\UndeleteBucketRequest;
 
 /**
@@ -27,25 +28,27 @@ use Google\Service\Logging\UndeleteBucketRequest;
  * Typical usage is:
  *  <code>
  *   $loggingService = new Google\Service\Logging(...);
- *   $buckets = $loggingService->buckets;
+ *   $buckets = $loggingService->billingAccounts_locations_buckets;
  *  </code>
  */
 class BillingAccountsLocationsBuckets extends \Google\Service\Resource
 {
   /**
-   * Creates a bucket that can be used to store log entries. Once a bucket has
-   * been created, the region cannot be changed. (buckets.create)
+   * Creates a log bucket that can be used to store log entries. After a bucket
+   * has been created, the bucket's location cannot be changed. (buckets.create)
    *
-   * @param string $parent Required. The resource in which to create the bucket:
-   * "projects/[PROJECT_ID]/locations/[LOCATION_ID]" Example: "projects/my-
-   * logging-project/locations/global"
+   * @param string $parent Required. The resource in which to create the log
+   * bucket: "projects/[PROJECT_ID]/locations/[LOCATION_ID]" For
+   * example:"projects/my-project/locations/global"
    * @param LogBucket $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string bucketId Required. A client-assigned identifier such as
    * "my-bucket". Identifiers are limited to 100 characters and can include only
-   * letters, digits, underscores, hyphens, and periods.
+   * letters, digits, underscores, hyphens, and periods. Bucket identifiers must
+   * start with an alphanumeric character.
    * @return LogBucket
+   * @throws \Google\Service\Exception
    */
   public function create($parent, LogBucket $postBody, $optParams = [])
   {
@@ -54,18 +57,43 @@ class BillingAccountsLocationsBuckets extends \Google\Service\Resource
     return $this->call('create', [$params], LogBucket::class);
   }
   /**
-   * Deletes a bucket. Moves the bucket to the DELETE_REQUESTED state. After 7
-   * days, the bucket will be purged and all logs in the bucket will be
-   * permanently deleted. (buckets.delete)
+   * Creates a log bucket asynchronously that can be used to store log
+   * entries.After a bucket has been created, the bucket's location cannot be
+   * changed. (buckets.createAsync)
+   *
+   * @param string $parent Required. The resource in which to create the log
+   * bucket: "projects/[PROJECT_ID]/locations/[LOCATION_ID]" For
+   * example:"projects/my-project/locations/global"
+   * @param LogBucket $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string bucketId Required. A client-assigned identifier such as
+   * "my-bucket". Identifiers are limited to 100 characters and can include only
+   * letters, digits, underscores, hyphens, and periods. Bucket identifiers must
+   * start with an alphanumeric character.
+   * @return Operation
+   * @throws \Google\Service\Exception
+   */
+  public function createAsync($parent, LogBucket $postBody, $optParams = [])
+  {
+    $params = ['parent' => $parent, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('createAsync', [$params], Operation::class);
+  }
+  /**
+   * Deletes a log bucket.Changes the bucket's lifecycle_state to the
+   * DELETE_REQUESTED state. After 7 days, the bucket will be purged and all log
+   * entries in the bucket will be permanently deleted. (buckets.delete)
    *
    * @param string $name Required. The full resource name of the bucket to delete.
    * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
    * "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
    * "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET
-   * _ID]" "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-   * Example: "projects/my-project-id/locations/my-location/buckets/my-bucket-id".
+   * _ID]" "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" For
+   * example:"projects/my-project/locations/global/buckets/my-bucket"
    * @param array $optParams Optional parameters.
    * @return LoggingEmpty
+   * @throws \Google\Service\Exception
    */
   public function delete($name, $optParams = [])
   {
@@ -74,7 +102,26 @@ class BillingAccountsLocationsBuckets extends \Google\Service\Resource
     return $this->call('delete', [$params], LoggingEmpty::class);
   }
   /**
-   * Lists buckets. (buckets.listBillingAccountsLocationsBuckets)
+   * Gets a log bucket. (buckets.get)
+   *
+   * @param string $name Required. The resource name of the bucket:
+   * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+   * "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+   * "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET
+   * _ID]" "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" For
+   * example:"projects/my-project/locations/global/buckets/my-bucket"
+   * @param array $optParams Optional parameters.
+   * @return LogBucket
+   * @throws \Google\Service\Exception
+   */
+  public function get($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('get', [$params], LogBucket::class);
+  }
+  /**
+   * Lists log buckets. (buckets.listBillingAccountsLocationsBuckets)
    *
    * @param string $parent Required. The parent resource whose buckets are to be
    * listed: "projects/[PROJECT_ID]/locations/[LOCATION_ID]"
@@ -93,6 +140,7 @@ class BillingAccountsLocationsBuckets extends \Google\Service\Resource
    * the value of nextPageToken from the previous response. The values of other
    * method parameters should be identical to those in the previous call.
    * @return ListBucketsResponse
+   * @throws \Google\Service\Exception
    */
   public function listBillingAccountsLocationsBuckets($parent, $optParams = [])
   {
@@ -101,32 +149,28 @@ class BillingAccountsLocationsBuckets extends \Google\Service\Resource
     return $this->call('list', [$params], ListBucketsResponse::class);
   }
   /**
-   * Updates a bucket. This method replaces the following fields in the existing
-   * bucket with values from the new bucket: retention_periodIf the retention
-   * period is decreased and the bucket is locked, FAILED_PRECONDITION will be
-   * returned.If the bucket has a LifecycleState of DELETE_REQUESTED,
-   * FAILED_PRECONDITION will be returned.A buckets region may not be modified
-   * after it is created. (buckets.patch)
+   * Updates a log bucket.If the bucket has a lifecycle_state of DELETE_REQUESTED,
+   * then FAILED_PRECONDITION will be returned.After a bucket has been created,
+   * the bucket's location cannot be changed. (buckets.patch)
    *
    * @param string $name Required. The full resource name of the bucket to update.
    * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
    * "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
    * "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET
-   * _ID]" "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-   * Example: "projects/my-project-id/locations/my-location/buckets/my-bucket-id".
-   * Also requires permission "resourcemanager.projects.updateLiens" to set the
-   * locked property
+   * _ID]" "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" For
+   * example:"projects/my-project/locations/global/buckets/my-bucket"
    * @param LogBucket $postBody
    * @param array $optParams Optional parameters.
    *
    * @opt_param string updateMask Required. Field mask that specifies the fields
    * in bucket that need an update. A bucket field will be overwritten if, and
    * only if, it is in the update mask. name and output only fields cannot be
-   * updated.For a detailed FieldMask definition, see
+   * updated.For a detailed FieldMask definition, see:
    * https://developers.google.com/protocol-
-   * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskExample:
-   * updateMask=retention_days.
+   * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskFor example:
+   * updateMask=retention_days
    * @return LogBucket
+   * @throws \Google\Service\Exception
    */
   public function patch($name, LogBucket $postBody, $optParams = [])
   {
@@ -135,24 +179,56 @@ class BillingAccountsLocationsBuckets extends \Google\Service\Resource
     return $this->call('patch', [$params], LogBucket::class);
   }
   /**
-   * Undeletes a bucket. A bucket that has been deleted may be undeleted within
-   * the grace period of 7 days. (buckets.undelete)
+   * Undeletes a log bucket. A bucket that has been deleted can be undeleted
+   * within the grace period of 7 days. (buckets.undelete)
    *
    * @param string $name Required. The full resource name of the bucket to
    * undelete. "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
    * "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
    * "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET
-   * _ID]" "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
-   * Example: "projects/my-project-id/locations/my-location/buckets/my-bucket-id".
+   * _ID]" "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" For
+   * example:"projects/my-project/locations/global/buckets/my-bucket"
    * @param UndeleteBucketRequest $postBody
    * @param array $optParams Optional parameters.
    * @return LoggingEmpty
+   * @throws \Google\Service\Exception
    */
   public function undelete($name, UndeleteBucketRequest $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('undelete', [$params], LoggingEmpty::class);
+  }
+  /**
+   * Updates a log bucket asynchronously.If the bucket has a lifecycle_state of
+   * DELETE_REQUESTED, then FAILED_PRECONDITION will be returned.After a bucket
+   * has been created, the bucket's location cannot be changed.
+   * (buckets.updateAsync)
+   *
+   * @param string $name Required. The full resource name of the bucket to update.
+   * "projects/[PROJECT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+   * "organizations/[ORGANIZATION_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]"
+   * "billingAccounts/[BILLING_ACCOUNT_ID]/locations/[LOCATION_ID]/buckets/[BUCKET
+   * _ID]" "folders/[FOLDER_ID]/locations/[LOCATION_ID]/buckets/[BUCKET_ID]" For
+   * example:"projects/my-project/locations/global/buckets/my-bucket"
+   * @param LogBucket $postBody
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string updateMask Required. Field mask that specifies the fields
+   * in bucket that need an update. A bucket field will be overwritten if, and
+   * only if, it is in the update mask. name and output only fields cannot be
+   * updated.For a detailed FieldMask definition, see:
+   * https://developers.google.com/protocol-
+   * buffers/docs/reference/google.protobuf#google.protobuf.FieldMaskFor example:
+   * updateMask=retention_days
+   * @return Operation
+   * @throws \Google\Service\Exception
+   */
+  public function updateAsync($name, LogBucket $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('updateAsync', [$params], Operation::class);
   }
 }
 

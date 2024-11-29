@@ -35,13 +35,14 @@ use Google\Client;
  */
 class NetworkManagement extends \Google\Service
 {
-  /** See, edit, configure, and delete your Google Cloud Platform data. */
+  /** See, edit, configure, and delete your Google Cloud data and see the email address for your Google Account.. */
   const CLOUD_PLATFORM =
       "https://www.googleapis.com/auth/cloud-platform";
 
   public $projects_locations;
   public $projects_locations_global_connectivityTests;
   public $projects_locations_global_operations;
+  public $rootUrlTemplate;
 
   /**
    * Constructs the internal representation of the NetworkManagement service.
@@ -54,6 +55,7 @@ class NetworkManagement extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://networkmanagement.googleapis.com/';
+    $this->rootUrlTemplate = $rootUrl ?: 'https://networkmanagement.UNIVERSE_DOMAIN/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
     $this->version = 'v1';

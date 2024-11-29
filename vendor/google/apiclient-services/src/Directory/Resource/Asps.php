@@ -31,12 +31,13 @@ use Google\Service\Directory\Asps as AspsModel;
 class Asps extends \Google\Service\Resource
 {
   /**
-   * Delete an ASP issued by a user. (asps.delete)
+   * Deletes an ASP issued by a user. (asps.delete)
    *
    * @param string $userKey Identifies the user in the API request. The value can
    * be the user's primary email address, alias email address, or unique user ID.
    * @param int $codeId The unique ID of the ASP to be deleted.
    * @param array $optParams Optional parameters.
+   * @throws \Google\Service\Exception
    */
   public function delete($userKey, $codeId, $optParams = [])
   {
@@ -45,13 +46,14 @@ class Asps extends \Google\Service\Resource
     return $this->call('delete', [$params]);
   }
   /**
-   * Get information about an ASP issued by a user. (asps.get)
+   * Gets information about an ASP issued by a user. (asps.get)
    *
    * @param string $userKey Identifies the user in the API request. The value can
    * be the user's primary email address, alias email address, or unique user ID.
    * @param int $codeId The unique ID of the ASP.
    * @param array $optParams Optional parameters.
    * @return Asp
+   * @throws \Google\Service\Exception
    */
   public function get($userKey, $codeId, $optParams = [])
   {
@@ -60,12 +62,13 @@ class Asps extends \Google\Service\Resource
     return $this->call('get', [$params], Asp::class);
   }
   /**
-   * List the ASPs issued by a user. (asps.listAsps)
+   * Lists the ASPs issued by a user. (asps.listAsps)
    *
    * @param string $userKey Identifies the user in the API request. The value can
    * be the user's primary email address, alias email address, or unique user ID.
    * @param array $optParams Optional parameters.
    * @return AspsModel
+   * @throws \Google\Service\Exception
    */
   public function listAsps($userKey, $optParams = [])
   {

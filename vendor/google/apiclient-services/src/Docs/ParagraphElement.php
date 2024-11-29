@@ -23,6 +23,9 @@ class ParagraphElement extends \Google\Model
   protected $autoTextDataType = '';
   protected $columnBreakType = ColumnBreak::class;
   protected $columnBreakDataType = '';
+  /**
+   * @var int
+   */
   public $endIndex;
   protected $equationType = Equation::class;
   protected $equationDataType = '';
@@ -36,6 +39,11 @@ class ParagraphElement extends \Google\Model
   protected $pageBreakDataType = '';
   protected $personType = Person::class;
   protected $personDataType = '';
+  protected $richLinkType = RichLink::class;
+  protected $richLinkDataType = '';
+  /**
+   * @var int
+   */
   public $startIndex;
   protected $textRunType = TextRun::class;
   protected $textRunDataType = '';
@@ -68,10 +76,16 @@ class ParagraphElement extends \Google\Model
   {
     return $this->columnBreak;
   }
+  /**
+   * @param int
+   */
   public function setEndIndex($endIndex)
   {
     $this->endIndex = $endIndex;
   }
+  /**
+   * @return int
+   */
   public function getEndIndex()
   {
     return $this->endIndex;
@@ -160,10 +174,30 @@ class ParagraphElement extends \Google\Model
   {
     return $this->person;
   }
+  /**
+   * @param RichLink
+   */
+  public function setRichLink(RichLink $richLink)
+  {
+    $this->richLink = $richLink;
+  }
+  /**
+   * @return RichLink
+   */
+  public function getRichLink()
+  {
+    return $this->richLink;
+  }
+  /**
+   * @param int
+   */
   public function setStartIndex($startIndex)
   {
     $this->startIndex = $startIndex;
   }
+  /**
+   * @return int
+   */
   public function getStartIndex()
   {
     return $this->startIndex;

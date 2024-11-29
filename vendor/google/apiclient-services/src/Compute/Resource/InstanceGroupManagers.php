@@ -53,14 +53,11 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * the number of instances that you abandon. This operation is marked as DONE
    * when the action is scheduled even if the instances have not yet been removed
    * from the group. You must separately verify the status of the abandoning
-   * action with the listmanagedinstances method.
-   *
-   * If the group is part of a backend service that has enabled connection
-   * draining, it can take up to 60 seconds after the connection draining duration
-   * has elapsed before the VM instance is removed or deleted.
-   *
-   * You can specify a maximum of 1000 instances with this method per request.
-   * (instanceGroupManagers.abandonInstances)
+   * action with the listmanagedinstances method. If the group is part of a
+   * backend service that has enabled connection draining, it can take up to 60
+   * seconds after the connection draining duration has elapsed before the VM
+   * instance is removed or deleted. You can specify a maximum of 1000 instances
+   * with this method per request. (instanceGroupManagers.abandonInstances)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where the managed instance group is
@@ -71,17 +68,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function abandonInstances($project, $zone, $instanceGroupManager, InstanceGroupManagersAbandonInstancesRequest $postBody, $optParams = [])
   {
@@ -90,32 +86,45 @@ class InstanceGroupManagers extends \Google\Service\Resource
     return $this->call('abandonInstances', [$params], Operation::class);
   }
   /**
-   * Retrieves the list of managed instance groups and groups them by zone.
-   * (instanceGroupManagers.aggregatedList)
+   * Retrieves the list of managed instance groups and groups them by zone. To
+   * prevent failure, Google recommends that you set the `returnPartialSuccess`
+   * parameter to `true`. (instanceGroupManagers.aggregatedList)
    *
    * @param string $project Project ID for this request.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter A filter expression that filters resources listed in
-   * the response. The expression must specify the field name, a comparison
-   * operator, and the value that you want to use for filtering. The value must be
-   * a string, a number, or a boolean. The comparison operator must be either `=`,
-   * `!=`, `>`, or `<`.
-   *
-   * For example, if you are filtering Compute Engine instances, you can exclude
-   * instances named `example-instance` by specifying `name != example-instance`.
-   *
-   * You can also filter nested fields. For example, you could specify
+   * the response. Most Compute resources support two types of filter expressions:
+   * expressions that support regular expressions and expressions that follow API
+   * improvement proposal AIP-160. These two types of filter expressions cannot be
+   * mixed in one request. If you want to use AIP-160, your expression must
+   * specify the field name, an operator, and the value that you want to use for
+   * filtering. The value must be a string, a number, or a boolean. The operator
+   * must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you
+   * are filtering Compute Engine instances, you can exclude instances named
+   * `example-instance` by specifying `name != example-instance`. The `:*`
+   * comparison can be used to test whether a key has been defined. For example,
+   * to find all objects with `owner` label use: ``` labels.owner:* ``` You can
+   * also filter nested fields. For example, you could specify
    * `scheduling.automaticRestart = false` to include instances only if they are
    * not scheduled for automatic restarts. You can use filtering on nested fields
-   * to filter based on resource labels.
-   *
-   * To filter on multiple expressions, provide each separate expression within
-   * parentheses. For example: ``` (scheduling.automaticRestart = true)
-   * (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND`
-   * expression. However, you can include `AND` and `OR` expressions explicitly.
-   * For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel
-   * Broadwell") AND (scheduling.automaticRestart = true) ```
+   * to filter based on resource labels. To filter on multiple expressions,
+   * provide each separate expression within parentheses. For example: ```
+   * (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By
+   * default, each expression is an `AND` expression. However, you can include
+   * `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel
+   * Skylake") OR (cpuPlatform = "Intel Broadwell") AND
+   * (scheduling.automaticRestart = true) ``` If you want to use a regular
+   * expression, use the `eq` (equal) or `ne` (not equal) operator against a
+   * single un-parenthesized expression with or without quotes or against multiple
+   * parenthesized expressions. Examples: `fieldname eq unquoted literal`
+   * `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"`
+   * `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is
+   * interpreted as a regular expression using Google RE2 library syntax. The
+   * literal value must match the entire field. For example, to filter for
+   * instances that do not end with name "instance", you would use `name ne
+   * .*instance`. You cannot combine constraints on multiple fields using regular
+   * expressions.
    * @opt_param bool includeAllScopes Indicates whether every visible scope for
    * each scope type (zone, region, global) should be included in the response.
    * For new resource types added after this field, the flag has no effect as new
@@ -129,22 +138,26 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * get the next page of results in subsequent list requests. Acceptable values
    * are `0` to `500`, inclusive. (Default: `500`)
    * @opt_param string orderBy Sorts list results by a certain order. By default,
-   * results are returned in alphanumerical order based on the resource name.
-   *
-   * You can also sort results in descending order based on the creation timestamp
+   * results are returned in alphanumerical order based on the resource name. You
+   * can also sort results in descending order based on the creation timestamp
    * using `orderBy="creationTimestamp desc"`. This sorts results based on the
    * `creationTimestamp` field in reverse chronological order (newest result
    * first). Use this to sort resources like operations so that the newest
-   * operation is returned first.
-   *
-   * Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+   * operation is returned first. Currently, only sorting by `name` or
+   * `creationTimestamp desc` is supported.
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
    * which provides partial results in case of failure. The default value is
-   * false.
+   * false. For example, when partial success behavior is enabled, aggregatedList
+   * for a single zone scope either returns all resources in the zone or no
+   * resources, with an error code.
+   * @opt_param string serviceProjectNumber The Shared VPC service project id or
+   * service project number for which aggregated list request is invoked for
+   * subnetworks list-usable api.
    * @return InstanceGroupManagerAggregatedList
+   * @throws \Google\Service\Exception
    */
   public function aggregatedList($project, $optParams = [])
   {
@@ -165,6 +178,7 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * @param InstanceGroupManagersApplyUpdatesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function applyUpdatesToInstances($project, $zone, $instanceGroupManager, InstanceGroupManagersApplyUpdatesRequest $postBody, $optParams = [])
   {
@@ -173,8 +187,8 @@ class InstanceGroupManagers extends \Google\Service\Resource
     return $this->call('applyUpdatesToInstances', [$params], Operation::class);
   }
   /**
-   * Creates instances with per-instance configs in this managed instance group.
-   * Instances are created using the current instance template. The create
+   * Creates instances with per-instance configurations in this managed instance
+   * group. Instances are created using the current instance template. The create
    * instances operation is marked DONE if the createInstances request is
    * successful. The underlying actions take additional time. You must separately
    * verify the status of the creating or actions with the listmanagedinstances
@@ -190,16 +204,15 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
-   * received, and if so, will ignore the second request.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * received, and if so, will ignore the second request. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function createInstances($project, $zone, $instanceGroupManager, InstanceGroupManagersCreateInstancesRequest $postBody, $optParams = [])
   {
@@ -210,7 +223,7 @@ class InstanceGroupManagers extends \Google\Service\Resource
   /**
    * Deletes the specified managed instance group and all of the instances in that
    * group. Note that the instance group must not belong to a backend service.
-   * Read  Deleting an instance group for more information.
+   * Read Deleting an instance group for more information.
    * (instanceGroupManagers.delete)
    *
    * @param string $project Project ID for this request.
@@ -222,17 +235,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function delete($project, $zone, $instanceGroupManager, $optParams = [])
   {
@@ -247,14 +259,11 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * group by the number of instances that you delete. This operation is marked as
    * DONE when the action is scheduled even if the instances are still being
    * deleted. You must separately verify the status of the deleting action with
-   * the listmanagedinstances method.
-   *
-   * If the group is part of a backend service that has enabled connection
-   * draining, it can take up to 60 seconds after the connection draining duration
-   * has elapsed before the VM instance is removed or deleted.
-   *
-   * You can specify a maximum of 1000 instances with this method per request.
-   * (instanceGroupManagers.deleteInstances)
+   * the listmanagedinstances method. If the group is part of a backend service
+   * that has enabled connection draining, it can take up to 60 seconds after the
+   * connection draining duration has elapsed before the VM instance is removed or
+   * deleted. You can specify a maximum of 1000 instances with this method per
+   * request. (instanceGroupManagers.deleteInstances)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where the managed instance group is
@@ -265,17 +274,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function deleteInstances($project, $zone, $instanceGroupManager, InstanceGroupManagersDeleteInstancesRequest $postBody, $optParams = [])
   {
@@ -284,7 +292,7 @@ class InstanceGroupManagers extends \Google\Service\Resource
     return $this->call('deleteInstances', [$params], Operation::class);
   }
   /**
-   * Deletes selected per-instance configs for the managed instance group.
+   * Deletes selected per-instance configurations for the managed instance group.
    * (instanceGroupManagers.deletePerInstanceConfigs)
    *
    * @param string $project Project ID for this request.
@@ -295,6 +303,7 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * @param InstanceGroupManagersDeletePerInstanceConfigsReq $postBody
    * @param array $optParams Optional parameters.
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function deletePerInstanceConfigs($project, $zone, $instanceGroupManager, InstanceGroupManagersDeletePerInstanceConfigsReq $postBody, $optParams = [])
   {
@@ -303,8 +312,7 @@ class InstanceGroupManagers extends \Google\Service\Resource
     return $this->call('deletePerInstanceConfigs', [$params], Operation::class);
   }
   /**
-   * Returns all of the details about the specified managed instance group. Gets a
-   * list of available managed instance groups by making a list() request.
+   * Returns all of the details about the specified managed instance group.
    * (instanceGroupManagers.get)
    *
    * @param string $project Project ID for this request.
@@ -313,6 +321,7 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * @param string $instanceGroupManager The name of the managed instance group.
    * @param array $optParams Optional parameters.
    * @return InstanceGroupManager
+   * @throws \Google\Service\Exception
    */
   public function get($project, $zone, $instanceGroupManager, $optParams = [])
   {
@@ -326,11 +335,9 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * using the specified instance template. This operation is marked as DONE when
    * the group is created even if the instances in the group have not yet been
    * created. You must separately verify the status of the individual instances
-   * with the listmanagedinstances method.
-   *
-   * A managed instance group can have up to 1000 VM instances per group. Please
-   * contact Cloud Support if you need an increase in this limit.
-   * (instanceGroupManagers.insert)
+   * with the listmanagedinstances method. A managed instance group can have up to
+   * 1000 VM instances per group. Please contact Cloud Support if you need an
+   * increase in this limit. (instanceGroupManagers.insert)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where you want to create the managed
@@ -340,17 +347,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function insert($project, $zone, InstanceGroupManager $postBody, $optParams = [])
   {
@@ -368,47 +374,60 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter A filter expression that filters resources listed in
-   * the response. The expression must specify the field name, a comparison
-   * operator, and the value that you want to use for filtering. The value must be
-   * a string, a number, or a boolean. The comparison operator must be either `=`,
-   * `!=`, `>`, or `<`.
-   *
-   * For example, if you are filtering Compute Engine instances, you can exclude
-   * instances named `example-instance` by specifying `name != example-instance`.
-   *
-   * You can also filter nested fields. For example, you could specify
+   * the response. Most Compute resources support two types of filter expressions:
+   * expressions that support regular expressions and expressions that follow API
+   * improvement proposal AIP-160. These two types of filter expressions cannot be
+   * mixed in one request. If you want to use AIP-160, your expression must
+   * specify the field name, an operator, and the value that you want to use for
+   * filtering. The value must be a string, a number, or a boolean. The operator
+   * must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you
+   * are filtering Compute Engine instances, you can exclude instances named
+   * `example-instance` by specifying `name != example-instance`. The `:*`
+   * comparison can be used to test whether a key has been defined. For example,
+   * to find all objects with `owner` label use: ``` labels.owner:* ``` You can
+   * also filter nested fields. For example, you could specify
    * `scheduling.automaticRestart = false` to include instances only if they are
    * not scheduled for automatic restarts. You can use filtering on nested fields
-   * to filter based on resource labels.
-   *
-   * To filter on multiple expressions, provide each separate expression within
-   * parentheses. For example: ``` (scheduling.automaticRestart = true)
-   * (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND`
-   * expression. However, you can include `AND` and `OR` expressions explicitly.
-   * For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel
-   * Broadwell") AND (scheduling.automaticRestart = true) ```
+   * to filter based on resource labels. To filter on multiple expressions,
+   * provide each separate expression within parentheses. For example: ```
+   * (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By
+   * default, each expression is an `AND` expression. However, you can include
+   * `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel
+   * Skylake") OR (cpuPlatform = "Intel Broadwell") AND
+   * (scheduling.automaticRestart = true) ``` If you want to use a regular
+   * expression, use the `eq` (equal) or `ne` (not equal) operator against a
+   * single un-parenthesized expression with or without quotes or against multiple
+   * parenthesized expressions. Examples: `fieldname eq unquoted literal`
+   * `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"`
+   * `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is
+   * interpreted as a regular expression using Google RE2 library syntax. The
+   * literal value must match the entire field. For example, to filter for
+   * instances that do not end with name "instance", you would use `name ne
+   * .*instance`. You cannot combine constraints on multiple fields using regular
+   * expressions.
    * @opt_param string maxResults The maximum number of results per page that
    * should be returned. If the number of available results is larger than
    * `maxResults`, Compute Engine returns a `nextPageToken` that can be used to
    * get the next page of results in subsequent list requests. Acceptable values
    * are `0` to `500`, inclusive. (Default: `500`)
    * @opt_param string orderBy Sorts list results by a certain order. By default,
-   * results are returned in alphanumerical order based on the resource name.
-   *
-   * You can also sort results in descending order based on the creation timestamp
+   * results are returned in alphanumerical order based on the resource name. You
+   * can also sort results in descending order based on the creation timestamp
    * using `orderBy="creationTimestamp desc"`. This sorts results based on the
    * `creationTimestamp` field in reverse chronological order (newest result
    * first). Use this to sort resources like operations so that the newest
-   * operation is returned first.
-   *
-   * Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+   * operation is returned first. Currently, only sorting by `name` or
+   * `creationTimestamp desc` is supported.
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
    * which provides partial results in case of failure. The default value is
-   * false.
+   * false. For example, when partial success behavior is enabled, aggregatedList
+   * for a single zone scope either returns all resources in the zone or no
+   * resources, with an error code.
    * @return InstanceGroupManagerList
+   * @throws \Google\Service\Exception
    */
   public function listInstanceGroupManagers($project, $zone, $optParams = [])
   {
@@ -427,51 +446,64 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * @param string $instanceGroupManager The name of the managed instance group.
    * It must be a string that meets the requirements in RFC1035, or an unsigned
    * long integer: must match regexp pattern:
-   * (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)|[1-9][0-9]{0,19}.
+   * (?:[a-z](?:[-a-z0-9]{0,61}[a-z0-9])?)|1-9{0,19}.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter A filter expression that filters resources listed in
-   * the response. The expression must specify the field name, a comparison
-   * operator, and the value that you want to use for filtering. The value must be
-   * a string, a number, or a boolean. The comparison operator must be either `=`,
-   * `!=`, `>`, or `<`.
-   *
-   * For example, if you are filtering Compute Engine instances, you can exclude
-   * instances named `example-instance` by specifying `name != example-instance`.
-   *
-   * You can also filter nested fields. For example, you could specify
+   * the response. Most Compute resources support two types of filter expressions:
+   * expressions that support regular expressions and expressions that follow API
+   * improvement proposal AIP-160. These two types of filter expressions cannot be
+   * mixed in one request. If you want to use AIP-160, your expression must
+   * specify the field name, an operator, and the value that you want to use for
+   * filtering. The value must be a string, a number, or a boolean. The operator
+   * must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you
+   * are filtering Compute Engine instances, you can exclude instances named
+   * `example-instance` by specifying `name != example-instance`. The `:*`
+   * comparison can be used to test whether a key has been defined. For example,
+   * to find all objects with `owner` label use: ``` labels.owner:* ``` You can
+   * also filter nested fields. For example, you could specify
    * `scheduling.automaticRestart = false` to include instances only if they are
    * not scheduled for automatic restarts. You can use filtering on nested fields
-   * to filter based on resource labels.
-   *
-   * To filter on multiple expressions, provide each separate expression within
-   * parentheses. For example: ``` (scheduling.automaticRestart = true)
-   * (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND`
-   * expression. However, you can include `AND` and `OR` expressions explicitly.
-   * For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel
-   * Broadwell") AND (scheduling.automaticRestart = true) ```
+   * to filter based on resource labels. To filter on multiple expressions,
+   * provide each separate expression within parentheses. For example: ```
+   * (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By
+   * default, each expression is an `AND` expression. However, you can include
+   * `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel
+   * Skylake") OR (cpuPlatform = "Intel Broadwell") AND
+   * (scheduling.automaticRestart = true) ``` If you want to use a regular
+   * expression, use the `eq` (equal) or `ne` (not equal) operator against a
+   * single un-parenthesized expression with or without quotes or against multiple
+   * parenthesized expressions. Examples: `fieldname eq unquoted literal`
+   * `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"`
+   * `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is
+   * interpreted as a regular expression using Google RE2 library syntax. The
+   * literal value must match the entire field. For example, to filter for
+   * instances that do not end with name "instance", you would use `name ne
+   * .*instance`. You cannot combine constraints on multiple fields using regular
+   * expressions.
    * @opt_param string maxResults The maximum number of results per page that
    * should be returned. If the number of available results is larger than
    * `maxResults`, Compute Engine returns a `nextPageToken` that can be used to
    * get the next page of results in subsequent list requests. Acceptable values
    * are `0` to `500`, inclusive. (Default: `500`)
    * @opt_param string orderBy Sorts list results by a certain order. By default,
-   * results are returned in alphanumerical order based on the resource name.
-   *
-   * You can also sort results in descending order based on the creation timestamp
+   * results are returned in alphanumerical order based on the resource name. You
+   * can also sort results in descending order based on the creation timestamp
    * using `orderBy="creationTimestamp desc"`. This sorts results based on the
    * `creationTimestamp` field in reverse chronological order (newest result
    * first). Use this to sort resources like operations so that the newest
-   * operation is returned first.
-   *
-   * Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+   * operation is returned first. Currently, only sorting by `name` or
+   * `creationTimestamp desc` is supported.
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
    * which provides partial results in case of failure. The default value is
-   * false.
+   * false. For example, when partial success behavior is enabled, aggregatedList
+   * for a single zone scope either returns all resources in the zone or no
+   * resources, with an error code.
    * @return InstanceGroupManagersListErrorsResponse
+   * @throws \Google\Service\Exception
    */
   public function listErrors($project, $zone, $instanceGroupManager, $optParams = [])
   {
@@ -485,8 +517,9 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * instance group is performing on the instance. For example, if the group is
    * still creating an instance, the currentAction is CREATING. If a previous
    * action failed, the list displays the errors for that failed action. The
-   * orderBy query parameter is not supported.
-   * (instanceGroupManagers.listManagedInstances)
+   * orderBy query parameter is not supported. The `pageToken` query parameter is
+   * supported only if the group's `listManagedInstancesResults` field is set to
+   * `PAGINATED`. (instanceGroupManagers.listManagedInstances)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where the managed instance group is
@@ -495,47 +528,60 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter A filter expression that filters resources listed in
-   * the response. The expression must specify the field name, a comparison
-   * operator, and the value that you want to use for filtering. The value must be
-   * a string, a number, or a boolean. The comparison operator must be either `=`,
-   * `!=`, `>`, or `<`.
-   *
-   * For example, if you are filtering Compute Engine instances, you can exclude
-   * instances named `example-instance` by specifying `name != example-instance`.
-   *
-   * You can also filter nested fields. For example, you could specify
+   * the response. Most Compute resources support two types of filter expressions:
+   * expressions that support regular expressions and expressions that follow API
+   * improvement proposal AIP-160. These two types of filter expressions cannot be
+   * mixed in one request. If you want to use AIP-160, your expression must
+   * specify the field name, an operator, and the value that you want to use for
+   * filtering. The value must be a string, a number, or a boolean. The operator
+   * must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you
+   * are filtering Compute Engine instances, you can exclude instances named
+   * `example-instance` by specifying `name != example-instance`. The `:*`
+   * comparison can be used to test whether a key has been defined. For example,
+   * to find all objects with `owner` label use: ``` labels.owner:* ``` You can
+   * also filter nested fields. For example, you could specify
    * `scheduling.automaticRestart = false` to include instances only if they are
    * not scheduled for automatic restarts. You can use filtering on nested fields
-   * to filter based on resource labels.
-   *
-   * To filter on multiple expressions, provide each separate expression within
-   * parentheses. For example: ``` (scheduling.automaticRestart = true)
-   * (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND`
-   * expression. However, you can include `AND` and `OR` expressions explicitly.
-   * For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel
-   * Broadwell") AND (scheduling.automaticRestart = true) ```
+   * to filter based on resource labels. To filter on multiple expressions,
+   * provide each separate expression within parentheses. For example: ```
+   * (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By
+   * default, each expression is an `AND` expression. However, you can include
+   * `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel
+   * Skylake") OR (cpuPlatform = "Intel Broadwell") AND
+   * (scheduling.automaticRestart = true) ``` If you want to use a regular
+   * expression, use the `eq` (equal) or `ne` (not equal) operator against a
+   * single un-parenthesized expression with or without quotes or against multiple
+   * parenthesized expressions. Examples: `fieldname eq unquoted literal`
+   * `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"`
+   * `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is
+   * interpreted as a regular expression using Google RE2 library syntax. The
+   * literal value must match the entire field. For example, to filter for
+   * instances that do not end with name "instance", you would use `name ne
+   * .*instance`. You cannot combine constraints on multiple fields using regular
+   * expressions.
    * @opt_param string maxResults The maximum number of results per page that
    * should be returned. If the number of available results is larger than
    * `maxResults`, Compute Engine returns a `nextPageToken` that can be used to
    * get the next page of results in subsequent list requests. Acceptable values
    * are `0` to `500`, inclusive. (Default: `500`)
    * @opt_param string orderBy Sorts list results by a certain order. By default,
-   * results are returned in alphanumerical order based on the resource name.
-   *
-   * You can also sort results in descending order based on the creation timestamp
+   * results are returned in alphanumerical order based on the resource name. You
+   * can also sort results in descending order based on the creation timestamp
    * using `orderBy="creationTimestamp desc"`. This sorts results based on the
    * `creationTimestamp` field in reverse chronological order (newest result
    * first). Use this to sort resources like operations so that the newest
-   * operation is returned first.
-   *
-   * Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+   * operation is returned first. Currently, only sorting by `name` or
+   * `creationTimestamp desc` is supported.
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
    * which provides partial results in case of failure. The default value is
-   * false.
+   * false. For example, when partial success behavior is enabled, aggregatedList
+   * for a single zone scope either returns all resources in the zone or no
+   * resources, with an error code.
    * @return InstanceGroupManagersListManagedInstancesResponse
+   * @throws \Google\Service\Exception
    */
   public function listManagedInstances($project, $zone, $instanceGroupManager, $optParams = [])
   {
@@ -544,8 +590,8 @@ class InstanceGroupManagers extends \Google\Service\Resource
     return $this->call('listManagedInstances', [$params], InstanceGroupManagersListManagedInstancesResponse::class);
   }
   /**
-   * Lists all of the per-instance configs defined for the managed instance group.
-   * The orderBy query parameter is not supported.
+   * Lists all of the per-instance configurations defined for the managed instance
+   * group. The orderBy query parameter is not supported.
    * (instanceGroupManagers.listPerInstanceConfigs)
    *
    * @param string $project Project ID for this request.
@@ -556,47 +602,60 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter A filter expression that filters resources listed in
-   * the response. The expression must specify the field name, a comparison
-   * operator, and the value that you want to use for filtering. The value must be
-   * a string, a number, or a boolean. The comparison operator must be either `=`,
-   * `!=`, `>`, or `<`.
-   *
-   * For example, if you are filtering Compute Engine instances, you can exclude
-   * instances named `example-instance` by specifying `name != example-instance`.
-   *
-   * You can also filter nested fields. For example, you could specify
+   * the response. Most Compute resources support two types of filter expressions:
+   * expressions that support regular expressions and expressions that follow API
+   * improvement proposal AIP-160. These two types of filter expressions cannot be
+   * mixed in one request. If you want to use AIP-160, your expression must
+   * specify the field name, an operator, and the value that you want to use for
+   * filtering. The value must be a string, a number, or a boolean. The operator
+   * must be either `=`, `!=`, `>`, `<`, `<=`, `>=` or `:`. For example, if you
+   * are filtering Compute Engine instances, you can exclude instances named
+   * `example-instance` by specifying `name != example-instance`. The `:*`
+   * comparison can be used to test whether a key has been defined. For example,
+   * to find all objects with `owner` label use: ``` labels.owner:* ``` You can
+   * also filter nested fields. For example, you could specify
    * `scheduling.automaticRestart = false` to include instances only if they are
    * not scheduled for automatic restarts. You can use filtering on nested fields
-   * to filter based on resource labels.
-   *
-   * To filter on multiple expressions, provide each separate expression within
-   * parentheses. For example: ``` (scheduling.automaticRestart = true)
-   * (cpuPlatform = "Intel Skylake") ``` By default, each expression is an `AND`
-   * expression. However, you can include `AND` and `OR` expressions explicitly.
-   * For example: ``` (cpuPlatform = "Intel Skylake") OR (cpuPlatform = "Intel
-   * Broadwell") AND (scheduling.automaticRestart = true) ```
+   * to filter based on resource labels. To filter on multiple expressions,
+   * provide each separate expression within parentheses. For example: ```
+   * (scheduling.automaticRestart = true) (cpuPlatform = "Intel Skylake") ``` By
+   * default, each expression is an `AND` expression. However, you can include
+   * `AND` and `OR` expressions explicitly. For example: ``` (cpuPlatform = "Intel
+   * Skylake") OR (cpuPlatform = "Intel Broadwell") AND
+   * (scheduling.automaticRestart = true) ``` If you want to use a regular
+   * expression, use the `eq` (equal) or `ne` (not equal) operator against a
+   * single un-parenthesized expression with or without quotes or against multiple
+   * parenthesized expressions. Examples: `fieldname eq unquoted literal`
+   * `fieldname eq 'single quoted literal'` `fieldname eq "double quoted literal"`
+   * `(fieldname1 eq literal) (fieldname2 ne "literal")` The literal value is
+   * interpreted as a regular expression using Google RE2 library syntax. The
+   * literal value must match the entire field. For example, to filter for
+   * instances that do not end with name "instance", you would use `name ne
+   * .*instance`. You cannot combine constraints on multiple fields using regular
+   * expressions.
    * @opt_param string maxResults The maximum number of results per page that
    * should be returned. If the number of available results is larger than
    * `maxResults`, Compute Engine returns a `nextPageToken` that can be used to
    * get the next page of results in subsequent list requests. Acceptable values
    * are `0` to `500`, inclusive. (Default: `500`)
    * @opt_param string orderBy Sorts list results by a certain order. By default,
-   * results are returned in alphanumerical order based on the resource name.
-   *
-   * You can also sort results in descending order based on the creation timestamp
+   * results are returned in alphanumerical order based on the resource name. You
+   * can also sort results in descending order based on the creation timestamp
    * using `orderBy="creationTimestamp desc"`. This sorts results based on the
    * `creationTimestamp` field in reverse chronological order (newest result
    * first). Use this to sort resources like operations so that the newest
-   * operation is returned first.
-   *
-   * Currently, only sorting by `name` or `creationTimestamp desc` is supported.
+   * operation is returned first. Currently, only sorting by `name` or
+   * `creationTimestamp desc` is supported.
    * @opt_param string pageToken Specifies a page token to use. Set `pageToken` to
    * the `nextPageToken` returned by a previous list request to get the next page
    * of results.
    * @opt_param bool returnPartialSuccess Opt-in for partial success behavior
    * which provides partial results in case of failure. The default value is
-   * false.
+   * false. For example, when partial success behavior is enabled, aggregatedList
+   * for a single zone scope either returns all resources in the zone or no
+   * resources, with an error code.
    * @return InstanceGroupManagersListPerInstanceConfigsResp
+   * @throws \Google\Service\Exception
    */
   public function listPerInstanceConfigs($project, $zone, $instanceGroupManager, $optParams = [])
   {
@@ -610,8 +669,11 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * if the instances in the group are still in the process of being patched. You
    * must separately verify the status of the individual instances with the
    * listManagedInstances method. This method supports PATCH semantics and uses
-   * the JSON merge patch format and processing rules.
-   * (instanceGroupManagers.patch)
+   * the JSON merge patch format and processing rules. If you update your group to
+   * specify a new template or instance configuration, it's possible that your
+   * intended specification for each VM in the group is different from the current
+   * state of that VM. To learn how to apply an updated configuration to the VMs
+   * in a MIG, see Updating instances in a MIG. (instanceGroupManagers.patch)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where you want to create the managed
@@ -622,17 +684,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function patch($project, $zone, $instanceGroupManager, InstanceGroupManager $postBody, $optParams = [])
   {
@@ -641,9 +702,9 @@ class InstanceGroupManagers extends \Google\Service\Resource
     return $this->call('patch', [$params], Operation::class);
   }
   /**
-   * Inserts or patches per-instance configs for the managed instance group.
-   * perInstanceConfig.name serves as a key used to distinguish whether to perform
-   * insert or patch. (instanceGroupManagers.patchPerInstanceConfigs)
+   * Inserts or patches per-instance configurations for the managed instance
+   * group. perInstanceConfig.name serves as a key used to distinguish whether to
+   * perform insert or patch. (instanceGroupManagers.patchPerInstanceConfigs)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where the managed instance group is
@@ -655,17 +716,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function patchPerInstanceConfigs($project, $zone, $instanceGroupManager, InstanceGroupManagersPatchPerInstanceConfigsReq $postBody, $optParams = [])
   {
@@ -679,13 +739,11 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * configuration. This operation is marked as DONE when the flag is set even if
    * the instances have not yet been recreated. You must separately verify the
    * status of each instance by checking its currentAction field; for more
-   * information, see Checking the status of managed instances.
-   *
-   * If the group is part of a backend service that has enabled connection
-   * draining, it can take up to 60 seconds after the connection draining duration
-   * has elapsed before the VM instance is removed or deleted.
-   *
-   * You can specify a maximum of 1000 instances with this method per request.
+   * information, see Checking the status of managed instances. If the group is
+   * part of a backend service that has enabled connection draining, it can take
+   * up to 60 seconds after the connection draining duration has elapsed before
+   * the VM instance is removed or deleted. You can specify a maximum of 1000
+   * instances with this method per request.
    * (instanceGroupManagers.recreateInstances)
    *
    * @param string $project Project ID for this request.
@@ -697,17 +755,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function recreateInstances($project, $zone, $instanceGroupManager, InstanceGroupManagersRecreateInstancesRequest $postBody, $optParams = [])
   {
@@ -721,19 +778,13 @@ class InstanceGroupManagers extends \Google\Service\Resource
    * the size, the group deletes instances. The resize operation is marked DONE
    * when the resize actions are scheduled even if the group has not yet added or
    * deleted any instances. You must separately verify the status of the creating
-   * or deleting actions with the listmanagedinstances method.
-   *
-   * When resizing down, the instance group arbitrarily chooses the order in which
-   * VMs are deleted. The group takes into account some VM attributes when making
-   * the selection including:
-   *
-   * + The status of the VM instance. + The health of the VM instance. + The
-   * instance template version the VM is based on. + For regional managed instance
-   * groups, the location of the VM instance.
-   *
-   * This list is subject to change.
-   *
-   * If the group is part of a backend service that has enabled connection
+   * or deleting actions with the listmanagedinstances method. When resizing down,
+   * the instance group arbitrarily chooses the order in which VMs are deleted.
+   * The group takes into account some VM attributes when making the selection
+   * including: + The status of the VM instance. + The health of the VM instance.
+   * + The instance template version the VM is based on. + For regional managed
+   * instance groups, the location of the VM instance. This list is subject to
+   * change. If the group is part of a backend service that has enabled connection
    * draining, it can take up to 60 seconds after the connection draining duration
    * has elapsed before the VM instance is removed or deleted.
    * (instanceGroupManagers.resize)
@@ -750,17 +801,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function resize($project, $zone, $instanceGroupManager, $size, $optParams = [])
   {
@@ -783,17 +833,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function setInstanceTemplate($project, $zone, $instanceGroupManager, InstanceGroupManagersSetInstanceTemplateRequest $postBody, $optParams = [])
   {
@@ -819,17 +868,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function setTargetPools($project, $zone, $instanceGroupManager, InstanceGroupManagersSetTargetPoolsRequest $postBody, $optParams = [])
   {
@@ -838,9 +886,9 @@ class InstanceGroupManagers extends \Google\Service\Resource
     return $this->call('setTargetPools', [$params], Operation::class);
   }
   /**
-   * Inserts or updates per-instance configs for the managed instance group.
-   * perInstanceConfig.name serves as a key used to distinguish whether to perform
-   * insert or patch. (instanceGroupManagers.updatePerInstanceConfigs)
+   * Inserts or updates per-instance configurations for the managed instance
+   * group. perInstanceConfig.name serves as a key used to distinguish whether to
+   * perform insert or patch. (instanceGroupManagers.updatePerInstanceConfigs)
    *
    * @param string $project Project ID for this request.
    * @param string $zone The name of the zone where the managed instance group is
@@ -852,17 +900,16 @@ class InstanceGroupManagers extends \Google\Service\Resource
    *
    * @opt_param string requestId An optional request ID to identify requests.
    * Specify a unique request ID so that if you must retry your request, the
-   * server will know to ignore the request if it has already been completed.
-   *
-   * For example, consider a situation where you make an initial request and the
+   * server will know to ignore the request if it has already been completed. For
+   * example, consider a situation where you make an initial request and the
    * request times out. If you make the request again with the same request ID,
    * the server can check if original operation with the same request ID was
    * received, and if so, will ignore the second request. This prevents clients
-   * from accidentally creating duplicate commitments.
-   *
-   * The request ID must be a valid UUID with the exception that zero UUID is not
-   * supported (00000000-0000-0000-0000-000000000000).
+   * from accidentally creating duplicate commitments. The request ID must be a
+   * valid UUID with the exception that zero UUID is not supported (
+   * 00000000-0000-0000-0000-000000000000).
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function updatePerInstanceConfigs($project, $zone, $instanceGroupManager, InstanceGroupManagersUpdatePerInstanceConfigsReq $postBody, $optParams = [])
   {

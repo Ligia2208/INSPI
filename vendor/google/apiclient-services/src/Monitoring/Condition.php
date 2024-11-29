@@ -21,11 +21,23 @@ class Condition extends \Google\Model
 {
   protected $conditionAbsentType = MetricAbsence::class;
   protected $conditionAbsentDataType = '';
+  protected $conditionMatchedLogType = LogMatch::class;
+  protected $conditionMatchedLogDataType = '';
   protected $conditionMonitoringQueryLanguageType = MonitoringQueryLanguageCondition::class;
   protected $conditionMonitoringQueryLanguageDataType = '';
+  protected $conditionPrometheusQueryLanguageType = PrometheusQueryLanguageCondition::class;
+  protected $conditionPrometheusQueryLanguageDataType = '';
+  protected $conditionSqlType = SqlCondition::class;
+  protected $conditionSqlDataType = '';
   protected $conditionThresholdType = MetricThreshold::class;
   protected $conditionThresholdDataType = '';
+  /**
+   * @var string
+   */
   public $displayName;
+  /**
+   * @var string
+   */
   public $name;
 
   /**
@@ -43,6 +55,20 @@ class Condition extends \Google\Model
     return $this->conditionAbsent;
   }
   /**
+   * @param LogMatch
+   */
+  public function setConditionMatchedLog(LogMatch $conditionMatchedLog)
+  {
+    $this->conditionMatchedLog = $conditionMatchedLog;
+  }
+  /**
+   * @return LogMatch
+   */
+  public function getConditionMatchedLog()
+  {
+    return $this->conditionMatchedLog;
+  }
+  /**
    * @param MonitoringQueryLanguageCondition
    */
   public function setConditionMonitoringQueryLanguage(MonitoringQueryLanguageCondition $conditionMonitoringQueryLanguage)
@@ -55,6 +81,34 @@ class Condition extends \Google\Model
   public function getConditionMonitoringQueryLanguage()
   {
     return $this->conditionMonitoringQueryLanguage;
+  }
+  /**
+   * @param PrometheusQueryLanguageCondition
+   */
+  public function setConditionPrometheusQueryLanguage(PrometheusQueryLanguageCondition $conditionPrometheusQueryLanguage)
+  {
+    $this->conditionPrometheusQueryLanguage = $conditionPrometheusQueryLanguage;
+  }
+  /**
+   * @return PrometheusQueryLanguageCondition
+   */
+  public function getConditionPrometheusQueryLanguage()
+  {
+    return $this->conditionPrometheusQueryLanguage;
+  }
+  /**
+   * @param SqlCondition
+   */
+  public function setConditionSql(SqlCondition $conditionSql)
+  {
+    $this->conditionSql = $conditionSql;
+  }
+  /**
+   * @return SqlCondition
+   */
+  public function getConditionSql()
+  {
+    return $this->conditionSql;
   }
   /**
    * @param MetricThreshold
@@ -70,18 +124,30 @@ class Condition extends \Google\Model
   {
     return $this->conditionThreshold;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;

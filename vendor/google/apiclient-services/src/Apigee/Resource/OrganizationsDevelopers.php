@@ -19,6 +19,8 @@ namespace Google\Service\Apigee\Resource;
 
 use Google\Service\Apigee\GoogleCloudApigeeV1Attributes;
 use Google\Service\Apigee\GoogleCloudApigeeV1Developer;
+use Google\Service\Apigee\GoogleCloudApigeeV1DeveloperBalance;
+use Google\Service\Apigee\GoogleCloudApigeeV1DeveloperMonetizationConfig;
 use Google\Service\Apigee\GoogleCloudApigeeV1ListOfDevelopersResponse;
 use Google\Service\Apigee\GoogleProtobufEmpty;
 
@@ -27,7 +29,7 @@ use Google\Service\Apigee\GoogleProtobufEmpty;
  * Typical usage is:
  *  <code>
  *   $apigeeService = new Google\Service\Apigee(...);
- *   $developers = $apigeeService->developers;
+ *   $developers = $apigeeService->organizations_developers;
  *  </code>
  */
 class OrganizationsDevelopers extends \Google\Service\Resource
@@ -45,11 +47,12 @@ class OrganizationsDevelopers extends \Google\Service\Resource
    * (developers.attributes)
    *
    * @param string $parent Required. Email address of the developer for which
-   * attributes are being updated in the following format:
+   * attributes are being updated. Use the following structure in your request:
    * `organizations/{org}/developers/{developer_email}`
    * @param GoogleCloudApigeeV1Attributes $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1Attributes
+   * @throws \Google\Service\Exception
    */
   public function attributes($parent, GoogleCloudApigeeV1Attributes $postBody, $optParams = [])
   {
@@ -69,6 +72,7 @@ class OrganizationsDevelopers extends \Google\Service\Resource
    * @param GoogleCloudApigeeV1Developer $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1Developer
+   * @throws \Google\Service\Exception
    */
   public function create($parent, GoogleCloudApigeeV1Developer $postBody, $optParams = [])
   {
@@ -91,6 +95,7 @@ class OrganizationsDevelopers extends \Google\Service\Resource
    * `organizations/{org}/developers/{developer_email}`
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1Developer
+   * @throws \Google\Service\Exception
    */
   public function delete($name, $optParams = [])
   {
@@ -111,12 +116,46 @@ class OrganizationsDevelopers extends \Google\Service\Resource
    * @opt_param string action Status of the developer. Valid values are `active`
    * or `inactive`.
    * @return GoogleCloudApigeeV1Developer
+   * @throws \Google\Service\Exception
    */
   public function get($name, $optParams = [])
   {
     $params = ['name' => $name];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], GoogleCloudApigeeV1Developer::class);
+  }
+  /**
+   * Gets the account balance for the developer. (developers.getBalance)
+   *
+   * @param string $name Required. Account balance for the developer. Use the
+   * following structure in your request:
+   * `organizations/{org}/developers/{developer}/balance`
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudApigeeV1DeveloperBalance
+   * @throws \Google\Service\Exception
+   */
+  public function getBalance($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getBalance', [$params], GoogleCloudApigeeV1DeveloperBalance::class);
+  }
+  /**
+   * Gets the monetization configuration for the developer.
+   * (developers.getMonetizationConfig)
+   *
+   * @param string $name Required. Monetization configuration for the developer.
+   * Use the following structure in your request:
+   * `organizations/{org}/developers/{developer}/monetizationConfig`
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudApigeeV1DeveloperMonetizationConfig
+   * @throws \Google\Service\Exception
+   */
+  public function getMonetizationConfig($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getMonetizationConfig', [$params], GoogleCloudApigeeV1DeveloperMonetizationConfig::class);
   }
   /**
    * Lists all developers in an organization by email address. By default, the
@@ -149,6 +188,7 @@ class OrganizationsDevelopers extends \Google\Service\Resource
    * and your `startKey` is `fezzik@example.com`, the list returned will be ```
    * fezzik@example.com buttercup@example.com ```
    * @return GoogleCloudApigeeV1ListOfDevelopersResponse
+   * @throws \Google\Service\Exception
    */
   public function listOrganizationsDevelopers($parent, $optParams = [])
   {
@@ -157,23 +197,24 @@ class OrganizationsDevelopers extends \Google\Service\Resource
     return $this->call('list', [$params], GoogleCloudApigeeV1ListOfDevelopersResponse::class);
   }
   /**
-   * Sets the status of a developer. Valid values are `active` or `inactive`. A
-   * developer is `active` by default. If you set a developer's status to
-   * `inactive`, the API keys assigned to the developer apps are no longer valid
-   * even though the API keys are set to `approved`. Inactive developers can still
-   * sign in to the developer portal and create apps; however, any new API keys
-   * generated during app creation won't work. If successful, the API call returns
-   * the following HTTP status code: `204 No Content`
-   * (developers.setDeveloperStatus)
+   * Sets the status of a developer. A developer is `active` by default. If you
+   * set a developer's status to `inactive`, the API keys assigned to the
+   * developer apps are no longer valid even though the API keys are set to
+   * `approved`. Inactive developers can still sign in to the developer portal and
+   * create apps; however, any new API keys generated during app creation won't
+   * work. To set the status of a developer, set the `action` query parameter to
+   * `active` or `inactive`, and the `Content-Type` header to `application/octet-
+   * stream`. If successful, the API call returns the following HTTP status code:
+   * `204 No Content` (developers.setDeveloperStatus)
    *
-   * @param string $name Required. Email address of the developer. Use the
-   * following structure in your request:
-   * `organizations/{org}/developers/{developer_email}`
+   * @param string $name Required. Name of the developer. Use the following
+   * structure in your request: `organizations/{org}/developers/{developer_id}`
    * @param array $optParams Optional parameters.
    *
    * @opt_param string action Status of the developer. Valid values are `active`
    * and `inactive`.
    * @return GoogleProtobufEmpty
+   * @throws \Google\Service\Exception
    */
   public function setDeveloperStatus($name, $optParams = [])
   {
@@ -198,12 +239,31 @@ class OrganizationsDevelopers extends \Google\Service\Resource
    * @param GoogleCloudApigeeV1Developer $postBody
    * @param array $optParams Optional parameters.
    * @return GoogleCloudApigeeV1Developer
+   * @throws \Google\Service\Exception
    */
   public function update($name, GoogleCloudApigeeV1Developer $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('update', [$params], GoogleCloudApigeeV1Developer::class);
+  }
+  /**
+   * Updates the monetization configuration for the developer.
+   * (developers.updateMonetizationConfig)
+   *
+   * @param string $name Required. Monetization configuration for the developer.
+   * Use the following structure in your request:
+   * `organizations/{org}/developers/{developer}/monetizationConfig`
+   * @param GoogleCloudApigeeV1DeveloperMonetizationConfig $postBody
+   * @param array $optParams Optional parameters.
+   * @return GoogleCloudApigeeV1DeveloperMonetizationConfig
+   * @throws \Google\Service\Exception
+   */
+  public function updateMonetizationConfig($name, GoogleCloudApigeeV1DeveloperMonetizationConfig $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('updateMonetizationConfig', [$params], GoogleCloudApigeeV1DeveloperMonetizationConfig::class);
   }
 }
 

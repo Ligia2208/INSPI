@@ -19,19 +19,52 @@ namespace Google\Service\DisplayVideo;
 
 class SearchTargetingOptionsRequest extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $advertiserId;
+  protected $businessChainSearchTermsType = BusinessChainSearchTerms::class;
+  protected $businessChainSearchTermsDataType = '';
   protected $geoRegionSearchTermsType = GeoRegionSearchTerms::class;
   protected $geoRegionSearchTermsDataType = '';
+  /**
+   * @var int
+   */
   public $pageSize;
+  /**
+   * @var string
+   */
   public $pageToken;
+  protected $poiSearchTermsType = PoiSearchTerms::class;
+  protected $poiSearchTermsDataType = '';
 
+  /**
+   * @param string
+   */
   public function setAdvertiserId($advertiserId)
   {
     $this->advertiserId = $advertiserId;
   }
+  /**
+   * @return string
+   */
   public function getAdvertiserId()
   {
     return $this->advertiserId;
+  }
+  /**
+   * @param BusinessChainSearchTerms
+   */
+  public function setBusinessChainSearchTerms(BusinessChainSearchTerms $businessChainSearchTerms)
+  {
+    $this->businessChainSearchTerms = $businessChainSearchTerms;
+  }
+  /**
+   * @return BusinessChainSearchTerms
+   */
+  public function getBusinessChainSearchTerms()
+  {
+    return $this->businessChainSearchTerms;
   }
   /**
    * @param GeoRegionSearchTerms
@@ -47,21 +80,47 @@ class SearchTargetingOptionsRequest extends \Google\Model
   {
     return $this->geoRegionSearchTerms;
   }
+  /**
+   * @param int
+   */
   public function setPageSize($pageSize)
   {
     $this->pageSize = $pageSize;
   }
+  /**
+   * @return int
+   */
   public function getPageSize()
   {
     return $this->pageSize;
   }
+  /**
+   * @param string
+   */
   public function setPageToken($pageToken)
   {
     $this->pageToken = $pageToken;
   }
+  /**
+   * @return string
+   */
   public function getPageToken()
   {
     return $this->pageToken;
+  }
+  /**
+   * @param PoiSearchTerms
+   */
+  public function setPoiSearchTerms(PoiSearchTerms $poiSearchTerms)
+  {
+    $this->poiSearchTerms = $poiSearchTerms;
+  }
+  /**
+   * @return PoiSearchTerms
+   */
+  public function getPoiSearchTerms()
+  {
+    return $this->poiSearchTerms;
   }
 }
 

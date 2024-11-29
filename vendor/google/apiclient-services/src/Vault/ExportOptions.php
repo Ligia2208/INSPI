@@ -19,6 +19,8 @@ namespace Google\Service\Vault;
 
 class ExportOptions extends \Google\Model
 {
+  protected $calendarOptionsType = CalendarExportOptions::class;
+  protected $calendarOptionsDataType = '';
   protected $driveOptionsType = DriveExportOptions::class;
   protected $driveOptionsDataType = '';
   protected $groupsOptionsType = GroupsExportOptions::class;
@@ -27,10 +29,27 @@ class ExportOptions extends \Google\Model
   protected $hangoutsChatOptionsDataType = '';
   protected $mailOptionsType = MailExportOptions::class;
   protected $mailOptionsDataType = '';
+  /**
+   * @var string
+   */
   public $region;
   protected $voiceOptionsType = VoiceExportOptions::class;
   protected $voiceOptionsDataType = '';
 
+  /**
+   * @param CalendarExportOptions
+   */
+  public function setCalendarOptions(CalendarExportOptions $calendarOptions)
+  {
+    $this->calendarOptions = $calendarOptions;
+  }
+  /**
+   * @return CalendarExportOptions
+   */
+  public function getCalendarOptions()
+  {
+    return $this->calendarOptions;
+  }
   /**
    * @param DriveExportOptions
    */
@@ -87,10 +106,16 @@ class ExportOptions extends \Google\Model
   {
     return $this->mailOptions;
   }
+  /**
+   * @param string
+   */
   public function setRegion($region)
   {
     $this->region = $region;
   }
+  /**
+   * @return string
+   */
   public function getRegion()
   {
     return $this->region;

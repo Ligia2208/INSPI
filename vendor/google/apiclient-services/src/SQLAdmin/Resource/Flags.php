@@ -30,7 +30,7 @@ use Google\Service\SQLAdmin\FlagsListResponse;
 class Flags extends \Google\Service\Resource
 {
   /**
-   * List all available database flags for Cloud SQL instances. (flags.listFlags)
+   * Lists all available database flags for Cloud SQL instances. (flags.listFlags)
    *
    * @param array $optParams Optional parameters.
    *
@@ -38,6 +38,7 @@ class Flags extends \Google\Service\Resource
    * retrieve flags for. By default, this method returns flags for all database
    * types and versions.
    * @return FlagsListResponse
+   * @throws \Google\Service\Exception
    */
   public function listFlags($optParams = [])
   {

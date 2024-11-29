@@ -27,7 +27,7 @@ class ArrayInput extends Input
 {
     private $parameters;
 
-    public function __construct(array $parameters, InputDefinition $definition = null)
+    public function __construct(array $parameters, ?InputDefinition $definition = null)
     {
         $this->parameters = $parameters;
 
@@ -133,9 +133,9 @@ class ArrayInput extends Input
             if ('--' === $key) {
                 return;
             }
-            if (0 === strpos($key, '--')) {
+            if (str_starts_with($key, '--')) {
                 $this->addLongOption(substr($key, 2), $value);
-            } elseif (0 === strpos($key, '-')) {
+            } elseif (str_starts_with($key, '-')) {
                 $this->addShortOption(substr($key, 1), $value);
             } else {
                 $this->addArgument($key, $value);

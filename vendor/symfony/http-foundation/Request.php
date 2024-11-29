@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\HttpFoundation;
 
+use Symfony\Component\HttpFoundation\Exception\BadRequestException;
 use Symfony\Component\HttpFoundation\Exception\ConflictingHeadersException;
 use Symfony\Component\HttpFoundation\Exception\JsonException;
 use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
@@ -186,12 +187,12 @@ class Request
     protected $format;
 
     /**
-     * @var SessionInterface|callable
+     * @var SessionInterface|callable(): SessionInterface
      */
     protected $session;
 
     /**
-     * @var string
+     * @var string|null
      */
     protected $locale;
 
@@ -245,6 +246,9 @@ class Request
         self::HEADER_X_FORWARDED_PORT => 'X_FORWARDED_PORT',
         self::HEADER_X_FORWARDED_PREFIX => 'X_FORWARDED_PREFIX',
     ];
+
+    /** @var bool */
+    private $isIisRewrite = false;
 
     /**
      * @param array                $query      The GET parameters
@@ -305,7 +309,7 @@ class Request
     {
         $request = self::createRequestFromFactory($_GET, $_POST, [], $_COOKIE, $_FILES, $_SERVER);
 
-        if (0 === strpos($request->headers->get('CONTENT_TYPE', ''), 'application/x-www-form-urlencoded')
+        if (str_starts_with($request->headers->get('CONTENT_TYPE', ''), 'application/x-www-form-urlencoded')
             && \in_array(strtoupper($request->server->get('REQUEST_METHOD', 'GET')), ['PUT', 'DELETE', 'PATCH'])
         ) {
             parse_str($request->getContent(), $data);
@@ -330,6 +334,8 @@ class Request
      * @param string|resource|null $content    The raw body data
      *
      * @return static
+     *
+     * @throws BadRequestException When the URI is invalid
      */
     public static function create(string $uri, string $method = 'GET', array $parameters = [], array $cookies = [], array $files = [], array $server = [], $content = null)
     {
@@ -352,7 +358,20 @@ class Request
         $server['PATH_INFO'] = '';
         $server['REQUEST_METHOD'] = strtoupper($method);
 
-        $components = parse_url($uri);
+        if (false === $components = parse_url(\strlen($uri) !== strcspn($uri, '?#') ? $uri : $uri.'#')) {
+            throw new BadRequestException('Invalid URI.');
+        }
+
+        if (false !== ($i = strpos($uri, '\\')) && $i < strcspn($uri, '?#')) {
+            throw new BadRequestException('Invalid URI: A URI cannot contain a backslash.');
+        }
+        if (\strlen($uri) !== strcspn($uri, "\r\n\t")) {
+            throw new BadRequestException('Invalid URI: A URI cannot contain CR/LF/TAB characters.');
+        }
+        if ('' !== $uri && (\ord($uri[0]) <= 32 || \ord($uri[-1]) <= 32)) {
+            throw new BadRequestException('Invalid URI: A URI must not start nor end with ASCII control characters or spaces.');
+        }
+
         if (isset($components['host'])) {
             $server['SERVER_NAME'] = $components['host'];
             $server['HTTP_HOST'] = $components['host'];
@@ -439,16 +458,16 @@ class Request
     /**
      * Clones a request and overrides some of its parameters.
      *
-     * @param array $query      The GET parameters
-     * @param array $request    The POST parameters
-     * @param array $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
-     * @param array $cookies    The COOKIE parameters
-     * @param array $files      The FILES parameters
-     * @param array $server     The SERVER parameters
+     * @param array|null $query      The GET parameters
+     * @param array|null $request    The POST parameters
+     * @param array|null $attributes The request attributes (parameters parsed from the PATH_INFO, ...)
+     * @param array|null $cookies    The COOKIE parameters
+     * @param array|null $files      The FILES parameters
+     * @param array|null $server     The SERVER parameters
      *
      * @return static
      */
-    public function duplicate(array $query = null, array $request = null, array $attributes = null, array $cookies = null, array $files = null, array $server = null)
+    public function duplicate(?array $query = null, ?array $request = null, ?array $attributes = null, ?array $cookies = null, ?array $files = null, ?array $server = null)
     {
         $dup = clone $this;
         if (null !== $query) {
@@ -512,7 +531,7 @@ class Request
     /**
      * Returns the request as a string.
      *
-     * @return string The request
+     * @return string
      */
     public function __toString()
     {
@@ -522,10 +541,10 @@ class Request
         $cookies = [];
 
         foreach ($this->cookies as $k => $v) {
-            $cookies[] = $k.'='.$v;
+            $cookies[] = \is_array($v) ? http_build_query([$k => $v], '', '; ', \PHP_QUERY_RFC3986) : "$k=$v";
         }
 
-        if (!empty($cookies)) {
+        if ($cookies) {
             $cookieHeader = 'Cookie: '.implode('; ', $cookies)."\r\n";
         }
 
@@ -562,7 +581,7 @@ class Request
 
         $request = ['g' => $_GET, 'p' => $_POST, 'c' => $_COOKIE];
 
-        $requestOrder = ini_get('request_order') ?: ini_get('variables_order');
+        $requestOrder = \ini_get('request_order') ?: \ini_get('variables_order');
         $requestOrder = preg_replace('#[^cgp]#', '', strtolower($requestOrder)) ?: 'gp';
 
         $_REQUEST = [[]];
@@ -602,7 +621,7 @@ class Request
     /**
      * Gets the list of trusted proxies.
      *
-     * @return array An array of trusted proxies
+     * @return array
      */
     public static function getTrustedProxies()
     {
@@ -638,7 +657,7 @@ class Request
     /**
      * Gets the list of trusted host patterns.
      *
-     * @return array An array of trusted host patterns
+     * @return array
      */
     public static function getTrustedHosts()
     {
@@ -651,7 +670,7 @@ class Request
      * It builds a normalized query string, where keys/value pairs are alphabetized,
      * have consistent escaping and unneeded delimiters are removed.
      *
-     * @return string A normalized query string for the Request
+     * @return string
      */
     public static function normalizeQueryString(?string $qs)
     {
@@ -684,7 +703,7 @@ class Request
     /**
      * Checks whether support for the _method request parameter is enabled.
      *
-     * @return bool True when the _method request parameter is enabled, false otherwise
+     * @return bool
      */
     public static function getHttpMethodParameterOverride()
     {
@@ -703,6 +722,8 @@ class Request
      * @param mixed $default The default value if the parameter key does not exist
      *
      * @return mixed
+     *
+     * @internal since Symfony 5.4, use explicit input sources instead
      */
     public function get(string $key, $default = null)
     {
@@ -724,7 +745,7 @@ class Request
     /**
      * Gets the Session.
      *
-     * @return SessionInterface The session
+     * @return SessionInterface
      */
     public function getSession()
     {
@@ -759,11 +780,15 @@ class Request
      * like whether the session is started or not. It is just a way to check if this Request
      * is associated with a Session instance.
      *
-     * @return bool true when the Request contains a Session object, false otherwise
+     * @param bool $skipIfUninitialized When true, ignores factories injected by `setSessionFactory`
+     *
+     * @return bool
      */
-    public function hasSession()
+    public function hasSession(/* bool $skipIfUninitialized = false */)
     {
-        return null !== $this->session;
+        $skipIfUninitialized = \func_num_args() > 0 ? func_get_arg(0) : false;
+
+        return null !== $this->session && (!$skipIfUninitialized || $this->session instanceof SessionInterface);
     }
 
     public function setSession(SessionInterface $session)
@@ -773,6 +798,8 @@ class Request
 
     /**
      * @internal
+     *
+     * @param callable(): SessionInterface $factory
      */
     public function setSessionFactory(callable $factory)
     {
@@ -788,7 +815,7 @@ class Request
      *
      * Use this method carefully; you should use getClientIp() instead.
      *
-     * @return array The client IP addresses
+     * @return array
      *
      * @see getClientIp()
      */
@@ -816,7 +843,7 @@ class Request
      * ("Client-Ip" for instance), configure it via the $trustedHeaderSet
      * argument of the Request::setTrustedProxies() method instead.
      *
-     * @return string|null The client IP address
+     * @return string|null
      *
      * @see getClientIps()
      * @see https://wikipedia.org/wiki/X-Forwarded-For
@@ -910,7 +937,7 @@ class Request
      *
      * @return string The raw URL (i.e. not urldecoded)
      */
-    private function getBaseUrlReal()
+    private function getBaseUrlReal(): string
     {
         if (null === $this->baseUrl) {
             $this->baseUrl = $this->prepareBaseUrl();
@@ -937,7 +964,7 @@ class Request
      *
      * The "X-Forwarded-Port" header must contain the client port.
      *
-     * @return int|string can be a string if fetched from the server bag
+     * @return int|string|null Can be a string if fetched from the server bag
      */
     public function getPort()
     {
@@ -985,7 +1012,7 @@ class Request
     /**
      * Gets the user info.
      *
-     * @return string A user name and, optionally, scheme-specific information about how to gain authorization to access the server
+     * @return string|null A user name if any and, optionally, scheme-specific information about how to gain authorization to access the server
      */
     public function getUserInfo()
     {
@@ -1038,7 +1065,7 @@ class Request
      * If the URL was called with basic authentication, the user
      * and the password are not added to the generated string.
      *
-     * @return string The scheme and HTTP host
+     * @return string
      */
     public function getSchemeAndHttpHost()
     {
@@ -1048,7 +1075,7 @@ class Request
     /**
      * Generates a normalized URI (URL) for the Request.
      *
-     * @return string A normalized URI (URL) for the Request
+     * @return string
      *
      * @see getQueryString()
      */
@@ -1066,7 +1093,7 @@ class Request
      *
      * @param string $path A path to use instead of the current one
      *
-     * @return string The normalized URI for the path
+     * @return string
      */
     public function getUriForPath(string $path)
     {
@@ -1088,7 +1115,7 @@ class Request
      * - "/a/b/c/other" -> "other"
      * - "/a/x/y"       -> "../../x/y"
      *
-     * @return string The relative target path
+     * @return string
      */
     public function getRelativeUriForPath(string $path)
     {
@@ -1132,7 +1159,7 @@ class Request
      * It builds a normalized query string, where keys/value pairs are alphabetized
      * and have consistent escaping.
      *
-     * @return string|null A normalized query string for the Request
+     * @return string|null
      */
     public function getQueryString()
     {
@@ -1246,7 +1273,7 @@ class Request
      *
      * The method is always an uppercased string.
      *
-     * @return string The request method
+     * @return string
      *
      * @see getRealMethod()
      */
@@ -1279,7 +1306,7 @@ class Request
         }
 
         if (!preg_match('/^[A-Z]++$/D', $method)) {
-            throw new SuspiciousOperationException(sprintf('Invalid method override "%s".', $method));
+            throw new SuspiciousOperationException('Invalid HTTP method override.');
         }
 
         return $this->method = $method;
@@ -1288,7 +1315,7 @@ class Request
     /**
      * Gets the "real" request method.
      *
-     * @return string The request method
+     * @return string
      *
      * @see getMethod()
      */
@@ -1300,7 +1327,7 @@ class Request
     /**
      * Gets the mime type associated with the format.
      *
-     * @return string|null The associated mime type (null if not found)
+     * @return string|null
      */
     public function getMimeType(string $format)
     {
@@ -1314,7 +1341,7 @@ class Request
     /**
      * Gets the mime types associated with the format.
      *
-     * @return array The associated mime types
+     * @return array
      */
     public static function getMimeTypes(string $format)
     {
@@ -1328,12 +1355,12 @@ class Request
     /**
      * Gets the format associated with the mime type.
      *
-     * @return string|null The format (null if not found)
+     * @return string|null
      */
     public function getFormat(?string $mimeType)
     {
         $canonicalMimeType = null;
-        if (false !== $pos = strpos($mimeType, ';')) {
+        if ($mimeType && false !== $pos = strpos($mimeType, ';')) {
             $canonicalMimeType = trim(substr($mimeType, 0, $pos));
         }
 
@@ -1378,7 +1405,7 @@ class Request
      *
      * @see getPreferredFormat
      *
-     * @return string|null The request format
+     * @return string|null
      */
     public function getRequestFormat(?string $default = 'html')
     {
@@ -1386,7 +1413,7 @@ class Request
             $this->format = $this->attributes->get('_format');
         }
 
-        return null === $this->format ? $default : $this->format;
+        return $this->format ?? $default;
     }
 
     /**
@@ -1400,7 +1427,7 @@ class Request
     /**
      * Gets the format associated with the request.
      *
-     * @return string|null The format (null if no content type is present)
+     * @return string|null
      */
     public function getContentType()
     {
@@ -1444,7 +1471,7 @@ class Request
      */
     public function getLocale()
     {
-        return null === $this->locale ? $this->defaultLocale : $this->locale;
+        return $this->locale ?? $this->defaultLocale;
     }
 
     /**
@@ -1486,7 +1513,7 @@ class Request
      *
      * @see https://tools.ietf.org/html/rfc7231#section-4.2.3
      *
-     * @return bool True for GET and HEAD, false otherwise
+     * @return bool
      */
     public function isMethodCacheable()
     {
@@ -1507,7 +1534,7 @@ class Request
     public function getProtocolVersion()
     {
         if ($this->isFromTrustedProxy()) {
-            preg_match('~^(HTTP/)?([1-9]\.[0-9]) ~', $this->headers->get('Via'), $matches);
+            preg_match('~^(HTTP/)?([1-9]\.[0-9]) ~', $this->headers->get('Via') ?? '', $matches);
 
             if ($matches) {
                 return 'HTTP/'.$matches[2];
@@ -1522,7 +1549,7 @@ class Request
      *
      * @param bool $asResource If true, a resource will be returned
      *
-     * @return string|resource The request body content or a resource to read the body stream
+     * @return string|resource
      */
     public function getContent(bool $asResource = false)
     {
@@ -1565,9 +1592,9 @@ class Request
     /**
      * Gets the request body decoded as array, typically from a JSON payload.
      *
-     * @throws JsonException When the body cannot be decoded to an array
-     *
      * @return array
+     *
+     * @throws JsonException When the body cannot be decoded to an array
      */
     public function toArray()
     {
@@ -1595,11 +1622,11 @@ class Request
     /**
      * Gets the Etags.
      *
-     * @return array The entity tags
+     * @return array
      */
     public function getETags()
     {
-        return preg_split('/\s*,\s*/', $this->headers->get('if_none_match', ''), -1, \PREG_SPLIT_NO_EMPTY);
+        return preg_split('/\s*,\s*/', $this->headers->get('If-None-Match', ''), -1, \PREG_SPLIT_NO_EMPTY);
     }
 
     /**
@@ -1638,9 +1665,9 @@ class Request
      *
      * @param string[] $locales An array of ordered available locales
      *
-     * @return string|null The preferred locale
+     * @return string|null
      */
-    public function getPreferredLanguage(array $locales = null)
+    public function getPreferredLanguage(?array $locales = null)
     {
         $preferredLanguages = $this->getLanguages();
 
@@ -1669,9 +1696,9 @@ class Request
     }
 
     /**
-     * Gets a list of languages acceptable by the client browser.
+     * Gets a list of languages acceptable by the client browser ordered in the user browser preferences.
      *
-     * @return array Languages ordered in the user browser preferences
+     * @return array
      */
     public function getLanguages()
     {
@@ -1681,8 +1708,9 @@ class Request
 
         $languages = AcceptHeader::fromString($this->headers->get('Accept-Language'))->all();
         $this->languages = [];
-        foreach ($languages as $lang => $acceptHeaderItem) {
-            if (false !== strpos($lang, '-')) {
+        foreach ($languages as $acceptHeaderItem) {
+            $lang = $acceptHeaderItem->getValue();
+            if (str_contains($lang, '-')) {
                 $codes = explode('-', $lang);
                 if ('i' === $codes[0]) {
                     // Language not listed in ISO 639 that are not variants
@@ -1709,9 +1737,9 @@ class Request
     }
 
     /**
-     * Gets a list of charsets acceptable by the client browser.
+     * Gets a list of charsets acceptable by the client browser in preferable order.
      *
-     * @return array List of charsets in preferable order
+     * @return array
      */
     public function getCharsets()
     {
@@ -1719,13 +1747,13 @@ class Request
             return $this->charsets;
         }
 
-        return $this->charsets = array_keys(AcceptHeader::fromString($this->headers->get('Accept-Charset'))->all());
+        return $this->charsets = array_map('strval', array_keys(AcceptHeader::fromString($this->headers->get('Accept-Charset'))->all()));
     }
 
     /**
-     * Gets a list of encodings acceptable by the client browser.
+     * Gets a list of encodings acceptable by the client browser in preferable order.
      *
-     * @return array List of encodings in preferable order
+     * @return array
      */
     public function getEncodings()
     {
@@ -1733,13 +1761,13 @@ class Request
             return $this->encodings;
         }
 
-        return $this->encodings = array_keys(AcceptHeader::fromString($this->headers->get('Accept-Encoding'))->all());
+        return $this->encodings = array_map('strval', array_keys(AcceptHeader::fromString($this->headers->get('Accept-Encoding'))->all()));
     }
 
     /**
-     * Gets a list of content types acceptable by the client browser.
+     * Gets a list of content types acceptable by the client browser in preferable order.
      *
-     * @return array List of content types in preferable order
+     * @return array
      */
     public function getAcceptableContentTypes()
     {
@@ -1747,7 +1775,7 @@ class Request
             return $this->acceptableContentTypes;
         }
 
-        return $this->acceptableContentTypes = array_keys(AcceptHeader::fromString($this->headers->get('Accept'))->all());
+        return $this->acceptableContentTypes = array_map('strval', array_keys(AcceptHeader::fromString($this->headers->get('Accept'))->all()));
     }
 
     /**
@@ -1758,7 +1786,7 @@ class Request
      *
      * @see https://wikipedia.org/wiki/List_of_Ajax_frameworks#JavaScript
      *
-     * @return bool true if the request is an XMLHttpRequest, false otherwise
+     * @return bool
      */
     public function isXmlHttpRequest()
     {
@@ -1778,14 +1806,10 @@ class Request
 
         if (!$this->isSecure()) {
             // see https://tools.ietf.org/html/rfc8674#section-3
-            $this->isSafeContentPreferred = false;
-
-            return $this->isSafeContentPreferred;
+            return $this->isSafeContentPreferred = false;
         }
 
-        $this->isSafeContentPreferred = AcceptHeader::fromString($this->headers->get('Prefer'))->has('safe');
-
-        return $this->isSafeContentPreferred;
+        return $this->isSafeContentPreferred = AcceptHeader::fromString($this->headers->get('Prefer'))->has('safe');
     }
 
     /*
@@ -1800,11 +1824,10 @@ class Request
     {
         $requestUri = '';
 
-        if ('1' == $this->server->get('IIS_WasUrlRewritten') && '' != $this->server->get('UNENCODED_URL')) {
+        if ($this->isIisRewrite() && '' != $this->server->get('UNENCODED_URL')) {
             // IIS7 with URL Rewrite: make sure we get the unencoded URL (double slash problem)
             $requestUri = $this->server->get('UNENCODED_URL');
             $this->server->remove('UNENCODED_URL');
-            $this->server->remove('IIS_WasUrlRewritten');
         } elseif ($this->server->has('REQUEST_URI')) {
             $requestUri = $this->server->get('REQUEST_URI');
 
@@ -1913,7 +1936,7 @@ class Request
     /**
      * Prepares the base path.
      *
-     * @return string base path
+     * @return string
      */
     protected function prepareBasePath()
     {
@@ -1939,7 +1962,7 @@ class Request
     /**
      * Prepares the path info.
      *
-     * @return string path info
+     * @return string
      */
     protected function preparePathInfo()
     {
@@ -1965,7 +1988,7 @@ class Request
             return '/';
         }
 
-        return (string) $pathInfo;
+        return $pathInfo;
     }
 
     /**
@@ -1984,7 +2007,7 @@ class Request
             'rdf' => ['application/rdf+xml'],
             'atom' => ['application/atom+xml'],
             'rss' => ['application/rss+xml'],
-            'form' => ['application/x-www-form-urlencoded'],
+            'form' => ['application/x-www-form-urlencoded', 'multipart/form-data'],
         ];
     }
 
@@ -2007,7 +2030,13 @@ class Request
      */
     private function getUrlencodedPrefix(string $string, string $prefix): ?string
     {
-        if (0 !== strpos(rawurldecode($string), $prefix)) {
+        if ($this->isIisRewrite()) {
+            // ISS with UrlRewriteModule might report SCRIPT_NAME/PHP_SELF with wrong case
+            // see https://github.com/php/php-src/issues/11981
+            if (0 !== stripos(rawurldecode($string), $prefix)) {
+                return null;
+            }
+        } elseif (!str_starts_with(rawurldecode($string), $prefix)) {
             return null;
         }
 
@@ -2041,14 +2070,14 @@ class Request
      * This can be useful to determine whether or not to trust the
      * contents of a proxy-specific header.
      *
-     * @return bool true if the request came from a trusted proxy, false otherwise
+     * @return bool
      */
     public function isFromTrustedProxy()
     {
         return self::$trustedProxies && IpUtils::checkIp($this->server->get('REMOTE_ADDR', ''), self::$trustedProxies);
     }
 
-    private function getTrustedValues(int $type, string $ip = null): array
+    private function getTrustedValues(int $type, ?string $ip = null): array
     {
         $clientValues = [];
         $forwardedValues = [];
@@ -2069,7 +2098,7 @@ class Request
                     continue;
                 }
                 if (self::HEADER_X_FORWARDED_PORT === $type) {
-                    if (']' === substr($v, -1) || false === $v = strrchr($v, ':')) {
+                    if (str_ends_with($v, ']') || false === $v = strrchr($v, ':')) {
                         $v = $this->isSecure() ? ':443' : ':80';
                     }
                     $v = '0.0.0.0'.$v;
@@ -2115,7 +2144,7 @@ class Request
                 if ($i) {
                     $clientIps[$key] = $clientIp = substr($clientIp, 0, $i);
                 }
-            } elseif (0 === strpos($clientIp, '[')) {
+            } elseif (str_starts_with($clientIp, '[')) {
                 // Strip brackets and :port from IPv6 addresses.
                 $i = strpos($clientIp, ']', 1);
                 $clientIps[$key] = $clientIp = substr($clientIp, 1, $i - 1);
@@ -2139,5 +2168,21 @@ class Request
 
         // Now the IP chain contains only untrusted proxies and the client IP
         return $clientIps ? array_reverse($clientIps) : [$firstTrustedIp];
+    }
+
+    /**
+     * Is this IIS with UrlRewriteModule?
+     *
+     * This method consumes, caches and removed the IIS_WasUrlRewritten env var,
+     * so we don't inherit it to sub-requests.
+     */
+    private function isIisRewrite(): bool
+    {
+        if (1 === $this->server->getInt('IIS_WasUrlRewritten')) {
+            $this->isIisRewrite = true;
+            $this->server->remove('IIS_WasUrlRewritten');
+        }
+
+        return $this->isIisRewrite;
     }
 }
