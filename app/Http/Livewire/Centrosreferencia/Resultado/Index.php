@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Livewire\Centrosreferencia\Resultado;
 
 use App\Models\CentrosReferencia\Resultado;
