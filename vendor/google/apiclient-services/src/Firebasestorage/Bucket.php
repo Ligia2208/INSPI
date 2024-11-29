@@ -19,24 +19,24 @@ namespace Google\Service\Firebasestorage;
 
 class Bucket extends \Google\Model
 {
+  /**
+   * @var string
+   */
   public $name;
-  public $reconciling;
 
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
-  }
-  public function setReconciling($reconciling)
-  {
-    $this->reconciling = $reconciling;
-  }
-  public function getReconciling()
-  {
-    return $this->reconciling;
   }
 }
 

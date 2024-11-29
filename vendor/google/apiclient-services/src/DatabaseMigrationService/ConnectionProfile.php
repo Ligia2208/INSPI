@@ -19,22 +19,67 @@ namespace Google\Service\DatabaseMigrationService;
 
 class ConnectionProfile extends \Google\Model
 {
+  protected $alloydbType = AlloyDbConnectionProfile::class;
+  protected $alloydbDataType = '';
   protected $cloudsqlType = CloudSqlConnectionProfile::class;
   protected $cloudsqlDataType = '';
+  /**
+   * @var string
+   */
   public $createTime;
+  /**
+   * @var string
+   */
   public $displayName;
   protected $errorType = Status::class;
   protected $errorDataType = '';
+  /**
+   * @var string[]
+   */
   public $labels;
   protected $mysqlType = MySqlConnectionProfile::class;
   protected $mysqlDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  protected $oracleType = OracleConnectionProfile::class;
+  protected $oracleDataType = '';
   protected $postgresqlType = PostgreSqlConnectionProfile::class;
   protected $postgresqlDataType = '';
+  /**
+   * @var string
+   */
   public $provider;
+  /**
+   * @var string
+   */
+  public $role;
+  protected $sqlserverType = SqlServerConnectionProfile::class;
+  protected $sqlserverDataType = '';
+  /**
+   * @var string
+   */
   public $state;
+  /**
+   * @var string
+   */
   public $updateTime;
 
+  /**
+   * @param AlloyDbConnectionProfile
+   */
+  public function setAlloydb(AlloyDbConnectionProfile $alloydb)
+  {
+    $this->alloydb = $alloydb;
+  }
+  /**
+   * @return AlloyDbConnectionProfile
+   */
+  public function getAlloydb()
+  {
+    return $this->alloydb;
+  }
   /**
    * @param CloudSqlConnectionProfile
    */
@@ -49,18 +94,30 @@ class ConnectionProfile extends \Google\Model
   {
     return $this->cloudsql;
   }
+  /**
+   * @param string
+   */
   public function setCreateTime($createTime)
   {
     $this->createTime = $createTime;
   }
+  /**
+   * @return string
+   */
   public function getCreateTime()
   {
     return $this->createTime;
   }
+  /**
+   * @param string
+   */
   public function setDisplayName($displayName)
   {
     $this->displayName = $displayName;
   }
+  /**
+   * @return string
+   */
   public function getDisplayName()
   {
     return $this->displayName;
@@ -79,10 +136,16 @@ class ConnectionProfile extends \Google\Model
   {
     return $this->error;
   }
+  /**
+   * @param string[]
+   */
   public function setLabels($labels)
   {
     $this->labels = $labels;
   }
+  /**
+   * @return string[]
+   */
   public function getLabels()
   {
     return $this->labels;
@@ -101,13 +164,33 @@ class ConnectionProfile extends \Google\Model
   {
     return $this->mysql;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
+  }
+  /**
+   * @param OracleConnectionProfile
+   */
+  public function setOracle(OracleConnectionProfile $oracle)
+  {
+    $this->oracle = $oracle;
+  }
+  /**
+   * @return OracleConnectionProfile
+   */
+  public function getOracle()
+  {
+    return $this->oracle;
   }
   /**
    * @param PostgreSqlConnectionProfile
@@ -123,26 +206,72 @@ class ConnectionProfile extends \Google\Model
   {
     return $this->postgresql;
   }
+  /**
+   * @param string
+   */
   public function setProvider($provider)
   {
     $this->provider = $provider;
   }
+  /**
+   * @return string
+   */
   public function getProvider()
   {
     return $this->provider;
   }
+  /**
+   * @param string
+   */
+  public function setRole($role)
+  {
+    $this->role = $role;
+  }
+  /**
+   * @return string
+   */
+  public function getRole()
+  {
+    return $this->role;
+  }
+  /**
+   * @param SqlServerConnectionProfile
+   */
+  public function setSqlserver(SqlServerConnectionProfile $sqlserver)
+  {
+    $this->sqlserver = $sqlserver;
+  }
+  /**
+   * @return SqlServerConnectionProfile
+   */
+  public function getSqlserver()
+  {
+    return $this->sqlserver;
+  }
+  /**
+   * @param string
+   */
   public function setState($state)
   {
     $this->state = $state;
   }
+  /**
+   * @return string
+   */
   public function getState()
   {
     return $this->state;
   }
+  /**
+   * @param string
+   */
   public function setUpdateTime($updateTime)
   {
     $this->updateTime = $updateTime;
   }
+  /**
+   * @return string
+   */
   public function getUpdateTime()
   {
     return $this->updateTime;

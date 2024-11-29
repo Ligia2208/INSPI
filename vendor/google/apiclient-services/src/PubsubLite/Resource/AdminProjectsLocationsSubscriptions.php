@@ -18,7 +18,9 @@
 namespace Google\Service\PubsubLite\Resource;
 
 use Google\Service\PubsubLite\ListSubscriptionsResponse;
+use Google\Service\PubsubLite\Operation;
 use Google\Service\PubsubLite\PubsubliteEmpty;
+use Google\Service\PubsubLite\SeekSubscriptionRequest;
 use Google\Service\PubsubLite\Subscription;
 
 /**
@@ -26,7 +28,7 @@ use Google\Service\PubsubLite\Subscription;
  * Typical usage is:
  *  <code>
  *   $pubsubliteService = new Google\Service\PubsubLite(...);
- *   $subscriptions = $pubsubliteService->subscriptions;
+ *   $subscriptions = $pubsubliteService->admin_projects_locations_subscriptions;
  *  </code>
  */
 class AdminProjectsLocationsSubscriptions extends \Google\Service\Resource
@@ -48,6 +50,7 @@ class AdminProjectsLocationsSubscriptions extends \Google\Service\Resource
    * subscription, which will become the final component of the subscription's
    * name. This value is structured like: `my-sub-name`.
    * @return Subscription
+   * @throws \Google\Service\Exception
    */
   public function create($parent, Subscription $postBody, $optParams = [])
   {
@@ -61,6 +64,7 @@ class AdminProjectsLocationsSubscriptions extends \Google\Service\Resource
    * @param string $name Required. The name of the subscription to delete.
    * @param array $optParams Optional parameters.
    * @return PubsubliteEmpty
+   * @throws \Google\Service\Exception
    */
   public function delete($name, $optParams = [])
   {
@@ -75,6 +79,7 @@ class AdminProjectsLocationsSubscriptions extends \Google\Service\Resource
    * configuration to return.
    * @param array $optParams Optional parameters.
    * @return Subscription
+   * @throws \Google\Service\Exception
    */
   public function get($name, $optParams = [])
   {
@@ -98,6 +103,7 @@ class AdminProjectsLocationsSubscriptions extends \Google\Service\Resource
    * paginating, all other parameters provided to `ListSubscriptions` must match
    * the call that provided the page token.
    * @return ListSubscriptionsResponse
+   * @throws \Google\Service\Exception
    */
   public function listAdminProjectsLocationsSubscriptions($parent, $optParams = [])
   {
@@ -116,12 +122,43 @@ class AdminProjectsLocationsSubscriptions extends \Google\Service\Resource
    * @opt_param string updateMask Required. A mask specifying the subscription
    * fields to change.
    * @return Subscription
+   * @throws \Google\Service\Exception
    */
   public function patch($name, Subscription $postBody, $optParams = [])
   {
     $params = ['name' => $name, 'postBody' => $postBody];
     $params = array_merge($params, $optParams);
     return $this->call('patch', [$params], Subscription::class);
+  }
+  /**
+   * Performs an out-of-band seek for a subscription to a specified target, which
+   * may be timestamps or named positions within the message backlog. Seek
+   * translates these targets to cursors for each partition and orchestrates
+   * subscribers to start consuming messages from these seek cursors. If an
+   * operation is returned, the seek has been registered and subscribers will
+   * eventually receive messages from the seek cursors (i.e. eventual
+   * consistency), as long as they are using a minimum supported client library
+   * version and not a system that tracks cursors independently of Pub/Sub Lite
+   * (e.g. Apache Beam, Dataflow, Spark). The seek operation will fail for
+   * unsupported clients. If clients would like to know when subscribers react to
+   * the seek (or not), they can poll the operation. The seek operation will
+   * succeed and complete once subscribers are ready to receive messages from the
+   * seek cursors for all partitions of the topic. This means that the seek
+   * operation will not complete until all subscribers come online. If the
+   * previous seek operation has not yet completed, it will be aborted and the new
+   * invocation of seek will supersede it. (subscriptions.seek)
+   *
+   * @param string $name Required. The name of the subscription to seek.
+   * @param SeekSubscriptionRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   * @throws \Google\Service\Exception
+   */
+  public function seek($name, SeekSubscriptionRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('seek', [$params], Operation::class);
   }
 }
 

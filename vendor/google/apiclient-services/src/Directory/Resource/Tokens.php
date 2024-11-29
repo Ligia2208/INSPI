@@ -31,13 +31,15 @@ use Google\Service\Directory\Tokens as TokensModel;
 class Tokens extends \Google\Service\Resource
 {
   /**
-   * Delete all access tokens issued by a user for an application. (tokens.delete)
+   * Deletes all access tokens issued by a user for an application.
+   * (tokens.delete)
    *
    * @param string $userKey Identifies the user in the API request. The value can
    * be the user's primary email address, alias email address, or unique user ID.
    * @param string $clientId The Client ID of the application the token is issued
    * to.
    * @param array $optParams Optional parameters.
+   * @throws \Google\Service\Exception
    */
   public function delete($userKey, $clientId, $optParams = [])
   {
@@ -46,7 +48,7 @@ class Tokens extends \Google\Service\Resource
     return $this->call('delete', [$params]);
   }
   /**
-   * Get information about an access token issued by a user. (tokens.get)
+   * Gets information about an access token issued by a user. (tokens.get)
    *
    * @param string $userKey Identifies the user in the API request. The value can
    * be the user's primary email address, alias email address, or unique user ID.
@@ -54,6 +56,7 @@ class Tokens extends \Google\Service\Resource
    * to.
    * @param array $optParams Optional parameters.
    * @return Token
+   * @throws \Google\Service\Exception
    */
   public function get($userKey, $clientId, $optParams = [])
   {
@@ -69,6 +72,7 @@ class Tokens extends \Google\Service\Resource
    * be the user's primary email address, alias email address, or unique user ID.
    * @param array $optParams Optional parameters.
    * @return TokensModel
+   * @throws \Google\Service\Exception
    */
   public function listTokens($userKey, $optParams = [])
   {

@@ -41,6 +41,7 @@ class Devices extends \Google\Service\Resource
    * @param string $userId The ID of the user.
    * @param string $deviceId The ID of the device.
    * @param array $optParams Optional parameters.
+   * @throws \Google\Service\Exception
    */
   public function forceReportUpload($enterpriseId, $userId, $deviceId, $optParams = [])
   {
@@ -56,6 +57,7 @@ class Devices extends \Google\Service\Resource
    * @param string $deviceId The ID of the device.
    * @param array $optParams Optional parameters.
    * @return Device
+   * @throws \Google\Service\Exception
    */
   public function get($enterpriseId, $userId, $deviceId, $optParams = [])
   {
@@ -75,6 +77,7 @@ class Devices extends \Google\Service\Resource
    * @param string $deviceId The ID of the device.
    * @param array $optParams Optional parameters.
    * @return DeviceState
+   * @throws \Google\Service\Exception
    */
   public function getState($enterpriseId, $userId, $deviceId, $optParams = [])
   {
@@ -89,6 +92,7 @@ class Devices extends \Google\Service\Resource
    * @param string $userId The ID of the user.
    * @param array $optParams Optional parameters.
    * @return DevicesListResponse
+   * @throws \Google\Service\Exception
    */
   public function listDevices($enterpriseId, $userId, $optParams = [])
   {
@@ -109,6 +113,7 @@ class Devices extends \Google\Service\Resource
    * @param DeviceState $postBody
    * @param array $optParams Optional parameters.
    * @return DeviceState
+   * @throws \Google\Service\Exception
    */
   public function setState($enterpriseId, $userId, $deviceId, DeviceState $postBody, $optParams = [])
   {
@@ -120,7 +125,11 @@ class Devices extends \Google\Service\Resource
    * Updates the device policy. To ensure the policy is properly enforced, you
    * need to prevent unmanaged accounts from accessing Google Play by setting the
    * allowed_accounts in the managed configuration for the Google Play package.
-   * See restrict accounts in Google Play. (devices.update)
+   * See restrict accounts in Google Play. When provisioning a new device, you
+   * should set the device policy using this method before adding the managed
+   * Google Play Account to the device, otherwise the policy will not be applied
+   * for a short period of time after adding the account to the device.
+   * (devices.update)
    *
    * @param string $enterpriseId The ID of the enterprise.
    * @param string $userId The ID of the user.
@@ -132,6 +141,7 @@ class Devices extends \Google\Service\Resource
    * not set, all modifiable fields will be modified. When set in a query
    * parameter, this field should be specified as updateMask=,,...
    * @return Device
+   * @throws \Google\Service\Exception
    */
   public function update($enterpriseId, $userId, $deviceId, Device $postBody, $optParams = [])
   {

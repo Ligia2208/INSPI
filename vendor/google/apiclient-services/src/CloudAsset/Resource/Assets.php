@@ -33,10 +33,11 @@ class Assets extends \Google\Service\Resource
    * Lists assets with time and resource types and returns paged results in
    * response. (assets.listAssets)
    *
-   * @param string $parent Required. Name of the organization or project the
-   * assets belong to. Format: "organizations/[organization-number]" (such as
+   * @param string $parent Required. Name of the organization, folder, or project
+   * the assets belong to. Format: "organizations/[organization-number]" (such as
    * "organizations/123"), "projects/[project-id]" (such as "projects/my-project-
-   * id"), or "projects/[project-number]" (such as "projects/12345").
+   * id"), "projects/[project-number]" (such as "projects/12345"), or
+   * "folders/[folder-number]" (such as "folders/12345").
    * @param array $optParams Optional parameters.
    *
    * @opt_param string assetTypes A list of asset types to take a snapshot for.
@@ -49,8 +50,9 @@ class Assets extends \Google\Service\Resource
    * expression syntax. If the regular expression does not match any supported
    * asset type, an INVALID_ARGUMENT error will be returned. If specified, only
    * matching assets will be returned, otherwise, it will snapshot all asset
-   * types. See [Introduction to Cloud Asset Inventory](https://cloud.google.com
-   * /asset-inventory/docs/overview) for all supported asset types.
+   * types. See [Introduction to Cloud Asset
+   * Inventory](https://cloud.google.com/asset-inventory/docs/overview) for all
+   * supported asset types.
    * @opt_param string contentType Asset content type. If not specified, no
    * content but the asset name will be returned.
    * @opt_param int pageSize The maximum number of assets to be returned in a
@@ -64,7 +66,20 @@ class Assets extends \Google\Service\Resource
    * days (inclusive). If not specified, the current time will be used. Due to
    * delays in resource data collection and indexing, there is a volatile window
    * during which running the same query may get different results.
+   * @opt_param string relationshipTypes A list of relationship types to output,
+   * for example: `INSTANCE_TO_INSTANCEGROUP`. This field should only be specified
+   * if content_type=RELATIONSHIP. * If specified: it snapshots specified
+   * relationships. It returns an error if any of the [relationship_types] doesn't
+   * belong to the supported relationship types of the [asset_types] or if any of
+   * the [asset_types] doesn't belong to the source types of the
+   * [relationship_types]. * Otherwise: it snapshots the supported relationships
+   * for all [asset_types] or returns an error if any of the [asset_types] has no
+   * relationship support. An unspecified asset types field means all supported
+   * asset_types. See [Introduction to Cloud Asset
+   * Inventory](https://cloud.google.com/asset-inventory/docs/overview) for all
+   * supported asset types and relationship types.
    * @return ListAssetsResponse
+   * @throws \Google\Service\Exception
    */
   public function listAssets($parent, $optParams = [])
   {

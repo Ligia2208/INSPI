@@ -52,10 +52,10 @@ class Fitness extends \Google\Service
   /** Add info about your blood pressure in Google Fit. I consent to Google using my blood pressure information with this app.. */
   const FITNESS_BLOOD_PRESSURE_WRITE =
       "https://www.googleapis.com/auth/fitness.blood_pressure.write";
-  /** See info about your body measurements and heart rate in Google Fit. */
+  /** See info about your body measurements in Google Fit. */
   const FITNESS_BODY_READ =
       "https://www.googleapis.com/auth/fitness.body.read";
-  /** Add info about your body measurements and heart rate to Google Fit. */
+  /** Add info about your body measurements to Google Fit. */
   const FITNESS_BODY_WRITE =
       "https://www.googleapis.com/auth/fitness.body.write";
   /** See info about your body temperature in Google Fit. I consent to Google sharing my body temperature information with this app.. */
@@ -106,6 +106,7 @@ class Fitness extends \Google\Service
   public $users_dataSources_datasets;
   public $users_dataset;
   public $users_sessions;
+  public $rootUrlTemplate;
 
   /**
    * Constructs the internal representation of the Fitness service.
@@ -118,6 +119,7 @@ class Fitness extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://fitness.googleapis.com/';
+    $this->rootUrlTemplate = $rootUrl ?: 'https://fitness.UNIVERSE_DOMAIN/';
     $this->servicePath = 'fitness/v1/users/';
     $this->batchPath = 'batch';
     $this->version = 'v1';

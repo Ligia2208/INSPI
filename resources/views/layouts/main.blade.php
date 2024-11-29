@@ -6,6 +6,15 @@
 		<meta http-equiv="X-UA-Compatible" content="ie=edge">
 		<title>@yield('title')</title>
 
+		<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+		<!-- jQuery -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+		<!-- DataTables JS -->
+		<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+
 		<!--begin::Fonts-->
 		<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" defer />
 		<link href="{{ asset('assets') }}/plugins/global/plugins.bundle.css" rel="stylesheet" type="text/css" />
@@ -23,15 +32,26 @@
 		<!--end::Layout Themes-->
 		<link rel="shortcut icon" href="{{ config('app.logo_ico') }}" />
 
+		@stack('styles')
+
 		@yield('head')
 
 		@livewireStyles
+
+		<!-- Scripts de Bootstrap (esto debe ir antes de cerrar la etiqueta </body>) -->
+		<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
+
+		<meta name="csrf-token" content="{{ csrf_token() }}">
 
 	</head>
 
 	<!--begin::Body-->
 	<body id="kt_body" class="header-fixed header-mobile-fixed subheader-enabled subheader-fixed aside-enabled aside-fixed aside-minimize-hoverable page-loading">
 		<!--begin::Main-->
+		<link rel="stylesheet" href="{{ asset('assets/css/jquery.dataTables.min.css') }}"> <!-- 2022-07-17 -->
+		<script type="text/javascript"  src="{{ asset('assets/js/jquery.dataTables.min.js') }}" defer></script> <!-- 2022-07-17 -->
+	   	@stack('scripts')
 
 	   @include('layouts.header_mobile')
        @include('layouts.header')

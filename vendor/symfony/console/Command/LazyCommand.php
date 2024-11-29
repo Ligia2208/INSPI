@@ -12,6 +12,8 @@
 namespace Symfony\Component\Console\Command;
 
 use Symfony\Component\Console\Application;
+use Symfony\Component\Console\Completion\CompletionInput;
+use Symfony\Component\Console\Completion\CompletionSuggestions;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Input\InputDefinition;
 use Symfony\Component\Console\Input\InputInterface;
@@ -41,7 +43,7 @@ final class LazyCommand extends Command
         $this->getCommand()->ignoreValidationErrors();
     }
 
-    public function setApplication(Application $application = null): void
+    public function setApplication(?Application $application = null): void
     {
         if ($this->command instanceof parent) {
             $this->command->setApplication($application);
@@ -67,6 +69,11 @@ final class LazyCommand extends Command
     public function run(InputInterface $input, OutputInterface $output): int
     {
         return $this->getCommand()->run($input, $output);
+    }
+
+    public function complete(CompletionInput $input, CompletionSuggestions $suggestions): void
+    {
+        $this->getCommand()->complete($input, $suggestions);
     }
 
     /**
@@ -110,7 +117,7 @@ final class LazyCommand extends Command
     /**
      * @return $this
      */
-    public function addArgument(string $name, int $mode = null, string $description = '', $default = null): self
+    public function addArgument(string $name, ?int $mode = null, string $description = '', $default = null): self
     {
         $this->getCommand()->addArgument($name, $mode, $description, $default);
 
@@ -120,7 +127,7 @@ final class LazyCommand extends Command
     /**
      * @return $this
      */
-    public function addOption(string $name, $shortcut = null, int $mode = null, string $description = '', $default = null): self
+    public function addOption(string $name, $shortcut = null, ?int $mode = null, string $description = '', $default = null): self
     {
         $this->getCommand()->addOption($name, $shortcut, $mode, $description, $default);
 

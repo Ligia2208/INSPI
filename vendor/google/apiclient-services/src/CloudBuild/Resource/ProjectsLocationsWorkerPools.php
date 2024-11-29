@@ -26,7 +26,7 @@ use Google\Service\CloudBuild\WorkerPool;
  * Typical usage is:
  *  <code>
  *   $cloudbuildService = new Google\Service\CloudBuild(...);
- *   $workerPools = $cloudbuildService->workerPools;
+ *   $workerPools = $cloudbuildService->projects_locations_workerPools;
  *  </code>
  */
 class ProjectsLocationsWorkerPools extends \Google\Service\Resource
@@ -56,13 +56,13 @@ class ProjectsLocationsWorkerPools extends \Google\Service\Resource
    * Deletes a `WorkerPool`. (workerPools.delete)
    *
    * @param string $name Required. The name of the `WorkerPool` to delete. Format:
-   * `projects/{project}/locations/{workerPool}/workerPools/{workerPool}`.
+   * `projects/{project}/locations/{location}/workerPools/{workerPool}`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool allowMissing If set to true, and the `WorkerPool` is not
    * found, the request will succeed but no action will be taken on the server.
-   * @opt_param string etag Optional. If this is provided, it must match the
-   * server's etag on the workerpool for the request to be processed.
+   * @opt_param string etag Optional. If provided, it must match the server's etag
+   * on the workerpool for the request to be processed.
    * @opt_param bool validateOnly If set, validate the request and preview the
    * response, but do not actually post it.
    * @return Operation
@@ -91,7 +91,7 @@ class ProjectsLocationsWorkerPools extends \Google\Service\Resource
    * Lists `WorkerPool`s. (workerPools.listProjectsLocationsWorkerPools)
    *
    * @param string $parent Required. The parent of the collection of
-   * `WorkerPools`. Format: `projects/{project}/locations/location`.
+   * `WorkerPools`. Format: `projects/{project}/locations/{location}`.
    * @param array $optParams Optional parameters.
    *
    * @opt_param int pageSize The maximum number of `WorkerPool`s to return. The

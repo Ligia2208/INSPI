@@ -20,25 +20,51 @@ namespace Google\Service\AndroidManagement;
 class Enterprise extends \Google\Collection
 {
   protected $collection_key = 'termsAndConditions';
+  /**
+   * @var bool
+   */
   public $appAutoApprovalEnabled;
   protected $contactInfoType = ContactInfo::class;
   protected $contactInfoDataType = '';
+  /**
+   * @var string[]
+   */
   public $enabledNotificationTypes;
+  /**
+   * @var string
+   */
   public $enterpriseDisplayName;
+  protected $googleAuthenticationSettingsType = GoogleAuthenticationSettings::class;
+  protected $googleAuthenticationSettingsDataType = '';
   protected $logoType = ExternalData::class;
   protected $logoDataType = '';
+  /**
+   * @var string
+   */
   public $name;
+  /**
+   * @var int
+   */
   public $primaryColor;
+  /**
+   * @var string
+   */
   public $pubsubTopic;
   protected $signinDetailsType = SigninDetail::class;
   protected $signinDetailsDataType = 'array';
   protected $termsAndConditionsType = TermsAndConditions::class;
   protected $termsAndConditionsDataType = 'array';
 
+  /**
+   * @param bool
+   */
   public function setAppAutoApprovalEnabled($appAutoApprovalEnabled)
   {
     $this->appAutoApprovalEnabled = $appAutoApprovalEnabled;
   }
+  /**
+   * @return bool
+   */
   public function getAppAutoApprovalEnabled()
   {
     return $this->appAutoApprovalEnabled;
@@ -57,21 +83,47 @@ class Enterprise extends \Google\Collection
   {
     return $this->contactInfo;
   }
+  /**
+   * @param string[]
+   */
   public function setEnabledNotificationTypes($enabledNotificationTypes)
   {
     $this->enabledNotificationTypes = $enabledNotificationTypes;
   }
+  /**
+   * @return string[]
+   */
   public function getEnabledNotificationTypes()
   {
     return $this->enabledNotificationTypes;
   }
+  /**
+   * @param string
+   */
   public function setEnterpriseDisplayName($enterpriseDisplayName)
   {
     $this->enterpriseDisplayName = $enterpriseDisplayName;
   }
+  /**
+   * @return string
+   */
   public function getEnterpriseDisplayName()
   {
     return $this->enterpriseDisplayName;
+  }
+  /**
+   * @param GoogleAuthenticationSettings
+   */
+  public function setGoogleAuthenticationSettings(GoogleAuthenticationSettings $googleAuthenticationSettings)
+  {
+    $this->googleAuthenticationSettings = $googleAuthenticationSettings;
+  }
+  /**
+   * @return GoogleAuthenticationSettings
+   */
+  public function getGoogleAuthenticationSettings()
+  {
+    return $this->googleAuthenticationSettings;
   }
   /**
    * @param ExternalData
@@ -87,26 +139,44 @@ class Enterprise extends \Google\Collection
   {
     return $this->logo;
   }
+  /**
+   * @param string
+   */
   public function setName($name)
   {
     $this->name = $name;
   }
+  /**
+   * @return string
+   */
   public function getName()
   {
     return $this->name;
   }
+  /**
+   * @param int
+   */
   public function setPrimaryColor($primaryColor)
   {
     $this->primaryColor = $primaryColor;
   }
+  /**
+   * @return int
+   */
   public function getPrimaryColor()
   {
     return $this->primaryColor;
   }
+  /**
+   * @param string
+   */
   public function setPubsubTopic($pubsubTopic)
   {
     $this->pubsubTopic = $pubsubTopic;
   }
+  /**
+   * @return string
+   */
   public function getPubsubTopic()
   {
     return $this->pubsubTopic;

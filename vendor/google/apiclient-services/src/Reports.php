@@ -29,7 +29,7 @@ use Google\Client;
  *
  * <p>
  * For more information about this service, see the API
- * <a href="http://developers.google.com/admin-sdk/" target="_blank">Documentation</a>
+ * <a href="https://developers.google.com/admin-sdk/" target="_blank">Documentation</a>
  * </p>
  *
  * @author Google, Inc.
@@ -48,6 +48,7 @@ class Reports extends \Google\Service
   public $customerUsageReports;
   public $entityUsageReports;
   public $userUsageReport;
+  public $rootUrlTemplate;
 
   /**
    * Constructs the internal representation of the Reports service.
@@ -60,6 +61,7 @@ class Reports extends \Google\Service
   {
     parent::__construct($clientOrConfig);
     $this->rootUrl = $rootUrl ?: 'https://admin.googleapis.com/';
+    $this->rootUrlTemplate = $rootUrl ?: 'https://admin.UNIVERSE_DOMAIN/';
     $this->servicePath = '';
     $this->batchPath = 'batch';
     $this->version = 'reports_v1';

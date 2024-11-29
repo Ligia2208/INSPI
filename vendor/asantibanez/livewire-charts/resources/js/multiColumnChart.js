@@ -14,6 +14,7 @@ const multiColumnChart = () => {
                 this.chart.destroy()
             }
 
+            const title = component.get('columnChartModel.title')
             const stacked = component.get('columnChartModel.isStacked');
             const animated = component.get('columnChartModel.animated');
             const onColumnClickEventName = component.get('columnChartModel.onColumnClickEventName')
@@ -33,7 +34,7 @@ const multiColumnChart = () => {
 
             const categories = component.get('columnChartModel.xAxis.categories').length > 0
                 ? component.get('columnChartModel.xAxis.categories')
-                : []
+                : data[series[0].name].map(item => item.title)
             ;
 
             const options = {
@@ -81,7 +82,7 @@ const multiColumnChart = () => {
 
                 yaxis: {
                     title: {
-                        text: component.get('columnChartModel.title'),
+                        text: title,
                     }
                 },
 

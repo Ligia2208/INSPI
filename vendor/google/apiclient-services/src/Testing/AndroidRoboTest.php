@@ -24,12 +24,28 @@ class AndroidRoboTest extends \Google\Collection
   protected $appApkDataType = '';
   protected $appBundleType = AppBundle::class;
   protected $appBundleDataType = '';
+  /**
+   * @var string
+   */
   public $appInitialActivity;
+  /**
+   * @var string
+   */
   public $appPackageId;
+  /**
+   * @var int
+   */
   public $maxDepth;
+  /**
+   * @var int
+   */
   public $maxSteps;
   protected $roboDirectivesType = RoboDirective::class;
   protected $roboDirectivesDataType = 'array';
+  /**
+   * @var string
+   */
+  public $roboMode;
   protected $roboScriptType = FileReference::class;
   protected $roboScriptDataType = '';
   protected $startingIntentsType = RoboStartingIntent::class;
@@ -63,34 +79,58 @@ class AndroidRoboTest extends \Google\Collection
   {
     return $this->appBundle;
   }
+  /**
+   * @param string
+   */
   public function setAppInitialActivity($appInitialActivity)
   {
     $this->appInitialActivity = $appInitialActivity;
   }
+  /**
+   * @return string
+   */
   public function getAppInitialActivity()
   {
     return $this->appInitialActivity;
   }
+  /**
+   * @param string
+   */
   public function setAppPackageId($appPackageId)
   {
     $this->appPackageId = $appPackageId;
   }
+  /**
+   * @return string
+   */
   public function getAppPackageId()
   {
     return $this->appPackageId;
   }
+  /**
+   * @param int
+   */
   public function setMaxDepth($maxDepth)
   {
     $this->maxDepth = $maxDepth;
   }
+  /**
+   * @return int
+   */
   public function getMaxDepth()
   {
     return $this->maxDepth;
   }
+  /**
+   * @param int
+   */
   public function setMaxSteps($maxSteps)
   {
     $this->maxSteps = $maxSteps;
   }
+  /**
+   * @return int
+   */
   public function getMaxSteps()
   {
     return $this->maxSteps;
@@ -108,6 +148,20 @@ class AndroidRoboTest extends \Google\Collection
   public function getRoboDirectives()
   {
     return $this->roboDirectives;
+  }
+  /**
+   * @param string
+   */
+  public function setRoboMode($roboMode)
+  {
+    $this->roboMode = $roboMode;
+  }
+  /**
+   * @return string
+   */
+  public function getRoboMode()
+  {
+    return $this->roboMode;
   }
   /**
    * @param FileReference

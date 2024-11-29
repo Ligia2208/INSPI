@@ -17,6 +17,7 @@
 
 namespace Google\Service\Classroom\Resource;
 
+use Google\Service\Classroom\AddOnContext;
 use Google\Service\Classroom\ClassroomEmpty;
 use Google\Service\Classroom\CourseWork;
 use Google\Service\Classroom\ListCourseWorkResponse;
@@ -27,7 +28,7 @@ use Google\Service\Classroom\ModifyCourseWorkAssigneesRequest;
  * Typical usage is:
  *  <code>
  *   $classroomService = new Google\Service\Classroom(...);
- *   $courseWork = $classroomService->courseWork;
+ *   $courseWork = $classroomService->courses_courseWork;
  *  </code>
  */
 class CoursesCourseWork extends \Google\Service\Resource
@@ -50,6 +51,7 @@ class CoursesCourseWork extends \Google\Service\Resource
    * @param CourseWork $postBody
    * @param array $optParams Optional parameters.
    * @return CourseWork
+   * @throws \Google\Service\Exception
    */
   public function create($courseId, CourseWork $postBody, $optParams = [])
   {
@@ -74,6 +76,7 @@ class CoursesCourseWork extends \Google\Service\Resource
    * a Classroom-assigned identifier.
    * @param array $optParams Optional parameters.
    * @return ClassroomEmpty
+   * @throws \Google\Service\Exception
    */
   public function delete($courseId, $id, $optParams = [])
   {
@@ -93,12 +96,50 @@ class CoursesCourseWork extends \Google\Service\Resource
    * @param string $id Identifier of the course work.
    * @param array $optParams Optional parameters.
    * @return CourseWork
+   * @throws \Google\Service\Exception
    */
   public function get($courseId, $id, $optParams = [])
   {
     $params = ['courseId' => $courseId, 'id' => $id];
     $params = array_merge($params, $optParams);
     return $this->call('get', [$params], CourseWork::class);
+  }
+  /**
+   * Gets metadata for Classroom add-ons in the context of a specific post. To
+   * maintain the integrity of its own data and permissions model, an add-on
+   * should call this to validate query parameters and the requesting user's role
+   * whenever the add-on is opened in an
+   * [iframe](https://developers.google.com/classroom/add-ons/get-
+   * started/iframes/iframes-overview). This method returns the following error
+   * codes: * `PERMISSION_DENIED` for access errors. * `INVALID_ARGUMENT` if the
+   * request is malformed. * `NOT_FOUND` if one of the identified resources does
+   * not exist. (courseWork.getAddOnContext)
+   *
+   * @param string $courseId Required. Identifier of the course.
+   * @param string $itemId Identifier of the `Announcement`, `CourseWork`, or
+   * `CourseWorkMaterial` under which the attachment is attached. This field is
+   * required, but is not marked as such while we are migrating from post_id.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string addOnToken Optional. Token that authorizes the request. The
+   * token is passed as a query parameter when the user is redirected from
+   * Classroom to the add-on's URL. The authorization token is required when
+   * neither of the following is true: * The add-on has attachments on the post. *
+   * The developer project issuing the request is the same project that created
+   * the post.
+   * @opt_param string attachmentId Optional. The identifier of the attachment.
+   * This field is required for all requests except when the user is in the
+   * [Attachment Discovery iframe](https://developers.google.com/classroom/add-
+   * ons/get-started/iframes/attachment-discovery-iframe).
+   * @opt_param string postId Optional. Deprecated, use `item_id` instead.
+   * @return AddOnContext
+   * @throws \Google\Service\Exception
+   */
+  public function getAddOnContext($courseId, $itemId, $optParams = [])
+  {
+    $params = ['courseId' => $courseId, 'itemId' => $itemId];
+    $params = array_merge($params, $optParams);
+    return $this->call('getAddOnContext', [$params], AddOnContext::class);
   }
   /**
    * Returns a list of course work that the requester is permitted to view. Course
@@ -129,6 +170,7 @@ class CoursesCourseWork extends \Google\Service\Resource
    * list request must be otherwise identical to the one that resulted in this
    * token.
    * @return ListCourseWorkResponse
+   * @throws \Google\Service\Exception
    */
   public function listCoursesCourseWork($courseId, $optParams = [])
   {
@@ -151,6 +193,7 @@ class CoursesCourseWork extends \Google\Service\Resource
    * @param ModifyCourseWorkAssigneesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return CourseWork
+   * @throws \Google\Service\Exception
    */
   public function modifyAssignees($courseId, $id, ModifyCourseWorkAssigneesRequest $postBody, $optParams = [])
   {
@@ -170,8 +213,7 @@ class CoursesCourseWork extends \Google\Service\Resource
    * the requested modification to the student submission, or for access errors. *
    * `INVALID_ARGUMENT` if the request is malformed. * `FAILED_PRECONDITION` if
    * the requested course work has already been deleted. * `NOT_FOUND` if the
-   * requested course, course work, or student submission does not exist.
-   * (courseWork.patch)
+   * requested course or course work does not exist. (courseWork.patch)
    *
    * @param string $courseId Identifier of the course. This identifier can be
    * either the Classroom-assigned identifier or an alias.
@@ -182,13 +224,16 @@ class CoursesCourseWork extends \Google\Service\Resource
    * @opt_param string updateMask Mask that identifies which fields on the course
    * work to update. This field is required to do an update. The update fails if
    * invalid fields are specified. If a field supports empty values, it can be
-   * cleared by specifying it in the update mask and not in the CourseWork object.
-   * If a field that does not support empty values is included in the update mask
-   * and not set in the CourseWork object, an `INVALID_ARGUMENT` error is
-   * returned. The following fields may be specified by teachers: * `title` *
-   * `description` * `state` * `due_date` * `due_time` * `max_points` *
-   * `scheduled_time` * `submission_modification_mode` * `topic_id`
+   * cleared by specifying it in the update mask and not in the `CourseWork`
+   * object. If a field that does not support empty values is included in the
+   * update mask and not set in the `CourseWork` object, an `INVALID_ARGUMENT`
+   * error is returned. The following fields may be specified by teachers: *
+   * `title` * `description` * `state` * `due_date` * `due_time` * `max_points` *
+   * `scheduled_time` * `submission_modification_mode` * `topic_id` *
+   * `grading_period_id` Available in [V1_20240401_PREVIEW](https://developers.goo
+   * gle.com/classroom/reference/preview) and later.
    * @return CourseWork
+   * @throws \Google\Service\Exception
    */
   public function patch($courseId, $id, CourseWork $postBody, $optParams = [])
   {

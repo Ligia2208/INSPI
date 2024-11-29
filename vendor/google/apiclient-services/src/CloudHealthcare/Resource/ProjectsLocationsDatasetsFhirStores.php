@@ -20,11 +20,13 @@ namespace Google\Service\CloudHealthcare\Resource;
 use Google\Service\CloudHealthcare\DeidentifyFhirStoreRequest;
 use Google\Service\CloudHealthcare\ExportResourcesRequest;
 use Google\Service\CloudHealthcare\FhirStore;
+use Google\Service\CloudHealthcare\FhirStoreMetrics;
 use Google\Service\CloudHealthcare\HealthcareEmpty;
 use Google\Service\CloudHealthcare\ImportResourcesRequest;
 use Google\Service\CloudHealthcare\ListFhirStoresResponse;
 use Google\Service\CloudHealthcare\Operation;
 use Google\Service\CloudHealthcare\Policy;
+use Google\Service\CloudHealthcare\RollbackFhirResourcesRequest;
 use Google\Service\CloudHealthcare\SetIamPolicyRequest;
 use Google\Service\CloudHealthcare\TestIamPermissionsRequest;
 use Google\Service\CloudHealthcare\TestIamPermissionsResponse;
@@ -34,7 +36,7 @@ use Google\Service\CloudHealthcare\TestIamPermissionsResponse;
  * Typical usage is:
  *  <code>
  *   $healthcareService = new Google\Service\CloudHealthcare(...);
- *   $fhirStores = $healthcareService->fhirStores;
+ *   $fhirStores = $healthcareService->projects_locations_datasets_fhirStores;
  *  </code>
  */
 class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
@@ -42,13 +44,16 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
   /**
    * Creates a new FHIR store within the parent dataset. (fhirStores.create)
    *
-   * @param string $parent The name of the dataset this FHIR store belongs to.
+   * @param string $parent Required. The name of the dataset this FHIR store
+   * belongs to.
    * @param FhirStore $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string fhirStoreId The ID of the FHIR store that is being created.
-   * The string must match the following regex: `[\p{L}\p{N}_\-\.]{1,256}`.
+   * @opt_param string fhirStoreId Required. The ID of the FHIR store that is
+   * being created. The string must match the following regex:
+   * `[\p{L}\p{N}_\-\.]{1,256}`.
    * @return FhirStore
+   * @throws \Google\Service\Exception
    */
   public function create($parent, FhirStore $postBody, $optParams = [])
   {
@@ -65,12 +70,13 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
    * Logging](https://cloud.google.com/healthcare/docs/how-tos/logging)).
    * (fhirStores.deidentify)
    *
-   * @param string $sourceStore Source FHIR store resource name. For example, `pro
-   * jects/{project_id}/locations/{location_id}/datasets/{dataset_id}/fhirStores/{
-   * fhir_store_id}`.
+   * @param string $sourceStore Required. Source FHIR store resource name. For
+   * example, `projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
+   * /fhirStores/{fhir_store_id}`.
    * @param DeidentifyFhirStoreRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function deidentify($sourceStore, DeidentifyFhirStoreRequest $postBody, $optParams = [])
   {
@@ -82,9 +88,10 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
    * Deletes the specified FHIR store and removes all resources within it.
    * (fhirStores.delete)
    *
-   * @param string $name The resource name of the FHIR store to delete.
+   * @param string $name Required. The resource name of the FHIR store to delete.
    * @param array $optParams Optional parameters.
    * @return HealthcareEmpty
+   * @throws \Google\Service\Exception
    */
   public function delete($name, $optParams = [])
   {
@@ -102,12 +109,13 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
    * ExportResourcesResponse is returned in the response field. The metadata field
    * type for this operation is OperationMetadata. (fhirStores.export)
    *
-   * @param string $name The name of the FHIR store to export resource from, in
-   * the format of `projects/{project_id}/locations/{location_id}/datasets/{datase
-   * t_id}/fhirStores/{fhir_store_id}`.
+   * @param string $name Required. The name of the FHIR store to export resource
+   * from, in the format of `projects/{project_id}/locations/{location_id}/dataset
+   * s/{dataset_id}/fhirStores/{fhir_store_id}`.
    * @param ExportResourcesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function export($name, ExportResourcesRequest $postBody, $optParams = [])
   {
@@ -118,9 +126,10 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
   /**
    * Gets the configuration of the specified FHIR store. (fhirStores.get)
    *
-   * @param string $name The resource name of the FHIR store to get.
+   * @param string $name Required. The resource name of the FHIR store to get.
    * @param array $optParams Optional parameters.
    * @return FhirStore
+   * @throws \Google\Service\Exception
    */
   public function get($name, $optParams = [])
   {
@@ -129,23 +138,44 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
     return $this->call('get', [$params], FhirStore::class);
   }
   /**
+   * Gets metrics associated with the FHIR store. (fhirStores.getFHIRStoreMetrics)
+   *
+   * @param string $name Required. The resource name of the FHIR store to get
+   * metrics for.
+   * @param array $optParams Optional parameters.
+   * @return FhirStoreMetrics
+   * @throws \Google\Service\Exception
+   */
+  public function getFHIRStoreMetrics($name, $optParams = [])
+  {
+    $params = ['name' => $name];
+    $params = array_merge($params, $optParams);
+    return $this->call('getFHIRStoreMetrics', [$params], FhirStoreMetrics::class);
+  }
+  /**
    * Gets the access control policy for a resource. Returns an empty policy if the
    * resource exists and does not have a policy set. (fhirStores.getIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * requested. See the operation documentation for the appropriate value for this
-   * field.
+   * requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param array $optParams Optional parameters.
    *
-   * @opt_param int options.requestedPolicyVersion Optional. The policy format
-   * version to be returned. Valid values are 0, 1, and 3. Requests specifying an
-   * invalid value will be rejected. Requests for policies with any conditional
-   * bindings must specify version 3. Policies without any conditional bindings
-   * may specify any valid value or leave the field unset. To learn which
-   * resources support conditions in their IAM policies, see the [IAM
+   * @opt_param int options.requestedPolicyVersion Optional. The maximum policy
+   * version that will be used to format the policy. Valid values are 0, 1, and 3.
+   * Requests specifying an invalid value will be rejected. Requests for policies
+   * with any conditional role bindings must specify version 3. Policies with no
+   * conditional role bindings may specify any valid value or leave the field
+   * unset. The policy in the response might use the policy version that you
+   * specified, or it might use a lower policy version. For example, if you
+   * specify version 3, but the policy has no conditional role bindings, the
+   * response uses version 1. To learn which resources support conditions in their
+   * IAM policies, see the [IAM
    * documentation](https://cloud.google.com/iam/help/conditions/resource-
    * policies).
    * @return Policy
+   * @throws \Google\Service\Exception
    */
   public function getIamPolicy($resource, $optParams = [])
   {
@@ -209,12 +239,13 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
    * ImportResourcesResponse is returned in the response field. The metadata field
    * type for this operation is OperationMetadata. (fhirStores.import)
    *
-   * @param string $name The name of the FHIR store to import FHIR resources to,
-   * in the format of `projects/{project_id}/locations/{location_id}/datasets/{dat
-   * aset_id}/fhirStores/{fhir_store_id}`.
+   * @param string $name Required. The name of the FHIR store to import FHIR
+   * resources to, in the format of `projects/{project_id}/locations/{location_id}
+   * /datasets/{dataset_id}/fhirStores/{fhir_store_id}`.
    * @param ImportResourcesRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Operation
+   * @throws \Google\Service\Exception
    */
   public function import($name, ImportResourcesRequest $postBody, $optParams = [])
   {
@@ -226,7 +257,7 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
    * Lists the FHIR stores in the given dataset.
    * (fhirStores.listProjectsLocationsDatasetsFhirStores)
    *
-   * @param string $parent Name of the dataset.
+   * @param string $parent Required. Name of the dataset.
    * @param array $optParams Optional parameters.
    *
    * @opt_param string filter Restricts stores returned to those matching a
@@ -257,6 +288,7 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
    * @opt_param string pageToken The next_page_token value returned from the
    * previous List request, if any.
    * @return ListFhirStoresResponse
+   * @throws \Google\Service\Exception
    */
   public function listProjectsLocationsDatasetsFhirStores($parent, $optParams = [])
   {
@@ -267,15 +299,18 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
   /**
    * Updates the configuration of the specified FHIR store. (fhirStores.patch)
    *
-   * @param string $name Output only. Resource name of the FHIR store, of the form
-   * `projects/{project_id}/datasets/{dataset_id}/fhirStores/{fhir_store_id}`.
+   * @param string $name Output only. Identifier. Resource name of the FHIR store,
+   * of the form `projects/{project_id}/locations/{location}/datasets/{dataset_id}
+   * /fhirStores/{fhir_store_id}`.
    * @param FhirStore $postBody
    * @param array $optParams Optional parameters.
    *
-   * @opt_param string updateMask The update mask applies to the resource. For the
-   * `FieldMask` definition, see https://developers.google.com/protocol-
+   * @opt_param string updateMask Required. The update mask applies to the
+   * resource. For the `FieldMask` definition, see
+   * https://developers.google.com/protocol-
    * buffers/docs/reference/google.protobuf#fieldmask
    * @return FhirStore
+   * @throws \Google\Service\Exception
    */
   public function patch($name, FhirStore $postBody, $optParams = [])
   {
@@ -284,16 +319,43 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
     return $this->call('patch', [$params], FhirStore::class);
   }
   /**
+   * Rolls back resources from the FHIR store to the specified time. This method
+   * returns an Operation that can be used to track the status of the rollback by
+   * calling GetOperation. Immediate fatal errors appear in the error field,
+   * errors are also logged to Cloud Logging (see [Viewing error logs in Cloud
+   * Logging](https://cloud.google.com/healthcare/docs/how-tos/logging)).
+   * Otherwise, when the operation finishes, a detailed response of type
+   * RollbackFhirResourcesResponse is returned in the response field. The metadata
+   * field type for this operation is OperationMetadata. (fhirStores.rollback)
+   *
+   * @param string $name Required. The name of the FHIR store to rollback, in the
+   * format of
+   * "projects/{project_id}/locations/{location_id}/datasets/{dataset_id}
+   * /fhirStores/{fhir_store_id}".
+   * @param RollbackFhirResourcesRequest $postBody
+   * @param array $optParams Optional parameters.
+   * @return Operation
+   * @throws \Google\Service\Exception
+   */
+  public function rollback($name, RollbackFhirResourcesRequest $postBody, $optParams = [])
+  {
+    $params = ['name' => $name, 'postBody' => $postBody];
+    $params = array_merge($params, $optParams);
+    return $this->call('rollback', [$params], Operation::class);
+  }
+  /**
    * Sets the access control policy on the specified resource. Replaces any
    * existing policy. Can return `NOT_FOUND`, `INVALID_ARGUMENT`, and
    * `PERMISSION_DENIED` errors. (fhirStores.setIamPolicy)
    *
    * @param string $resource REQUIRED: The resource for which the policy is being
-   * specified. See the operation documentation for the appropriate value for this
-   * field.
+   * specified. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param SetIamPolicyRequest $postBody
    * @param array $optParams Optional parameters.
    * @return Policy
+   * @throws \Google\Service\Exception
    */
   public function setIamPolicy($resource, SetIamPolicyRequest $postBody, $optParams = [])
   {
@@ -310,11 +372,13 @@ class ProjectsLocationsDatasetsFhirStores extends \Google\Service\Resource
    * (fhirStores.testIamPermissions)
    *
    * @param string $resource REQUIRED: The resource for which the policy detail is
-   * being requested. See the operation documentation for the appropriate value
-   * for this field.
+   * being requested. See [Resource
+   * names](https://cloud.google.com/apis/design/resource_names) for the
+   * appropriate value for this field.
    * @param TestIamPermissionsRequest $postBody
    * @param array $optParams Optional parameters.
    * @return TestIamPermissionsResponse
+   * @throws \Google\Service\Exception
    */
   public function testIamPermissions($resource, TestIamPermissionsRequest $postBody, $optParams = [])
   {
