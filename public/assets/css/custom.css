@@ -1,3 +1,4 @@
+<<<<<<< HEAD
     .image-edit {
         cursor: pointer;
         position: absolute;
@@ -93,3 +94,335 @@
     .star-rating input:checked ~ label:before {
         content:'\2605';
     }
+=======
+:root {
+    --bs-accordion-border-radius: 0.375rem;
+
+    --bs-body-color: #212529;
+    --bs-body-bg: #fff;
+    --bs-border-color: #dee2e6;
+    --bs-border-width: 1px;
+    --bs-border-radius: 0.375rem;
+    --bs-accordion-bg: #fff;
+    --bs-primary-text-emphasis: #052c65;
+    --bs-primary-bg-subtle: #cfe2ff;
+
+}    
+
+.image-edit {
+    cursor: pointer;
+    position: absolute;
+    right: -10px;
+    top: -10px;
+}
+.image-remove {
+    cursor: pointer;
+    position: absolute;
+    right: -10px;
+    bottom: -10px;
+}
+
+.aside-menu .menu-nav > .menu-item > .menu-heading .menu-text, .aside-menu .menu-nav > .menu-item > .menu-link .menu-text{
+    color: #3f4254;
+    font-weight: 500;
+}
+
+.border-gray-300 {
+    border-color: #e4e6ef!important;
+}
+
+.border-dashed {
+    border-style: dashed!important;
+    border-color: #e4e6ef;
+}
+
+.rounded {
+    border-radius: .475rem!important;
+}
+
+.table > tbody > tr {
+    border-bottom-width: 1px;
+    border-bottom-style: dashed;
+    border-bottom-color: #eff2f5;
+}
+
+.badge{
+    white-space: break-spaces;
+}
+
+.spinner-center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.content {
+    background-color: #f5f8fa;
+}
+
+/* Stars */
+/* use reverse flexbox to take advantage of flex-direction: reverse */
+.star-rating {
+    display: flex;
+    align-items: center;
+    width: 160px;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    position: relative;
+}
+    /* hide the inputs */
+.star-rating input {
+    display: none;
+}
+    /* set properties of all labels */
+.star-rating > label {
+    width: 30px;
+    height: 30px;
+    font-family: Arial;
+    font-size: 30px;
+    transition: 0.2s ease;
+    color: orange;
+}
+    /* give label a hover state */
+.star-rating label:hover {
+    color: #ff69b4;
+    transition: 0.2s ease;
+}
+.star-rating label:active::before {
+    transform:scale(1.1);
+}
+    
+/* set shape of unselected label */
+.star-rating label::before {
+    content: '\2606';
+    position: absolute;
+    top: 0px;
+    line-height: 26px;
+}
+/* set full star shape for checked label and those that come after it */
+.star-rating input:checked ~ label:before {
+    content:'\2605';
+}
+
+.encuesta{
+
+}
+
+.encuesta:hover{
+
+    /*color:#000 !important;*/
+    background-color:#9dbfdc;
+
+}
+
+.titulo-grande {
+    font-size: 24px !important;
+}
+
+
+.switch2 {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+}
+
+  
+.switch2 input { 
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+  
+.slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+  
+.slider:before {
+    position: absolute;
+    content: "";
+    height: 26px;
+    width: 26px;
+    left: 4px;
+    bottom: 4px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+  
+input:checked + .slider {
+    background-color: #2196F3;
+}
+  
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196F3;
+}
+  
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform: translateX(26px);
+    transform: translateX(26px);
+}
+  
+  /* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+  
+.slider.round:before {
+    border-radius: 50%;
+}
+
+.fs-25{
+    font-size: 2.5rem !important;
+    height: 40.5px;
+}
+
+.cantidad {
+    width: 7%;
+}
+
+.unidades {
+    width: 7%;
+}
+
+.caduca {
+    width: 7%;
+}
+
+.cUnitario {
+    width: 7%;
+}
+
+.cTotal {
+    width: 7%;
+}
+
+.fEla {
+    width: 7%;
+}
+
+.fExp {
+    width: 7%;
+}
+
+
+@keyframes parpadeo {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.parpadeo {
+    animation: parpadeo 2s infinite;
+}
+
+.parpadeo_info_semaforo {
+    animation: parpadeo 5s infinite;
+}
+
+
+
+.accordion-item:first-of-type {
+    border-top-left-radius: var(--bs-accordion-border-radius);
+    border-top-right-radius: var(--bs-accordion-border-radius);
+}
+
+.accordion-item {
+    color: var(--bs-accordion-color);
+    background-color: var(--bs-accordion-bg);
+    border: var(--bs-accordion-border-width) solid var(--bs-accordion-border-color);
+}
+
+*, ::after, ::before {
+    box-sizing: border-box;
+}
+
+.accordion2 {
+    --bs-accordion-color: var(--bs-body-color);
+    --bs-accordion-bg: var(--bs-body-bg);
+    --bs-accordion-transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out,box-shadow 0.15s ease-in-out,border-radius 0.15s ease;
+    --bs-accordion-border-color: var(--bs-border-color);
+    --bs-accordion-border-width: var(--bs-border-width);
+    --bs-accordion-border-radius: var(--bs-border-radius);
+    --bs-accordion-inner-border-radius: calc(var(--bs-border-radius) - (var(--bs-border-width)));
+    --bs-accordion-btn-padding-x: 1.25rem;
+    --bs-accordion-btn-padding-y: 1rem;
+    --bs-accordion-btn-color: var(--bs-body-color);
+    --bs-accordion-btn-bg: var(--bs-accordion-bg);
+    --bs-accordion-btn-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23212529' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+    --bs-accordion-btn-icon-width: 1.25rem;
+    --bs-accordion-btn-icon-transform: rotate(-180deg);
+    --bs-accordion-btn-icon-transition: transform 0.2s ease-in-out;
+    --bs-accordion-btn-active-icon: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none' stroke='%23052c65' stroke-linecap='round' stroke-linejoin='round'%3e%3cpath d='M2 5L8 11L14 5'/%3e%3c/svg%3e");
+    --bs-accordion-btn-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
+    --bs-accordion-body-padding-x: 1.25rem;
+    --bs-accordion-body-padding-y: 1rem;
+    --bs-accordion-active-color: var(--bs-primary-text-emphasis);
+    --bs-accordion-active-bg: var(--bs-primary-bg-subtle);
+}
+
+.accordion-header {
+    margin-bottom: 0;
+}
+
+.accordion-item:first-of-type > .accordion-header .accordion-button {
+    border-top-left-radius: var(--bs-accordion-inner-border-radius);
+    border-top-right-radius: var(--bs-accordion-inner-border-radius);
+}
+
+.accordion-button:not(.collapsed) {
+    color: var(--bs-accordion-active-color);
+    background-color: var(--bs-accordion-active-bg);
+    box-shadow: inset 0 calc(-1 * var(--bs-accordion-border-width)) 0 var(--bs-accordion-border-color);
+}
+
+.accordion-button {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: var(--bs-accordion-btn-padding-y) var(--bs-accordion-btn-padding-x);
+    font-size: 1rem;
+    color: var(--bs-accordion-btn-color);
+    text-align: left;
+    background-color: var(--bs-accordion-btn-bg);
+    border: 0;
+    border-radius: 0;
+    overflow-anchor: none;
+    transition: var(--bs-accordion-transition);
+}
+
+.accordion-button::after {
+    flex-shrink: 0;
+    width: var(--bs-accordion-btn-icon-width);
+    height: var(--bs-accordion-btn-icon-width);
+    margin-left: auto;
+    content: "";
+    background-image: var(--bs-accordion-btn-icon);
+    background-repeat: no-repeat;
+    background-size: var(--bs-accordion-btn-icon-width);
+    transition: var(--bs-accordion-btn-icon-transition);
+}
+
+.accordion-button:not(.collapsed)::after {
+    background-image: var(--bs-accordion-btn-active-icon);
+    transform: var(--bs-accordion-btn-icon-transform);
+}
+
+.accordion-body {
+    padding: var(--bs-accordion-body-padding-y) var(--bs-accordion-body-padding-x);
+}
+>>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15

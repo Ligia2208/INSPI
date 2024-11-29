@@ -170,7 +170,13 @@ class AnaliticaController extends Controller
 
         QrCode::png($dataqr,storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$data->codigo_muestra.'.png',QR_ECLEVEL_H,3,1);
 
+<<<<<<< HEAD
         $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$data->codigo_muestra.'.png',140,227,38);
+=======
+        $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$data->codigo_muestra.'.png',140,227,40);
+
+
+>>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
 
         $this->fpdf->Ln(20);
         $this->fpdf->Cell(80,7,utf8_decode("Trazabilidad del proceso"),1,0,"C");

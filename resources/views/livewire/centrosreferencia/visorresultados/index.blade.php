@@ -89,7 +89,11 @@
                                             <option value="">{{ __("Seleccione un Evento") }}</option>
                                             @if(!is_null($eventos))
                                             @foreach ($eventos as $objEven)
+<<<<<<< HEAD
                                                 <option data-subtext="" value="{{ $objEven->id }}">{{ $objEven->simplificado }}</option>
+=======
+                                                <option data-subtext="" value="{{ $objEven->id }}">{{ $objEven->descripcion }}</option>
+>>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
                                             @endforeach
                                             @endif
                                             </select>

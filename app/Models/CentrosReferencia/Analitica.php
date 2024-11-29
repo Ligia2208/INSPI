@@ -1,4 +1,8 @@
+<<<<<<< HEAD
  <?php
+=======
+<?php
+>>>>>>> a8a9e50ba343c767a78a1eff4275c71cab8b4e15
 
 namespace App\Models\CentrosReferencia;
 
