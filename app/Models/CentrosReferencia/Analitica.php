@@ -1,4 +1,4 @@
- <?php
+<?php
 namespace App\Models\CentrosReferencia;
 
 use Carbon\Carbon;

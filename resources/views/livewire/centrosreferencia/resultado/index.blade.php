@@ -114,9 +114,11 @@
                             <div class="col-lg-12 col-xl-12">
                                 <div class="row align-items-center">
                                     <div class="col-md-6 my-2 my-md-0">
-                                            <input wire:model="search" type="search" class="form-control"
-                                            </span>
-                                        </div>
+                                        <input wire:model="search" type="search" class="form-control"
+                                                placeholder="Buscar...">
+                                        <span>
+                                            <i class="flaticon2-search-1 text-muted"></i>
+                                        </span>
                                     </div>
                                     <div class="col-md-6 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
@@ -140,8 +142,7 @@
             <div class="card-body pt-0 pb-3">
                 <!--begin::Table-->
                 <div class="table-responsive">
-                    <table id="data"
-                        class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                    <table id="data" class="table table-head-custom table-head-bg table-borderless table-vertical-center">
                         <thead>
                             <tr class="text-uppercase">
                                 <th>Código Muestra</th>
