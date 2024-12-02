@@ -35,7 +35,7 @@ class Preanalitica extends Model
 
     public function paciente()
     {
-        return $this->belongsTo(PAciente::class);
+        return $this->belongsTo(Paciente::class);
     }
 
     public function sedes()

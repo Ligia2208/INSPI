@@ -30,7 +30,7 @@ class Form extends Component
 
     use WithFileUploads;
     use LivewireAlert;
-
+    
     public $method;
 
     //Tools

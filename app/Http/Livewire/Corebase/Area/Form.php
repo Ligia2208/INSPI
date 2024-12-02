@@ -14,7 +14,7 @@ class Form extends Component
 
     public $method;
     public $Areas;
-    //use LivewireAlert;
+
 
     protected function rules()
     {

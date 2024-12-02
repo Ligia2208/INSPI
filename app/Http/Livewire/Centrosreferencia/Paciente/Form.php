@@ -16,15 +16,20 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\CssSelector\Node\FunctionNode;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
     use WithFileUploads;
+
     public $method;
     public $Sexos;
     public $Nacionalidades;
     public $TiposDocumento;
     public $Pacientes;
+
+    protected $listeners = ['render'];
 
     protected function rules()
     {
@@ -69,7 +74,6 @@ class Form extends Component
 
     public function store(){
         $this->validate();
-        $this->savePersona();
         $this->Pacientes->save();
         $this->Pacientes = new Paciente();
         $this->alert('success', 'Paciente agregada con exito');
@@ -79,21 +83,21 @@ class Form extends Component
 
     public function storeCustom(){
         $this->validate();
-        $this->savePaciente();
         $this->Pacientes->save();
         $this->Pacientes = new Paciente();
         $this->alert('success', 'Paciente agregada con exito');
-        $this->emit('render');
         $this->emit('closeModal');
     }
 
     public function update(){
         $this->validate();
-        $this->savePaciente();
         $this->Pacientes->update();
-        $this->alert('success', 'Pacientes modificada con exito');
-        $this->emit('closeModal');
         $this->emit('render');
+        $this->alert('success', 'Pacientes data modificada con exito', [
+            'position' => 'top'
+        ]);
+        $this->emit('closeModal');
+        //$this->alert('success', 'Pacientes modificada con exito');
     }
 
 }
