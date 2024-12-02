@@ -15,6 +15,7 @@ use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadocrn\ResultadocrnController;
 use App\Http\Controllers\CentrosReferencia\VisorResultados\VisorResultadosController;
 use App\Http\Controllers\CentrosReferencia\Responsable\ResponsableController;
+use App\Http\Controllers\CentrosReferencia\Paciente\PacienteController;
 
 Route::middleware(['auth'])->group(function () {
 
@@ -48,6 +49,9 @@ Route::middleware(['auth'])->group(function () {
         //Constantes Fisiológicas Plataformas Bioterio
         Route::resource('constantes', ConstanteController::class)->parameters(['constantes' => 'constante'])->names('constante');
         Route::get('/constantes/agregar/{id}', [ConstanteController::class, 'agregar', 'id'])->name('agregar');
+
+        //Pacientes CRNs Plataformas
+        Route::resource('pacientes', PacienteController::class)->parameters(['pacientes' => 'paciente'])->names('paciente');
 
         //CRNs Plataformas Preanalitica
         Route::resource('preanaliticas', PreanaliticaController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanalitica');

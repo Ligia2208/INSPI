@@ -185,7 +185,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->evento->descripcion }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->evento->simplificado }}</span>
                                     </td>
                                     <td>
                                         @if($postanalitica->tecnica_id>0)
