@@ -17,10 +17,13 @@ use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\CssSelector\Node\FunctionNode;
 
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 class Form extends Component
 {
 
     use WithFileUploads;
+    use LivewireAlert;
     
     //User actual
     public $method;

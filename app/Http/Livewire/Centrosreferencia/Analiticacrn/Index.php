@@ -15,9 +15,12 @@ use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 class Index extends Component
 {
     use WithPagination;
+    use LivewireAlert;
 
     public $userPresent;
 

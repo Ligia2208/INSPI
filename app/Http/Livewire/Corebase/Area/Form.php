@@ -5,9 +5,13 @@ namespace App\Http\Livewire\Corebase\Area;
 use App\Models\CoreBase\Area;
 use Livewire\Component;
 //use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+
+    use LivewireAlert;
+
     public $method;
     public $Areas;
     //use LivewireAlert;

@@ -10,8 +10,12 @@ use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\User;
 use Livewire\Component;
 
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 class Form extends Component
 {
+    use LivewireAlert;
+    
     public $method;
     public $Responsables;
     public $selectedSede = null;

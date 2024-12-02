@@ -9,9 +9,12 @@ use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
 
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 class Index extends Component
 {
     use WithPagination;
+    use LivewireAlert;
 
     //Tools
     public $perPage = 20;

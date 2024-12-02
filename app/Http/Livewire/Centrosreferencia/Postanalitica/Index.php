@@ -15,9 +15,12 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Codedge\Fpdf\Fpdf\Fpdf;
 
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 class Index extends Component
 {
     use WithPagination;
+    use LivewireAlert;
 
     public $userPresent;
 

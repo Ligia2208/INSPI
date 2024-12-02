@@ -6,8 +6,12 @@ use App\Models\CoreBase\Area;
 use App\Models\CoreBase\Direccion;
 use Livewire\Component;
 
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 class Form extends Component
 {
+    use LivewireAlert;
+
     public $method;
     public $Areas;
     public $Direcciones;
