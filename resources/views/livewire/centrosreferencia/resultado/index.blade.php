@@ -52,7 +52,7 @@
                                                 @if (!is_null($eventos))
                                                     @foreach ($eventos as $objEven)
                                                         <option data-subtext="" value="{{ $objEven->id }}">
-                                                            {{ $objEven->descripcion }}</option>
+                                                            {{ $objEven->simplificado }}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
@@ -71,7 +71,7 @@
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
                                                 <option data-subtext="" value="1">Fecha toma de muestra</option>
-                                                <option data-subtext="" value="2">Fecha llegada al CRN</option>
+                                                <option data-subtext="" value="2">Fecha resultado</option>
                                                 <option data-subtext="" value="3">Fecha reporte</option>
                                             </select>
                                         </div>
@@ -186,32 +186,22 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->tecnica_id }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->tecnica->descripcion }}</span>
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->resultado_id }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->resultado->descripcion }}</span>
                                     </td>
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_publicacion }}</span>
                                     </td>
                                     <td align="center">
-                                        <i class="navi-item" data-toggle="modal" data-target="_self">
-                                            <a href="{{ route('resultado.edit', $objRes) }}" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="ace-icon fa fa-pen" style="color:lightblue"
-                                                        title="Editar"></i>
-                                                </span>
-                                            </a>
-                                        </i>
-                                        <i class="navi-item"
-                                            onclick="event.preventDefault(); confirmDestroy({{ $objRes->id }})">
-                                            <a href="#" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="ace-icon fa fa-trash-alt" style="color:red"
-                                                        title="Eliminar"></i>
-                                                </span>
+                                        <i class="navi-item">
+                                            <a href="/informefinal/informep/{{ $objRes->id }}" target="_blank" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="fa fa-print" style="color:lightgray" alt="Editar"></i>
+                                            </span>
                                             </a>
                                         </i>
                                     </td>

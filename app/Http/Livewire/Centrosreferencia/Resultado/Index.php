@@ -84,16 +84,16 @@ class Index extends Component
                         $this->fechafin='';
                     }
                     if($this->controlf==1){
-                        $resultados = $resultados->where('fecha_toma_muestra', '>=', $this->fechainicio)->where('fecha_toma_muestra','<=',$this->fechafin);
+                        $resultados = $resultados->where('fecha_toma', '>=', $this->fechainicio)->where('fecha_toma','<=',$this->fechafin);
                         $count = $resultados->count();
 
                     }
                     if($this->controlf==2){
-                        $resultados = $resultados->where('fecha_llegada_lab', '>=', $this->fechainicio)->where('fecha_llegada_lab','<=',$this->fechafin);
+                        $resultados = $resultados->where('fecha_resultado', '>=', $this->fechainicio)->where('fecha_resultado','<=',$this->fechafin);
                         $count = $resultados->count();
                     }
                     if($this->controlf==3){
-                        $resultados = $resultados->where('created_at', '>=', $this->fechainicio)->where('created_at','<=',$this->fechafin);
+                        $resultados = $resultados->where('fecha_publicacion', '>=', $this->fechainicio)->where('fecha_publicacion','<=',$this->fechafin);
                         $count = $resultados->count();
                     }
                 }
