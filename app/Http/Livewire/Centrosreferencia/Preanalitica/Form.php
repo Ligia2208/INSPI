@@ -84,11 +84,15 @@ class Form extends Component
             'Preanaliticas.evento_id' => 'required|numeric',
 
             'Preanaliticas.primera_id' => 'required|numeric',
+            'Preanaliticas.fecha_toma_primera' => 'required|max:10',
             'Preanaliticas.segunda_id' => 'sometimes|numeric',
+            'Preanaliticas.fecha_toma_segunda' => 'sometimes|max:10',
             'Preanaliticas.tercera_id' => 'sometimes|numeric',
+            'Preanaliticas.fecha_toma_tercera' => 'sometimes|max:10',
             'Preanaliticas.cuarta_id' => 'sometimes|numeric',
+            'Preanaliticas.fecha_toma_cuarta' => 'sometimes|max:10',
             'Preanaliticas.quinta_id' => 'sometimes|numeric',
-
+            'Preanaliticas.fecha_toma_quinta' => 'sometimes|max:10',
         ];
     }
 
@@ -192,18 +196,58 @@ class Form extends Component
         $newToma->quien_notifica = $this->Preanaliticas->quien_notifica;
         $newToma->probable_infeccion = $this->Preanaliticas->probable_infeccion;
         $newToma->fecha_sintomas = $this->Preanaliticas->fecha_sintomas;
-        $newToma->embarazo = $this->Preanaliticas->embarazo;
-        $newToma->gestacion = $this->Preanaliticas->gestacion;
+        if ($this->Preanaliticas->embarazo==1){
+            $newToma->embarazo = 'S';
+        }
+        else{
+            $newToma->embarazo = 'N';
+        }
+        if ($this->Preanaliticas->gestacion==1){
+            $newToma->gestacion = 'S';
+        }
+        else{
+            $newToma->gestacion = 'N';
+        }
         $newToma->laboratorio = $this->Preanaliticas->laboratorio;
         $newToma->nombre_laboratorio = $this->Preanaliticas->nombre_laboratorio;
         $newToma->sedes_id = $this->Preanaliticas->sedes_id;
         $newToma->crns_id = $this->Preanaliticas->crns_id;
         $newToma->evento_id = $this->Preanaliticas->evento_id;
-        $newToma->primera_id = $this->Preanaliticas->primera_id;
-        $newToma->segunda_id = $this->Preanaliticas->segunda_id;
-        $newToma->tercera_id = $this->Preanaliticas->tercera_id;
-        $newToma->cuarta_id = $this->Preanaliticas->cuarta_id;
-        $newToma->quinta_id = $this->Preanaliticas->quinta_id;
+        if($this->Preanaliticas->primera_id>0){
+            $newToma->primera_id = $this->Preanaliticas->primera_id;
+            $newToma->fecha_toma_primera = $this->Preanaliticas->fecha_toma_primera;
+        }
+        else{
+            $newToma->primera_id = 0;
+        }
+        if($this->Preanaliticas->segunda_id>0){
+            $newToma->segunda_id = $this->Preanaliticas->segunda_id;
+            $newToma->fecha_toma_segunda = $this->Preanaliticas->fecha_toma_segunda;
+        }
+        else{
+            $newToma->segunda_id = 0;
+        }
+        if($this->Preanaliticas->tercera_id>0){
+            $newToma->tercera_id = $this->Preanaliticas->tercera_id;
+            $newToma->fecha_toma_tercera = $this->Preanaliticas->fecha_toma_tercera;
+        }
+        else{
+            $newToma->tercera_id = 0;
+        }
+        if($this->Preanaliticas->cuarta_id>0){
+            $newToma->cuarta_id = $this->Preanaliticas->cuarta_id;
+            $newToma->fecha_toma_cuarta = $this->Preanaliticas->fecha_toma_cuarta;
+        }
+        else{
+            $newToma->cuarta_id = 0;
+        }
+        if($this->Preanaliticas->quinta_id>0){
+            $newToma->quinta_id = $this->Preanaliticas->quinta_id;
+            $newToma->fecha_toma_quinta = $this->Preanaliticas->fecha_toma_quinta;
+        }
+        else{
+            $newToma->quinta_id = 0;
+        }
         $newToma->anio_registro = $fecha_anio;
         $newToma->usuario_id =  $user;
         $newToma->save();
@@ -217,7 +261,7 @@ class Form extends Component
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->primera_id;
             $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_atencion;
+            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_primera;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
@@ -231,7 +275,7 @@ class Form extends Component
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->segunda_id;
             $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_atencion;
+            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_segunda;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
@@ -245,7 +289,7 @@ class Form extends Component
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->tercera_id;
             $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_atencion;
+            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_tercera;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
@@ -259,7 +303,7 @@ class Form extends Component
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->cuarta_id;
             $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_atencion;
+            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_cuarta;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
@@ -273,7 +317,7 @@ class Form extends Component
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->quinta_id;
             $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_atencion;
+            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_quinta;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();

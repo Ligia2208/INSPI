@@ -567,7 +567,7 @@
                                             <option value="">Selecciona un Evento</option>
                                             @if(!is_null($eventos))
                                             @foreach ($eventos as $objEvento)
-                                                <option data-subtext="" value="{{ $objEvento->id }}">{{ $objEvento->descripcion }}</option>
+                                                <option data-subtext="{{ $objEvento->descripcion }}" value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}</option>
                                             @endforeach
                                             @endif
                                         </select>
@@ -620,7 +620,7 @@
                                 </button>
                             </div>
                             <div class="form-row" id="add_muestras" style="visibility:hidden">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-4">
                                     <label>Muestra 2<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -641,7 +641,24 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
+                                    <label>Fecha Toma de muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Preanaliticas.fecha_toma_segunda"
+                                            value="Preanaliticas.fecha_toma_segunda"
+                                            type="date"
+                                            class="start_date form-control form-control-solid @error('Preanaliticas.fecha_toma_segunda') is-invalid @enderror"
+                                            placeholder="Seleccione la fecha de inicio sintomas"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
                                     <label>Muestra 3<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -662,7 +679,24 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
+                                    <label>Fecha Toma de muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Preanaliticas.fecha_toma_tercera"
+                                            value="Preanaliticas.fecha_toma_tercera"
+                                            type="date"
+                                            class="start_date form-control form-control-solid @error('Preanaliticas.fecha_toma_tercera') is-invalid @enderror"
+                                            placeholder="Seleccione la fecha de inicio sintomas"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
                                     <label>Muestra 4<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -683,7 +717,24 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
+                                    <label>Fecha Toma de muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Preanaliticas.fecha_toma_cuarta"
+                                            value="Preanaliticas.fecha_toma_cuarta"
+                                            type="date"
+                                            class="start_date form-control form-control-solid @error('Preanaliticas.fecha_toma_cuarta') is-invalid @enderror"
+                                            placeholder="Seleccione la fecha de inicio sintomas"
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
                                     <label>Muestra 5<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -702,6 +753,23 @@
                                                 <option data-subtext="" value="{{ $objMuestra->id }}">{{ $objMuestra->descripcion }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Fecha Toma de muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Preanaliticas.fecha_toma_quinta"
+                                            value="Preanaliticas.fecha_toma_quinta"
+                                            type="date"
+                                            class="start_date form-control form-control-solid @error('Preanaliticas.fecha_toma_quinta') is-invalid @enderror"
+                                            placeholder="Seleccione la fecha de inicio sintomas"
+                                        />
                                     </div>
                                 </div>
                             </div>

@@ -52,7 +52,7 @@
                                                 @if (!is_null($eventos))
                                                     @foreach ($eventos as $objEven)
                                                         <option data-subtext="" value="{{ $objEven->id }}">
-                                                            {{ $objEven->descripcion }}</option>
+                                                            {{ $objEven->simplificado }}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
@@ -184,7 +184,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->evento->descripcion }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->evento->simplificado }}</span>
                                     </td>
                                     <td>
                                         @if($analitica->tecnica_id>0)

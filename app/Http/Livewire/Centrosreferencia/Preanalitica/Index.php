@@ -49,7 +49,7 @@ class Index extends Component
         $eventos = [];
 
         $count = Preanalitica::where('estado','=','A')->count();
-        $preanaliticas = Preanalitica::where('estado','=','A')->orderBy('id', 'asc');
+        $preanaliticas = Preanalitica::where('estado','=','A')->orderBy('id', 'desc');
 
         if($this->search){
             $preanaliticas = $preanaliticas->where('codigo_muestra', 'LIKE', "%{$this->search}%");
