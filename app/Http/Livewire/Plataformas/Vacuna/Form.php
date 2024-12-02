@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Vacuna;
 
 use App\Models\Plataformas\Vacuna;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+
     public $method;
     public $Vacunas;
 

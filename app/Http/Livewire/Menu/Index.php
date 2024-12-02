@@ -6,9 +6,11 @@ use App\Models\CoreBase\Menu;
 use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     //Tools
@@ -30,7 +32,7 @@ class Index extends Component
     public function render()
     {
         $count = Menu::count();
-        $Menues = Menu::orderBy('orden', 'asc');       
+        $Menues = Menu::orderBy('orden', 'asc');
 
         if($this->search){
             $Menues = $Menues->where('nombre', 'LIKE', "%{$this->search}%");
@@ -47,8 +49,8 @@ class Index extends Component
             $Menues->delete();
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error en la eliminación: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error en la eliminación: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',

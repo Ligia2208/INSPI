@@ -6,9 +6,11 @@ use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Spatie\Permission\Models\Role;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     //Tools
@@ -50,8 +52,8 @@ class Index extends Component
             $role->delete();
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error en la eliminación: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error en la eliminación: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',

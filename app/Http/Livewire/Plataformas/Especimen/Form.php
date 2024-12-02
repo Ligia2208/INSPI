@@ -6,9 +6,12 @@ use App\Models\Plataformas\Especie;
 use App\Models\Plataformas\Sexo_especie;
 use App\Models\Plataformas\Especimen;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+
     public $method;
     public $Sexos;
     public $Nacionalidades;

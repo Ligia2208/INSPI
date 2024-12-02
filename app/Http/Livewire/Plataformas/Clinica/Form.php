@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Clinica;
 
 use App\Models\Plataformas\Clinica;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+
     public $method;
     public $Clinicas;
 

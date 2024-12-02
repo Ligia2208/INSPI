@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Setting\CategoryClient;
 
 use App\Models\CategoryClient;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
+    
     public $method;
     public $categoryClient;
 

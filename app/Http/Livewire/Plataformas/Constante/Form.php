@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Constante;
 
 use App\Models\Plataformas\Constante;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+
     public $method;
     public $Constantes;
 

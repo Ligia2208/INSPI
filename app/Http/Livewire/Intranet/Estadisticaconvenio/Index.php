@@ -9,17 +9,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     public $userPresent;
-        
+
     //Tools
     public $perPage = 12;
     public $search;
-    protected $queryString = ['search' => ['except' => '']];   
+    protected $queryString = ['search' => ['except' => '']];
 
     //Theme
     protected $paginationTheme = 'bootstrap';

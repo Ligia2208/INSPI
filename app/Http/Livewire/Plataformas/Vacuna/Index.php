@@ -6,9 +6,11 @@ use App\Models\Plataformas\Vacuna;
 use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     //Tools
@@ -31,7 +33,7 @@ class Index extends Component
     {
         $count = Vacuna::count();
         $Vacunas = Vacuna::orderBy('id', 'asc');
-        
+
 
         if($this->search){
             $Vacunas = $Vacunas->where('nombre', 'LIKE', "%{$this->search}%");
@@ -48,8 +50,8 @@ class Index extends Component
             $Vacunas->delete();
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error en la eliminación: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error en la eliminación: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',

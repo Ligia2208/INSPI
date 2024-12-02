@@ -13,16 +13,18 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Intervention\Image\Facades\Image;
 use Spatie\Permission\Models\Role;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
     use WithFileUploads;
-    
+
     public $method;
     public $user;
 
     //foreign
-    public $rolesArray = []; 
+    public $rolesArray = [];
 
     //Tools
     public $imageTmp;
@@ -49,7 +51,7 @@ class Form extends Component
     {
         $roles = Role::orderBy('name')->cursor();
         return view('livewire.user.form', compact('roles'));
-    }    
+    }
 
     public function store(){
         $this->validate();
@@ -65,15 +67,15 @@ class Form extends Component
             Mail::to($this->user->email)->send(new UserNew($this->user, $password));
             session()->flash('alert','Usuario agregado y correo de bienvenida enviado con exito');
             session()->flash('alert-type', 'success');
-            
+
         }catch(Exception $e){
             session()->flash('alert', 'Ocurrio un error al enviar el correo de bienvenida: '.$e->getMessage());
             session()->flash('alert-type', 'success');
         }
 
         return redirect()->route('user.show', $this->user);
-        
-        
+
+
     }
 
     public function update(){
@@ -87,7 +89,7 @@ class Form extends Component
     }
 
     public function saveImage(){
-        
+
         if($this->imageTmp){
 
             $url = $this->imageTmp->store('public/user');
@@ -125,7 +127,7 @@ class Form extends Component
             if(Storage::exists($this->user->image->url)){
                 Storage::delete($this->user->image->url);
             }
-            
+
             $this->user->image()->delete();
             $this->user->image = null;
         }

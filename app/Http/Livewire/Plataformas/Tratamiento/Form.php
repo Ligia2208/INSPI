@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Tratamiento;
 
 use App\Models\Plataformas\Tratamiento;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+
     public $method;
     public $Tratamientos;
 

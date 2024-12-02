@@ -5,10 +5,12 @@ namespace App\Http\Livewire\User;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Password extends Component
 {
-
+    use LivewireAlert;
+    
     public $method;
     public $user;
 
@@ -32,13 +34,13 @@ class Password extends Component
     public function render()
     {
         return view('livewire.user.password');
-    }    
+    }
 
     public function update(){
         $this->validate();
         $this->user->password = Hash::make($this->password);
         $this->user->save();
-        
+
         session()->flash('alert','Contraseña modificada con exito');
         session()->flash('alert-type', 'success');
         return redirect()->route('user.show', $this->user);

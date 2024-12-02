@@ -11,9 +11,11 @@ use App\Models\RecursosHumanos\Persona;
 use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     //Tools

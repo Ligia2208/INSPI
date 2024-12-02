@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Parasito;
 
 use App\Models\Plataformas\Parasito;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+
     public $method;
     public $Parasitos;
 

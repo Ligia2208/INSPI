@@ -15,10 +15,13 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
     use WithFileUploads;
+
     public $method;
     public $EvidenciaTmp;
 

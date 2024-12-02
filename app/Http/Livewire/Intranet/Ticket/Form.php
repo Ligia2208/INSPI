@@ -11,12 +11,14 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\CssSelector\Node\FunctionNode;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 
 class Form extends Component
 {
-
+    use LivewireAlert;
     use WithFileUploads;
-    
+
     public $method;
 
     //Tools
@@ -30,22 +32,22 @@ class Form extends Component
 
     protected function rules()
     {
-        
+
         return [
             'Tickets.titulo' => 'required|max:150',
-            'Tickets.descripcion' => 'required|max:1250',           
+            'Tickets.descripcion' => 'required|max:1250',
         ];
     }
 
     public function mount(Ticket $Ticket, $method){
         $this->Tickets = $Ticket;
         $this->method = $method;
-        
+
     }
 
     public function render()
     {
-        $prioridades = Prioridad::orderBy('id', 'asc')->cursor();    
+        $prioridades = Prioridad::orderBy('id', 'asc')->cursor();
         $this->emit('renderJs');
         return view('livewire.intranet.ticket.form', compact('prioridades'));
     }
@@ -69,7 +71,7 @@ class Form extends Component
         session()->flash('alert', 'Ticket agregado');
         session()->flash('alert-type', 'success');
         return redirect()->route('ticket.index');
-        
+
     }
 
     public function update(){
@@ -79,7 +81,7 @@ class Form extends Component
         session()->flash('alert', 'Ticket actualizado con exito');
         session()->flash('alert-type', 'success');
         return redirect()->route('ticket.index');
-        
+
     }
 
 
@@ -88,7 +90,7 @@ class Form extends Component
             if(Storage::exists($this->Tickets->archivo)){
                 Storage::delete($this->Tickets->archivo);
             }
-            
+
             $path = $this->TicketTmp->store('public/tickets/inspi');
             $this->Tickets->archivo = $path;
         }
@@ -99,7 +101,7 @@ class Form extends Component
             if(Storage::exists($this->Tickets->archivo)){
                 Storage::delete($this->Tickets->archivo);
             }
-            
+
             $this->Tickets->archivo = null;
             $this->Tickets->update();
         }

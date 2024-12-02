@@ -5,9 +5,11 @@ namespace App\Http\Livewire\Setting\Permission;
 use Livewire\Component;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
 
     public $method;
     public $permission;

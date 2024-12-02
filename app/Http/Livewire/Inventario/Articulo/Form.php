@@ -12,9 +12,13 @@ use App\Models\Inventario\Origen;
 use App\Models\Inventario\Estado;
 use App\Models\Inventario\Articulo;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 
 class Form extends Component
 {
+    use LivewireAlert;
+    
     public $method;
     public $Articulos;
 

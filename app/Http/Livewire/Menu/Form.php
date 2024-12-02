@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Menu;
 use App\Models\CoreBase\Area;
 use App\Models\CoreBase\Menu;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+
     public $method;
     public $Areas;
     public $Menues;
@@ -38,7 +41,7 @@ class Form extends Component
     }
 
     public function store(){
-        
+
         $this->validate();
         $newMenuId = 0;
         $newOrdenId = '';
@@ -89,9 +92,9 @@ class Form extends Component
 
             $this->Menues->nivel_id=$newMenuId;
             $this->Menues->orden=$newOrdenId.'.'.$newMenuId;
-            $this->Menues->tipo='MENUITEM';            
+            $this->Menues->tipo='MENUITEM';
         }
-        
+
         $this->Menues->estado='A';
         $this->Menues->save();
         $this->Menues = new Menu();

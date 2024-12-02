@@ -16,12 +16,14 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\CssSelector\Node\FunctionNode;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 
 class Form extends Component
 {
-
+    use LivewireAlert;
     use WithFileUploads;
-    
+
     public $method;
     public $quotation;
 
@@ -32,12 +34,12 @@ class Form extends Component
     public $Eventos;
     public $Areas;
     public $selectedOrigen = null;
-    
+
     protected $listeners = ['render'];
 
     protected function rules()
     {
-        
+
         return [
             'Eventos.area_id' => 'required|numeric',
             'Eventos.tipoactividad_id' => 'required|numeric',
@@ -56,7 +58,7 @@ class Form extends Component
     public function mount(Evento $Evento, $method){
         $this->Eventos = $Evento;
         $this->method = $method;
-        
+
     }
 
     public function render()
@@ -64,14 +66,14 @@ class Form extends Component
         $tiposactividad = Tipoactividad::orderBy('id', 'asc')->cursor();
         $tiposinforme = Tipoinforme::orderBy('id', 'asc')->cursor();
         $areas = Area::orderBy('id', 'asc')->cursor();
-        
+
         $this->emit('renderJs');
         return view('livewire.intranet.evento.form', compact('areas','tiposactividad','tiposinforme'));
     }
 
 
     public function store(){
-        
+
         $this->validate();
 
         $this->Eventos->estado='A';
@@ -110,7 +112,7 @@ class Form extends Component
                                     position: relative;
                                     display: inline-block;
                                     text-align: center;
-                                }                
+                                }
                                 .centrado{
                                     position: absolute;
                                     top: 50%;
@@ -119,18 +121,18 @@ class Form extends Component
                                 }
                             </style>
                             </head>
-                            <body> 
+                            <body>
                                 <div class="contenedor">
                                 <h3><p>Se ha generado una nueva actividad, sirvase revisar la aplicación para coordinar las acciones necesarias.</p></h3>
                                 <h3><p> Actividad: '.$this->Eventos->nombreactividad.'<br> Resumen: '.$this->Eventos->resumen.' <br> Generada desde área/gestión: '.$this->Eventos->area->nombre.'</p></h3>
                                 <h3><p>Este correo se envia como una alerta de actividad desde el CoreInspi</p></h3>
                                 <div class="centrado">
                             </body>
-                            </html>'; 
+                            </html>';
 
-            $mail->Send(); 
-                     
-            
+            $mail->Send();
+
+
         }
         catch (Exception $e){
             $this->alert('error', 'Correo no enviado');
@@ -139,7 +141,7 @@ class Form extends Component
 
         session()->flash('alert', 'Evento agregado');
         session()->flash('alert-type', 'success');
-        
+
         return redirect()->route('evento.index');
     }
 
@@ -153,12 +155,12 @@ class Form extends Component
 
 
     public function saveEvento(){
-        
+
         if($this->EventoTmp){
             if(Storage::exists($this->Eventos->archivo)){
                 Storage::delete($this->Eventos->archivo);
             }
-            
+
             $path = $this->EventoTmp->store('public/eventos/inspi');
             $this->Eventos->archivo = $path;
         }
@@ -169,7 +171,7 @@ class Form extends Component
             if(Storage::exists($this->Eventos->archivo)){
                 Storage::delete($this->Eventos->archivo);
             }
-            
+
             $this->Eventos->archivo = null;
             $this->Eventos->update();
         }

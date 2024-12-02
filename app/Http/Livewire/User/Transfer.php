@@ -8,13 +8,15 @@ use App\Models\User;
 use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Transfer extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     //Object
-    public $user; 
+    public $user;
 
     //Atributes
     public $userIdNew;
@@ -91,15 +93,15 @@ class Transfer extends Component
 
             $this->reset('userIdNew', 'prospectArray');
 
-            $this->alert('success', 
-                    'Transferencia de prospectos con exito ', 
+            $this->alert('success',
+                    'Transferencia de prospectos con exito ',
                     [
                         'showConfirmButton' => false,
                         'timer' => 2000,
                     ]);
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error al transferir: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error al transferir: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',
@@ -122,16 +124,16 @@ class Transfer extends Component
 
             $this->reset('userIdNew', 'prospectArray');
 
-            $this->alert('success', 
-                'Transferencia de clientes con exito ', 
+            $this->alert('success',
+                'Transferencia de clientes con exito ',
                 [
                     'showConfirmButton' => false,
                     'timer' => 2000,
                 ]);
 
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error al transferir: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error al transferir: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',
@@ -147,15 +149,15 @@ class Transfer extends Component
                 array_push($this->prospectArray, "".$prospect->id."");
             }
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error al seleccionar todos los prospectos: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error al seleccionar todos los prospectos: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',
                     'timer' => null,
                 ]);
         }
-        
+
         $this->emit('unblockPage');
     }
 
@@ -166,8 +168,8 @@ class Transfer extends Component
                 array_push($this->clientArray, "".$client->id."");
             }
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error al seleccionar todos los clientes: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error al seleccionar todos los clientes: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',

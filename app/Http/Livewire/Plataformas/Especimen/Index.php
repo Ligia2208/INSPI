@@ -8,9 +8,11 @@ use App\Models\Plataformas\Especimen;
 use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     //Tools
@@ -32,7 +34,7 @@ class Index extends Component
     public function render()
     {
         $count = Especimen::count();
-        $Especimenes = Especimen::orderBy('id', 'asc');       
+        $Especimenes = Especimen::orderBy('id', 'asc');
 
         if($this->search){
             $Especimenes = $Especimenes->where('nombres', 'LIKE', "%{$this->search}%")->orWhere('apellidos', 'LIKE', "%{$this->search}%");
@@ -53,8 +55,8 @@ class Index extends Component
             $Especimenes->delete();
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error en la eliminación: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error en la eliminación: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',

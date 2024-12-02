@@ -14,9 +14,12 @@ use App\Models\RecursosHumanos\Modalidad;
 use App\Models\CoreBase\TipoDiscapacidad;
 use App\Models\User;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
+
     public $method;
     public $Areas;
     public $direcciones;

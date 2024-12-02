@@ -5,12 +5,14 @@ namespace App\Http\Livewire\Soporte\Tecnico;
 use App\Models\Soporte\Tecnico;
 use App\Models\User;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
+    
     public $method;
     public $Tecnicos;
-    //use LivewireAlert;
 
     protected function rules()
     {

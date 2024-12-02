@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Setting\CategoryExpense;
 
 use App\Models\CategoryExpense;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
+    
     public $method;
     public $categoryExpense;
 
@@ -42,7 +45,7 @@ class Form extends Component
         $this->categoryExpense = new CategoryExpense();
         $this->emit('render');
         $this->alert('success', 'Categoría de gasto agregada con exito');
-        
+
     }
 
     public function update(){

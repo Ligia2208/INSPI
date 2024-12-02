@@ -7,9 +7,11 @@ use Exception;
 use Illuminate\Support\Facades\DB;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     //Tools
@@ -31,11 +33,11 @@ class Index extends Component
     public function render()
     {
         $count = DB::table('inspi_intranet.intic_tickets')->join('users','users.id','=','inspi_intranet.intic_tickets.funcionario_id')->count();
-        $Tickets = DB::table('inspi_intranet.intic_tickets')->join('users','users.id','=','inspi_intranet.intic_tickets.funcionario_id')->select('inspi_intranet.intic_tickets.id as id','inspi_intranet.intic_tickets.titulo as titulo','inspi_intranet.intic_tickets.descripcion as descripcion','users.name as usuario')->orderBy('id', 'asc');       
+        $Tickets = DB::table('inspi_intranet.intic_tickets')->join('users','users.id','=','inspi_intranet.intic_tickets.funcionario_id')->select('inspi_intranet.intic_tickets.id as id','inspi_intranet.intic_tickets.titulo as titulo','inspi_intranet.intic_tickets.descripcion as descripcion','users.name as usuario')->orderBy('id', 'asc');
 
         if($this->search){
             $Tickets = $Tickets->where('descripcion', 'LIKE', "%{$this->search}%");
-            $count = $Tickets->count(); 
+            $count = $Tickets->count();
         }
 
         $Tickets = $Tickets->paginate($this->perPage);
@@ -49,8 +51,8 @@ class Index extends Component
             $Tickets->delete();
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error en la eliminación: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error en la eliminación: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',

@@ -8,17 +8,19 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     public $userPresent;
-        
+
     //Tools
     public $perPage = 10;
     public $search;
-    protected $queryString = ['search' => ['except' => '']];   
+    protected $queryString = ['search' => ['except' => '']];
 
     //Theme
     protected $paginationTheme = 'bootstrap';
@@ -31,7 +33,7 @@ class Index extends Component
     public function render()
     {
         $count = Evento::where('estado','=','A')->where('usuario_id','=',Auth::user()->id)->count();
-        $Eventos = Evento::where('estado','=','A')->where('usuario_id','=',Auth::user()->id)->orderBy('id', 'desc');       
+        $Eventos = Evento::where('estado','=','A')->where('usuario_id','=',Auth::user()->id)->orderBy('id', 'desc');
         if($this->search){
             $Eventos = $Eventos->where('nombreactividad', 'LIKE', "%{$this->search}%");
         }
@@ -49,8 +51,8 @@ class Index extends Component
             $Eventos->delete();
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error en la eliminación: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error en la eliminación: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',

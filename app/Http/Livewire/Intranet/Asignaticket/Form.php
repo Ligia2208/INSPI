@@ -5,9 +5,11 @@ namespace App\Http\Livewire\Asignaticket;
 use App\Models\Intranet\Ticket;
 use App\Models\CoreBase\Area;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
     public $method;
     public $Areas;
     public $Tickets;

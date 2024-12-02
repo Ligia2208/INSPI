@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Dieta;
 
 use App\Models\Plataformas\Dieta;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+    
     public $method;
     public $Dietas;
 
@@ -55,6 +58,6 @@ class Form extends Component
         $this->emit('render');
         $this->emit('closeModal');
         return redirect()->route('especimen.index');
-        
+
     }
 }

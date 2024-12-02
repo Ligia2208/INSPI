@@ -4,9 +4,13 @@ namespace App\Http\Livewire\Revision;
 
 use App\Models\Intranet\Revision;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+    
     public $method;
     public $Revisiones;
 
@@ -37,7 +41,7 @@ class Form extends Component
 
     public function store(){
         $this->validate();
-        
+
         $this->Revisiones->save();
         $this->Revisiones = new Revision();
         $this->alert('success', 'Evento 1 agregado con exito');
@@ -47,7 +51,7 @@ class Form extends Component
 
     public function storeCustom(){
         $this->validate();
-        
+
         $this->Revisiones->save();
         $this->Revisiones = new Revision();
         $this->emit('render');

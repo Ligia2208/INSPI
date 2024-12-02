@@ -4,9 +4,12 @@ namespace App\Http\Livewire\Setting\Account;
 
 use App\Models\Account;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
+
     public $method;
     public $account;
 

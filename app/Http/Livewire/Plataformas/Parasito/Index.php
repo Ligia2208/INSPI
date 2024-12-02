@@ -6,9 +6,11 @@ use App\Models\Plataformas\Parasito;
 use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     //Tools
@@ -31,7 +33,7 @@ class Index extends Component
     {
         $count = Parasito::count();
         $Parasitos = Parasito::orderBy('id', 'asc');
-        
+
 
         if($this->search){
             $Parasitos = $Parasitos->where('nombre', 'LIKE', "%{$this->search}%");
@@ -48,8 +50,8 @@ class Index extends Component
             $Parasitos->delete();
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error en la eliminación: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error en la eliminación: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',

@@ -4,10 +4,12 @@ namespace App\Http\Livewire\Setting\PaymentType;
 
 use App\Models\PaymentType;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
-
+    use LivewireAlert;
+    
     public $method;
     public $paymentType;
 
@@ -43,7 +45,7 @@ class Form extends Component
         $this->paymentType = new PaymentType();
         $this->emit('render');
         $this->alert('success', 'Tipo de pago agregada con exito');
-        
+
     }
 
     public function update(){

@@ -13,9 +13,12 @@ use App\Models\CoreBase\Direccion;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Form extends Component
 {
+    use LivewireAlert;
+    
     public $method;
 
     protected function rules()

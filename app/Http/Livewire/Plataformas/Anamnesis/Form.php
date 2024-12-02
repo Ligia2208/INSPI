@@ -4,9 +4,13 @@ namespace App\Http\Livewire\Anamnesis;
 
 use App\Models\Plataformas\Anamnesis;
 use Livewire\Component;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
+    
     public $method;
     public $Anamnesiss;
 

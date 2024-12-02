@@ -5,9 +5,13 @@ namespace App\Http\Livewire\Inventario\Participante;
 use App\Models\Inventario\Participante;
 use Livewire\Component;
 use App\Models\User;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 
 class Form extends Component
 {
+    use LivewireAlert;
+    
     public $method;
     public $Participantes;
     public $Anteriores;

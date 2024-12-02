@@ -6,9 +6,11 @@ use App\Models\Plataformas\Clinica;
 use Exception;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
 
 class Index extends Component
 {
+    use LivewireAlert;
     use WithPagination;
 
     //Tools
@@ -31,7 +33,7 @@ class Index extends Component
     {
         $count = Clinica::count();
         $Clinicas = Clinica::orderBy('id', 'asc');
-        
+
 
         if($this->search){
             $Clinicas = $Clinicas->where('descripcion', 'LIKE', "%{$this->search}%");
@@ -48,8 +50,8 @@ class Index extends Component
             $Clinicas->delete();
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
-            $this->alert('error', 
-                'Ocurrio un error en la eliminación: '.$e->getMessage(), 
+            $this->alert('error',
+                'Ocurrio un error en la eliminación: '.$e->getMessage(),
                 [
                     'showConfirmButton' => true,
                     'confirmButtonText' => 'Entiendo',

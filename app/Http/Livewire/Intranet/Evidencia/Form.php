@@ -9,9 +9,12 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\CssSelector\Node\FunctionNode;
+use Jantinnerezo\LivewireAlert\LivewireAlert;
+
 
 class Form extends Component
-{   
+{
+    use LivewireAlert;
     use WithFileUploads;
     public $method;
     public $evento_id;
@@ -80,9 +83,9 @@ class Form extends Component
             if(Storage::exists($this->Evidencias->archivo)){
                 Storage::delete($this->Evidencias->archivo);
             }
-            
+
             $path = $this->EvidenciaTmp->store('public/evidencias/inspi');
-            $path = substr($path, 7); 
+            $path = substr($path, 7);
             $this->Evidencias->archivo = $path;
         }
     }
@@ -92,7 +95,7 @@ class Form extends Component
             if(Storage::exists($this->Evidencias->archivo)){
                 Storage::delete($this->Evidencias->archivo);
             }
-            
+
             $this->Evidencias->archivo = null;
             $this->Evidencias->update();
         }
