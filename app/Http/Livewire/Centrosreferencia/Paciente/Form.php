@@ -93,11 +93,9 @@ class Form extends Component
         $this->validate();
         $this->Pacientes->update();
         $this->emit('render');
-        $this->alert('success', 'Pacientes data modificada con exito', [
-            'position' => 'top'
-        ]);
+        $this->alert('success', 'Pacientes modificada con exito');
         $this->emit('closeModal');
-        //$this->alert('success', 'Pacientes modificada con exito');
+
     }
 
 }
