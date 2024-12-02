@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ccd7a75b2f5568342175350989cc98c6",
+    "content-hash": "0b908984368556e8c4b89a0409c650b6",
     "packages": [
         {
             "name": "adldap2/adldap2",
@@ -2017,16 +2017,16 @@
         },
         {
             "name": "jantinnerezo/livewire-alert",
-            "version": "2.2.7",
+            "version": "v3.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jantinnerezo/livewire-alert.git",
-                "reference": "a017d3f41024ca3a589a6b0db5d0af3efe532fa9"
+                "reference": "53a4c04d413528a335864f5f6eb1f3ce3e42c963"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jantinnerezo/livewire-alert/zipball/a017d3f41024ca3a589a6b0db5d0af3efe532fa9",
-                "reference": "a017d3f41024ca3a589a6b0db5d0af3efe532fa9",
+                "url": "https://api.github.com/repos/jantinnerezo/livewire-alert/zipball/53a4c04d413528a335864f5f6eb1f3ce3e42c963",
+                "reference": "53a4c04d413528a335864f5f6eb1f3ce3e42c963",
                 "shasum": ""
             },
             "require": {
@@ -2073,15 +2073,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jantinnerezo/livewire-alert/issues",
-                "source": "https://github.com/jantinnerezo/livewire-alert/tree/2.2.7"
+                "source": "https://github.com/jantinnerezo/livewire-alert/tree/v3.0"
             },
-            "funding": [
-                {
-                    "url": "https://www.paypal.com/paypalme/jantinn",
-                    "type": "custom"
-                }
-            ],
-            "time": "2023-02-15T18:05:31+00:00"
+            "time": "2023-07-21T18:17:43+00:00"
         },
         {
             "name": "laravel-lang/lang",
