@@ -12,6 +12,7 @@ use App\Http\Controllers\CentrosReferencia\Preanalitica\PreanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
+use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
 use App\Http\Controllers\CentrosReferencia\Resultadocrn\ResultadocrnController;
 use App\Http\Controllers\CentrosReferencia\VisorResultados\VisorResultadosController;
 use App\Http\Controllers\CentrosReferencia\Responsable\ResponsableController;
@@ -60,6 +61,9 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('resultados', ResultadoController::class)->parameters(['resultados' => 'resultado'])->names('resultado');
 
         //CRNs Plataformas Resultados
+        Route::resource('resultadosmsp', ResultadomspController::class)->parameters(['resultados' => 'resultado'])->names('resultadomsp');
+
+        //CRNs Plataformas Resultados
         Route::resource('resultadoscrn', ResultadocrnController::class)->parameters(['resultados' => 'resultado'])->names('resultadocrn');
 
         //CRNs Plataformas Analitica de Resultados
@@ -77,4 +81,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/informefinal/informep/{id}', [PostanaliticaController::class, 'informep'])->name('informep');
 
         Route::get('/informefinal/informer/{id}', [AnaliticaController::class, 'informer'])->name('informer');
+
+        Route::get('/informefinal/informemsp/{id}', [ResultadomspController::class, 'informemsp'])->name('informemsp');
 });

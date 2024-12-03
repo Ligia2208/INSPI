@@ -21,7 +21,7 @@
         <div class="d-flex flex-column-fluid">
             <div class="container-fluid">
                 <div class="row">
-                    @include('centrosreferencia.resultado.menu.index')
+                    @include('centrosreferencia.resultadomsp.menu.index')
                 </div>
                 <div class="row">
                     @livewire('centrosreferencia.visorresultados.index')
