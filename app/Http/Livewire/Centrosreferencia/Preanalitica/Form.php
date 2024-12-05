@@ -30,7 +30,7 @@ class Form extends Component
 
     use WithFileUploads;
     use LivewireAlert;
-    
+
     public $method;
 
     //Tools
@@ -202,13 +202,15 @@ class Form extends Component
         else{
             $newToma->embarazo = 'N';
         }
-        if ($this->Preanaliticas->gestacion==1){
-            $newToma->gestacion = 'S';
+
+        $newToma->gestacion = $this->Preanaliticas->gestacion;
+        if ($this->Preanaliticas->laboratorio==1){
+            $newToma->laboratorio = 'S';
         }
         else{
-            $newToma->gestacion = 'N';
+            $newToma->laboratorio = 'N';
         }
-        $newToma->laboratorio = $this->Preanaliticas->laboratorio;
+
         $newToma->nombre_laboratorio = $this->Preanaliticas->nombre_laboratorio;
         $newToma->sedes_id = $this->Preanaliticas->sedes_id;
         $newToma->crns_id = $this->Preanaliticas->crns_id;
