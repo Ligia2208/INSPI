@@ -313,12 +313,6 @@ Route::middleware(['auth'])->group(function () {
 
         Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
 
-        //Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
-        //Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
-        //Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
-        Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
-
-
         //Route::middleware('guest')->get('/EncuestaSatisfaccion/{id_url}', 'EncuestaController@doEncuestaSatisfaccion')->name('encuesta.doEncuestaSatisfaccion');
 
     });
