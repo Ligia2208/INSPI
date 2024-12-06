@@ -13,8 +13,11 @@ $( function () {
 function agregarPregunta(){
 
     $('#contenedorEncuesta').append(`
-        <div class="row mt-3 px-0   " id="contenedorPregunta${contPregunta}">
-            <h3 class="mb-0 text-uppercase text-center ps-4 pe-0"> Pregunta ${contPregunta} </h3>
+        <hr class="my-2">
+        <div class="my-5 px-0 col-md-12 row" id="contenedorPregunta${contPregunta}">
+            <div class="col-md-12">
+                <h3 class="mb-0 text-uppercase text-center ps-4 pe-0"> Pregunta ${contPregunta} </h3>
+            </div>
             <div class="col-md-6 mt-2 ps-4 pe-0">
                 <label for="preguntaName" class="form-label">Nombre de la Pregunta</label>
                 <input type="text" id="preguntaName" name="preguntaName" class="form-control required="" autofocus="" placeholder="Ingrese el nombre de la pregunta">
@@ -26,8 +29,8 @@ function agregarPregunta(){
             </div>
 
             <div class="col-md-3 mt-2 ps-4 pe-0 d-flex justify-content-center align-items-center">
-                <label for="abrindada" class="form-label me-3">Atención Brindada</label> 
-                <label class="switch"> 
+                <label for="abrindada" class="form-label mr-3">Atención Brindada</label> 
+                <label class="switch2"> 
                     <input type="checkbox" id="abrindada${contPregunta}" name="abrindada">
                     <span class="slider round"></span>
                 </label>

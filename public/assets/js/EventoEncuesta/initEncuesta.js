@@ -120,14 +120,6 @@ $( function () {
                         _token: "{{ csrf_token() }}",
                     },
                     cache: false,
-                    beforeSend: function () {
-                        $('body').waitMe({
-                            effect: 'roundBounce', //'roundBounce',//'bounce','win8','orbit','ios','win8_linear'
-                            text: 'Por favor espere...', //'Please waiting...',
-                            bg: 'rgba(255,255,255,0.7)',
-                            color: '#A52A2A'
-                        });
-                    },
                     success: function(res){
                         //console.log(res);
                         Swal.fire({
@@ -167,14 +159,6 @@ $( function () {
                 'id_documento': $(this).data('id_documento'),
             },
             cache: false,
-            beforeSend: function () {
-                $('body').waitMe({
-                    effect: 'roundBounce', //'roundBounce',//'bounce','win8','orbit','ios','win8_linear'
-                    text: 'Por favor espere...', //'Please waiting...',
-                    bg: 'rgba(255,255,255,0.7)',
-                    color: '#A52A2A'
-                });
-            },
             success: function(res){
 
             var modalCrearCatalogo = bootbox.dialog({
@@ -270,14 +254,6 @@ $( function () {
                 _token: "{{ csrf_token() }}",
             },
             cache: false,
-            beforeSend: function () {
-                $('body').waitMe({
-                    effect: 'roundBounce', //'roundBounce',//'bounce','win8','orbit','ios','win8_linear'
-                    text: 'Por favor espere...', //'Please waiting...',
-                    bg: 'rgba(255,255,255,0.7)',
-                    color: '#A52A2A'
-                });
-            },
             success: function(res){
 
                 $('#modalContent').text('');
@@ -362,14 +338,6 @@ $( function () {
                         _token: "{{ csrf_token() }}",
                     },
                     cache: false,
-                    beforeSend: function () {
-                        $('body').waitMe({
-                            effect: 'roundBounce', //'roundBounce',//'bounce','win8','orbit','ios','win8_linear'
-                            text: 'Por favor espere...', //'Please waiting...',
-                            bg: 'rgba(255,255,255,0.7)',
-                            color: '#A52A2A'
-                        });
-                    },
                     success: function(res){
 
                         if(res.data){
@@ -424,14 +392,6 @@ $( function () {
                 _token: "{{ csrf_token() }}",
             },
             cache: false,
-            beforeSend: function () {
-                $('body').waitMe({
-                    effect: 'roundBounce', //'roundBounce',//'bounce','win8','orbit','ios','win8_linear'
-                    text: 'Por favor espere...', //'Please waiting...',
-                    bg: 'rgba(255,255,255,0.7)',
-                    color: '#A52A2A'
-                });
-            },
             success: function(res) {
                 console.log(res);
             

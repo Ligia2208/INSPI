@@ -21,7 +21,7 @@ class Evento extends Model
         ];
 
     //Evento
-    protected static $logName = 'Laboratorio';
+    protected static $logName = 'Evento';
     protected static $logAttributes = ['*'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;

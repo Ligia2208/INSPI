@@ -1833,9 +1833,6 @@ class EncuestaController extends Controller
             ->leftJoin('db_inspi_encuesta.enc_tipoencuesta AS t_enc', 't_enc.id', '=', 'te.tipoencuesta_id')
             ->where('enc_evento.id', $id)->orderBy('te.tipoencuesta_id', 'asc')->get();
 
-        //$tipoencu_id = $request->query('tipousu_id');
-        //$id_evento   = $request->query('id_evento');
-
         foreach ($links as $link) {
             $data = [
                 'id_evento' => $link->id_evento,

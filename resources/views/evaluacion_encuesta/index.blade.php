@@ -1,5 +1,3 @@
-
-
 @extends('layouts.main')
 
 @section('title', 'Modulo Encuesta')

@@ -319,5 +319,14 @@ Route::middleware(['auth'])->group(function () {
     /* =========================== ENCUESTAS =========================== */
 
 
+    Route::middleware('guest')->group(function () {
+        Route::get('/EncuestaSatisfaccion/{id_url}', [EncuestaController::class, 'doEncuestaSatisfaccion'])->name('encuesta.doEncuestaSatisfaccion');
+        Route::post('/encuestas/guardarEncuesta', [EncuestaController::class, 'guardarEncuesta'])->name('encuesta.guardarEncuesta');
+        Route::get('/completed', [EncuestaController::class, 'completed'])->name('encuesta.completed');
+    
+        Route::post('/result_post', [InventarioController::class, 'result_post'])->name('inventario.result_post');
+    
+    });
+
 
 });
