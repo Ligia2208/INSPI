@@ -204,6 +204,26 @@ return [
             ]) : [],
         ],
 
+        'encuestas' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_ENC', '127.0.0.1'),
+            'port' => env('DB_PORT_ENC', '3306'),
+            'database' => env('DB_DATABASE_ENC', 'forge'),
+            'username' => env('DB_USERNAME_ENC', 'forge'),
+            'password' => env('DB_PASSWORD_ENC', ''),
+            'unix_socket' => env('DP_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => 'InnoDB',
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

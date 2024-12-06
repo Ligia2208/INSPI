@@ -1,0 +1,35 @@
+<?php
+
+namespace App\Models\EventoEncuesta\Periodo;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Periodo extends Model
+{
+
+    protected $fillable =
+        [
+            'id',
+            'nombre',
+            'estado',
+            'created_at',
+            'updated_at'
+        ];
+
+    //Logs
+    protected static $logName = 'Periodo';
+    protected static $logAttributes = ['*'];
+    protected static $logOnlyDirty = true;
+    protected static $submitEmptyLogs = false;
+    protected $connection = 'encuestas';
+    public $table = 'enc_periodo';
+    //protected $primaryKey = 'id';
+
+
+    public function getDescriptionForEvent(string $eventName)
+    {
+        return "Un Módulo ha sido {$eventName}";
+    }
+
+
+}

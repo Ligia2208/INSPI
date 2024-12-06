@@ -246,10 +246,83 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/inventario/pdf', 'InventarioController@pdf')->name('inventario.pdf');
 
-        Route::get('/download/{fileName}', 'InventarioController@downloadExcel')->name('download.excel');
+        Route::get('/download/{fileName}', 'InventarioController@downloadExcel')->name('download.excel'); 
 
     });
     /* =========================== INVENTARIO =========================== */
+
+
+
+
+    /* =========================== ENCUESTAS =========================== */
+    Route::group(['namespace' => 'App\Http\Controllers\EvaluacionEncuesta'], function(){
+
+        Route::get('/encuestas', 'EncuestaController@index')->name('encuesta'); //vista principal
+
+        Route::get('/encuestas/create', 'EncuestaController@createView')->name('encuesta.createView'); // vista de crear encuesta
+        Route::post('/encuestas/save', 'EncuestaController@saveEncuesta')->name('encuesta.saveEncuesta');
+        Route::get('/encuestas/listarEncuesta', 'EncuestaController@listEncuesta')->name('encuesta.listEncuesta'); // vista de listar Encuestas
+        Route::get('/encuestas/eliminarEncuesta/{id}', 'EncuestaController@eliminarEncuesta')->name('encuesta.eliminarEncuesta');//eliminar encuesta
+        Route::get('/encuestas/visualizarEncuesta', 'EncuestaController@visualizarEncuesta')->name('encuesta.visualizarEncuesta');
+
+
+        Route::get('/encuestas/listarLaboratorio', 'EncuestaController@listLaboratorio')->name('encuesta.listLaboratorio'); // vista de listar laboratorio
+        Route::get('/encuestas/crearLaboratorio', 'EncuestaController@createLaboratorio')->name('encuesta.createLaboratorio'); // vista de crear laboratorio
+        Route::get('/encuestas/editLaboratorio/{id}', 'EncuestaController@editLaboratorio')->name('encuesta.editLaboratorio');
+        Route::get('/encuestas/eliminarLaboratorio/{id}', 'EncuestaController@eliminarLaboratorio')->name('encuesta.eliminarLaboratorio');//eliminar seguimiento
+
+
+        Route::post('/encuestas/saveLaboratorio', 'EncuestaController@saveLaboratorio')->name('encuesta.saveLaboratorio');
+        Route::get('/encuestas/enlazarEncuesta', 'EncuestaController@link_encuesta')->name('encuesta.link_encuesta'); // vista de crear laboratorio
+        Route::post('/encuestas/saveTipoEncuesta', 'EncuestaController@saveTipoEncuesta')->name('encuesta.saveTipoEncuesta');//para guardar el enlace, tipo y encuesta
+        Route::get('/encuestas/crearUsuario', 'EncuestaController@createUsuario_lab')->name('encuesta.createUsuario_lab'); // vista de crear usuarios
+        Route::get('/encuestas/createUsuario_int', 'EncuestaController@createUsuario_int')->name('encuesta.createUsuario_int'); // vista de crear usuarios interno
+        Route::post('/encuestas/saveUsuarioInt', 'EncuestaController@saveUsuarioInt')->name('encuesta.saveUsuarioInt');//para guardar el usuario de tipo interno
+        Route::post('/encuestas/deleteUsuarioInt', 'EncuestaController@deleteUsuarioInt')->name('encuesta.deleteUsuarioInt');//para eliminar el usuario de tipo interno
+        Route::get('/encuestas/createUsuario_nopre', 'EncuestaController@createUsuario_nopre')->name('encuesta.createUsuario_nopre'); // vista de crear usuarios no presencial
+        Route::post('/encuestas/saveUsuarioNopre', 'EncuestaController@saveUsuarioNopre')->name('encuesta.saveUsuarioNopre');//para guardar el usuario de tipo externo no presencial
+        Route::post('/encuestas/deleteUsuarioNopre', 'EncuestaController@deleteUsuarioNopre')->name('encuesta.deleteUsuarioNopre');//para eliminar el usuario de tipo externo no presencial
+        Route::get('/encuestas/createUsuario_pre', 'EncuestaController@createUsuario_pre')->name('encuesta.createUsuario_pre'); // vista de crear usuarios externo presencial
+        Route::post('/encuestas/saveUsuarioPre', 'EncuestaController@saveUsuarioPre')->name('encuesta.saveUsuarioPre');//para guardar el usuario de tipo externo presencial
+        Route::post('/encuestas/deleteUsuarioPre', 'EncuestaController@deleteUsuarioPre')->name('encuesta.deleteUsuarioPre');//para eliminar el usuario de tipo externo presencial
+        Route::get('/encuestas/crearEvento', 'EncuestaController@createEvento')->name('encuesta.createEvento'); // vista de crear laboratorio
+        Route::post('/encuestas/saveEvento', 'EncuestaController@saveEvento')->name('encuesta.saveEvento');
+        Route::post('/encuestas/moveUsuarioNopre', 'EncuestaController@moveUsuarioNopre')->name('encuesta.moveUsuarioNopre');
+        Route::get('/encuestas/editUsuario_nopre', 'EncuestaController@editUsuario_nopre')->name('encuesta.editUsuario_nopre'); // vista de crear usuarios externo presencial
+        Route::post('/encuestas/saveEditUsuarioNopre', 'EncuestaController@saveEditUsuarioNopre')->name('encuesta.saveEditUsuarioNopre');//para guardar el usuario de tipo externo no presencial
+
+
+        Route::get('/laboratoriosTipo/{id}', 'EncuestaController@laboratoriosTipo')->name('encuesta.laboratoriosTipo');
+        Route::get('/encuestas/usuEncuesta', 'EncuestaController@usuEncuesta')->name('encuesta.usuEncuesta'); // vista para visualizar todas las encuestas del lab
+        Route::get('/encuestas/getEncuestas', 'EncuestaController@getEncuestas')->name('encuesta.getEncuestas');
+        Route::get('/encuestas/getEncuestasTotales', 'EncuestaController@getEncuestasTotales')->name('encuesta.getEncuestasTotales');
+        Route::get('/eventoCorreo/{id}', 'EncuestaController@eventoCorreo')->name('encuesta.eventoCorreo');
+
+
+        Route::get('/obtenerDepartamentosEncuesta/{id}', 'EncuestaController@departamentos')->name('encuesta.departamentos');//devuelve departamento
+        Route::get('/obtenerLaboratoriosEncuesta/{id}', 'EncuestaController@laboratorios')->name('encuesta.laboratorios');//devuelve departamento
+
+        Route::get('/homeUsuario', 'EncuestaController@homeUsuario')->name('encuesta.homeUsuario'); //vista principal
+        Route::get('/encuestas/doEncuesta', 'EncuestaController@doEncuesta')->name('encuesta.doEncuesta');
+        Route::get('/encuestas/finishEncuesta', 'EncuestaController@finishEncuesta')->name('encuesta.finishEncuesta');
+        Route::post('/encuestas/saveUser', 'EncuestaController@saveUser')->name('encuesta.saveUser');
+
+        Route::get('encuestas/reportNoPresencial', 'EncuestaController@reportNoPresencial')->name('encuesta.reportNoPresencial');
+
+        Route::get('/obtenerLink/{id}', 'EncuestaController@obtenerLink')->name('encuesta.obtenerLink');//devuelve departamento
+
+        Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
+
+        //Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
+        //Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
+        //Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
+        Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
+
+
+        //Route::middleware('guest')->get('/EncuestaSatisfaccion/{id_url}', 'EncuestaController@doEncuestaSatisfaccion')->name('encuesta.doEncuestaSatisfaccion');
+
+    });
+    /* =========================== ENCUESTAS =========================== */
 
 
 
