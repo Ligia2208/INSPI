@@ -2222,9 +2222,8 @@ class EncuestaController extends Controller
         
         $tipoencuesta_id = 0;
         $laboratorio_id = 0;
-        
 
-        return view('evaluacion_encuesta.visualizarEncuesta',compact('Modulos','Opciones', 'encuestaArray', 'tipo', 'tipoencuesta_id', 'laboratorio_id', 'id_evento', 'servicios'));
+        return view('evaluacion_encuesta.visualizarEncuesta',compact('encuestaArray', 'tipo', 'tipoencuesta_id', 'laboratorio_id', 'id_evento', 'servicios'));
 
     }
     /* TRAER LA VISTA PARA VISUALIZAR LA ENCUESTA */
