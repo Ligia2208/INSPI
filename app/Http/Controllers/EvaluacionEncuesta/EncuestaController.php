@@ -94,40 +94,6 @@ class EncuestaController extends Controller
 
         $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $usuarioInf = User::select('db_inspi.r.name as role_name', 'db_inspi.ar.id as id_area')
-        ->join('db_inspi.role_user as ro', 'users.id', '=', 'ro.user_id')
-        ->join('db_inspi.roles as r', 'r.id', '=', 'ro.role_id')
-        ->join('db_inspi.inspi_area as ar', 'ar.id', '=', 'users.id_area')
-        ->where('users.id', '=', $id_usuario)
-        //->whereIn('r.name', ['Gerente', 'Secretaria'])
-        ->first();
-
-
-
         if(request()->ajax()) {
 
             return datatables()->of($evento = Evento::select('lab.descripcion as laboratorio_id', 'enc_evento.id', 'enc_evento.nombre',
@@ -141,7 +107,7 @@ class EncuestaController extends Controller
         }
 
         //respuesta para la vista
-        return view('evaluacion_encuesta.index', compact('Modulos','Opciones'));
+        return view('evaluacion_encuesta.index');
     }
 
 
@@ -160,30 +126,7 @@ class EncuestaController extends Controller
     /* TRAE LA VISTA PARA CREAR LA ENCUESTA */
     public function createView(){
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
-
-        return view('evaluacion_encuesta.create_encuesta',compact('Modulos','Opciones'));
+        return view('evaluacion_encuesta.create_encuesta');
     }
     /* TRAE LA VISTA PARA CREAR LA ENCUESTA */
 
@@ -233,18 +176,6 @@ class EncuestaController extends Controller
 
             }
 
-
-            /*
-            // Verificar si las preguntas se crearon correctamente
-            if ($pregunta1 && $pregunta2) {
-                // Ã‰xito al crear la encuesta y las preguntas
-                return "Encuesta y preguntas creadas con Ã©xito";
-            } else {
-                // Manejar error al crear preguntas
-                return "Error al crear preguntas";
-            }
-            */
-
             return response()->json(['message' => 'Encuesta guardada exitosamente', 'data' => true], 200);
 
         } else {
@@ -260,39 +191,8 @@ class EncuestaController extends Controller
     /* TRAE LA VISTA PARA LISTAR ENCUESTA */
     public function listEncuesta(){
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
-
         if(request()->ajax()) {
 
-            /*
-            $resultado = DB::table('enc_encuesta AS e')
-            ->select('e.id AS id', 'e.nombre AS nombre', 'e.descripcion AS descripcion', 'e.estado AS estado', DB::raw('DATE(created_at) as fecha'), DB::raw('COUNT(p.id) AS numero_preguntas'))
-            ->leftJoin('enc_preguntas AS p', 'e.id', '=', 'p.encuesta_id')
-            ->groupBy('e.id', 'e.nombre')
-            ->orderBy('e.id')
-            ->get();
-            */
             return datatables()->of(DB::table('db_inspi_encuesta.enc_encuesta AS e')
                                     ->select('e.id AS id', 'e.nombre AS nombre', 'e.descripcion AS descripcion', 'e.estado AS estado', DB::raw('DATE(e.created_at) as fecha'), DB::raw('COUNT(p.id) AS numero_preguntas'))
                                     ->leftJoin('db_inspi_encuesta.enc_preguntas AS p', 'e.id', '=', 'p.encuesta_id')
@@ -305,7 +205,7 @@ class EncuestaController extends Controller
 
         }
 
-        return view('evaluacion_encuesta.list_encuesta',compact('Modulos','Opciones'));
+        return view('evaluacion_encuesta.list_encuesta');
 
     }
     /* TRAE LA VISTA PARA LISTAR ENCUESTA */
@@ -315,29 +215,6 @@ class EncuestaController extends Controller
     /* TRAE LA VISTA PARA LISTAR LABORATORIO */
     public function listLaboratorio(){
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
-
         if(request()->ajax()) {
 
             return datatables()->of(DB::table('db_inspi_encuesta.enc_laboratorio AS e')
@@ -345,15 +222,13 @@ class EncuestaController extends Controller
                                     ->leftJoin('db_inspi.inspi_area AS p', 'e.area_id', '=', 'p.id')
                                     ->leftJoin('db_inspi.inspi_czonal AS d', 'p.czonal_id', '=', 'd.id')
                                     ->where('e.estado', '=', 'A')
-                                    //->groupBy('e.id', 'p.nombre')
-                                    //->orderBy('e.id')
                                     )
             ->addIndexColumn()
             ->make(true);
 
         }
 
-        return view('evaluacion_encuesta.list_laboratorio ',compact('Modulos','Opciones'));
+        return view('evaluacion_encuesta.list_laboratorio ');
 
     }
     /* TRAE LA VISTA PARA LISTAR LABORATORIO */
@@ -362,63 +237,17 @@ class EncuestaController extends Controller
     /* TRAE LA VISTA PARA CREAR LABORATORIO */
     public function createLaboratorio(){
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
-
         $coordina = Czonal::all();
 
         $tipoEncuesta = TipoEncuesta::select('*')->where('estado', 'A')->get();
 
-        return view('evaluacion_encuesta.create_laboratorio',compact('Modulos','Opciones','coordina', 'tipoEncuesta'));
+        return view('evaluacion_encuesta.create_laboratorio',compact('coordina', 'tipoEncuesta'));
     }
     /* TRAE LA VISTA PARA CREAR LABORATORIO */
 
 
     /* TRAE LA VISTA PARA EDITAR LABORATORIO */
     public function editLaboratorio($id){
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
 
         $coordina = Czonal::all();
 
@@ -432,7 +261,7 @@ class EncuestaController extends Controller
 
         $datosLaboraEncue = LaboratorioEncuesta::where('estado', 'A')->where('laboratorio_id', $id)->get();
 
-        return view('evaluacion_encuesta.edit_laboratorio',compact('Modulos','Opciones','coordina', 'tipoEncuesta', 'datosLabora', 'datosLaboraEncue'));
+        return view('evaluacion_encuesta.edit_laboratorio',compact('coordina', 'tipoEncuesta', 'datosLabora', 'datosLaboraEncue'));
     }
     /* TRAE LA VISTA PARA EDITAR LABORATORIO */
 
@@ -484,8 +313,6 @@ class EncuestaController extends Controller
 
         // Verifica si el laboratorio fue creado o si ya existía
         $laboratorioCreado = $laboratorio->wasRecentlyCreated; // True si se creó un nuevo registro
-
-
         $laboratorioId = $laboratorio->id;
 
         if($laboratorio){
@@ -524,33 +351,10 @@ class EncuestaController extends Controller
     /* TRAE LA VISTA PARA CREAR LABORATORIO */
     public function link_encuesta(){
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
-
         $tipoEncuesta = TipoEncuesta::select('*')->where('estado', 'A')->get();
         $encuestas    = Encuesta::select('*')->where('estado', 'A')->get();
 
-        return view('evaluacion_encuesta.link_encuesta',compact('Modulos','Opciones','encuestas', 'tipoEncuesta'));
+        return view('evaluacion_encuesta.link_encuesta',compact('encuestas', 'tipoEncuesta'));
     }
     /* TRAE LA VISTA PARA CREAR LABORATORIO */
 
@@ -585,29 +389,6 @@ class EncuestaController extends Controller
 
     /* TRAE LA VISTA PARA CREAR USUARIO LABORATORIO */
     public function createUsuario_lab(){
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
 
         $tipoEncuesta = TipoEncuesta::select('*')->where('estado', 'A')->get();
         $encuestas    = Encuesta::select('*')->where('estado', 'A')->get();
@@ -649,7 +430,7 @@ class EncuestaController extends Controller
         }
 
 
-        return view('evaluacion_encuesta.createUsuario_lab',compact('Modulos','Opciones','encuestas', 'tipoEncuesta', 'laboratorios', 'laboratoriosEncuesta'));
+        return view('evaluacion_encuesta.createUsuario_lab',compact('encuestas', 'tipoEncuesta', 'laboratorios', 'laboratoriosEncuesta'));
 
     }
     /* TRAE LA VISTA PARA CREAR USUARIO LABORATORIO */
@@ -658,32 +439,8 @@ class EncuestaController extends Controller
 
     /* TRAE LA VISTA PARA CREAR USUARIO INTERNOS */
     public function createUsuario_int(Request $request){
-        //$area_id        = $request->query('area_id');
-        //$laboratorio_id = $request->query('laboratorio_id');
+
         $tipoencu_id    = $request->query('tipoencu_id');
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
 
         $data = DB::table('db_inspi_encuesta.enc_laboratorioencuesta AS el')
                 ->select('el.laboratorio_id', 'l.area_id', 't.nombre', 't.id')
@@ -700,18 +457,6 @@ class EncuestaController extends Controller
         //->where('inspi_area.id', '=', $data[0]->area_id)
         ->where('users.estado', '=', 'A')->get();
 
-        //UsuarioLaboratorio;  tipoencuesta_id
-
-        /*
-        $usuariosLab = Usuario::select('enc_usuario.nombre', 'enc_usuario.apellido', 'enc_usuario.id', 'enc_laboratorio.id as laboratorio_id')
-        ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi_encuesta.enc_usuario.id')
-        ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
-        ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
-        ->where('enc_laboratorio.id', '=', $data[0]->laboratorio_id)
-        ->where('enc_tipoencuesta.tipo', '=', 'I')
-        ->where('enc_usuario.estado', '=', 'A')->get();
-        */
-
         $usuariosLab = User::select('users.name as nombre', 'users.nom_user as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
         ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
         ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
@@ -721,7 +466,7 @@ class EncuestaController extends Controller
         ->where('enc_usuariolaboratorio.estado', '=', 'A')
         ->where('users.estado', '=', 'A')->get();
 
-        return view('evaluacion_encuesta.createUsuario_int',compact('Modulos','Opciones', 'usuarios', 'usuariosLab', 'laboratorio_id', 'tipoencuesta_id'));
+        return view('evaluacion_encuesta.createUsuario_int',compact('usuarios', 'usuariosLab', 'laboratorio_id', 'tipoencuesta_id'));
 
     }
     /* TRAE LA VISTA PARA CREAR USUARIO INTERNOS */
@@ -769,16 +514,6 @@ class EncuestaController extends Controller
 
             }
 
-            /*
-            $usuariosLab = Usuario::select('enc_usuario.nombre', 'enc_usuario.apellido', 'enc_usuario.id', 'enc_laboratorio.id as laboratorio_id')
-            ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi_encuesta.enc_usuario.id')
-            ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
-            ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
-            ->where('enc_laboratorio.id', '=', $request->laboratorio_id)
-            ->where('enc_tipoencuesta.tipo', '=', 'I')
-            ->where('enc_usuario.estado', '=', 'A')->get();
-            */
-
             $usuariosLab = User::select('users.name as nombre', 'users.nom_user as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
             ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
             ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
@@ -825,24 +560,14 @@ class EncuestaController extends Controller
         $usuarioEnc->estado = 'E';
         $usuarioEnc->save();
 
-        /*
-        $usuariosLab = Usuario::select('enc_usuario.nombre', 'enc_usuario.apellido', 'enc_usuario.id', 'enc_laboratorio.id as laboratorio_id')
-        ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi_encuesta.enc_usuario.id')
-        ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
-        ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
-        ->where('enc_laboratorio.id', '=', $request->laboratorio_id)
-        ->where('enc_tipoencuesta.tipo', '=', 'I')
-        ->where('enc_usuario.estado', '=', 'A')->get();
-        */
-
         $usuariosLab = User::select('users.name as nombre', 'users.nom_user as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
-        ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
-        ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
-        ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
-        ->where('enc_laboratorio.id', '=', $request->laboratorio_id)
-        ->where('enc_tipoencuesta.tipo', '=', 'I')
-        ->where('enc_usuariolaboratorio.estado', '=', 'A')
-        ->where('users.estado', '=', 'A')->get();
+            ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
+            ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
+            ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
+            ->where('enc_laboratorio.id', '=', $request->laboratorio_id)
+            ->where('enc_tipoencuesta.tipo', '=', 'I')
+            ->where('enc_usuariolaboratorio.estado', '=', 'A')
+            ->where('users.estado', '=', 'A')->get();
 
         if ($usuarioEnc) {
 
@@ -863,29 +588,6 @@ class EncuestaController extends Controller
     public function createUsuario_nopre(Request $request){
 
         $tipoencu_id    = $request->query('tipoencu_id');
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
 
         $data = DB::table('db_inspi_encuesta.enc_laboratorioencuesta AS el')
                 ->select('el.laboratorio_id', 'l.area_id', 't.nombre', 't.id')
@@ -909,7 +611,7 @@ class EncuestaController extends Controller
             //->where('enc_usuariolaboratorio.estado', '=', 'A')
             /*->where('users.estado', '=', 'A')*/->get();
 
-        return view('evaluacion_encuesta.createUsuario_nopre',compact('Modulos','Opciones', 'usuariosLab', 'laboratorio_id', 'tipoencuesta_id'));
+        return view('evaluacion_encuesta.createUsuario_nopre',compact('usuariosLab', 'laboratorio_id', 'tipoencuesta_id'));
 
     }
     /* TRAE LA VISTA PARA CREAR USUARIO EXTERNO NO PRESENCIAL */
@@ -928,22 +630,6 @@ class EncuestaController extends Controller
             'laboratorio_id'  => 'required|string',
             'tipoencuesta_id' => 'required|string'
         ]);
-
-
-        /*
-        // Guardar datos en la otra tabla
-        $usuarioEnc = new Usuario();
-        $usuarioEnc->usuario_id  = '';
-        $usuarioEnc->nombre      = $request->nombreUser;
-        $usuarioEnc->descripcion = 'Usuario externo no presencial';
-        $usuarioEnc->apellido    = $request->apellidoUser;
-        $usuarioEnc->correo      = $request->correoUser;
-        $usuarioEnc->hospital    = $request->hospitalUser;
-        $usuarioEnc->password    = 'Inspi2024.';
-        $usuarioEnc->estado      = 'A';
-        $usuarioEnc->save();
-        */
-        
 
         $result = DB::table('db_inspi_encuesta.enc_laboratorio as lab')
             ->select('are.id as area_id', 'are.czonal_id', 'are.institucion_id')
@@ -1128,29 +814,6 @@ class EncuestaController extends Controller
 
         $tipoencu_id    = $request->query('tipoencu_id');
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
-
         $data = DB::table('db_inspi_encuesta.enc_laboratorioencuesta AS el')
                 ->select('el.laboratorio_id', 'l.area_id', 't.nombre', 't.id')
                 ->leftJoin('db_inspi_encuesta.enc_laboratorio AS l', 'el.laboratorio_id', '=', 'l.id')
@@ -1166,18 +829,6 @@ class EncuestaController extends Controller
         ->where('inspi_area.id', '=', $data[0]->area_id)
         ->where('users.estado', '=', 'A')->get();
 
-        //UsuarioLaboratorio;  tipoencuesta_id
-
-        /*
-        $usuariosLab = Usuario::select('enc_usuario.nombre', 'enc_usuario.apellido', 'enc_usuario.id', 'enc_laboratorio.id as laboratorio_id')
-        ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi_encuesta.enc_usuario.id')
-        ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
-        ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
-        ->where('enc_laboratorio.id', '=', $data[0]->laboratorio_id)
-        ->where('enc_tipoencuesta.tipo', '=', 'P')
-        ->where('enc_usuario.estado', '=', 'A')->get();
-        */
-
         $usuariosLab = User::select('users.name as nombre', 'users.nom_user as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
         ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
         ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
@@ -1187,7 +838,7 @@ class EncuestaController extends Controller
         ->where('enc_usuariolaboratorio.estado', '=', 'A')
         ->where('users.estado', '=', 'A')->get();
 
-        return view('evaluacion_encuesta.createUsuario_pre',compact('Modulos','Opciones', 'usuarios', 'usuariosLab', 'laboratorio_id', 'tipoencuesta_id'));
+        return view('evaluacion_encuesta.createUsuario_pre',compact('usuarios', 'usuariosLab', 'laboratorio_id', 'tipoencuesta_id'));
 
     }
     /* TRAE LA VISTA PARA CREAR USUARIO EXTERNO PRESENCIAL */
@@ -1235,16 +886,6 @@ class EncuestaController extends Controller
 
             }
 
-            /*
-            $usuariosLab = Usuario::select('enc_usuario.nombre', 'enc_usuario.apellido', 'enc_usuario.id', 'enc_laboratorio.id as laboratorio_id')
-            ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi_encuesta.enc_usuario.id')
-            ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
-            ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
-            ->where('enc_laboratorio.id', '=', $request->laboratorio_id)
-            ->where('enc_tipoencuesta.tipo', '=', 'P')
-            ->where('enc_usuario.estado', '=', 'A')->get();
-            */
-
             $usuariosLab = User::select('users.name as nombre', 'users.nom_user as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
             ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
             ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
@@ -1290,16 +931,6 @@ class EncuestaController extends Controller
         $usuarioEnc->estado = 'E';
         $usuarioEnc->save();
 
-        /*
-        $usuariosLab = Usuario::select('enc_usuario.nombre', 'enc_usuario.apellido', 'enc_usuario.id', 'enc_laboratorio.id as laboratorio_id')
-        ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi_encuesta.enc_usuario.id')
-        ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
-        ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
-        ->where('enc_laboratorio.id', '=', $request->laboratorio_id)
-        ->where('enc_tipoencuesta.tipo', '=', 'P')
-        ->where('enc_usuario.estado', '=', 'A')->get();
-        */
-
         $usuariosLab = User::select('users.name as nombre', 'users.nom_user as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
         ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
         ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
@@ -1327,36 +958,12 @@ class EncuestaController extends Controller
     /* TRAE LA VISTA PARA CREAR EVENTO */
     public function createEvento(){
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
-
         $coordina = Czonal::all();
 
         $tipoEncuesta = TipoEncuesta::select('*')->where('estado', 'A')->get();
         $periodos = Periodo::select('*')->where('estado', 'A')->get();
         
-
-        return view('evaluacion_encuesta.create_evento',compact('Modulos','Opciones','coordina', 'tipoEncuesta', 'periodos'));
+        return view('evaluacion_encuesta.create_evento',compact('coordina', 'tipoEncuesta', 'periodos'));
     }
     /* TRAE LA VISTA PARA CREAR EVENTO */
 
@@ -1471,30 +1078,6 @@ class EncuestaController extends Controller
         $tipoencu_id = $request->query('tipoencu_id');
         $id_evento   = $request->query('id_evento');
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
-            
-
         $data = DB::table('db_inspi_encuesta.enc_laboratorioencuesta AS el')
                 ->select('el.laboratorio_id', 'l.area_id', 't.nombre', 't.id', 'l.descripcion')
                 ->leftJoin('db_inspi_encuesta.enc_laboratorio AS l', 'el.laboratorio_id', '=', 'l.id')
@@ -1505,7 +1088,7 @@ class EncuestaController extends Controller
         $laboratorio_name = $data[0]->descripcion;
         $tipo_name        = $data[0]->nombre;
 
-        return view('evaluacion_encuesta.usuEncuesta',compact('Modulos','Opciones', 'tipoencu_id', 'tipo_name', 'laboratorio_name', 'id_evento'));
+        return view('evaluacion_encuesta.usuEncuesta',compact('tipoencu_id', 'tipo_name', 'laboratorio_name', 'id_evento'));
 
     }
     /* TRAE LA VISTA PARA VISUALIZAR LAS ENCUESTAS ENLAZADAS A ESE LABORATORIO CON SU TIPO */
@@ -1676,48 +1259,6 @@ class EncuestaController extends Controller
 
         $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-
-        /*
-        $eventos = DB::table('enc_evento_laboratorio as evelab')
-            ->select('evelab.id_evento')
-            ->whereIn('evelab.id_labencuesta', function ($query) {
-                $query->select('elab.id')
-                    ->from('enc_laboratorioencuesta as elab')
-                    ->whereIn('elab.laboratorio_id', function ($subquery) {
-                        $subquery->select('ulab.laboratorio_id')
-                            ->from('enc_usuariolaboratorio as ulab')
-                            ->where('ulab.usuario_id', $id_usuario)
-                    })
-                    ->where('elab.valor', 'TRUE')
-            })
-            ->distinct()
-            ->get();
-        */
-
         $eventos = DB::table('db_inspi_encuesta.enc_evento_laboratorio as evelab')
             ->select('evelab.id_evento')
             ->whereIn('evelab.id_labencuesta', function ($query) use ($id_usuario) {
@@ -1810,7 +1351,7 @@ class EncuestaController extends Controller
         }
 
         //respuesta para la vista
-        return view('evaluacion_encuesta.homeUsuario', compact('Modulos','Opciones', 'encuestas', 'eventosArray'));
+        return view('evaluacion_encuesta.homeUsuario', compact('encuestas', 'eventosArray'));
     }
 
 
@@ -1820,30 +1361,6 @@ class EncuestaController extends Controller
 
         $tipoencu_id = $request->query('tipousu_id');
         $id_evento   = $request->query('id_evento');
-
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
 
         $servicios = Servicios::where('estado', 'A')->get();
 
@@ -1913,7 +1430,7 @@ class EncuestaController extends Controller
             $laboratorio_id = $usuLabo->laboratorio_id;
         }
 
-        return view('evaluacion_encuesta.doEncuesta',compact('Modulos','Opciones', 'encuestaArray', 'tipo', 'tipoencuesta_id', 'laboratorio_id', 'id_evento', 'servicios'));
+        return view('evaluacion_encuesta.doEncuesta',compact('encuestaArray', 'tipo', 'tipoencuesta_id', 'laboratorio_id', 'id_evento', 'servicios'));
 
     }
     /* TRAE LA VISTA PARA CREAR USUARIO EXTERNO PRESENCIAL */
@@ -1925,30 +1442,6 @@ class EncuestaController extends Controller
         $tipoencu_id = $request->query('tipousu_id');
         $id_evento   = $request->query('id_evento');
 
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
-
         $servicios = Servicios::where('estado', 'A')->get();
 
         //traer la encuesta, preguntas y opciones
@@ -2017,7 +1510,7 @@ class EncuestaController extends Controller
             $laboratorio_id = $usuLabo->laboratorio_id;
         }
 
-        return view('evaluacion_encuesta.finishEncuesta',compact('Modulos','Opciones', 'encuestaArray', 'tipo', 'tipoencuesta_id', 'laboratorio_id', 'id_evento', 'servicios'));
+        return view('evaluacion_encuesta.finishEncuesta',compact('encuestaArray', 'tipo', 'tipoencuesta_id', 'laboratorio_id', 'id_evento', 'servicios'));
 
     }
     /* TRAE LA VISTA DE ENCUESTA TERMINADA */
@@ -2129,7 +1622,6 @@ class EncuestaController extends Controller
         $id_encuesta  = $request->query('id_encuesta');
 
         //se obtiene la encuesta
-        
         $encuestas = EncuestaUser::select(
             'db_inspi_encuesta.enc_encuesta_user.nombre',
             'db_inspi_encuesta.enc_encuesta_user.descripcion', 
@@ -2156,9 +1648,6 @@ class EncuestaController extends Controller
         ->where('db_inspi_encuesta.enc_encuesta_user.id', $id_encuesta)
         ->first();
     
-    
-        
-
         $preguntasArray = [];
  
         //traemos las preguntas de esa encuesta
@@ -2168,7 +1657,6 @@ class EncuestaController extends Controller
 
         foreach ($preguntas as $pregunta) {
 
-            
             $opcionesArray  = [];
 
             //traemos las opciones de la pregunta
@@ -2185,7 +1673,6 @@ class EncuestaController extends Controller
                 ];
 
             }
-
 
             $preguntasArray[] = [
                 'id'        => $pregunta->id,
@@ -2307,16 +1794,6 @@ class EncuestaController extends Controller
         $usuarioEnc->name = $request->nombreUser.' '.$request->apellidoUser;
         $usuarioEnc->email = $request->correoUser;
         $usuarioEnc->hospital = $request->hospitalUser;
-
-        $usuarioEnc->save();
-
-        /*
-        $usuarioLab = Usuario::where('usuario_id', $request->id_usuario)->first();
-        $usuarioLab->nombre = $request->nombreUser;
-        $usuarioLab->apellido = $request->apellidoUser;
-        $usuarioLab->correo = $request->correoUser;
-        $usuarioLab->hospital = $request->hospitalUser;
-        */
 
         $usuarioEnc->save();
 
@@ -2626,9 +2103,7 @@ class EncuestaController extends Controller
     /* VISTA DE ENCUESTA COMPLETADA */
     public function completed()
     {
-
         return view('evaluacion_encuesta.completed');
-
     }
     /* VISTA DE ENCUESTA COMPLETADA */
 
@@ -2688,30 +2163,6 @@ class EncuestaController extends Controller
 
         $id_encuesta = $request->query('id_encuesta');
         $id_evento   = 0;
-
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                'inspi_modulos.nombre as nombre',
-                'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                    'inspi_opciones.id_modulo as id_modulo',
-                    'inspi_opciones.nombre as nombre',
-                    'inspi_opciones.controller as controller',
-                    'inspi_opciones.icon as icon',
-                    'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])->get();
 
         $servicios = Servicios::where('estado', 'A')->get();
 
