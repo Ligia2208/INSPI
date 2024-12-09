@@ -1,49 +1,47 @@
 
-<!-- <script src="{{asset('assets/js/GestionDocumental/initGestionDocumental.js')}}"></script> -->
+@extends('layouts.main')
 
-@extends('layouts.Rocker.index')
+@section('title', 'Crear Laboratorio')
 
-@section("style")
-	<link href="{{ asset('assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{asset('assets/js/EventoEncuesta/create_laboratorio.js?v0.0.3')}}"></script>
+<!-- DataTables CSS -->
+@push('styles')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+@endpush
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@section('content')
 
-	@endsection
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader" style="" kt-hidden-height="54">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline mr-5">
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Creación de Laboratorios</h5></a>
+            </div>
+        </div>
+    </div>
+</div>
 
-@section('wrapper')
-<!--start page wrapper -->
-<!-- <h6 class="mb-0 text-uppercase"><i class="font-22 text-success fadeIn animated bx bx-columns"></i> Gestión Documental </h6> -->
+<div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
-<div class="page-wrapper">
-	<div class="page-content">
-        <h2 class="mb-0 text-uppercase text-center mt-2"> <i class='font-32 text-success bx bx-dock-top'></i> Crear Laboratorio </h2>
-        <!-- <hr/> -->
-            <!-- <button class="btn btn-primary px-5  d-flex align-items-center" id="btnCreateCatalogo" name="btnCreateCatalogo" type="button" >
-                <i class="lni lni-circle-plus"></i> Agregar
-            </button> -->
-        <hr/>
+    <div class="container2">
+        <div class="page-content">
+            <h2 class="mb-0 text-uppercase text-center mt-2"> <i class='font-32 text-success bx bx-dock-top'></i> Crear Laboratorio </h2>
+            <hr/>
 
+            <div class="row">
+                <div class="col-xl-12 mx-auto">
 
-        <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/plugins/select2/css/select2-bootstrap4.css') }}" rel="stylesheet">
+                    <div class="card">
 
-        <div class="row">
-            <div class="col-xl-12 mx-auto">
+                        <div class="card-body">
+                            <div class="p-4 border rounded">
 
-                <div class="card">
+                                <input type="hidden" id="id_area" name="id_area" value="" >
+                                <input type="hidden" id="id_zonal" name="id_zonal" value="" >
 
-                    <div class="card-body">
-                        <div class="p-4 border rounded">
+                                <form id="frmCreateEncuesta" method="post" class="row g-3 needs-validation " novalidate>
+                                    @csrf
 
-                            <input type="hidden" id="id_area" name="id_area" value="" >
-                            <input type="hidden" id="id_zonal" name="id_zonal" value="" >
-
-                            <form id="frmCreateEncuesta" action="{{ route('gestion.store') }}" method="post" class="row g-3 needs-validation " novalidate>
-                            @csrf
-
-                                    <div id="contenedorEncuesta" class="row">
+                                    <div id="contenedorEncuesta" class="row col-lg-12">
 
                                         <div class="col-md-12">
                                             <label for="descripLab" class="form-label">Descripción</label>
@@ -56,10 +54,10 @@
 
                                         <div class="col-md-6 mt-4">
                                             <label for="coordina" class="form-label">Coordinación Zonal</label>
-                                            <select id="coordina" name="coordina" class="form-select single-select  @error('coordina') is-invalid @enderror" required="" autofocus="">
+                                            <select id="coordina" name="coordina" class="form-control single-select  @error('coordina') is-invalid @enderror" required="" autofocus="">
                                                 <option value="0">Seleccione la Coordinación</option>
                                                 @foreach($coordina as $coor)
-                                                    <option value="{{ $coor->id}}"> {{ $coor->nombre}} </option>
+                                                    <option value="{{ $coor->id}}"> {{ $coor->descripcion}} </option>
                                                 @endforeach
                                             </select>
                                             @error('coordina')
@@ -69,7 +67,7 @@
 
                                         <div class="col-md-6 mt-4">
                                             <label for="departamentos" class="form-label">Departamento</label>
-                                            <select id="departamento" name="departamento" class="form-select single-select  @error('departamento') is-invalid @enderror" required="" autofocus="">
+                                            <select id="departamento" name="departamento" class="form-control single-select  @error('departamento') is-invalid @enderror" required="" autofocus="">
                                                 <option value="0">Seleccione un Departamento</option>
 
                                             </select>
@@ -101,8 +99,7 @@
 
                                     </div>
 
-
-                                    <div class="modal-footer mt-4">
+                                    <div class="modal-footer mt-4 col-lg-12">
                                         <a type="submit" class="btn submit btn-primary btn-shadow font-weight-bold mr-2" onclick="guardar()">
                                             <span class="lni lni-save"></span>
                                             Guardar
@@ -112,20 +109,27 @@
                                             Cerrar
                                         </a>
                                     </div>
-                            </form>
+
+                                </form>
 
 
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
-
-
             </div>
+
+
         </div>
-
-
     </div>
+
 </div>
 @endsection
 
 
+@push('scripts')
+<!-- Script personalizado -->
+<script src="{{asset('assets/js/EventoEncuesta/create_laboratorio.js?v0.0.3')}}"></script>
+@endpush

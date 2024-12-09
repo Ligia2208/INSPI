@@ -3391,8 +3391,6 @@ class InventarioController extends Controller
 
                         if($unidades_por_reactivo != 1){ //si lo reactivos son de 1 a 1, se salta este proceso
 
-
-
                             // Calcula cuántas unidades de un reactivo tienes aún
                             //$unidades_restantes = $resultadoCal;
 
@@ -3458,8 +3456,6 @@ class InventarioController extends Controller
                         'id_corrida'   => $corrida->id
 
                     ]);
-
-
 
                 }
 
@@ -3571,8 +3567,6 @@ class InventarioController extends Controller
 
                             if($unidades_por_reactivo != 1){ //si lo reactivos son de 1 a 1, se salta este proceso
 
-
-
                                 // Calcula cuántas unidades de un reactivo tienes aún
                                 //$unidades_restantes = $resultadoCal;
 
@@ -3639,16 +3633,7 @@ class InventarioController extends Controller
 
                         ]);
 
-
-
-
-
-
                     }
-
-                    //foreach ($itemMezcla['datosPruebas'] as $prueba) {
-
-                    //}
 
                 }
 

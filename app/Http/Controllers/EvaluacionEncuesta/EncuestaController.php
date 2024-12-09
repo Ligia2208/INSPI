@@ -68,6 +68,10 @@ use Illuminate\Support\Facades\DB;
 use App\Models\GestionDocumental\TipoDocumento\TipoDocumento;
 use App\Models\GestionDocumental\Estado\Estado;
 
+use App\Models\CentrosReferencia\Sede;
+use App\Models\CentrosReferencia\Crn;
+
+
 use Illuminate\Support\Str;
 
 use Illuminate\Support\Facades\Mail;
@@ -237,7 +241,7 @@ class EncuestaController extends Controller
     /* TRAE LA VISTA PARA CREAR LABORATORIO */
     public function createLaboratorio(){
 
-        $coordina = Czonal::all();
+        $coordina = Sede::all();
 
         $tipoEncuesta = TipoEncuesta::select('*')->where('estado', 'A')->get();
 
@@ -269,7 +273,10 @@ class EncuestaController extends Controller
     /* DEVUELVE LOS APARTAMENTOS DEPENDIENDO DEL ID_ZONAL */
     public function departamentos($id){
 
-        $departamentos = Area::where('czonal_id', $id)->orderBy('nombre', 'asc')->get();
+        $departamentos = Crn::select('crns.id', 'crns.descripcion as nombre')
+        ->join('inspi_crns.sedes_crns as scr', 'scr.crns_id', '=', 'crns.id')
+        ->where('scr.sedes_id', $id)
+        ->orderBy('descripcion', 'asc')->get();
         return response()->json($departamentos);
 
     }
@@ -452,19 +459,18 @@ class EncuestaController extends Controller
         $tipoencuesta_id = $data[0]->id;
         $laboratorio_id = $data[0]->laboratorio_id;
 
-        $usuarios = User::select('users.name', 'users.id')
-        ->leftJoin('db_inspi.inspi_area', 'inspi_area.id', '=', 'db_inspi.users.id_area')
-        //->where('inspi_area.id', '=', $data[0]->area_id)
-        ->where('users.estado', '=', 'A')->get();
+        $usuarios = User::select('id', 'name')
+            ->where('status', '=', 'A')
+            ->get();
 
-        $usuariosLab = User::select('users.name as nombre', 'users.nom_user as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
-        ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
+        $usuariosLab = User::select('users.name as nombre', 'users.name as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
+        ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'users.id')
         ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
         ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
         ->where('enc_laboratorio.id', '=', $data[0]->laboratorio_id)
         ->where('enc_tipoencuesta.tipo', '=', 'I')
         ->where('enc_usuariolaboratorio.estado', '=', 'A')
-        ->where('users.estado', '=', 'A')->get();
+        ->where('users.status', '=', 'A')->get();
 
         return view('evaluacion_encuesta.createUsuario_int',compact('usuarios', 'usuariosLab', 'laboratorio_id', 'tipoencuesta_id'));
 
@@ -601,9 +607,9 @@ class EncuestaController extends Controller
 
 
         //actualizarlo por user
-        $usuariosLab = User::select('users.name as nombre', 'users.nom_user as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 
-            'enc_usuariolaboratorio.id as id_labusu', 'enc_usuariolaboratorio.estado', 'users.email as correo', 'users.hospital as hospital')
-            ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
+        $usuariosLab = User::select('users.name as nombre', 'users.name as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 
+            'enc_usuariolaboratorio.id as id_labusu', 'enc_usuariolaboratorio.estado', 'users.email as correo', DB::raw("'No existe hospital' as hospital"))
+            ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'users.id')
             ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
             ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
             ->where('enc_laboratorio.id', '=', $data[0]->laboratorio_id)
@@ -704,7 +710,6 @@ class EncuestaController extends Controller
 
         }
 
-
         // validamos que el usuario no este activado para este laboratorio
         $usuarioExistente = UsuarioLaboratorio::where('laboratorio_id', $request->laboratorio_id)
             ->where('tipoencuesta_id', $request->tipoencuesta_id)
@@ -725,7 +730,6 @@ class EncuestaController extends Controller
             $message = 'Usuario agregado con Éxito';
 
         }
-
 
         if($result){
 
@@ -824,19 +828,19 @@ class EncuestaController extends Controller
         $tipoencuesta_id = $data[0]->id;
         $laboratorio_id = $data[0]->laboratorio_id;
 
-        $usuarios = User::select('users.name', 'users.id')
-        ->leftJoin('db_inspi.inspi_area', 'inspi_area.id', '=', 'db_inspi.users.id_area')
-        ->where('inspi_area.id', '=', $data[0]->area_id)
-        ->where('users.estado', '=', 'A')->get();
+        $usuarios = User::select('users.id', 'users.name')
+            ->join('inspi_crns.responsables', 'responsables.usuario_id', '=', 'users.id')
+            ->where('inspi_crns.responsables.crns_id', $data[0]->area_id)
+            ->get();
 
-        $usuariosLab = User::select('users.name as nombre', 'users.nom_user as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
-        ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'db_inspi.users.id')
+        $usuariosLab = User::select('users.name as nombre', 'users.name as apellido', 'users.id as id', 'enc_laboratorio.id as laboratorio_id', 'enc_usuariolaboratorio.id as id_labusu')
+        ->leftJoin('db_inspi_encuesta.enc_usuariolaboratorio', 'enc_usuariolaboratorio.usuario_id', '=', 'users.id')
         ->leftJoin('db_inspi_encuesta.enc_laboratorio', 'enc_laboratorio.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.laboratorio_id')
         ->leftJoin('db_inspi_encuesta.enc_tipoencuesta', 'enc_tipoencuesta.id', '=', 'db_inspi_encuesta.enc_usuariolaboratorio.tipoencuesta_id')
         ->where('enc_laboratorio.id', '=', $data[0]->laboratorio_id)
         ->where('enc_tipoencuesta.tipo', '=', 'P')
         ->where('enc_usuariolaboratorio.estado', '=', 'A')
-        ->where('users.estado', '=', 'A')->get();
+        ->where('users.status', '=', 'A')->get();
 
         return view('evaluacion_encuesta.createUsuario_pre',compact('usuarios', 'usuariosLab', 'laboratorio_id', 'tipoencuesta_id'));
 

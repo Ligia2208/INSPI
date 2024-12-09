@@ -1,43 +1,42 @@
 
-<!-- <script src="{{asset('assets/js/GestionDocumental/initGestionDocumental.js')}}"></script> -->
+@extends('layouts.main')
 
-@extends('layouts.Rocker.index')
+@section('title', 'Usuarios No Presenciales')
 
-@section("style")
-	<link href="{{ asset('assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{asset('assets/js/EventoEncuesta/createUsuario_nopre.js?v0.0.1')}}"></script>
+<!-- DataTables CSS -->
+@push('styles')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+@endpush
 
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+@section('content')
 
-	@endsection
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader" style="" kt-hidden-height="54">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline mr-5">
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Usuarios No Presenciales</h5></a>
+            </div>
+        </div>
+    </div>
+</div>
 
-@section('wrapper')
-<!--start page wrapper -->
-<!-- <h6 class="mb-0 text-uppercase"><i class="font-22 text-success fadeIn animated bx bx-columns"></i> Gestión Documental </h6> -->
+<div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
-<div class="page-wrapper">
-	<div class="page-content">
-        <h2 class="mb-0 text-uppercase text-center mt-2"> <i class='font-32 text-success bx bx-dock-top'></i> Crear Usuarios Externos No Presenciales </h2>
-        <!-- <hr/> -->
-            <!-- <button class="btn btn-primary px-5  d-flex align-items-center" id="btnCreateCatalogo" name="btnCreateCatalogo" type="button" >
-                <i class="lni lni-circle-plus"></i> Agregar
-            </button> -->
-        <hr/>
+    <div class="page-wrapper">
+        <div class="page-content">
+            <h2 class="mb-0 text-uppercase text-center mt-2"> <i class='font-32 text-success bx bx-dock-top'></i> Crear Usuarios Externos No Presenciales </h2>
 
+            <hr/>
 
-        <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet">
-        <link href="{{ asset('assets/plugins/select2/css/select2-bootstrap4.css') }}" rel="stylesheet">
+            <div class="row">
+                <div class="col-xl-12 mx-auto">
 
-        <div class="row">
-            <div class="col-xl-12 mx-auto">
+                    <div class="card">
 
-                <div class="card">
-
-                    <div class="card-body">
-                        <div class="p-4 border rounded">
-                            <form id="frmCreateEncuesta" action="{{ route('gestion.store') }}" method="post" class="row g-3 needs-validation " novalidate>
-                            @csrf
+                        <div class="card-body">
+                            <div class="p-4 border rounded">
+                                <form id="frmCreateEncuesta" method="post" class="row g-3 needs-validation " novalidate>
+                                    @csrf
 
                                     <div id="contenedorEncuesta" class="row">
 
@@ -193,27 +192,32 @@
 
                                     </div>
 
-
                                     <div class="modal-footer mt-4">
                                         <a type="button" class="btn btn-danger btn-shadow font-weight-bold mr-2 bootbox-cancel" href="{{ route('encuesta.createUsuario_lab') }}">
                                             <span class="lni lni-close"></span>
                                             Atras
                                         </a>
                                     </div>
-                            </form>
+                                    
+                                </form>
 
-
+                            </div>
                         </div>
                     </div>
+
+
                 </div>
-
-
             </div>
+
+
         </div>
-
-
     </div>
+
 </div>
+
 @endsection
 
-
+@push('scripts')
+<!-- Script personalizado -->
+<script src="{{asset('assets/js/EventoEncuesta/createUsuario_nopre.js?v0.0.1')}}"></script>
+@endpush
