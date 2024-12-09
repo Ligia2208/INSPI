@@ -5,11 +5,11 @@ $( function () {
 
     $('#servicioName').select2({
         //dropdownParent: $('.modal-body'),
-        theme: 'bootstrap4',
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        height: '38px',
-        placeholder: 'Selecciona una opción',
-        allowClear: true,
+        //theme: 'bootstrap4',
+        width: '100%',
+        //height: '38px',
+        //placeholder: 'Selecciona una opción',
+        //allowClear: true,
     });
 
 });
@@ -205,7 +205,7 @@ function obtenerEncuesta(){
     }
 
     return conjuntoDatos;
-    console.log(conjuntoDatos);
+    //console.log(conjuntoDatos);
     
 }
 

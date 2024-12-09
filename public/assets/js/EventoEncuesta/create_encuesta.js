@@ -397,8 +397,7 @@ function guardar(){
         //se guarda la info
         var encuesta =guardarPreguntas();
 
-        console.log(encuesta);
-
+        //console.log(encuesta);
         
         $.ajax({
 

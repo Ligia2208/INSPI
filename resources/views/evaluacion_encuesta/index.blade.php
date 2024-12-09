@@ -13,7 +13,7 @@
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <div class="d-flex align-items-center flex-wrap mr-1">
             <div class="d-flex align-items-baseline mr-5">
-                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Modulos Encuesta</h5></a>
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Modulo Encuesta</h5></a>
             </div>
         </div>
     </div>
@@ -27,7 +27,7 @@
             <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
 
                 <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-primary encuesta" onclick="redireccionEncuesta('crearEncuesta')">
+                    <div class="card radius-10 border border-1 border-primary encuesta position-relative" onclick="redireccionEncuesta('crearEncuesta')">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
 
@@ -44,11 +44,11 @@
                 </div>
 
                 <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-primary encuesta" onclick="redireccionEncuesta('encuesta')">
+                    <div class="card radius-10 border border-1 border-primary encuesta position-relative" onclick="redireccionEncuesta('encuesta')">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
 
-                                <div class="widgets-icons-2 rounded-circle bg-primary text-white me-2"><i class="bx bxs-calendar-event"></i>
+                                <div class="widgets-icons-2 rounded-circle bg-primary text-white mr-2"><i class="bi bi-calendar-event py-3 px-2 titulo-grande"></i>
                                 </div>
 
                                 <div>
@@ -60,12 +60,13 @@
                     </div>
                 </div>
 
+                
                 <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-primary encuesta" onclick="redireccionEncuesta('listarEncuesta')">
+                    <div class="card radius-10 border border-1 border-primary encuesta position-relative" onclick="redireccionEncuesta('listarEncuesta')">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
 
-                                <div class="widgets-icons-2 rounded-circle bg-primary text-white me-2"><i class="bx bx-list-ol"></i>
+                                <div class="widgets-icons-2 rounded-circle bg-primary text-white mr-2"><i class="bi bi-list-ol py-3 px-2 titulo-grande"></i>
                                 </div>
 
                                 <div>
@@ -77,12 +78,13 @@
                     </div>
                 </div>
 
+
                 <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-primary encuesta" onclick="redireccionEncuesta('crearUsuario')">
+                    <div class="card radius-10 border border-1 border-primary encuesta position-relative" onclick="redireccionEncuesta('crearUsuario')">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
 
-                                <div class="widgets-icons-2 rounded-circle bg-primary text-white me-2"><i class="bx bx-user-plus"></i>
+                                <div class="widgets-icons-2 rounded-circle bg-primary text-white mr-2"><i class="bi bi-person-plus py-3 px-2 titulo-grande"></i>
                                 </div>
 
                                 <div>
@@ -95,11 +97,11 @@
                 </div>
 
                 <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-primary encuesta" onclick="redireccionEncuesta('enlazarEncuesta')">
+                    <div class="card radius-10 border border-1 border-primary encuesta position-relative mt-2" onclick="redireccionEncuesta('enlazarEncuesta')">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
 
-                                <div class="widgets-icons-2 rounded-circle bg-primary text-white me-2"><i class='bx bx-link'></i>
+                                <div class="widgets-icons-2 rounded-circle bg-primary text-white mr-2"><i class='bi bi-link py-3 px-2 titulo-grande'></i>
                                 </div>
 
                                 <div class="text-center">
@@ -112,11 +114,11 @@
                 </div>
 
                 <div class="col">
-                    <div class="card radius-10 border-start border-0 border-3 border-primary encuesta" onclick="redireccionEncuesta('crearLaboratorio')">
+                    <div class="card radius-10 border border-1 border-primary encuesta position-relative mt-2" onclick="redireccionEncuesta('crearLaboratorio')">
                         <div class="card-body">
                             <div class="d-flex align-items-center">
 
-                                <div class="widgets-icons-2 rounded-circle bg-primary text-white me-2"><i class='bx bxs-flask'></i>
+                                <div class="widgets-icons-2 rounded-circle bg-primary text-white mr-2"><i class='bi bi-thermometer-high py-3 px-2 titulo-grande'></i>
                                 </div>
 
                                 <div>
