@@ -122,6 +122,79 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('gastos', ExpenseController::class)->parameters(['gastos' => 'expense'])->names('expense');
 
 
+    /* =========================== PLANIFICACION =========================== */ 
+    Route::group(['namespace' => 'App\Http\Controllers\Planificacion'], function(){
+
+        Route::get('/planificacion', 'PlanificacionController@index')->name('planificacion'); //vista principal
+        Route::get('/planificacion/vistaUser', 'PlanificacionController@vistaUser')->name('planificacion.vistaUser'); //vista por id de usuario
+        Route::get('planificacion/crearPlanificacion', 'PlanificacionController@crearPlanificacion')->name('planificacion.crearPlanificacion');
+        Route::post('planificacion/savePlanificacion', 'PlanificacionController@savePlanificacion')->name('planificacion.savePlanificacion');
+        Route::post('/planificacion/deletePoa', 'PlanificacionController@deletePoa')->name('planificacion.deletePoa'); //Eliminar registro
+        Route::get('/planificacion/detalle', 'PlanificacionController@detalle')->name('planificacion.detalle');
+        Route::get('/planificacion/detalleUser', 'PlanificacionController@detalleUser')->name('planificacion.detalleUser');
+        Route::get('planificacion/crearPoa', 'PlanificacionController@crearPoa')->name('planificacion.crearPoa');
+        Route::post('planificacion/savePoa', 'PlanificacionController@savePoa')->name('planificacion.savePoa');
+        
+        Route::get('/planificacion/obtenerComentarios/{id?}', 'PlanificacionController@obtenerComentarios')->name('planificacion.obtenerComentario'); //COMENTARIOS
+    
+        Route::get('planificacion/editarPlanificacion/{id?}','PlanificacionController@editarPlanificacion')->name('planificacion.editarPlanificacion');
+        Route::put('planificacion/actualizarPlanificacion/{id?}','PlanificacionController@actualizarPlanificacion')->name('planificacion.actualizarPlanificacion');
+        Route::get('planificacion/editarEstadoPlanificacion/{id?}','PlanificacionController@editarEstadoPlanificacion')->name('planificacion.editarEstadoPlanificacion');
+        Route::post('/planificacion/agregarComentario', 'PlanificacionController@agregarComentario')->name('planificacion.agregarComentario');
+        Route::post('/planificacion/agregarComentarioEstado', 'PlanificacionController@agregarComentarioEstado')->name('planificacion.agregarComentarioEstado');
+    
+        Route::get('/planificacion/obtenerDatosItem/{id?}', 'PlanificacionController@obtenerDatosItem')->name('planificacion.obtenerDatosItem');
+    
+        Route::get('planificacion/reportHexa', 'PlanificacionController@reportHexa')->name('planificacion.reportHexa');
+    
+        Route::get('/planificacion/reformaIndex', 'PlanificacionController@reformaIndex')->name('planificacion.reformaIndex'); //vista principal
+        Route::get('/planificacion/reformaPrincipal', 'PlanificacionController@reformaPrincipal')->name('planificacion.reformaPrincipal'); //vista principal
+        Route::get('/planificacion/revisionReforma/{id}', 'PlanificacionController@revisionReforma')->name('planificacion.revisionReforma'); //vista principal
+        Route::post('/planificacion/agregarComentarioReforma', 'PlanificacionController@agregarComentarioReforma')->name('planificacion.agregarComentarioReforma');
+        Route::get('/planificacion/obtenerComentariosReforma/{id?}', 'PlanificacionController@obtenerComentariosReforma')->name('planificacion.obtenerComentariosReforma'); //COMENTARIOS
+    
+        Route::put('/planificacion/actualizarCalendarioPoa', 'PlanificacionController@actualizarCalendarioPoa')->name('planificacion.actualizarCalendarioPoa');
+    
+    
+        Route::get('/planificacion/crearReforma', 'PlanificacionController@crearReforma')->name('planificacion.crearReforma');
+        Route::post('planificacion/saveReforma', 'PlanificacionController@saveReforma')->name('planificacion.saveReforma');
+    
+        Route::get('/planificacion/editarReforma/{id}', 'PlanificacionController@editarReforma')->name('planificacion.editarReforma');
+        Route::put('/planificacion/actualizarReforma/{id}', 'PlanificacionController@actualizarReforma')->name('planificacion.actualizarReforma');
+        Route::post('/planificacion/guardarNuevaActividad', 'PlanificacionController@guardarNuevaActividad')->name('planificacion.guardarNuevaActividad');
+        Route::post('/planificacion/crearReformaConActividades', 'PlanificacionController@crearReformaConActividades')->name('planificacion.crearReformaConActividades');
+    
+    
+        Route::get('/planificacion/reformaActArea', 'PlanificacionController@reformaActArea')->name('planificacion.reformaActArea');
+        Route::get('/planificacion/getAreas/{czonal_id}', 'PlanificacionController@getAreas')->name('planificacion.getAreas');
+        Route::get('/planificacion/TblActArea', 'PlanificacionController@TblActArea')->name('planificacion.TblActArea');
+        Route::post('/planificacion/crearActArea', 'PlanificacionController@crearActArea')->name('planificacion.crearActArea'); //Crea una nueva actividad de otra área en la ventana de editar
+    
+        Route::post('/plani    fi    cacion/deleteReforma', 'PlanificacionController@deleteReforma')->name('planificacion.deleteReforma'); //Eliminar registro
+        Route::get('planificacion/reportReforma', 'PlanificacionController@reportReforma')->name('planificacion.reportReforma');
+    
+        //ESTRUCTUTA PRESUPUESTARIA
+        Route::get('/planificacion/get_unidad', 'PlanificacionController@get_unidad')->name('planificacion.get_unidad');
+        Route::get('/planificacion/get_programa_id', 'PlanificacionController@get_programa_id')->name('planificacion.get_programa_id');
+        Route::get('/planificacion/get_proyecto_id', 'PlanificacionController@get_proyecto_id')->name('planificacion.get_proyecto_id');
+        Route::get('/planificacion/get_actividad_id', 'PlanificacionController@get_actividad_id')->name('planificacion.get_actividad_id');
+        Route::get('/planificacion/get_fuente_id', 'PlanificacionController@get_fuente_id')->name('planificacion.get_fuente_id');
+        Route::get('/planificacion/get_actividades_id', 'PlanificacionController@get_actividades_id')->name('planificacion.get_actividades_id');
+    
+        Route::post('/planificacion/aproSolicitud', 'PlanificacionController@aproSolicitud')->name('planificacion.aproSolicitud'); //Aprobar o Rechazar solicitud
+    
+        Route::get('planificacion/reportDetalle', 'PlanificacionController@reportDetalle')->name('planificacion.reportDetalle');
+    
+        Route::get('planificacion/import_actividad', 'PlanificacionController@import_actividad')->name('planificacion.import_actividad');
+    
+    
+        Route::post('planificacion/import', 'PlanificacionController@import')->name('planificacion.import');
+    
+    });
+    /* =========================== PLANIFICACION =========================== */
+
+
+
     /* =========================== INVENTARIO =========================== */
     Route::group(['namespace' => 'App\Http\Controllers\InventarioReactivo'], function(){
 

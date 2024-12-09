@@ -14,15 +14,8 @@ $( function () {
 
     }
 
-
-
     $('#departamento').select2({
-        theme: 'bootstrap4',
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        height: '38px',
-        placeholder: 'Selecciona una opción',
-        allowClear: true,
-        //dropdownParent: $('#addArticuloM .modal-body')
+        width: '100%',
     });
 
 

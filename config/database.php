@@ -78,6 +78,26 @@ return [
             'engine' => 'InnoDB',
         ],
 
+        'db_inspi_planificacion' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DP_HOST', '127.0.0.1'),
+            'port' => env('DP_PORT', '3306'),
+            'database' => env('DP_DATABASE', 'forge'),
+            'username' => env('DP_USERNAME', 'forge'),
+            'password' => env('DP_PASSWORD', ''),
+            'unix_socket' => env('DP_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => 'InnoDB',
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'documental' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST_DOC', '127.0.0.1'),
