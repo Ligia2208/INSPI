@@ -27,7 +27,7 @@ class ObjetivoInstitucional extends Model
     protected static $logAttributes = ['*'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
-    protected $connection = 'mysql';
+    protected $connection = 'planificacion';
     public $table = 'inspi_obj_institucional';
 
     public function getDescriptionForEvent(string $eventName)

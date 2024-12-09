@@ -1,89 +1,98 @@
 
-@extends('layouts.Rocker.index')
+@extends('layouts.main')
 
-@section("style")
-	<link href="{{asset('assets/plugins/datatable/css/dataTables.bootstrap5.min.css') }}" rel="stylesheet" />
-    <script src="{{ asset('js/app.js') }}"></script>
-    <script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.6')}}"></script>
-	@endsection
+@section('title', 'Ajuste de Inventario')
 
-@section('wrapper')
-<!--start page wrapper -->
-<!-- <h6 class="mb-0 text-uppercase"><i class="font-22 text-success fadeIn animated bx bx-columns"></i> Gestión Documental </h6> -->
+<!-- DataTables CSS -->
+@push('styles')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+@endpush
 
-<div class="page-wrapper">
-	<div class="page-content">
+@section('content')
 
-        <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
-
-        <div class="col">
-
-        </div>
-
-
-        </div>
-
-        <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ACTIVIDADES </h2>
-        <!-- <hr/>
-        <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('inventario.crearMovimiento') }}" type="button" >
-            <i class="lni lni-circle-plus"></i> Crear Movimiento
-        </a> -->
-        <hr/>
-
-        <div id="contModalComentarios">
-        </div>
-
-        <div class="card">
-            <div class="card-body">
-                <div class="table-responsive">
-                    <table id="tblPlanificacionIndex" class="table table-striped table-bordered" style="width:100%">
-                        <thead>
-                            <tr>
-                                <th>Departamento</th>
-                                <th>POA</th>
-                                <th>Objetivo Operativo</th>
-                                <th>Actividad Operativa</th>
-                                <th>Sub actividad</th>
-                                <th>Fecha</th>
-                                <th> <center> Estado </center></th>
-                                <th>Revisión</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th>Departamento</th>
-                                <th>POA</th>
-                                <th>Objetivo Operativo</th>
-                                <th>Actividad Operativa</th>
-                                <th>Sub actividad</th>
-                                <th>Fecha</th>
-                                <th> <center> Estado </center></th>
-                                <th>Revisión</th>
-                            </tr>
-                        </tfoot>
-                    </table>
-                </div>
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader" style="" kt-hidden-height="54">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline mr-5">
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Ajuste de Inventario</h5></a>
             </div>
         </div>
     </div>
+</div>
+
+<div id="kt_content" class="content d-flex flex-column flex-column-fluid">
+
+    <div class="container2">
+        <div class="page-content">
+
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+                <div class="col">
+                </div>
+            </div>
+
+            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ACTIVIDADES </h2>
+            <!-- <hr/>
+            <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('inventario.crearMovimiento') }}" type="button" >
+                <i class="lni lni-circle-plus"></i> Crear Movimiento
+            </a> -->
+            <hr/>
+
+            <div id="contModalComentarios">
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table id="tblPlanificacionIndex" class="table table-striped table-bordered" style="width:100%">
+                            <thead>
+                                <tr>
+                                    <th>Departamento</th>
+                                    <th>POA</th>
+                                    <th>Objetivo Operativo</th>
+                                    <th>Actividad Operativa</th>
+                                    <th>Sub actividad</th>
+                                    <th>Fecha</th>
+                                    <th> <center> Estado </center></th>
+                                    <th>Revisión</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th>Departamento</th>
+                                    <th>POA</th>
+                                    <th>Objetivo Operativo</th>
+                                    <th>Actividad Operativa</th>
+                                    <th>Sub actividad</th>
+                                    <th>Fecha</th>
+                                    <th> <center> Estado </center></th>
+                                    <th>Revisión</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
 
 
 
-    @if(session('success'))
-    <script>
-        Swal.fire({
-            title: 'SoftInspi',
-            text: '{{ session('success') }}',
-            icon: 'success',
-            type: 'success',
-            confirmButtonText: 'Aceptar',
-            timer: 3500
-        });
-    </script>
-    @endif
+        @if(session('success'))
+        <script>
+            Swal.fire({
+                title: 'SoftInspi',
+                text: '{{ session('success') }}',
+                icon: 'success',
+                type: 'success',
+                confirmButtonText: 'Aceptar',
+                timer: 3500
+            });
+        </script>
+        @endif
+
+    </div>
 
 </div>
 
@@ -133,3 +142,8 @@
 
 </script>
 
+
+@push('scripts')
+<!-- Script personalizado -->
+<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.6')}}"></script>
+@endpush

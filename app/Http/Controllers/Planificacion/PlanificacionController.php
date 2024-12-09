@@ -74,38 +74,6 @@ class PlanificacionController extends Controller
         $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
         $id_area    = Auth::user()->id_area;
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $usuarioInf = User::select('db_inspi.r.name as role_name', 'db_inspi.ar.id as id_area')
-        ->join('db_inspi.role_user as ro', 'users.id', '=', 'ro.user_id')
-        ->join('db_inspi.roles as r', 'r.id', '=', 'ro.role_id')
-        ->join('db_inspi.inspi_area as ar', 'ar.id', '=', 'users.id_area')
-        ->where('users.id', '=', $id_usuario)
-        //->whereIn('r.name', ['Gerente', 'Secretaria'])
-        ->first();
-
         if(request()->ajax()) {
 
             return datatables()->of(Poa::select('pla_poa1.id as id', 'pla_poa1.departamento as coordinacion', 'pla_poa1.nro_poa as numero',
@@ -134,7 +102,7 @@ class PlanificacionController extends Controller
 
 
         //respuesta para la vista
-        return view('planificacion.index', compact('Modulos','Opciones','tipo_Poa','obj_Operativo'
+        return view('planificacion.index', compact('tipo_Poa','obj_Operativo'
         ,'act_Operativa','sub_Act'));
     }
 

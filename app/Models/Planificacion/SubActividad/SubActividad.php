@@ -20,8 +20,8 @@ class SubActividad extends Model
     protected static $logAttributes = ['*'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
-    protected $connection = 'mysql';
-    public $table = 'inspi_sub_actividad';
+    protected $connection = 'planificacion';
+    public $table = 'pla_sub_actividad';
 
     public function getDescriptionForEvent(string $eventName)
     {

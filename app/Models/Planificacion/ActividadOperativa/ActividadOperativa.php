@@ -28,8 +28,8 @@ class ActividadOperativa extends Model
     protected static $logAttributes = ['*'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
-    protected $connection = 'mysql';
-    public $table = 'inspi_actividad_operativa';
+    protected $connection = 'planificacion';
+    public $table = 'pla_actividad_operativa';
 
     public function getDescriptionForEvent(string $eventName)
     {
