@@ -20,7 +20,7 @@ class Actividad extends Model {
     protected static $logAttributes = ['*'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
-    protected $connection = 'db_inspi_planificacion';
+    protected $connection = 'planificacion';
     public $table = 'pla_actividad';
 
     public function getDescriptionForEvent(string $eventName)

@@ -78,7 +78,7 @@ return [
             'engine' => 'InnoDB',
         ],
 
-        'db_inspi_planificacion' => [
+        'planificacion' => [
             'driver' => 'mysql',
             'url' => env('DATABASE_URL'),
             'host' => env('DP_HOST', '127.0.0.1'),
