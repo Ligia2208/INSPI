@@ -32,7 +32,7 @@ use App\Models\Planificacion\Poa1\Poa;
 
 //Czonal y area
 use App\Models\Czonal\Czonal;
-use App\Models\Area\Area;
+
 
 use App\Models\Planificacion\ObjetivoOperativo\ObjetivoOperativo;
 use App\Models\Planificacion\SubActividad\SubActividad;
@@ -42,7 +42,7 @@ use App\Models\Planificacion\Calendario\Calendario;
 use App\Models\Planificacion\Comentario\Comentario;
 
 //ITEM PRESUPUESTARIO
-use App\Models\ItemPresupuestario\ItemPresupuestario;
+use App\Models\Planificacion\ItemPresupuestario\ItemPresupuestario;
 use App\Models\ConsumoItem\ConsumoItem;
 use App\Models\Planificacion\Comentario\ComentarioReforma;
 use Maatwebsite\Excel\Facades\Excel;
@@ -64,15 +64,17 @@ use App\Models\Planificacion\Reforma\Reforma;
 use App\Models\Planificacion\Reforma\CalendarioReforma;
 use App\Models\Planificacion\Solicitud\Solicitud;
 
+//nuevos
+use App\Models\RecursosHumanos\Filiacion;
+//use App\Models\Area\Area;
+use App\Models\CoreBase\Area;
+
 use App\Imports\ActividadImport;
 
 class PlanificacionController extends Controller
 {
 
     public function index(Request $request){
-
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-        $id_area    = Auth::user()->id_area;
 
         if(request()->ajax()) {
 
@@ -98,8 +100,7 @@ class PlanificacionController extends Controller
         $tipo_Poa = TipoPoa::where('estado', 'A')->get();
         $obj_Operativo = ObjetivoOperativo::where('estado', 'A')->get();
         $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
-        $sub_Act = SubActividad::where('estado', 'A')->get();
-
+        $sub_Act  = SubActividad::where('estado', 'A')->get();
 
         //respuesta para la vista
         return view('planificacion.index', compact('tipo_Poa','obj_Operativo'
@@ -113,38 +114,12 @@ class PlanificacionController extends Controller
 
         $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
         $tipos = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
 
         $item_presupuestario = ItemPresupuestario::where('estado', 'A')->get();
 
-
-
         //respuesta para la vista
-        return view('planificacion.create_planificacion', compact('Modulos','Opciones', 'tipos', 'item_presupuestario'));
+        return view('planificacion.create_planificacion', compact('tipos', 'item_presupuestario'));
     }
     /* VISTA - CREAR NUEVO EGRESO */
 
@@ -155,26 +130,26 @@ class PlanificacionController extends Controller
     {
         $data = $request->validate([
 
-            'obOpera'  => 'required|string',
-            'actOpera' => 'required|string',
-            'subActi'  => 'required|string',
+            'obOpera'    => 'required|string',
+            'actOpera'   => 'required|string',
+            'subActi'    => 'required|string',
             'item_presupuestario'     => 'required|string',
-            'monto'    => 'required|string',
+            'monto'      => 'required|string',
             'presupuesto_proyectado' => 'required|string',
             'unidad_ejecutora'  => 'required|string',
-            'programa'  => 'required|string',
-            'proyecto'  => 'required|string',
+            'programa'   => 'required|string',
+            'proyecto'   => 'required|string',
             'actividad'  => 'required|string',
             'fuente_financiamiento'  => 'required|string',
-            'coordina' => 'required|string',
-            'fecha'    => 'required|string',
-            'poa'      => 'required|string',
-            'anio'     => 'required|string',
+            'coordina'   => 'required|string',
+            'fecha'      => 'required|string',
+            'poa'        => 'required|string',
+            'anio'       => 'required|string',
 
-            'frecuencia'  => 'required|string',
-            'meses'    => 'required|array',
-            'plurianual'=> 'required|boolean',
-            'justifi'  => 'required|string',
+            'frecuencia' => 'required|string',
+            'meses'      => 'required|array',
+            'plurianual' => 'required|boolean',
+            'justifi'    => 'required|string',
 
         ]);
 
@@ -182,47 +157,27 @@ class PlanificacionController extends Controller
         $actOpera = $request->input('actOpera');
         $subActi  = $request->input('subActi');
 
-
         $item_presupuestario  = $request->input('item_presupuestario');
-        $monto = $request->input('monto');
+        $monto     = $request->input('monto');
         $presupuesto_proyectado = $request->input('presupuesto_proyectado');
         $unidad_ejecutora = $request->input('unidad_ejecutora');
-        $programa = $request->input('programa');
-        $proyecto = $request->input('proyecto');
+        $programa  = $request->input('programa');
+        $proyecto  = $request->input('proyecto');
         $actividad = $request->input('actividad');
         $fuente_financiamiento = $request->input('fuente_financiamiento');
-
-
-        $coordina = $request->input('coordina');
-
-        $fecha   = $request->input('fecha');
-        $anio    = $request->input('anio');
-
-        $poa     = $request->input('poa');
-
+        $coordina  = $request->input('coordina');
+        $fecha     = $request->input('fecha');
+        $anio      = $request->input('anio');
+        $poa       = $request->input('poa');
         $frecuencia = $request->input('frecuencia');
-
-        $meses = $request->input('meses');
-
+        $meses     = $request->input('meses');
         $plurianual = $request->input('plurianual');
-        $justifi = $request->input('justifi');
+        $justifi   = $request->input('justifi');
 
-        $id_area = Auth::user()->id_area;
         $id_usuario = Auth::user()->id;
+        $filiacion  = Filiacion::with('area')->where('user_id', $id_usuario)->first();
+        $id_area    = $filiacion->area_id;
 
-
-        //crear objetivo
-        // $op               = new ObjetivoOperativo;
-        // $op->id_area      = $id_area;
-        // $op->nombre       = $obOpera;
-        // $op->estado       = 'A';
-        // $op->operador_ing = auth()->user()->nom_user;
-        // $op->operador_act = auth()->user()->nom_user;
-        // $op->terminal_ing = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-        // $op->terminal_act = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-        // $op->ip_ing       = $_SERVER['REMOTE_ADDR'];
-        // $op->ip_act       = $_SERVER['REMOTE_ADDR'];
-        // $op->save();
 
     // Buscar si existe un objetivo operativo con el mismo nombre
     $nombreObjExistente = ObjetivoOperativo::where('nombre', $obOpera)->first();
@@ -234,30 +189,11 @@ class PlanificacionController extends Controller
         // Si no existe, crear uno nuevo
         $op = new ObjetivoOperativo;
         $op->id_area = $id_area;
-        $op->nombre = $obOpera;
-        $op->estado = 'A';
-        $op->operador_ing = auth()->user()->nom_user;
-        $op->operador_act = auth()->user()->nom_user;
-        $op->terminal_ing = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-        $op->terminal_act = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-        $op->ip_ing = $_SERVER['REMOTE_ADDR'];
-        $op->ip_act = $_SERVER['REMOTE_ADDR'];
+        $op->nombre  = $obOpera;
+        $op->estado  = 'A';
         $op->save();
         $id_obj_operativo = $op->id;
     }
-
-        // //crear actividad
-        // $actop               = new ActividadOperativa;
-        // $actop->id_area      = $id_area;
-        // $actop->nombre       = $actOpera;
-        // $actop->estado       = 'A';
-        // $actop->operador_ing = auth()->user()->nom_user;
-        // $actop->operador_act = auth()->user()->nom_user;
-        // $actop->terminal_ing = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-        // $actop->terminal_act = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-        // $actop->ip_ing       = $_SERVER['REMOTE_ADDR'];
-        // $actop->ip_act       = $_SERVER['REMOTE_ADDR'];
-        // $actop->save();
 
         // Verificar si existe la actividad
         $nombreActExistente = ActividadOperativa::where('nombre', $actOpera)->first();
@@ -268,23 +204,11 @@ class PlanificacionController extends Controller
             // Si no existe, crear una nueva
             $actop = new ActividadOperativa;
             $actop->id_area = $id_area;
-            $actop->nombre = $actOpera;
-            $actop->estado = 'A';
-            $actop->operador_ing = auth()->user()->nom_user;
-            $actop->operador_act = auth()->user()->nom_user;
-            $actop->terminal_ing = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-            $actop->terminal_act = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-            $actop->ip_ing = $_SERVER['REMOTE_ADDR'];
-            $actop->ip_act = $_SERVER['REMOTE_ADDR'];
+            $actop->nombre  = $actOpera;
+            $actop->estado  = 'A';
             $actop->save();
-            $id_actividad = $actop->id;
+            $id_actividad   = $actop->id;
         }
-
-        //crear subactividad
-        // $sub          = new SubActividad;
-        // $sub->id_area = $id_area;
-        // $sub->nombre  = $subActi;
-        // $sub->save();
 
         // Verificar si existe la subactividad
         $nombreSubActExistente = SubActividad::where('nombre', $subActi)->first();
@@ -295,62 +219,55 @@ class PlanificacionController extends Controller
             // Si no existe, crear una nueva
             $sub = new SubActividad;
             $sub->id_area = $id_area;
-            $sub->nombre = $subActi;
+            $sub->nombre  = $subActi;
             $sub->save();
             $id_sub_actividad = $sub->id;
         }
 
         $datos = [
-            'departamento'=> $coordina,
-            'id_area'=>$id_area,
-            'id_usuario' => $id_usuario,
-            // 'id_obj_operativo'=> $op->id,
+            'departamento'     => $coordina,
+            'id_area'          => $id_area,
+            'id_usuario'       => $id_usuario,
             'id_obj_operativo' => $id_obj_operativo,
-            // 'id_actividad'=> $actop->id,
-            'id_actividad' => $id_actividad,
-            // 'id_sub_actividad'=> $sub->id,
+            'id_actividad'     => $id_actividad,
             'id_sub_actividad' => $id_sub_actividad,
-            'id_tipo_monto'=> $frecuencia,
-            'id_tipo_poa'=> $poa,
-            'id_item'=> $item_presupuestario,
-            // 'descripcion_item'=> $desItem,
-            'monto'=> $monto,
+            'id_tipo_monto'    => $frecuencia,
+            'id_tipo_poa'      => $poa,
+            'id_item'          => $item_presupuestario,
+            'monto'            => $monto,
             'presupuesto_proyectado' => $presupuesto_proyectado,
-            'u_ejecutora' => $unidad_ejecutora,
-            'programa' => $programa,
-            'proyecto' => $proyecto,
-            'actividad' => $actividad,
-            'fuente' => $fuente_financiamiento,
-            // 'monto_item'=> $monDisp,
-            'fecha'=> $fecha,
-            // 'numero'=> $nPOA,
-            'año'=> $anio,
-            'plurianual'=>$plurianual,
+            'u_ejecutora'      => $unidad_ejecutora,
+            'programa'         => $programa,
+            'proyecto'         => $proyecto,
+            'actividad'        => $actividad,
+            'fuente'           => $fuente_financiamiento,
+            'fecha'            => $fecha,
+            'año'              => $anio,
+            'plurianual'       => $plurianual,
         ];
         $poas = Poa::create($datos);
 
         //se crea el calendario
         $calendario = new Calendario([
-            'id_poa' => $poas->id,
-            'enero' => $meses['Enero'],
-            'febrero' => $meses['Febrero'],
-            'marzo' => $meses['Marzo'],
-            'abril' => $meses['Abril'],
-            'mayo' => $meses['Mayo'],
-            'junio' => $meses['Junio'],
-            'julio' => $meses['Julio'],
-            'agosto' => $meses['Agosto'],
+            'id_poa'     => $poas->id,
+            'enero'      => $meses['Enero'],
+            'febrero'    => $meses['Febrero'],
+            'marzo'      => $meses['Marzo'],
+            'abril'      => $meses['Abril'],
+            'mayo'       => $meses['Mayo'],
+            'junio'      => $meses['Junio'],
+            'julio'      => $meses['Julio'],
+            'agosto'     => $meses['Agosto'],
             'septiembre' => $meses['Septiembre'],
-            'octubre' => $meses['Octubre'],
-            'noviembre' => $meses['Noviembre'],
-            'diciembre' => $meses['Diciembre'],
-            'total' => $monto,
+            'octubre'    => $meses['Octubre'],
+            'noviembre'  => $meses['Noviembre'],
+            'diciembre'  => $meses['Diciembre'],
+            'total'      => $monto,
             'justificacion_area' =>$justifi,
         ]);
         $calendario->save();
 
         if ($poa) {
-
 
             return response()->json(['message' => 'Actividad creada exitosamente', 'data' => true], 200);
 
@@ -364,41 +281,12 @@ class PlanificacionController extends Controller
     //Mostrar la tabla de POA por área
     public function vistaUser(Request $request){
 
-        $id_area = Auth::user()->id_area;
+        $id_user   = Auth::user()->id;
+        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
+        $area      = $filiacion?->area?->nombre;
+        $id_area   = $filiacion->area_id;
 
         $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $usuarioInf = User::select('db_inspi.r.name as role_name', 'db_inspi.ar.id as id_area')
-        ->join('db_inspi.role_user as ro', 'users.id', '=', 'ro.user_id')
-        ->join('db_inspi.roles as r', 'r.id', '=', 'ro.role_id')
-        ->join('db_inspi.inspi_area as ar', 'ar.id', '=', 'users.id_area')
-        ->where('users.id', '=', $id_usuario)
-        //->whereIn('r.name', ['Gerente', 'Secretaria'])
-        ->first();
 
         if(request()->ajax()) {
 
@@ -427,15 +315,16 @@ class PlanificacionController extends Controller
         $tipo_Poa = TipoPoa::where('estado', 'A')->get();
         $obj_Operativo = ObjetivoOperativo::where('estado', 'A')->get();
         $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
-        $sub_Act = SubActividad::where('estado', 'A')->get();
-        $usuarios = User::where('estado', '=', 'A')->get();
+        $sub_Act  = SubActividad::where('estado', 'A')->get();
+        $usuarios = User::where('status', '=', 'A')->get();
 
-        $area = Area::select('nombre')->where('estado', '=', 'A')->where('id', '=', $id_area)->first();
+        //$area = Area::select('nombre')->where('status', '=', 'A')->where('id', '=', $id_area)->first();
 
         //respuesta para la vista
-        return view('planificacion.vista_user', compact('Modulos','Opciones','tipo_Poa','obj_Operativo'
+        return view('planificacion.vista_user', compact('tipo_Poa','obj_Operativo'
         ,'act_Operativa','sub_Act','usuarios', 'area'));
     }
+
 
     //Eliminar registro de POA
     public function deletePoa(Request $request)
@@ -473,39 +362,6 @@ class PlanificacionController extends Controller
             $anio = date('Y');
         }
 
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $usuarioInf = User::select('db_inspi.r.name as role_name', 'db_inspi.ar.id as id_area')
-        ->join('db_inspi.role_user as ro', 'users.id', '=', 'ro.user_id')
-        ->join('db_inspi.roles as r', 'r.id', '=', 'ro.role_id')
-        ->join('db_inspi.inspi_area as ar', 'ar.id', '=', 'users.id_area')
-        ->where('users.id', '=', $id_usuario)
-        //->whereIn('r.name', ['Gerente', 'Secretaria'])
-        ->first();
-
         if(request()->ajax()) {
 
                 return datatables()->of(Poa::select('pla_poa1.id as id', 'area.nombre as Area',
@@ -534,7 +390,7 @@ class PlanificacionController extends Controller
 
         }
 
-        $tipo_Poa = TipoPoa::where('estado', 'A')->get();
+        $tipo_Poa   = TipoPoa::where('estado', 'A')->get();
         $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
         $calendario = Calendario::where('estado', 'A')->get();
         $sumaMontos = ItemPresupuestario::where('estado', 'A')->sum('monto');
@@ -543,17 +399,18 @@ class PlanificacionController extends Controller
             ->sum('monto');
 
         //respuesta para la vista
-        return view('planificacion.detalle_poa', compact('Modulos','Opciones','tipo_Poa'
+        return view('planificacion.detalle_poa', compact('tipo_Poa'
         ,'act_Operativa','calendario', 'sumaMontos', 'sumaActividades'));
 
     }
 
+
     //Detalle del POA en base al calendario
     public function detalleUser(Request $request){
         //respuesta para la vista
-
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-        $id_area    = Auth::user()->id_area; //TRAE EL ID DEL ÁREA
+        $id_user   = Auth::user()->id;
+        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
+        $id_area   = $filiacion->area_id;
 
 
         $anio = $request->input('anio');
@@ -562,39 +419,6 @@ class PlanificacionController extends Controller
         }else{
             $anio = date('Y');
         }
-
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $usuarioInf = User::select('db_inspi.r.name as role_name', 'db_inspi.ar.id as id_area')
-        ->join('db_inspi.role_user as ro', 'users.id', '=', 'ro.user_id')
-        ->join('db_inspi.roles as r', 'r.id', '=', 'ro.role_id')
-        ->join('db_inspi.inspi_area as ar', 'ar.id', '=', 'users.id_area')
-        ->where('users.id', '=', $id_usuario)
-        //->whereIn('r.name', ['Gerente', 'Secretaria'])
-        ->first();
 
         if(request()->ajax()) {
 
@@ -625,17 +449,17 @@ class PlanificacionController extends Controller
 
         }
 
-        $tipo_Poa = TipoPoa::where('estado', 'A')->get();
-        $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
+        $tipo_Poa   = TipoPoa::where('estado', 'A')->get();
         $calendario = Calendario::where('estado', 'A')->get();
         $sumaMontos = ItemPresupuestario::where('estado', 'A')->sum('monto');
+        $act_Operativa   = ActividadOperativa::where('estado', 'A')->get();
         $sumaActividades = Poa::where('estado', 'O')
             ->where('año', $anio)
             ->where('pla_poa1.id_area', '=', $id_area)
             ->sum('monto');
 
         //respuesta para la vista
-        return view('planificacion.detalleUser_poa', compact('Modulos','Opciones','tipo_Poa'
+        return view('planificacion.detalleUser_poa', compact('tipo_Poa'
         ,'act_Operativa','calendario', 'sumaMontos', 'sumaActividades'));
 
     }
@@ -675,40 +499,16 @@ class PlanificacionController extends Controller
 
         $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                               'inspi_opciones.id_modulo as id_modulo',
-                                               'inspi_opciones.nombre as nombre',
-                                               'inspi_opciones.controller as controller',
-                                               'inspi_opciones.icon as icon',
-                                               'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Poa = Poa::where('id', $id)->first();
-        $tipos = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
+        $Poa        = Poa::where('id', $id)->first();
+        $tipos      = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
         $calendario = Calendario::where('id_poa', $id)->first();
-        $tipoMonto = TipoMonto::select('id', 'nombre')->where('estado', 'A')->get();
+        $tipoMonto  = TipoMonto::select('id', 'nombre')->where('estado', 'A')->get();
 
         $unidad_eje = UnidadEjecutora::select('id', 'nombre')->where('estado', 'A')->get();
-        $programa = Programa::select('id', 'nombre')->where('estado', 'A')->get();
-        $proyecto = Proyecto::select('id', 'nombre')->where('estado', 'A')->get();
-        $actividad = ActividadPre::select('id', 'nombre')->where('estado', 'A')->get();
-        $fuente = Fuente::select('id', 'nombre')->where('estado', 'A')->get();
+        $programa   = Programa::select('id', 'nombre')->where('estado', 'A')->get();
+        $proyecto   = Proyecto::select('id', 'nombre')->where('estado', 'A')->get();
+        $actividad  = ActividadPre::select('id', 'nombre')->where('estado', 'A')->get();
+        $fuente     = Fuente::select('id', 'nombre')->where('estado', 'A')->get();
 
         $comentarios = Comentario::select('users.name as id_usuario', 'pla_comentario.comentario', 'pla_comentario.id_poa', 'pla_comentario.created_at',
         'pla_comentario.estado_planificacion as estado_planificacion')
@@ -741,7 +541,7 @@ class PlanificacionController extends Controller
 
             $item_presupuestario = ItemPresupuestario::where('estado', 'A')->get();
 
-        return view('planificacion.edit_estado_planificacion', compact('Modulos','Opciones', 'Poa', 'tipos', 'calendario', 'atributos', 'tipoMonto',
+        return view('planificacion.edit_estado_planificacion', compact('Poa', 'tipos', 'calendario', 'atributos', 'tipoMonto',
         'comentarios', 'item_presupuestario', 'unidad_eje', 'programa', 'proyecto', 'actividad', 'fuente'));
     }
 
@@ -751,12 +551,12 @@ class PlanificacionController extends Controller
     public function agregarComentarioEstado(Request $request)
     {
          $data = $request->validate([
-             'id_poa'  => 'required|string',
+             'id_poa'    => 'required|string',
              'estadoPoa' => 'required|string',
              'justificacionPoa'  => 'required|string',
          ]);
 
-         $id_poa  = $request->input('id_poa');
+         $id_poa    = $request->input('id_poa');
          $estadoPoa = $request->input('estadoPoa');
          $justificacionPoa  = $request->input('justificacionPoa');
 
@@ -776,7 +576,7 @@ class PlanificacionController extends Controller
         $id_usuario = Auth::user()->id;
 
         $datos = [
-            'id_poa'=> $id_poa,
+            'id_poa'     => $id_poa,
             'id_usuario' => $id_usuario,
             'comentario' => $justificacionPoa,
             'estado_planificacion' => $estadoTexto
@@ -849,14 +649,14 @@ class PlanificacionController extends Controller
 
     public function agregarComentario(Request $request)
     {
-        //            'nombre'      => 'required|string',
-         $data = $request->validate([
-             'id_poa'  => 'required|string',
+
+        $data = $request->validate([
+             'id_poa'    => 'required|string',
              'estadoPoa' => 'required|string',
              'justificacionPoa'  => 'required|string',
          ]);
 
-         $id_poa  = $request->input('id_poa');
+         $id_poa    = $request->input('id_poa');
          $estadoPoa = $request->input('estadoPoa');
          $justificacionPoa  = $request->input('justificacionPoa');
 
@@ -874,7 +674,7 @@ class PlanificacionController extends Controller
         $id_usuario = Auth::user()->id;
 
         $datos = [
-            'id_poa'=> $id_poa,
+            'id_poa'     => $id_poa,
             'id_usuario' => $id_usuario,
             'comentario' => $justificacionPoa,
             'estado_planificacion' => $estadoAnterior,
@@ -902,40 +702,13 @@ class PlanificacionController extends Controller
 
         $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                               'inspi_opciones.id_modulo as id_modulo',
-                                               'inspi_opciones.nombre as nombre',
-                                               'inspi_opciones.controller as controller',
-                                               'inspi_opciones.icon as icon',
-                                               'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $tipos = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
-
+        $tipos      = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
         $unidad_eje = UnidadEjecutora::select('id', 'nombre')->where('estado', 'A')->get();
-        $programa = Programa::select('id', 'nombre')->where('estado', 'A')->get();
-        $proyecto = Proyecto::select('id', 'nombre')->where('estado', 'A')->get();
-        $actividad = ActividadPre::select('id', 'nombre')->where('estado', 'A')->get();
-        $fuente = Fuente::select('id', 'nombre')->where('estado', 'A')->get();
-
-
-        $tipoMonto = TipoMonto::select('id', 'nombre')->where('estado', 'A')->get();
+        $programa   = Programa::select('id', 'nombre')->where('estado', 'A')->get();
+        $proyecto   = Proyecto::select('id', 'nombre')->where('estado', 'A')->get();
+        $actividad  = ActividadPre::select('id', 'nombre')->where('estado', 'A')->get();
+        $fuente     = Fuente::select('id', 'nombre')->where('estado', 'A')->get();
+        $tipoMonto  = TipoMonto::select('id', 'nombre')->where('estado', 'A')->get();
 
         //El where hace que se asocie con el Id_poa. Tenía otro where para que se asocie con el id_usuario pero creo que no es la finalidad de la vista.
         $comentarios = Comentario::select('users.name as id_usuario', 'pla_comentario.comentario', 'pla_comentario.id_poa', 'pla_comentario.created_at',
@@ -983,8 +756,7 @@ class PlanificacionController extends Controller
             ->whereIn('pla_poa1.estado', ['A','R','O', 'C'])
             ->first();
 
-
-            return view('planificacion.edit_planificacion', compact('Modulos','Opciones', 'tipos', 'atributos', 'tipoMonto', 'comentarios', 'item_presupuestario', 'atributos_operativos',
+            return view('planificacion.edit_planificacion', compact('tipos', 'atributos', 'tipoMonto', 'comentarios', 'item_presupuestario', 'atributos_operativos',
             'unidad_eje', 'programa', 'proyecto', 'actividad', 'fuente'));
 
     }
@@ -994,21 +766,21 @@ class PlanificacionController extends Controller
         $poa = Poa::find($id);
 
         $poa->departamento = $request->input('coordina');
-        $poa->fecha = $request->input('fecha');
-        $poa->id_item = $request->input('item_presupuestario');
-        $poa->monto = $request->input('monto');
+        $poa->fecha        = $request->input('fecha');
+        $poa->id_item      = $request->input('item_presupuestario');
+        $poa->monto        = $request->input('monto');
 
         $poa->id_tipo_monto = $request->input('frecuencia');
 
         $poa->presupuesto_proyectado = $request->input('presupuesto_proyectado');
 
-        $poa->u_ejecutora = $request->input('unidad_ejecutora');
-        $poa->programa = $request->input('programa');
-        $poa->proyecto = $request->input('proyecto');
-        $poa->actividad = $request->input('actividad');
-        $poa->fuente = $request->input('fuente_financiamiento');
+        $poa->u_ejecutora  = $request->input('unidad_ejecutora');
+        $poa->programa     = $request->input('programa');
+        $poa->proyecto     = $request->input('proyecto');
+        $poa->actividad    = $request->input('actividad');
+        $poa->fuente       = $request->input('fuente_financiamiento');
 
-        $poa->plurianual = $request->input('plurianual');
+        $poa->plurianual   = $request->input('plurianual');
 
         // Verificar si el estado actual es "Rechazado"
         if ($poa->estado === 'R') {
@@ -1050,24 +822,24 @@ class PlanificacionController extends Controller
         $calendario->justificacion_area = $request->input('justifi');
 
         $meses = $request->input('meses');
-        $calendario->enero = $meses['Enero'];
-        $calendario->febrero = $meses['Febrero'];
-        $calendario->marzo = $meses['Marzo'];
-        $calendario->abril = $meses['Abril'];
-        $calendario->mayo = $meses['Mayo'];
-        $calendario->junio = $meses['Junio'];
-        $calendario->julio = $meses['Julio'];
-        $calendario->agosto = $meses['Agosto'];
+        $calendario->enero      = $meses['Enero'];
+        $calendario->febrero    = $meses['Febrero'];
+        $calendario->marzo      = $meses['Marzo'];
+        $calendario->abril      = $meses['Abril'];
+        $calendario->mayo       = $meses['Mayo'];
+        $calendario->junio      = $meses['Junio'];
+        $calendario->julio      = $meses['Julio'];
+        $calendario->agosto     = $meses['Agosto'];
         $calendario->septiembre = $meses['Septiembre'];
-        $calendario->octubre = $meses['Octubre'];
-        $calendario->noviembre = $meses['Noviembre'];
-        $calendario->diciembre = $meses['Diciembre'];
+        $calendario->octubre    = $meses['Octubre'];
+        $calendario->noviembre  = $meses['Noviembre'];
+        $calendario->diciembre  = $meses['Diciembre'];
         $calendario->save();
 
         //GUARDAR EL COMENTARIO EN LA TABLA DE COMENTARIO2
         $id_poa = $id;
         $comentarioRetro = $request->input('comentario');
-        $id_usuario = Auth::user()->id;
+        $id_usuario      = Auth::user()->id;
 
         // Verificar si hay comentarios previos para este id_poa
         $comentarioExistente = Comentario::where('id_poa', $id_poa)->exists();
@@ -1075,7 +847,7 @@ class PlanificacionController extends Controller
         // Obtener el estado anterior si hay comentarios previos
         if ($comentarioExistente) {
             $ultimoComentario = Comentario::where('id_poa', $id_poa)->orderBy('created_at', 'desc')->first();
-            $estadoAnterior = $ultimoComentario->estado_planificacion;
+            $estadoAnterior   = $ultimoComentario->estado_planificacion;
         } else {
             $estadoAnterior = 'Ingresado'; // Estado por defecto si no hay comentarios previos
         }
@@ -1087,7 +859,7 @@ class PlanificacionController extends Controller
 
         // Crear datos del comentario
         $datosComentario = [
-            'id_poa' => $id_poa,
+            'id_poa'     => $id_poa,
             'id_usuario' => $id_usuario,
             'comentario' => $comentarioRetro,
             'estado_planificacion' => $estadoAnterior, // Asignar el estado determinado
@@ -1112,42 +884,32 @@ class PlanificacionController extends Controller
     }
 
     public function obtenerDatosItem($id) {
+
         $item = ItemPresupuestario::findOrFail($id);
 
         // Retornar los datos como JSON
         return response()->json([
-            'monto' => $item->monto,
+            'monto'       => $item->monto,
             'descripcion' => $item->descripcion,
         ]);
+
     }
     //========================================Aquí inicia PDF===============================================
 
-        /* GENERAR PDF  */
+
+
+    /* GENERAR PDF  */
     public function reportHexa(Request $request)
     {
         $id_poa  = $request->query('id_poa');
 
         $usuarios = [
-            'creado' => ['name' => $request->input('id_creado'),'cargo' => $request->input('cargo_creado')
-            ],
-            'autorizado' => ['name' => $request->input('id_autorizado'),'cargo' => $request->input('cargo_autorizado')
-            ],
-            'reporta' => ['name' => $request->input('id_reporta'),'cargo' => $request->input('cargo_reporta')
-            ],
-            'areaReq' => ['name' => $request->input('id_areaReq'),'cargo' => $request->input('cargo_areaReq')
-            ],
-            'planificacionYG' => ['name' => $request->input('id_planificacionYG'),'cargo' => $request->input('cargo_planificacionYG')
-            ],
+            'creado'     => ['name' => $request->input('id_creado'),'cargo' => $request->input('cargo_creado')],
+            'autorizado' => ['name' => $request->input('id_autorizado'),'cargo' => $request->input('cargo_autorizado')],
+            'reporta'    => ['name' => $request->input('id_reporta'),'cargo' => $request->input('cargo_reporta')],
+            'areaReq'    => ['name' => $request->input('id_areaReq'),'cargo' => $request->input('cargo_areaReq')],
+            'planificacionYG' => ['name' => $request->input('id_planificacionYG'),'cargo' => $request->input('cargo_planificacionYG')],
         ];
-
-        // Obtener el contenido del campo justifi desde la solicitud
-        // $justifi = $request->input('justifi');
-            // Actualizar la justificación en la tabla pla_calendario
-        // $calendario = Calendario::where('id_poa', $id_poa)->first();
-        // if ($calendario) {
-        //     $calendario->justificacion_area = $justifi;
-        //     $calendario->save();
-        // }
 
         $atributos = DB::table('db_inspi_planificacion.pla_poa1')
             ->select('pla_poa1.id as id','pla_poa1.departamento as departamento', 'pla_poa1.nro_poa as numero',
@@ -1174,7 +936,6 @@ class PlanificacionController extends Controller
             ->join('db_inspi_planificacion.pla_tipo_monto', 'pla_poa1.id_tipo_monto', '=', 'pla_tipo_monto.id')
             ->join('db_inspi_planificacion.pla_tipo_poa', 'pla_poa1.id_tipo_poa', '=', 'pla_tipo_poa.id')
             ->join('db_inspi.inspi_item_presupuestario', 'pla_poa1.id_item', '=', 'inspi_item_presupuestario.id')
-
             ->join('db_inspi.consumo_item', 'pla_poa1.id_consumo', '=', 'consumo_item.id')
 
         ->where('pla_poa1.id',"=", $id_poa)
@@ -1216,32 +977,10 @@ class PlanificacionController extends Controller
 
 
     public function reformaIndex(Request $request){ // VISTA DEL USUARIO AL CREAR REFORMA
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-        $id_area    = Auth::user()->id_area; //TRAE EL ID DEL ÁREA
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                               'inspi_opciones.id_modulo as id_modulo',
-                                               'inspi_opciones.nombre as nombre',
-                                               'inspi_opciones.controller as controller',
-                                               'inspi_opciones.icon as icon',
-                                               'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
+        $id_user   = Auth::user()->id;
+        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
+        $id_area   = $filiacion->area_id;
 
         if(request()->ajax()) {
 
@@ -1266,36 +1005,16 @@ class PlanificacionController extends Controller
 
         $area = Area::select('nombre')->where('estado', '=', 'A')->where('id', '=', $id_area)->first();
 
-        return view('planificacion.index_reforma', compact('Modulos','Opciones', 'area', 'usuarios'));
+        return view('planificacion.index_reforma', compact('area', 'usuarios'));
     }
 
+
+
     public function reformaPrincipal(Request $request){
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-        $id_area    = Auth::user()->id_area; //TRAE EL ID DEL ÁREA
 
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                               'inspi_opciones.id_modulo as id_modulo',
-                                               'inspi_opciones.nombre as nombre',
-                                               'inspi_opciones.controller as controller',
-                                               'inspi_opciones.icon as icon',
-                                               'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
+        $id_user   = Auth::user()->id;
+        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
+        $id_area   = $filiacion->area_id;
 
         if(request()->ajax()) {
 
@@ -1303,54 +1022,21 @@ class PlanificacionController extends Controller
                 DB::raw('DATE_FORMAT(pla_reforma.created_at, "%Y-%m-%d") as fecha'),
                 'pla_reforma.id as id_reforma', 'pla_reforma.estado as estado')
                 // ->where('pla_poa1.id_area', '=', $id_area)
-                ->whereNotIn('pla_reforma.estado', ['E'])
-        )
+                ->whereNotIn('pla_reforma.estado', ['E']))
                 ->addIndexColumn()
                 ->make(true);
         }
 
-        return view('planificacion.index_reforma_principal', compact('Modulos','Opciones'));
+        return view('planificacion.index_reforma_principal');
     }
 
     //===============================================================================================
 
     public function crearReforma(Request $request){
 
-        $id_area = Auth::user()->id_area;
-
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $usuarioInf = User::select('db_inspi.r.name as role_name', 'db_inspi.ar.id as id_area')
-        ->join('db_inspi.role_user as ro', 'users.id', '=', 'ro.user_id')
-        ->join('db_inspi.roles as r', 'r.id', '=', 'ro.role_id')
-        ->join('db_inspi.inspi_area as ar', 'ar.id', '=', 'users.id_area')
-        ->where('users.id', '=', $id_usuario)
-        //->whereIn('r.name', ['Gerente', 'Secretaria'])
-        ->first();
+        $id_user   = Auth::user()->id;
+        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
+        $id_area   = $filiacion->area_id;
 
         $anio = date('Y');
 
@@ -1377,24 +1063,22 @@ class PlanificacionController extends Controller
             ->whereIn('pla_poa1.estado', ['O'])
             ->get();
 
-        $tipo_Poa = TipoPoa::where('estado', 'A')->get();
+        $tipo_Poa      = TipoPoa::where('estado', 'A')->get();
         $obj_Operativo = ObjetivoOperativo::where('estado', 'A')->get();
         $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
-        $sub_Act = SubActividad::where('estado', 'A')->get();
-        $usuarios = User::where('estado', '=', 'A')->get();
+        $sub_Act       = SubActividad::where('estado', 'A')->get();
+        $usuarios      = User::where('status', '=', 'A')->get();
+        $tipos         = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
+        $czonal        = Czonal::select('*')->whereIn('estado', ['A'])->get();
 
-        $tipos = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
         $item_presupuestario = ItemPresupuestario::where('estado', 'A')->get();
 
-        $czonal = Czonal::select('*')->whereIn('estado', ['A'])->get();
-        // $area = Area::select('inspi_area.nombre as nombre')
-        // ->join('db_inspi.inspi_czonal', 'inspi_area.czonal_id', '=', 'inspi_czonal.id')
-        // ->get();
-
         //respuesta para la vista
-        return view('planificacion.crear_reforma', compact('Modulos','Opciones','tipo_Poa','obj_Operativo'
+        return view('planificacion.crear_reforma', compact('tipo_Poa','obj_Operativo'
         ,'act_Operativa','sub_Act','usuarios','atributos', 'tipos', 'item_presupuestario','czonal'));
     }
+
+
 
     public function getAreas($czonal_id){
         // Obtener áreas asociadas con el czonal_id
@@ -1403,6 +1087,8 @@ class PlanificacionController extends Controller
         // Devolver las áreas en formato JSON
         return response()->json($areas);
     }
+
+
 
     public function TblActArea(Request $request){
 
@@ -1480,16 +1166,19 @@ class PlanificacionController extends Controller
 
     public function saveReforma(Request $request){
         $data = $request->validate([
-            'formData' => 'required|array', // Validar que 'datos' sea un array requerido
+            'formData'      => 'required|array', // Validar que 'datos' sea un array requerido
             'justificacion' => 'required|string', // Validar que 'justificacion' sea una cadena requerida
-            'justifi' => 'required|string' // Validar que 'justificacion del área requirente' sea una cadena requerida
+            'justifi'       => 'required|string' // Validar que 'justificacion del área requirente' sea una cadena requerida
         ]);
 
-        $formData = $request->input('formData');
+        $formData      = $request->input('formData');
         $justificacion = $data['justificacion']; // Obtener la justificación del formulario
-        $justifi = $data['justifi']; // Obtener la justificación del área requirente del formulario
+        $justifi       = $data['justifi']; // Obtener la justificación del área requirente del formulario
 
-        $id_area = Auth::user()->id_area;
+        $id_user   = Auth::user()->id;
+        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
+        $id_area   = $filiacion->area_id;
+
         $fecha = date('Y-m-d H:i:s');
 
         try {
@@ -1501,8 +1190,8 @@ class PlanificacionController extends Controller
             $reforma->nro_solicitud = $nro_solicitud;
             $reforma->justificacion = $justificacion;
             $reforma->justificacion_area = $justifi;
-            $reforma->area_id = $id_area;
-            $reforma->estado = 'A';
+            $reforma->area_id       = $id_area;
+            $reforma->estado        = 'A';
             $reforma->save();
 
             $id_reforma = $reforma->id;
@@ -1513,10 +1202,10 @@ class PlanificacionController extends Controller
                 $id_poa = $datos['id_poa']; // Obtener el id_poa de la fila actual
 
                 //crear actividad
-                $act              = new Actividad;
-                $act->id_poa1     = $id_poa;
-                $act->id_reforma  = $id_reforma;
-                $act->estado      = $datos['estado'];
+                $act                = new Actividad;
+                $act->id_poa1       = $id_poa;
+                $act->id_reforma    = $id_reforma;
+                $act->estado        = $datos['estado'];
                 $act->sub_actividad = $datos['subActividad'];
                 $act->save();
 
@@ -1584,94 +1273,83 @@ class PlanificacionController extends Controller
         }
     }
 
+
+
+
     public function crearReformaConActividades(Request $request) //CREAR NUEVA ACTIVIDAD EN LA VENTANA DE NUEVA REFORMA
     {
         try {
-            // DB::beginTransaction();
-            // $plurianual = $request->input('plurianual');
 
-
-            $id_area = Auth::user()->id_area;
-            $id_usuario = Auth::id();
+            $id_usuario = Auth::user()->id;
+            $filiacion  = Filiacion::with('area')->where('user_id', $id_user)->first();
+            $id_area    = $filiacion->area_id;
 
             // Crear objetivo operativo
             $op = new ObjetivoOperativo;
             $op->id_area = $id_area;
-            $op->nombre = $request->obOpera;
-            $op->estado = 'A';
-            $op->operador_ing = auth()->user()->nom_user;
-            $op->operador_act = auth()->user()->nom_user;
-            $op->terminal_ing = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-            $op->terminal_act = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-            $op->ip_ing = $_SERVER['REMOTE_ADDR'];
-            $op->ip_act = $_SERVER['REMOTE_ADDR'];
+            $op->nombre  = $request->obOpera;
+            $op->estado  = 'A';
             $op->save();
 
             // Crear actividad operativa
             $actop = new ActividadOperativa;
             $actop->id_area = $id_area;
-            $actop->nombre = $request->actOpera;
-            $actop->estado = 'A';
-            $actop->operador_ing = auth()->user()->nom_user;
-            $actop->operador_act = auth()->user()->nom_user;
-            $actop->terminal_ing = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-            $actop->terminal_act = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-            $actop->ip_ing = $_SERVER['REMOTE_ADDR'];
-            $actop->ip_act = $_SERVER['REMOTE_ADDR'];
+            $actop->nombre  = $request->actOpera;
+            $actop->estado  = 'A';
             $actop->save();
 
             // Crear subactividad
             $sub = new SubActividad;
             $sub->id_area = $id_area;
-            $sub->nombre = $request->subActi;
+            $sub->nombre  = $request->subActi;
             $sub->save();
 
             // Crear POA
             $poa = new Poa();
-            $poa->departamento = $request->coordina;
-            $poa->id_area = $id_area;
-            $poa->id_usuario = $id_usuario;
+            $poa->departamento  = $request->coordina;
+            $poa->id_area       = $id_area;
+            $poa->id_usuario    = $id_usuario;
             $poa->id_obj_operativo = $op->id;
-            $poa->id_actividad = $actop->id;
+            $poa->id_actividad  = $actop->id;
             $poa->id_sub_actividad = $sub->id;
             $poa->id_tipo_monto = '1';
-            $poa->id_tipo_poa = $request->poa;
-            $poa->u_ejecutora = $request->input('unidad_ejecutora');
-            $poa->programa = $request->input('programa');
-            $poa->proyecto = $request->input('proyecto');
-            $poa->actividad = $request->input('actividad');
-            $poa->fuente = $request->input('fuente_financiamiento');
-            $poa->id_item = $request->item_presupuestario;
-            $poa->fecha = $request->fecha;
-            $poa->año = date('Y', strtotime($request->fecha));
-            $poa->plurianual = $request->plurianual ? 1 : 0;
-            $poa->monto = $request->total;
+            $poa->id_tipo_poa   = $request->poa;
+            $poa->u_ejecutora   = $request->input('unidad_ejecutora');
+            $poa->programa      = $request->input('programa');
+            $poa->proyecto      = $request->input('proyecto');
+            $poa->actividad     = $request->input('actividad');
+            $poa->fuente        = $request->input('fuente_financiamiento');
+            $poa->id_item       = $request->item_presupuestario;
+            $poa->fecha         = $request->fecha;
+            $poa->año           = date('Y', strtotime($request->fecha));
+            $poa->plurianual    = $request->plurianual ? 1 : 0;
+            $poa->monto         = $request->total;
 
             $poa->estado = 'A';
             $poa->save();
 
             // Crear Calendario normal
             $calendario = new Calendario();
-            $calendario->id_poa = $poa->id;
-            $calendario->enero = 0;
-            $calendario->febrero = 0;
-            $calendario->marzo = 0;
-            $calendario->abril = 0;
-            $calendario->mayo = 0;
-            $calendario->junio = 0;
-            $calendario->julio = 0;
-            $calendario->agosto = 0;
+            $calendario->id_poa     = $poa->id;
+            $calendario->enero      = 0;
+            $calendario->febrero    = 0;
+            $calendario->marzo      = 0;
+            $calendario->abril      = 0;
+            $calendario->mayo       = 0;
+            $calendario->junio      = 0;
+            $calendario->julio      = 0;
+            $calendario->agosto     = 0;
             $calendario->septiembre = 0;
-            $calendario->octubre = 0;
-            $calendario->noviembre = 0;
-            $calendario->diciembre = 0;
-            $calendario->total = 0;
+            $calendario->octubre    = 0;
+            $calendario->noviembre  = 0;
+            $calendario->diciembre  = 0;
+            $calendario->total      = 0;
             $calendario->justificacion_area = $request->input('justifi2');
             // $calendario->estado = 'N';
             $calendario->save();
 
             $comentario = new Comentario();
-            $comentario->id_poa = $poa->id;
+            $comentario->id_poa     = $poa->id;
             $comentario->id_usuario = Auth::id();
             $comentario->comentario = 'Nueva actividad creada en reforma';
             $comentario->estado_planificacion = 'Ingresado'; // Estado inicial para una nueva reforma
@@ -1688,10 +1366,10 @@ class PlanificacionController extends Controller
                 'poa' => [
                     'id' => $poa->id,
                     'nombreActividadOperativa' => $actop->nombre,
-                    'nombreSubActividad' => $sub->nombre,
-                    'nombreItem' => $item->nombre,
-                    'descripcionItem' => $item->descripcion,
-                    'id_area' => $id_area,
+                    'nombreSubActividad'       => $sub->nombre,
+                    'nombreItem'               => $item->nombre,
+                    'descripcionItem'          => $item->descripcion,
+                    'id_area'                  => $id_area,
                 ]
             ]);
         } catch (\Exception $e) {
@@ -1722,11 +1400,11 @@ class PlanificacionController extends Controller
 
         // Valida los datos entrantes (opcional, pero recomendado)
         $datos = $request->validate([
-            'id_poa' => 'required|integer',
+            'id_poa'     => 'required|integer',
             'id_reforma' => 'required|integer',
         ]);
 
-        $id_poa = $datos['id_poa']; // Obtener el id_poa de la fila actual
+        $id_poa     = $datos['id_poa']; // Obtener el id_poa de la fila actual
         $id_reforma = $datos['id_reforma'];
 
         $sub_Actividad = DB::table('db_inspi_planificacion.pla_poa1')
@@ -1738,29 +1416,29 @@ class PlanificacionController extends Controller
         // Crear Actividad de Reforma
         $actividad = new Actividad();
         $actividad->id_reforma = $request->id_reforma;
-        $actividad->id_poa1 = $id_poa;
-        $actividad->estado = 'A';
+        $actividad->id_poa1    = $id_poa;
+        $actividad->estado     = 'A';
         $actividad->sub_actividad = $sub_Actividad-> nombreSubActividad;
         $actividad->save();
 
         // Crear Calendario de Reforma
         $calendario = new CalendarioReforma();
         $calendario->id_actividad = $actividad->id;
-        $calendario->id_poa = $id_poa;
-        $calendario->tipo = 'AUMENTA';
-        $calendario->enero = 0;
-        $calendario->febrero = 0;
-        $calendario->marzo = 0;
-        $calendario->abril = 0;
-        $calendario->mayo = 0;
-        $calendario->junio = 0;
-        $calendario->julio = 0;
-        $calendario->agosto = 0;
+        $calendario->id_poa     = $id_poa;
+        $calendario->tipo       = 'AUMENTA';
+        $calendario->enero      = 0;
+        $calendario->febrero    = 0;
+        $calendario->marzo      = 0;
+        $calendario->abril      = 0;
+        $calendario->mayo       = 0;
+        $calendario->junio      = 0;
+        $calendario->julio      = 0;
+        $calendario->agosto     = 0;
         $calendario->septiembre = 0;
-        $calendario->octubre = 0;
-        $calendario->noviembre = 0;
-        $calendario->diciembre = 0;
-        $calendario->total = 0;
+        $calendario->octubre    = 0;
+        $calendario->noviembre  = 0;
+        $calendario->diciembre  = 0;
+        $calendario->total      = 0;
         // $calendario->estado = 'A';
         $calendario->save();
 
@@ -1779,7 +1457,6 @@ class PlanificacionController extends Controller
             ->join('db_inspi.inspi_item_presupuestario', 'pla_poa1.id_item', '=', 'inspi_item_presupuestario.id')
             ->join('db_inspi_planificacion.pla_calendario', 'pla_poa1.id', '=', 'pla_calendario.id_poa')
 
-
             ->where('pla_poa1.id','=',$id_poa)
             ->first();
  
@@ -1790,23 +1467,23 @@ class PlanificacionController extends Controller
             'actividadPoa' => [
                 'id' => $actividad->id,
                 'nombreActividadOperativa' => $atributos -> nombreActividadOperativa,
-                'nombreSubActividad' => $atributos -> nombreSubActividad,
-                'nombreItem' => $atributos -> nombreItem,
+                'nombreSubActividad'       => $atributos -> nombreSubActividad,
+                'nombreItem'      => $atributos -> nombreItem,
                 'descripcionItem' => $atributos -> descripcionItem,
-                'id_areaS' => $atributos -> id_areaS,
-                'enero' => $atributos -> enero,
-                'febrero' => $atributos -> febrero,
-                'marzo' => $atributos -> marzo,
-                'abril' => $atributos -> abril,
-                'mayo' => $atributos -> mayo,
-                'junio' => $atributos -> junio,
-                'julio' => $atributos -> julio,
-                'agosto' => $atributos -> agosto,
+                'id_areaS'   => $atributos -> id_areaS,
+                'enero'      => $atributos -> enero,
+                'febrero'    => $atributos -> febrero,
+                'marzo'      => $atributos -> marzo,
+                'abril'      => $atributos -> abril,
+                'mayo'       => $atributos -> mayo,
+                'junio'      => $atributos -> junio,
+                'julio'      => $atributos -> julio,
+                'agosto'     => $atributos -> agosto,
                 'septiembre' => $atributos -> septiembre,
-                'octubre' => $atributos -> octubre,
-                'noviembre' => $atributos -> noviembre,
-                'diciembre' => $atributos -> diciembre,
-                'total' => $atributos -> total,
+                'octubre'    => $atributos -> octubre,
+                'noviembre'  => $atributos -> noviembre,
+                'diciembre'  => $atributos -> diciembre,
+                'total'      => $atributos -> total,
 
             ]
         ]);
@@ -1817,42 +1494,6 @@ class PlanificacionController extends Controller
 
 
     public function editarReforma(Request $request, $id){
-
-        $id_area = Auth::user()->id_area;
-
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $usuarioInf = User::select('db_inspi.r.name as role_name', 'db_inspi.ar.id as id_area')
-        ->join('db_inspi.role_user as ro', 'users.id', '=', 'ro.user_id')
-        ->join('db_inspi.roles as r', 'r.id', '=', 'ro.role_id')
-        ->join('db_inspi.inspi_area as ar', 'ar.id', '=', 'users.id_area')
-        ->where('users.id', '=', $id_usuario)
-        //->whereIn('r.name', ['Gerente', 'Secretaria'])
-        ->first();
 
         $anio = date('Y');
 
@@ -1892,15 +1533,14 @@ class PlanificacionController extends Controller
             ->where('pla_actividad.estado', 'A')
         ->get();       
 
-        $tipo_Poa = TipoPoa::where('estado', 'A')->get();
+        $tipo_Poa      = TipoPoa::where('estado', 'A')->get();
         $obj_Operativo = ObjetivoOperativo::where('estado', 'A')->get();
         $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
-        $sub_Act = SubActividad::where('estado', 'A')->get();
-        $usuarios = User::where('estado', '=', 'A')->get();
+        $sub_Act       = SubActividad::where('estado', 'A')->get();
+        $usuarios      = User::where('estado', '=', 'A')->get();
 
-        $tipos = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
-
-        $czonal = Czonal::select('*')->whereIn('estado', ['A'])->get();
+        $tipos         = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
+        $czonal        = Czonal::select('*')->whereIn('estado', ['A'])->get();
 
         $item_presupuestario = ItemPresupuestario::where('estado', 'A')->get();
 
@@ -1914,21 +1554,23 @@ class PlanificacionController extends Controller
         ->get();
 
         //respuesta para la vista
-        return view('planificacion.editar_reforma', compact('Modulos','Opciones','tipo_Poa','obj_Operativo'
+        return view('planificacion.editar_reforma', compact('tipo_Poa','obj_Operativo'
         ,'act_Operativa','sub_Act','usuarios','atributos', 'id', 'item_presupuestario', 'tipos'
         , 'comentarios','czonal'));
     }
 
+
+
     public function actualizarReforma(Request $request, $id){
         $data = $request->validate([
-            'formData' => 'required|array',
+            'formData'      => 'required|array',
             'justificacion' => 'required|string',
-            'justifi' => 'required|string'
+            'justifi'       => 'required|string'
         ]);
 
-        $formData = $request->input('formData');
+        $formData      = $request->input('formData');
         $justificacion = $data['justificacion'];
-        $justifi = $data['justifi']; // Obtener la justificación del área requirente del formulario
+        $justifi       = $data['justifi']; // Obtener la justificación del área requirente del formulario
 
 
         try {
@@ -1936,7 +1578,7 @@ class PlanificacionController extends Controller
 
             // Actualizar la reforma principal
             $reforma = Reforma::findOrFail($id);
-            $reforma->justificacion = $justificacion;
+            $reforma->justificacion      = $justificacion;
             $reforma->justificacion_area = $justifi;
 
 
@@ -1959,27 +1601,27 @@ class PlanificacionController extends Controller
                 //     $actividad->id_poa1 = $datos['id_poa'];
                 // }
                 $actividad->sub_actividad = $datos['subActividad'];
-                $actividad->estado = $datos['estado'];
+                $actividad->estado        = $datos['estado'];
                 $actividad->save();
 
                 $calendario = CalendarioReforma::updateOrCreate(
                     ['id_actividad' => $actividad->id],
                     [
-                        'tipo' => $datos['tipo'],
-                        'enero' => $datos['enero'],
-                        'febrero' => $datos['febrero'],
-                        'marzo' => $datos['marzo'],
-                        'abril' => $datos['abril'],
-                        'mayo' => $datos['mayo'],
-                        'junio' => $datos['junio'],
-                        'julio' => $datos['julio'],
-                        'agosto' => $datos['agosto'],
+                        'tipo'       => $datos['tipo'],
+                        'enero'      => $datos['enero'],
+                        'febrero'    => $datos['febrero'],
+                        'marzo'      => $datos['marzo'],
+                        'abril'      => $datos['abril'],
+                        'mayo'       => $datos['mayo'],
+                        'junio'      => $datos['junio'],
+                        'julio'      => $datos['julio'],
+                        'agosto'     => $datos['agosto'],
                         'septiembre' => $datos['septiembre'],
-                        'octubre' => $datos['octubre'],
-                        'noviembre' => $datos['noviembre'],
-                        'diciembre' => $datos['diciembre'],
-                        'total' => $datos['total'],
-                        'estado' => $datos['estado'],
+                        'octubre'    => $datos['octubre'],
+                        'noviembre'  => $datos['noviembre'],
+                        'diciembre'  => $datos['diciembre'],
+                        'total'      => $datos['total'],
+                        'estado'     => $datos['estado'],
                     ]
                 );
 
@@ -1988,27 +1630,27 @@ class PlanificacionController extends Controller
                 if ($calendarioNormal && $calendarioNormal->created_at->gte($reforma->created_at)) {
                     // Esta actividad fue creada después de la reforma, actualizamos el calendario normal
                     // solo si todos los valores son cero
-                    if ($calendarioNormal->enero == 0 && $calendarioNormal->febrero == 0 &&
-                        $calendarioNormal->marzo == 0 && $calendarioNormal->abril == 0 &&
-                        $calendarioNormal->mayo == 0 && $calendarioNormal->junio == 0 &&
-                        $calendarioNormal->julio == 0 && $calendarioNormal->agosto == 0 &&
+                    if ($calendarioNormal->enero == 0      && $calendarioNormal->febrero == 0 &&
+                        $calendarioNormal->marzo == 0      && $calendarioNormal->abril == 0 &&
+                        $calendarioNormal->mayo == 0       && $calendarioNormal->junio == 0 &&
+                        $calendarioNormal->julio == 0      && $calendarioNormal->agosto == 0 &&
                         $calendarioNormal->septiembre == 0 && $calendarioNormal->octubre == 0 &&
-                        $calendarioNormal->noviembre == 0 && $calendarioNormal->diciembre == 0) {
+                        $calendarioNormal->noviembre == 0  && $calendarioNormal->diciembre == 0) {
 
                         $calendarioNormal->update([
-                            'enero' => $datos['enero'],
-                            'febrero' => $datos['febrero'],
-                            'marzo' => $datos['marzo'],
-                            'abril' => $datos['abril'],
-                            'mayo' => $datos['mayo'],
-                            'junio' => $datos['junio'],
-                            'julio' => $datos['julio'],
-                            'agosto' => $datos['agosto'],
+                            'enero'      => $datos['enero'],
+                            'febrero'    => $datos['febrero'],
+                            'marzo'      => $datos['marzo'],
+                            'abril'      => $datos['abril'],
+                            'mayo'       => $datos['mayo'],
+                            'junio'      => $datos['junio'],
+                            'julio'      => $datos['julio'],
+                            'agosto'     => $datos['agosto'],
                             'septiembre' => $datos['septiembre'],
-                            'octubre' => $datos['octubre'],
-                            'noviembre' => $datos['noviembre'],
-                            'diciembre' => $datos['diciembre'],
-                            'total' => $datos['total'],
+                            'octubre'    => $datos['octubre'],
+                            'noviembre'  => $datos['noviembre'],
+                            'diciembre'  => $datos['diciembre'],
+                            'total'      => $datos['total'],
                         ]);
                     }
                 }
@@ -2067,154 +1709,119 @@ class PlanificacionController extends Controller
     {
         try {
 
-            $id_area = Auth::user()->id_area;
-            $id_usuario = Auth::id();
+            $id_usuario = Auth::user()->id;
+            $filiacion  = Filiacion::with('area')->where('user_id', $id_user)->first();
+            $id_area    = $filiacion->area_id;
 
             // Objetivo Operativo
-        $objetivoOperativo = ObjetivoOperativo::firstOrCreate(
-            ['nombre' => $request->obOpera],
-            [
-                'id_area' => $id_area,
-                'estado' => 'A',
-                'operador_ing' => auth()->user()->nom_user,
-                'operador_act' => auth()->user()->nom_user,
-                'terminal_ing' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-                'terminal_act' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-                'ip_ing' => $_SERVER['REMOTE_ADDR'],
-                'ip_act' => $_SERVER['REMOTE_ADDR'],
-            ]
-        );
-        $id_obj_operativo = $objetivoOperativo->id;
-        $nombreObjetivoOperativo = $objetivoOperativo->nombre;
+            $objetivoOperativo = ObjetivoOperativo::firstOrCreate(
+                ['nombre' => $request->obOpera],
+                [
+                    'id_area' => $id_area,
+                    'estado'  => 'A',
+                ]
+            );
+            $id_obj_operativo        = $objetivoOperativo->id;
+            $nombreObjetivoOperativo = $objetivoOperativo->nombre;
 
-            // // Verificar si existe la actividad operativa
-            // $nombreActExistente = ActividadOperativa::where('nombre', $request->actOpera)->first();
-            // if ($nombreActExistente) {
-            //     $id_actividad = $nombreActExistente->id;
-            // } else {
-            //     // Si no existe, crear una nueva
-            //     $actop = new ActividadOperativa;
-            //     $actop->id_area = $id_area;
-            //     $actop->nombre = $request->actOpera;
-            //     $actop->estado = 'A';
-            //     $actop->operador_ing = auth()->user()->nom_user;
-            //     $actop->operador_act = auth()->user()->nom_user;
-            //     $actop->terminal_ing = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-            //     $actop->terminal_act = gethostbyaddr($_SERVER['REMOTE_ADDR']);
-            //     $actop->ip_ing = $_SERVER['REMOTE_ADDR'];
-            //     $actop->ip_act = $_SERVER['REMOTE_ADDR'];
-            //     $actop->save();
-            //     $id_actividad = $actop->id;
-            // }
+            $actividadOperativa = ActividadOperativa::firstOrCreate(
+                ['nombre' => $request->actOpera],
+                [
+                    'id_area' => $id_area,
+                    'estado'  => 'A',
+                ]
+            );
+            $id_actividad = $actividadOperativa->id;
+            $nombreActividadOperativa = $actividadOperativa->nombre;
 
-        $actividadOperativa = ActividadOperativa::firstOrCreate(
-            ['nombre' => $request->actOpera],
-            [
-                'id_area' => $id_area,
-                'estado' => 'A',
-                'operador_ing' => auth()->user()->nom_user,
-                'operador_act' => auth()->user()->nom_user,
-                'terminal_ing' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-                'terminal_act' => gethostbyaddr($_SERVER['REMOTE_ADDR']),
-                'ip_ing' => $_SERVER['REMOTE_ADDR'],
-                'ip_act' => $_SERVER['REMOTE_ADDR'],
-            ]
-        );
-        $id_actividad = $actividadOperativa->id;
-        $nombreActividadOperativa = $actividadOperativa->nombre;
-
-        // Subactividad
-        $subActividad = SubActividad::firstOrCreate(
-            ['nombre' => $request->subActi],
-            ['id_area' => $id_area]
-        );
-        $id_sub_actividad = $subActividad->id;
-        $nombreSubActividad = $subActividad->nombre;
+            // Subactividad
+            $subActividad = SubActividad::firstOrCreate(
+                ['nombre'  => $request->subActi],
+                ['id_area' => $id_area]
+            );
+            $id_sub_actividad   = $subActividad->id;
+            $nombreSubActividad = $subActividad->nombre;
 
             // Crear POA
             $poa = new Poa();
-            $poa->departamento = $request->coordina;
-            $poa->id_area = $id_area;
-            $poa->id_usuario = $id_usuario;
-            // $poa->id_obj_operativo = $op->id;
+            $poa->departamento     = $request->coordina;
+            $poa->id_area          = $id_area;
+            $poa->id_usuario       = $id_usuario;
             $poa->id_obj_operativo = $id_obj_operativo;
-            // $poa->id_actividad = $actop->id;
-            $poa->id_actividad = $id_actividad;
-            // $poa->id_sub_actividad = $sub->id;
+            $poa->id_actividad     = $id_actividad;
             $poa->id_sub_actividad = $id_sub_actividad;
-            $poa->id_tipo_poa = $request->poa;
-            $poa->id_tipo_monto = '1';
-            $poa->u_ejecutora = $request->input('unidad_ejecutora');
-            $poa->programa = $request->input('programa');
-            $poa->proyecto = $request->input('proyecto');
-            $poa->actividad = $request->input('actividad');
-            $poa->fuente = $request->input('fuente_financiamiento');
-            $poa->id_item = $request->item_presupuestario;
-            $poa->fecha = $request->fecha;
-            $poa->año = date('Y', strtotime($request->fecha));
-            $poa->plurianual = $request->plurianual ? 1 : 0;
-            $poa->estado = 'A';
+            $poa->id_tipo_poa      = $request->poa;
+            $poa->id_tipo_monto    = '1';
+            $poa->u_ejecutora      = $request->input('unidad_ejecutora');
+            $poa->programa         = $request->input('programa');
+            $poa->proyecto         = $request->input('proyecto');
+            $poa->actividad        = $request->input('actividad');
+            $poa->fuente           = $request->input('fuente_financiamiento');
+            $poa->id_item          = $request->item_presupuestario;
+            $poa->fecha            = $request->fecha;
+            $poa->año              = date('Y', strtotime($request->fecha));
+            $poa->plurianual       = $request->plurianual ? 1 : 0;
+            $poa->estado           = 'A';
             $poa->save();
 
             // Crear Actividad de Reforma
             $actividad = new Actividad();
             $actividad->id_reforma = $request->id_reforma;
-            $actividad->id_poa1 = $poa->id;
-            $actividad->estado = 'A';
+            $actividad->id_poa1    = $poa->id;
+            $actividad->estado     = 'A';
             $actividad->save();
 
             // Crear Calendario de Reforma
             $calendario = new CalendarioReforma();
             $calendario->id_actividad = $actividad->id;
-            $calendario->id_poa = $poa->id;
-            $calendario->tipo = 'AUMENTA';
-            $calendario->enero = 0;
-            $calendario->febrero = 0;
-            $calendario->marzo = 0;
-            $calendario->abril = 0;
-            $calendario->mayo = 0;
-            $calendario->junio = 0;
-            $calendario->julio = 0;
-            $calendario->agosto = 0;
-            $calendario->septiembre = 0;
-            $calendario->octubre = 0;
-            $calendario->noviembre = 0;
-            $calendario->diciembre = 0;
-            $calendario->total = 0;
+            $calendario->id_poa       = $poa->id;
+            $calendario->tipo         = 'AUMENTA';
+            $calendario->enero        = 0;
+            $calendario->febrero      = 0;
+            $calendario->marzo        = 0;
+            $calendario->abril        = 0;
+            $calendario->mayo         = 0;
+            $calendario->junio        = 0;
+            $calendario->julio        = 0;
+            $calendario->agosto       = 0;
+            $calendario->septiembre   = 0;
+            $calendario->octubre      = 0;
+            $calendario->noviembre    = 0;
+            $calendario->diciembre    = 0;
+            $calendario->total        = 0;
             // $calendario->estado = 'A';
             $calendario->save();
 
             // Crear Calendario normal
             $calendario = new Calendario();
-            $calendario->id_poa = $poa->id;
-            $calendario->enero = 0;
-            $calendario->febrero = 0;
-            $calendario->marzo = 0;
-            $calendario->abril = 0;
-            $calendario->mayo = 0;
-            $calendario->junio = 0;
-            $calendario->julio = 0;
-            $calendario->agosto = 0;
+            $calendario->id_poa     = $poa->id;
+            $calendario->enero      = 0;
+            $calendario->febrero    = 0;
+            $calendario->marzo      = 0;
+            $calendario->abril      = 0;
+            $calendario->mayo       = 0;
+            $calendario->junio      = 0;
+            $calendario->julio      = 0;
+            $calendario->agosto     = 0;
             $calendario->septiembre = 0;
-            $calendario->octubre = 0;
-            $calendario->noviembre = 0;
-            $calendario->diciembre = 0;
-            $calendario->total = 0;
+            $calendario->octubre    = 0;
+            $calendario->noviembre  = 0;
+            $calendario->diciembre  = 0;
+            $calendario->total      = 0;
             $calendario->justificacion_area = $request->input('justifi2');
             // $calendario->estado = 'N';
             $calendario->save();
 
             $item = ItemPresupuestario::find($request->item_presupuestario);
 
-
             return response()->json([
                 'success' => true,
                 'actividad' => [
-                    'id' => $actividad->id,
+                    'id'                       => $actividad->id,
                     'nombreActividadOperativa' => $nombreActividadOperativa,
-                    'nombreSubActividad' => $nombreSubActividad,
-                    'nombreItem' => $item->nombre,
-                    'descripcionItem' => $item->descripcion,
+                    'nombreSubActividad'       => $nombreSubActividad,
+                    'nombreItem'               => $item->nombre,
+                    'descripcionItem'          => $item->descripcion,
                 ]
             ]);
         } catch (\Exception $e) {
@@ -2226,42 +1833,6 @@ class PlanificacionController extends Controller
 //===========================================REVISIÓN REFORMA================================================
 
     public function revisionReforma(Request $request, $id){
-
-    $id_area = Auth::user()->id_area;
-
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $usuarioInf = User::select('db_inspi.r.name as role_name', 'db_inspi.ar.id as id_area')
-        ->join('db_inspi.role_user as ro', 'users.id', '=', 'ro.user_id')
-        ->join('db_inspi.roles as r', 'r.id', '=', 'ro.role_id')
-        ->join('db_inspi.inspi_area as ar', 'ar.id', '=', 'users.id_area')
-        ->where('users.id', '=', $id_usuario)
-        //->whereIn('r.name', ['Gerente', 'Secretaria'])
-        ->first();
 
         $atributos = DB::table('db_inspi_planificacion.pla_actividad')
             ->select('pla_actividad.id as id_actividad',
@@ -2286,14 +1857,12 @@ class PlanificacionController extends Controller
 
 
 
-        $tipo_Poa = TipoPoa::where('estado', 'A')->get();
+        $tipo_Poa      = TipoPoa::where('estado', 'A')->get();
         $obj_Operativo = ObjetivoOperativo::where('estado', 'A')->get();
         $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
-        $sub_Act = SubActividad::where('estado', 'A')->get();
-        $usuarios = User::where('estado', '=', 'A')->get();
-
-        $tipos = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
-
+        $sub_Act       = SubActividad::where('estado', 'A')->get();
+        $usuarios      = User::where('estado', '=', 'A')->get();
+        $tipos         = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
 
         $item_presupuestario = ItemPresupuestario::where('estado', 'A')->get();
 
@@ -2313,22 +1882,24 @@ class PlanificacionController extends Controller
         ->first();
 
         //respuesta para la vista
-        return view('planificacion.revision_reforma', compact('Modulos','Opciones','tipo_Poa','obj_Operativo'
+        return view('planificacion.revision_reforma', compact('tipo_Poa','obj_Operativo'
         ,'act_Operativa','sub_Act','usuarios','atributos', 'id', 'item_presupuestario', 'tipos', 'comentarios', 'justifi'));
 
     }
 
+
+
     public function agregarComentarioReforma(Request $request){
         $data = $request->validate([
 
-            'id_reforma'  => 'required|string',
-            'estadoReforma' => 'required|string',
-            'justificacion_Reforma'  => 'required|string',
+            'id_reforma'            => 'required|string',
+            'estadoReforma'         => 'required|string',
+            'justificacion_Reforma' => 'required|string',
         ]);
 
-        $id_reforma  = $request->input('id_reforma');
-        $estadoReforma = $request->input('estadoReforma');
-        $justificacion_Reforma  = $request->input('justificacion_Reforma');
+        $id_reforma            = $request->input('id_reforma');
+        $estadoReforma         = $request->input('estadoReforma');
+        $justificacion_Reforma = $request->input('justificacion_Reforma');
 
 
         $estados = [
@@ -2346,7 +1917,7 @@ class PlanificacionController extends Controller
         $id_usuario = Auth::user()->id;
 
         $datos = [
-            'id_reforma'=> $id_reforma,
+            'id_reforma' => $id_reforma,
             'id_usuario' => $id_usuario,
             'comentario' => $justificacion_Reforma,
             'estado_planificacion' => $estadoTexto
@@ -2369,6 +1940,7 @@ class PlanificacionController extends Controller
     }
 
 
+
     public function actualizarCalendarioPoa(Request $request){
         // Validar los datos de entrada
         $data = $request->validate([
@@ -2382,8 +1954,6 @@ class PlanificacionController extends Controller
         $justificacion = $request->input('justificacion');
 
         $id_usuario = Auth::user()->id;
-
-        //
 
         // Verificar si el estado de la reforma es 'O'
         if ($estadoReforma == 'O') {
@@ -2438,7 +2008,6 @@ class PlanificacionController extends Controller
                             ]);
 
                         }else{
-
 
                             //actualiza item y historial
                             $itemPre = ItemPresupuestario::find($poaActividad->id_item);
@@ -2513,8 +2082,6 @@ class PlanificacionController extends Controller
 
                             }
 
-
-
                             // Si el estado es "O" (Aprobado), asignar el siguiente número de POA secuencial
                             $ultimoNroPoa = Poa::where('estado', 'O')->max('nro_poa');
                             $nuevoNroPoa = $ultimoNroPoa ? $ultimoNroPoa + 1 : 1;
@@ -2529,7 +2096,6 @@ class PlanificacionController extends Controller
                                 'nombre'  => $actividad->sub_actividad,
                             ]);
 
-
                             $datos = [
                                 'id_poa'     => $id_poa,
                                 'id_usuario' => $id_usuario,
@@ -2538,13 +2104,10 @@ class PlanificacionController extends Controller
                              ];
                             $comentario = Comentario::create($datos);
 
-
-
                         }
 
                     }
                 }
-
 
                 $reforma = Reforma::where('id', $id_reforma)->first();
                 $reforma->update([
@@ -2552,7 +2115,6 @@ class PlanificacionController extends Controller
                 ]);
 
                 return response()->json(['message' => 'Calendario actualizado exitosamente', 'valor' => true], 200);
-
 
             }
 
@@ -2587,6 +2149,8 @@ class PlanificacionController extends Controller
     }
     /* TRAER COMENTARIO POR REFORMA */
 
+
+
     public function deleteReforma(Request $request)
     {
         $reforma = Reforma::find($request->id); //Busca el registro por el ID
@@ -2606,21 +2170,18 @@ class PlanificacionController extends Controller
         }
     }
 
+
+
     public function reportReforma(Request $request)
     {
         $id_reforma  = $request->query('id_reforma');
 
         $usuarios = [
-            'creado' => ['name' => $request->input('id_creado'),'cargo' => $request->input('cargo_creado')
-            ],
-            'autorizado' => ['name' => $request->input('id_autorizado'),'cargo' => $request->input('cargo_autorizado')
-            ],
-            'reporta' => ['name' => $request->input('id_reporta'),'cargo' => $request->input('cargo_reporta')
-            ],
-            'areaReq' => ['name' => $request->input('id_areaReq'),'cargo' => $request->input('cargo_areaReq')
-            ],
-            'planificacionYG' => ['name' => $request->input('id_planificacionYG'),'cargo' => $request->input('cargo_planificacionYG')
-            ],
+            'creado'     => ['name' => $request->input('id_creado'),'cargo' => $request->input('cargo_creado')],
+            'autorizado' => ['name' => $request->input('id_autorizado'),'cargo' => $request->input('cargo_autorizado')],
+            'reporta'    => ['name' => $request->input('id_reporta'),'cargo' => $request->input('cargo_reporta')],
+            'areaReq'    => ['name' => $request->input('id_areaReq'),'cargo' => $request->input('cargo_areaReq')],
+            'planificacionYG' => ['name' => $request->input('id_planificacionYG'),'cargo' => $request->input('cargo_planificacionYG')],
         ];
 
         // Obtener el contenido del campo justifi desde la solicitud
@@ -2695,6 +2256,8 @@ class PlanificacionController extends Controller
     }
 
 
+
+
     public function get_unidad(Request $request)
     {
         $valores = UnidadEjecutora::where('estado', 'A')->get();
@@ -2710,10 +2273,12 @@ class PlanificacionController extends Controller
     }
 
 
+
+
     public function get_programa_id(Request $request)
     {
         $id_unidad  = $request->query('id_unidad');
-        $valores = Programa::where('estado', 'A')->where('id_unidad', $id_unidad)->get();
+        $valores    = Programa::where('estado', 'A')->where('id_unidad', $id_unidad)->get();
         if ($valores) {
 
             return response()->json(['message' => 'La lista se cargo Correctamente', 'valores' => $valores, 'data' => true], 200);
@@ -2726,10 +2291,11 @@ class PlanificacionController extends Controller
     }
 
 
+
     public function get_proyecto_id(Request $request)
     {
         $id_programa  = $request->query('id_programa');
-        $valores = Proyecto::where('estado', 'A')->where('id_programa', $id_programa)->get();
+        $valores      = Proyecto::where('estado', 'A')->where('id_programa', $id_programa)->get();
         if ($valores) {
 
             return response()->json(['message' => 'La lista se cargo Correctamente', 'valores' => $valores, 'data' => true], 200);
@@ -2741,10 +2307,12 @@ class PlanificacionController extends Controller
         }
     }
 
+
+
     public function get_actividad_id(Request $request)
     {
         $id_proyecto  = $request->query('id_proyecto');
-        $valores = ActividadPre::where('estado', 'A')->where('id_proyecto', $id_proyecto)->get();
+        $valores      = ActividadPre::where('estado', 'A')->where('id_proyecto', $id_proyecto)->get();
         if ($valores) {
 
             return response()->json(['message' => 'La lista se cargo Correctamente', 'valores' => $valores, 'data' => true], 200);
@@ -2756,10 +2324,12 @@ class PlanificacionController extends Controller
         }
     }
 
+
+
     public function get_fuente_id(Request $request)
     {
         $id_actividad  = $request->query('id_actividad');
-        $valores = Fuente::where('estado', 'A')->where('id_actividad', $id_actividad)->get();
+        $valores       = Fuente::where('estado', 'A')->where('id_actividad', $id_actividad)->get();
         if ($valores) {
 
             return response()->json(['message' => 'La lista se cargo Correctamente', 'valores' => $valores, 'data' => true], 200);
@@ -2770,6 +2340,8 @@ class PlanificacionController extends Controller
 
         }
     }
+
+
 
     public function get_actividades_id(Request $request){
 
@@ -2831,7 +2403,7 @@ class PlanificacionController extends Controller
     {
 
         $id_solicitud  = $request->input('id_solicitud');
-        $estado  = $request->input('estado');
+        $estado        = $request->input('estado');
 
         $solicitud = Solicitud::find($id_solicitud);
 
@@ -2850,17 +2422,16 @@ class PlanificacionController extends Controller
         }
     }
 
+
+
     public function reportDetalle(Request $request)
     {
         $id_poa  = $request->query('id_poa');
 
         $usuarios = [
-            'elabora' => ['name' => $request->input('elabora'),'cargo' => $request->input('cargo_elabora')
-            ],
-            'revisa' => ['name' => $request->input('revisa'),'cargo' => $request->input('cargo_revisa')
-            ],
-            'aprueba' => ['name' => $request->input('aprueba'),'cargo' => $request->input('cargo_aprueba')
-            ],
+            'elabora' => ['name' => $request->input('elabora'),'cargo' => $request->input('cargo_elabora')],
+            'revisa'  => ['name' => $request->input('revisa'),'cargo' => $request->input('cargo_revisa')],
+            'aprueba' => ['name' => $request->input('aprueba'),'cargo' => $request->input('cargo_aprueba')],
         ];
 
         // Obtener el contenido del campo justifi desde la solicitud
@@ -2943,33 +2514,8 @@ class PlanificacionController extends Controller
 
 
     public function import_actividad(){ //VISTA PARA CARGAR .CSV
-
-        $Modulos = PermisoRolOpcion::select('inspi_modulos.id as id',
-                                            'inspi_modulos.nombre as nombre',
-                                            'inspi_modulos.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('inspi_modulos', 'inspi_modulos.id', '=', 'inspi_opciones.id_modulo')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_modulos.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
-        $Opciones = PermisoRolOpcion::select('inspi_opciones.id as id',
-                                                'inspi_opciones.id_modulo as id_modulo',
-                                                'inspi_opciones.nombre as nombre',
-                                                'inspi_opciones.controller as controller',
-                                                'inspi_opciones.icon as icon',
-                                                'inspi_opciones.estado as estado')->distinct()
-        ->join('inspi_opciones', 'inspi_opciones.id', '=', 'inspi_rol_opcion.opcion_id')
-        ->join('role_user', 'role_user.role_id', '=', 'inspi_rol_opcion.role_id')
-        ->join('roles', 'roles.id', '=', 'role_user.role_id')
-        ->join('users', 'users.id', '=', 'role_user.user_id')
-        ->whereNotIn('inspi_opciones.estado', ['E', 'I'])->whereIn('users.id', [Auth::id()])
-        ->get();
-
         //respuesta para la vista
-        return view('planificacion.import_actividad', compact('Modulos', 'Opciones'));
+        return view('planificacion.import_actividad');
     }
 
 

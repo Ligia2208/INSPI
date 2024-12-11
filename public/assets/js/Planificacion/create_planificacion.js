@@ -2,12 +2,8 @@
 $( function () {
     agregarUnidad();
     //CÓDIGO PARA BUSCAR ITEM PRESUPUESTARIO EN LA VISTA DE CREAR PLANIFICACIÓN
-    $('.form-select').select2({
-        //dropdownParent: $('.modal-body'),
-        theme: 'bootstrap4',
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        height: '38px',
-        placeholder: 'Selecciona una opción',
+    $('.single-select').select2({
+        width: '100%',
     });
 
     $(document).on('change', '#monto, #frecuencia', function() {

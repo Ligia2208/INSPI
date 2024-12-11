@@ -1,7 +1,7 @@
 
 @extends('layouts.main')
 
-@section('title', 'Ajuste de Inventario')
+@section('title', 'Planificación')
 
 <!-- DataTables CSS -->
 @push('styles')
@@ -14,7 +14,7 @@
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <div class="d-flex align-items-center flex-wrap mr-1">
             <div class="d-flex align-items-baseline mr-5">
-                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Ajuste de Inventario</h5></a>
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Planificación</h5></a>
             </div>
         </div>
     </div>
@@ -76,21 +76,6 @@
                 </div>
             </div>
         </div>
-
-
-
-        @if(session('success'))
-        <script>
-            Swal.fire({
-                title: 'SoftInspi',
-                text: '{{ session('success') }}',
-                icon: 'success',
-                type: 'success',
-                confirmButtonText: 'Aceptar',
-                timer: 3500
-            });
-        </script>
-        @endif
 
     </div>
 
