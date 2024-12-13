@@ -195,6 +195,38 @@ Route::middleware(['auth'])->group(function () {
 
 
 
+    /* =========================== ITEM PRESUPUESTARIO =========================== */
+    Route::group(['namespace' => 'App\Http\Controllers\ItemPresupuestario'], function(){
+        Route::get('/itemPresupuestario', 'ItemPresupuestarioController@index')->name('itemPresupuestario'); //vista principal
+        Route::post('/itemPresupuestario/saveItemPres', 'ItemPresupuestarioController@saveItemPres')->name('itemPresupuestario.saveItemPres'); //Modal para crear nuevo item
+        Route::post('/itemPresupuestario/deleteItemP', 'ItemPresupuestarioController@deleteItemP')->name('itemPresupuestario.deleteItemP');//Borrar item presupuestario
+        Route::get('/itemPresupuestario/obtenerItemP/{id?}', 'ItemPresupuestarioController@obtenerItemP')->name('itemPresupuestario.obtenerItemP');
+        Route::put('itemPresupuestario/actualizarItemP/{id?}','ItemPresupuestarioController@actualizarItemP')->name('itemPresupuestario.actualizarItemP');
+    
+        Route::get('/itemPresupuestario/rebootItems', 'ItemPresupuestarioController@rebootItems')->name('itemPresupuestario.rebootItems');
+        Route::get('/itemPresupuestario/traerHistorial', 'ItemPresupuestarioController@traerHistorial')->name('itemPresupuestario.traerHistorial');
+
+        //monto por direccion 
+        Route::get('/montoDireccion', 'ItemPresupuestarioController@montoDireccion')->name('montoDireccion'); //vista principal
+        Route::get('/itemPresupuestario/obtenerDireccionMonto/{id?}', 'ItemPresupuestarioController@obtenerDireccionMonto')->name('itemPresupuestario.obtenerDireccionMonto');
+        Route::put('itemPresupuestario/actualizarDireccionMonto/{id?}','ItemPresupuestarioController@actualizarDireccionMonto')->name('itemPresupuestario.actualizarDireccionMonto');
+        Route::post('/itemPresupuestario/deleteDireccionMonto', 'ItemPresupuestarioController@deleteDireccionMonto')->name('itemPresupuestario.deleteDireccionMonto');
+
+        //monto direccion item
+        Route::get('/itemPresupuestario/monto_item', 'ItemPresupuestarioController@monto_item')->name('itemPresupuestario.monto_item'); //vista principal
+        Route::post('/itemPresupuestario/actualizarItems', 'ItemPresupuestarioController@actualizarItems')->name('itemPresupuestario.actualizarItems');
+        Route::put('itemPresupuestario/actualizarEstructura','ItemPresupuestarioController@actualizarEstructura')->name('itemPresupuestario.actualizarEstructura');
+        Route::get('/itemPresupuestario/obtenerDireccionItem/{id?}', 'ItemPresupuestarioController@obtenerDireccionItem')->name('itemPresupuestario.obtenerDireccionItem');
+        Route::put('itemPresupuestario/actualizarItemMonto/{id?}','ItemPresupuestarioController@actualizarItemMonto')->name('itemPresupuestario.actualizarItemMonto');
+        Route::post('/itemPresupuestario/deleteItemDireccion', 'ItemPresupuestarioController@deleteItemDireccion')->name('itemPresupuestario.deleteItemDireccion');
+        Route::get('/itemPresupuestario/get_estructura/{id?}', 'ItemPresupuestarioController@get_estructura')->name('itemPresupuestario.get_estructura');
+
+    });
+    /* =========================== ITEM PRESUPUESTARIO =========================== */
+
+
+
+
     /* =========================== INVENTARIO =========================== */
     Route::group(['namespace' => 'App\Http\Controllers\InventarioReactivo'], function(){
 

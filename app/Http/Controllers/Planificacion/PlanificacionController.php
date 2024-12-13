@@ -1001,11 +1001,11 @@ class PlanificacionController extends Controller
         $obj_Operativo = ObjetivoOperativo::where('estado', 'A')->get();
         $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
         $sub_Act = SubActividad::where('estado', 'A')->get();
-        $usuarios = User::where('estado', '=', 'A')->get();
+        $usuarios = User::where('status', '=', 'A')->get();
 
-        $area = Area::select('nombre')->where('estado', '=', 'A')->where('id', '=', $id_area)->first();
+        //$area = Area::select('nombre')->where('estado', '=', 'A')->where('id', '=', $id_area)->first();
 
-        return view('planificacion.index_reforma', compact('area', 'usuarios'));
+        return view('planificacion.index_reforma', compact('usuarios'));
     }
 
 

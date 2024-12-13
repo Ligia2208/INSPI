@@ -132,6 +132,7 @@ $( function () {
         });
     });
 
+
     $('#programa').on('change', function() {
 
         var id_programa = $('#programa').val();
@@ -162,6 +163,7 @@ $( function () {
             }
         });
     });
+
 
     $('#proyecto').on('change', function() {
 
@@ -194,6 +196,7 @@ $( function () {
         });
     });
 
+
     $('#actividad').on('change', function() {
 
         var id_actividad = $('#actividad').val();
@@ -224,6 +227,7 @@ $( function () {
             }
         });
     });
+    
 });
 
 
