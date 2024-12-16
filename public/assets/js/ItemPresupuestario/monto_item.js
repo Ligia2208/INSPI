@@ -7,6 +7,8 @@ $( function () {
 
     agregarUnidad();
 
+    actualizarMontos();
+
     //CÓDIGO PARA MOSTRAR LA TABLA EN EL INDEX
     $('#tblItemPresupuestarioIndex').DataTable({ //id de la tabla en el visual (index)
         processing: true,
@@ -332,6 +334,7 @@ function guardarItemPres(){
                                   $('#nameItem').val('');
                                   $('#descripcion').val('');
                                   $('#montoItem').val('');
+                                  actualizarMontos();
                              }
                         });
 
@@ -407,6 +410,7 @@ $(function(){
                                 }).then((result) => {
                                     if (result.value == true) {
                                         table.ajax.reload(); //actualiza la tabla
+                                        actualizarMontos();
                                     }
                                 });
 
@@ -565,6 +569,7 @@ $(function(){
 
                     $('#updateItemP').modal('hide');
                     table.ajax.reload();
+                    actualizarMontos();
 
                     Swal.fire({
                         icon: 'success',
@@ -886,6 +891,7 @@ function guardarItemsSeleccionados() {
         },
         success: function (response) {
             table.ajax.reload();
+            actualizarMontos();
             Swal.fire({
                 icon: 'success',
                 title: 'SoftInspi',
@@ -912,78 +918,125 @@ function agregarEstructura(){
 
     let id_fuente = $('#id_fuente').val();
 
-    // Realiza una solicitud AJAX para obtener las opciones de la unidad ejecutora
+    if(id_fuente != 0 || id_fuente != ''){
+
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/itemPresupuestario/get_estructura/'+id_fuente, // Ruta en tu servidor para obtener las opciones
+            success: function(response) {
+    
+                if (response.success) {
+                    let data        = response.data;
+                    let programas   = response.programa;
+                    let proyectos   = response.proyecto;
+                    let actividades = response.actividadPre;
+                    let fuentes     = response.fuente;
+    
+                    // Cargar y seleccionar el valor en Unidad Ejecutora
+                    /*
+                    $('#unidad_ejecutora').empty();
+                    programas.forEach(programa => {
+                        $('#unidad_ejecutora').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_unidad ? 'selected' : ''}>
+                                ${programa.nombre}
+                            </option>`
+                        );
+                    });
+                    */
+    
+                    $('#unidad_ejecutora').val(data.id_unidad);
+    
+                    // Cargar y seleccionar el valor en Programa
+                    $('#programa').empty();
+                    programas.forEach(programa => {
+                        $('#programa').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_programa ? 'selected' : ''}>
+                                ${programa.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Proyecto
+                    $('#proyecto').empty();
+                    proyectos.forEach(proyecto => {
+                        $('#proyecto').append(
+                            `<option value="${proyecto.id}" ${proyecto.id == data.id_proyecto ? 'selected' : ''}>
+                                ${proyecto.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Actividad
+                    $('#actividad').empty();
+                    actividades.forEach(actividad => {
+                        $('#actividad').append(
+                            `<option value="${actividad.id}" ${actividad.id == data.id_actividad ? 'selected' : ''}>
+                                ${actividad.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Fuente
+                    $('#fuente_financiamiento').empty();
+                    fuentes.forEach(fuente => {
+                        $('#fuente_financiamiento').append(
+                            `<option value="${fuente.id}" ${fuente.id == data.id_fuente ? 'selected' : ''}>
+                                ${fuente.nombre}
+                            </option>`
+                        );
+                    });
+                }
+    
+    
+            },
+            error: function(error) {
+                console.error('Error al obtener opciones de la unidad ejecutora', error);
+            }
+        });
+
+    }
+
+}
+
+
+function actualizarMontos(){
+
+    let id_direccion     = $('#id_direccion').val();
+
     $.ajax({
         type: 'GET', // O el método que estés utilizando en tu ruta
-        url: '/itemPresupuestario/get_estructura/'+id_fuente, // Ruta en tu servidor para obtener las opciones
+        url: '/itemPresupuestario/get_montos/'+id_direccion, // Ruta en tu servidor para obtener las opciones
         success: function(response) {
 
             if (response.success) {
-                let data        = response.data;
-                let programas   = response.programa;
-                let proyectos   = response.proyecto;
-                let actividades = response.actividadPre;
-                let fuentes     = response.fuente;
+                let monto_total   = response.monto_total;
+                let total_ocupado = response.total_ocupado;
+                let por_ocupar    = response.por_ocupar;
 
-                // Cargar y seleccionar el valor en Unidad Ejecutora
-                /*
-                $('#unidad_ejecutora').empty();
-                programas.forEach(programa => {
-                    $('#unidad_ejecutora').append(
-                        `<option value="${programa.id}" ${programa.id == data.id_unidad ? 'selected' : ''}>
-                            ${programa.nombre}
-                        </option>`
-                    );
-                });
-                */
+                $('#monto_total').text('');
+                $('#monto_total').text('$'+monto_total);
 
-                $('#unidad_ejecutora').val(data.id_unidad);
+                $('#total_ocupado').text('');
+                $('#total_ocupado').text('$'+total_ocupado);
 
-                // Cargar y seleccionar el valor en Programa
-                $('#programa').empty();
-                programas.forEach(programa => {
-                    $('#programa').append(
-                        `<option value="${programa.id}" ${programa.id == data.id_programa ? 'selected' : ''}>
-                            ${programa.nombre}
-                        </option>`
-                    );
-                });
+                $('#por_ocupar').text('');
+                $('#por_ocupar').text('$'+por_ocupar);
 
-                // Cargar y seleccionar el valor en Proyecto
-                $('#proyecto').empty();
-                proyectos.forEach(proyecto => {
-                    $('#proyecto').append(
-                        `<option value="${proyecto.id}" ${proyecto.id == data.id_proyecto ? 'selected' : ''}>
-                            ${proyecto.nombre}
-                        </option>`
-                    );
-                });
+                if(por_ocupar < 0){
+                    Swal.fire({
+                        icon:  'warning',
+                        title: 'CoreInspi',
+                        type:  'warning',
+                        text:  'Se ha pasado del monto asignado por $' +por_ocupar,
+                    });
+                }
 
-                // Cargar y seleccionar el valor en Actividad
-                $('#actividad').empty();
-                actividades.forEach(actividad => {
-                    $('#actividad').append(
-                        `<option value="${actividad.id}" ${actividad.id == data.id_actividad ? 'selected' : ''}>
-                            ${actividad.nombre}
-                        </option>`
-                    );
-                });
-
-                // Cargar y seleccionar el valor en Fuente
-                $('#fuente_financiamiento').empty();
-                fuentes.forEach(fuente => {
-                    $('#fuente_financiamiento').append(
-                        `<option value="${fuente.id}" ${fuente.id == data.id_fuente ? 'selected' : ''}>
-                            ${fuente.nombre}
-                        </option>`
-                    );
-                });
             }
-
 
         },
         error: function(error) {
             console.error('Error al obtener opciones de la unidad ejecutora', error);
         }
     });
+
 }

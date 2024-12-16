@@ -449,16 +449,45 @@ class ItemPresupuestarioController extends Controller{
         ->join('pla_unidad_ejecutora as uni', 'uni.id', '=', 'proy.id_unidad')
         ->where('pla_fuente.id', $id)->first();
 
+        
+        $unidad = UnidadEjecutora::where('estado', 'A')->where('estado', 'A')->get();
         $programa = Programa::where('estado', 'A')->where('id_unidad', $estrutura->id_unidad)->get();
         $proyecto = Proyecto::where('estado', 'A')->where('id_programa', $estrutura->id_programa)->get();
         $actividadPre = ActividadPre::where('estado', 'A')->where('id_proyecto', $estrutura->id_proyecto)->get();
         $fuente = Fuente::where('estado', 'A')->where('id_actividad', $estrutura->id_actividad)->get();
 
-        return response()->json([ 'success' => true, 'data' => $estrutura, 
+        return response()->json([ 'success' => true, 'data' => $estrutura, 'unidad' => $unidad,
             'programa' => $programa, 'proyecto' => $proyecto, 'actividadPre' => $actividadPre, 'fuente' => $fuente ]);
 
     }
-    /* ACTUALIZA ACTUALIZA EL MONTO DEL ITEM POR DIRECCION */
+    /* TRAE LA ESTRUCTURA PRESUPUESTARIA */
+
+
+
+    /* TRAE LOS VALORES DEL LOS MONTOS POR DIRECCION */
+    public function get_montos($id) {
+
+        $direccion = MontoDireccion::select('monto')->find($id);
+        $monto     = $direccion->monto;
+
+        $totalItems = ItemDireccion::selectRaw('SUM(monto) as total_monto')
+        ->where('id_direcciones', $id)
+        ->where('estado', 'A')
+        ->first();
+
+        $totalOcupado = $totalItems->total_monto ?? 0;
+
+        $porOcupar = $monto - $totalOcupado;
+
+        return response()->json([
+            'success' => true,
+            'monto_total' => $monto,
+            'total_ocupado' => $totalOcupado,
+            'por_ocupar' => $porOcupar
+        ]);
+
+    }
+    /* TRAE LOS VALORES DEL LOS MONTOS POR DIRECCION */
 
 
 

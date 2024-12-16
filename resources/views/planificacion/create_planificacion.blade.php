@@ -43,6 +43,8 @@
 
                     <div class="row p-2">
 
+                        <input value="{{$id_fuente}}" type="hidden" id="id_fuente">
+
                         <div class="col-md-12">
                             <label for="coordina" class="form-label fs-6">Coordinación/Dirección/Proyecto</label>
                             <input type="text" id="coordina" name="coordina" class="form-control" required="" autofocus="" value="">
@@ -158,28 +160,28 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="unidad" class="form-label fs-6">Unidad ejecutora</label>
-                            <select id="unidad_ejecutora" name="unidad_ejecutora" class="form-control single-select" required></select>
+                            <select id="unidad_ejecutora" name="unidad_ejecutora" class="form-control single-select" required disabled></select>
                         </div>
 
                         <div class="col-md-4 mt-2">
                             <label for="programa" class="form-label fs-6">Programa</label>
-                            <select id="programa" name="programa" class="form-control single-select" required></select>
+                            <select id="programa" name="programa" class="form-control single-select" required disabled></select>
                         </div>
 
                         <div class="col-md-4 mt-2">
                             <label for="proyecto" class="form-label fs-6">Proyecto</label>
-                            <select id="proyecto" name="proyecto" class="form-control single-select" required></select>
+                            <select id="proyecto" name="proyecto" class="form-control single-select" required disabled></select>
                         </div>
 
 
                         <div class="col-md-6 mt-2">
                             <label for="actividad" class="form-label fs-6">Actividad</label>
-                            <select id="actividad" name="actividad" class="form-control single-select" required></select>
+                            <select id="actividad" name="actividad" class="form-control single-select" required disabled></select>
                         </div>
 
                         <div class="col-md-6 mt-2">
                             <label for="fuente_financiamiento" class="form-label fs-6">Fuente de financiamiento</label>
-                            <select id="fuente_financiamiento" name="fuente_financiamiento" class="form-control single-select" required></select>
+                            <select id="fuente_financiamiento" name="fuente_financiamiento" class="form-control single-select" required disabled></select>
                         </div>
                     </div>
                 </div>

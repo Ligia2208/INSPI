@@ -31,17 +31,68 @@
 
             <div class="row">
 
-                <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ITEMS </h2>
+                <div class="col">
+                    <div class="card radius-10 border border-1 border-primary position-relative">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
 
-                <hr/>
+                                <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-cash py-3 px-2 titulo-grande"></i>
+                                </div>
 
-                <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> SU DIRECCIÓN CUENTA CON UN MONTO DE <strong>{{$monto}}</strong> </h2>
+                                <div>
+                                    <span>Monto de la dirección</span>
+                                    <h4 class="my-1 text-primary ms-auto" id="monto_total">{{$monto}}</h4>
+                                </div>
 
-                <!-- <a class="col-2 mb-3 btn btn-primary d-flex align-items-center justify-content-center mr-2" type="button" data-toggle= "modal" data-target="#modalItemPres">
-                    <i class="lni lni-circle-plus"></i> Crear Dirección
-                </a> -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card radius-10 border border-1 border-primary position-relative">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+
+                                <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-graph-up-arrow py-3 px-2 titulo-grande"></i>
+                                </div>
+
+                                <div>
+                                    <span>Monto ocupado</span>
+                                    <h4 class="my-1 text-primary ms-auto" id="total_ocupado">00.00</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card radius-10 border border-1 border-primary position-relative">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+
+                                <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-graph-down-arrow py-3 px-2 titulo-grande"></i>
+                                </div>
+
+                                <div>
+                                    <span>Monto faltante</span>
+                                    <h4 class="my-1 text-primary ms-auto" id="por_ocupar">00.00</h4>                                
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </div>
+
+            <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mt-4" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
+                <i class="lni lni-circle-plus"></i> Crear Actividad
+            </a>
+
+            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ITEMS </h2>
+
 
             <!-- MODAL PARA CREAR ITEM PRESUPUESTARIO -->
             <div class="modal fade" id="modalItemPres" tabindex="-1" role="dialog" aria-labelledby="modalItPresLabel" aria-hidden="true">

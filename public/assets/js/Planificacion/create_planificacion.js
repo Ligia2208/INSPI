@@ -227,7 +227,7 @@ $( function () {
             }
         });
     });
-    
+
 });
 
 
@@ -729,6 +729,9 @@ function agregarUnidad(){
                     text:  unidad.nombre+' - '+unidad.descripcion
                 }));
             });
+
+            agregarEstructura();
+
         },
         error: function(error) {
             console.error('Error al obtener opciones de la unidad ejecutora', error);
@@ -737,3 +740,83 @@ function agregarUnidad(){
 }
 
 
+function agregarEstructura(){
+
+    let id_fuente = $('#id_fuente').val();
+
+    if(id_fuente != 0 || id_fuente != ''){
+
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/itemPresupuestario/get_estructura/'+id_fuente, // Ruta en tu servidor para obtener las opciones
+            success: function(response) {
+    
+                if (response.success) {
+                    let data        = response.data;
+                    let programas   = response.programa;
+                    let proyectos   = response.proyecto;
+                    let actividades = response.actividadPre;
+                    let fuentes     = response.fuente;
+                    let unidad      = response.unidad;
+    
+                    //$('#unidad_ejecutora').val(data.id_unidad);
+                    $('#unidad_ejecutora').empty();
+                    unidad.forEach(programa => {
+                        $('#unidad_ejecutora').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_unidad ? 'selected' : ''}>
+                                ${programa.nombre} - ${programa.descripcion}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Programa
+                    $('#programa').empty();
+                    programas.forEach(programa => {
+                        $('#programa').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_programa ? 'selected' : ''}>
+                                ${programa.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Proyecto
+                    $('#proyecto').empty();
+                    proyectos.forEach(proyecto => {
+                        $('#proyecto').append(
+                            `<option value="${proyecto.id}" ${proyecto.id == data.id_proyecto ? 'selected' : ''}>
+                                ${proyecto.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Actividad
+                    $('#actividad').empty();
+                    actividades.forEach(actividad => {
+                        $('#actividad').append(
+                            `<option value="${actividad.id}" ${actividad.id == data.id_actividad ? 'selected' : ''}>
+                                ${actividad.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Fuente
+                    $('#fuente_financiamiento').empty();
+                    fuentes.forEach(fuente => {
+                        $('#fuente_financiamiento').append(
+                            `<option value="${fuente.id}" ${fuente.id == data.id_fuente ? 'selected' : ''}>
+                                ${fuente.nombre}
+                            </option>`
+                        );
+                    });
+                }
+    
+    
+            },
+            error: function(error) {
+                console.error('Error al obtener opciones de la unidad ejecutora', error);
+            }
+        });
+
+    }
+
+}

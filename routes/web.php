@@ -127,7 +127,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/planificacion', 'PlanificacionController@index')->name('planificacion'); //vista principal
         Route::get('/planificacion/vistaUser', 'PlanificacionController@vistaUser')->name('planificacion.vistaUser'); //vista por id de usuario
-        Route::get('planificacion/crearPlanificacion', 'PlanificacionController@crearPlanificacion')->name('planificacion.crearPlanificacion');
+        Route::get('planificacion/crearPlanificacion/{id_direccion}', 'PlanificacionController@crearPlanificacion')->name('planificacion.crearPlanificacion');
         Route::post('planificacion/savePlanificacion', 'PlanificacionController@savePlanificacion')->name('planificacion.savePlanificacion');
         Route::post('/planificacion/deletePoa', 'PlanificacionController@deletePoa')->name('planificacion.deletePoa'); //Eliminar registro
         Route::get('/planificacion/detalle', 'PlanificacionController@detalle')->name('planificacion.detalle');
@@ -220,6 +220,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('itemPresupuestario/actualizarItemMonto/{id?}','ItemPresupuestarioController@actualizarItemMonto')->name('itemPresupuestario.actualizarItemMonto');
         Route::post('/itemPresupuestario/deleteItemDireccion', 'ItemPresupuestarioController@deleteItemDireccion')->name('itemPresupuestario.deleteItemDireccion');
         Route::get('/itemPresupuestario/get_estructura/{id?}', 'ItemPresupuestarioController@get_estructura')->name('itemPresupuestario.get_estructura');
+        Route::get('/itemPresupuestario/get_montos/{id?}', 'ItemPresupuestarioController@get_montos')->name('itemPresupuestario.get_montos');
 
     });
     /* =========================== ITEM PRESUPUESTARIO =========================== */

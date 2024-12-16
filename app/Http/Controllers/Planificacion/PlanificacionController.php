@@ -66,6 +66,8 @@ use App\Models\Planificacion\Solicitud\Solicitud;
 
 //nuevos
 use App\Models\RecursosHumanos\Filiacion;
+use App\Models\Planificacion\MontoDireccion\MontoDireccion;
+
 //use App\Models\Area\Area;
 use App\Models\CoreBase\Area;
 
@@ -110,16 +112,23 @@ class PlanificacionController extends Controller
 // -----------------------------------------------------------------------------------------------------------
 
     /* VISTA - CREAR NUEVO EGRESO */
-    public function crearPlanificacion(Request $request){
+    public function crearPlanificacion($id_direccion){
 
         $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
 
         $tipos = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
 
-        $item_presupuestario = ItemPresupuestario::where('estado', 'A')->get();
+        $item_presupuestario = ItemPresupuestario::select('itemdir.id', 'pla_item_presupuestario.nombre', 'pla_item_presupuestario.descripcion',
+            'itemdir.monto')
+        ->join('pla_items_direcciones as itemdir', 'itemdir.id_item', '=', 'pla_item_presupuestario.id')
+        ->where('itemdir.estado', 'A')
+        ->where('itemdir.id_direcciones', $id_direccion)->get();
+
+        $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id', $id_direccion)->first();
+        $id_fuente = $direccion->id_fuente;
 
         //respuesta para la vista
-        return view('planificacion.create_planificacion', compact('tipos', 'item_presupuestario'));
+        return view('planificacion.create_planificacion', compact('tipos', 'item_presupuestario', 'id_fuente'));
     }
     /* VISTA - CREAR NUEVO EGRESO */
 
@@ -285,6 +294,21 @@ class PlanificacionController extends Controller
         $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
         $area      = $filiacion?->area?->nombre;
         $id_area   = $filiacion->area_id;
+        $direccion_id = $filiacion->direccion_id;
+
+        if($id_area == 7){
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir_tec', $direccion_id)->first();
+            $id_direccion = $direccion->id;
+            $monto        = $direccion->monto;
+            $id_fuente    = $direccion->id_fuente;
+
+        }else{
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->find($id_area);
+            $id_direccion = $direccion->id;
+            $monto        = $direccion->monto;
+            $id_fuente    = $direccion->id_fuente;
+
+        }
 
         $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
 
@@ -312,17 +336,8 @@ class PlanificacionController extends Controller
 
         }
 
-        $tipo_Poa = TipoPoa::where('estado', 'A')->get();
-        $obj_Operativo = ObjetivoOperativo::where('estado', 'A')->get();
-        $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
-        $sub_Act  = SubActividad::where('estado', 'A')->get();
-        $usuarios = User::where('status', '=', 'A')->get();
-
-        //$area = Area::select('nombre')->where('status', '=', 'A')->where('id', '=', $id_area)->first();
-
         //respuesta para la vista
-        return view('planificacion.vista_user', compact('tipo_Poa','obj_Operativo'
-        ,'act_Operativa','sub_Act','usuarios', 'area'));
+        return view('planificacion.vista_user', compact('id_direccion','monto','area'));
     }
 
 
@@ -885,7 +900,13 @@ class PlanificacionController extends Controller
 
     public function obtenerDatosItem($id) {
 
-        $item = ItemPresupuestario::findOrFail($id);
+        $item = ItemPresupuestario::select('itemdir.id', 'pla_item_presupuestario.nombre', 'pla_item_presupuestario.descripcion',
+                'itemdir.monto')
+            ->join('pla_items_direcciones as itemdir', 'itemdir.id_item', '=', 'pla_item_presupuestario.id')
+            ->where('itemdir.estado', 'A')
+            ->where('itemdir.id', $id)->first();
+
+        //$item = ItemPresupuestario::findOrFail($id);
 
         // Retornar los datos como JSON
         return response()->json([
