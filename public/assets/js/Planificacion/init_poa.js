@@ -9,15 +9,6 @@ $( function () {
         placeholder: 'Selecciona una opción',
         allowClear: true,
     });
-    //populateYearSelect(2020);
-    // $('.js-example-basic-single').select2({
-    //     //dropdownParent: $('.modal-body'),
-    //     theme: 'bootstrap4',
-    //     width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-    //     height: '38px',
-    //     placeholder: 'Selecciona una opción',
-    //     allowClear: true,
-    // });
 
     //CÓDIGO PARA MOSTRAR LA TABLA EN EL INDEX
     $('#tblPlanificacionIndex').DataTable({ //id de la tabla en el visual (index)
@@ -49,15 +40,15 @@ $( function () {
                 // }
 
                 if(full.estado == 'A' ){
-                    array = '<div class="center"><span class="badge text-bg-primary">Ingresado</span><div>';
+                    array = '<div class="center"><span class="badge badge-primary text-bg-primary">Ingresado</span><div>';
                 }else if(full.estado == 'O'){
-                    array = '<div class="center"><span class="badge text-bg-success">Aprobado</span>';
+                    array = '<div class="center"><span class="badge badge-success text-bg-success">Aprobado</span>';
                 }else if(full.estado == 'R'){
-                    array = '<div class="center"><span class="badge text-bg-warning">Rechazado</span>';
+                    array = '<div class="center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                 }else if(full.estado == 'C'){
-                    array = '<div class="center"><span class="badge text-bg-info">Corregido</span>';
+                    array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span>';
                 }else{
-                    array = '<div class="center"><span class="badge text-bg-warning">Indefinido</span>';
+                    array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                 }
 
 
@@ -75,42 +66,45 @@ $( function () {
                     array =`
                     <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" href="javascript:void(0);"  data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bx bx-trash" style="color:indianred"></i>
+                            <!--
+                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
+                            -->
                         </div>
                     `;
                 }else if(full.estado == 'R'){
                     array =`
                     <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" href="javascript:void(0);"  data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bx bx-trash" style="color:indianred"></i>
+                            <!--
+                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
-
+                            -->
                         </div>
                     `;
                 } else{
                     array =`
                     <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
-                            <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
 
-                            <a id="btnEditarPlan" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Revisión" class="show-tooltip" href="javascript:void(0);" data-title="Revisión">
-                                <i class="font-22 fadeIn animated bx bx-edit" ></i>
+                            <a id="btnEditarPlan" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Revisión" class="show-tooltip" data-title="Revisión">
+                                <i class="font-22 fadeIn animated bi bi-pen" ></i>
                             </a>
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" href="javascript:void(0);"  data-title="Eliminar registro">
-                            <i class="font-22 fadeIn animated bx bx-trash" style="color:indianred"></i>
+                            <!--
+                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
+                            -->
                         </div>
                     `;
 

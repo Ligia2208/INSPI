@@ -31,12 +31,7 @@
             </div>
 
             <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ACTIVIDADES </h2>
-            <!-- <hr/>
-            <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('inventario.crearMovimiento') }}" type="button" >
-                <i class="lni lni-circle-plus"></i> Crear Movimiento
-            </a> -->
             <hr/>
-
             <div id="contModalComentarios">
             </div>
 

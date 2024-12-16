@@ -95,7 +95,7 @@ $( function () {
                     // Condición si full.estado es 'O'
                     if (full.estado == 'O') {
                         array += `
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);" data-title="Comentarios">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
                             <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
@@ -104,14 +104,14 @@ $( function () {
                         `;
                     } else {
                         array += `
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);" data-title="Comentarios">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-                            <a id="btnEditarPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip" href="javascript:void(0);" data-title="Editar registro">
-                                <i class="font-22 fadeIn animated bx bx-edit"></i>
+                            <a id="btnEditarPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                                <i class="font-22 fadeIn animated bi bi-pen"></i>
                             </a>
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" href="javascript:void(0);" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bx bx-trash" style="color:indianred"></i>
+                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
                         `;
                     }

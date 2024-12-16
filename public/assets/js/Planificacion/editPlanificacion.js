@@ -1,12 +1,8 @@
 
 $( function () {
     //CÓDIGO PARA BUSCAR ITEM PRESUPUESTARIO EN LA VISTA DE EDITAR PLANIFICACIÓN
-    $('.form-select').select2({
-        //dropdownParent: $('.modal-body'),
-        theme: 'bootstrap4',
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        height: '38px',
-        placeholder: 'Selecciona una opción',
+    $('.single-select').select2({
+        width: '100%',
     });
 
 
@@ -400,7 +396,7 @@ function actualizarPlanificacion(){
     // let desItem  = $('#desItem').val();
     let item_presupuestario     = $('#item_presupuestario').val();
     let monto    = $('#monto').val();
-    let presupuesto_proyectado    = $('#presupuesto_proyectado').val();
+    // let presupuesto_proyectado    = $('#presupuesto_proyectado').val();
     // let monDisp  = $('#monDisp').val();
     let coordina = $('#coordina').val();
     // let nPOA     = $('#nPOA').val();
@@ -593,7 +589,7 @@ function actualizarPlanificacion(){
                     // desItem : desItem ,
                     item_presupuestario    : item_presupuestario    ,
                     monto   : monto,
-                    presupuesto_proyectado : presupuesto_proyectado,
+                    // presupuesto_proyectado : presupuesto_proyectado,
                     unidad_ejecutora: unidad_ejecutora,
                     programa: programa,
                     proyecto: proyecto,

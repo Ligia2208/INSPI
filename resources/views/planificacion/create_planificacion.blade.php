@@ -118,7 +118,7 @@
                             <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)">
                                 <option value="0">Seleccione Opción</option>
                                 @foreach($item_presupuestario as $item)
-                                    <option value="{{$item->id}}">{{$item->nombre}} - {{$item->descripcion}}</option>
+                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}" >{{$item->nombre}} - {{$item->descripcion}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -142,13 +142,12 @@
                             <div class="invalid-feedback">Ingrese solo números</div>
                         </div>
 
-
-                        <div class="col-md-4 mt-2">
+                        <!-- <div class="col-md-4 mt-2">
                             <label for="presupuesto_proyectado" class="form-label fs-6">Presupuesto proyectado</label>
                             <input type="number" id="presupuesto_proyectado" name="presupuesto_proyectado" class="form-control" required="" autofocus="" value="0">
                             <div class="valid-feedback">¡Se ve bien!</div>
                             <div class="invalid-feedback">Ingrese solo números</div>
-                        </div>
+                        </div> -->
 
                     </div>
                 </div>

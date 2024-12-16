@@ -450,7 +450,7 @@ class ItemPresupuestarioController extends Controller{
         ->where('pla_fuente.id', $id)->first();
 
         
-        $unidad = UnidadEjecutora::where('estado', 'A')->where('estado', 'A')->get();
+        $unidad = UnidadEjecutora::where('estado', 'A')->get();
         $programa = Programa::where('estado', 'A')->where('id_unidad', $estrutura->id_unidad)->get();
         $proyecto = Proyecto::where('estado', 'A')->where('id_programa', $estrutura->id_programa)->get();
         $actividadPre = ActividadPre::where('estado', 'A')->where('id_proyecto', $estrutura->id_proyecto)->get();

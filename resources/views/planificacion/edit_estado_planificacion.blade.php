@@ -70,7 +70,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="poa" class="form-label fs-6">Tipo de Gasto</label>
-                            <select id="poa" name="poa" class="form-select single-select" required disabled>
+                            <select id="poa" name="poa" class="form-control single-select" required="" disabled autofocus="">
                                 <!-- <option value="0">Seleccione Opción</option> -->
                                 @foreach($tipos as $tipo)
                                 @if($tipo->id == $atributos->idPoa)
@@ -90,7 +90,7 @@
 
                         <div class="col-md-2 mt-5" style="margin-left: 8%;">
                             <label for="plurianual" class="form-label fs-6">Plurianual</label>
-                            <input type="checkbox" id="plurianual" name="plurianual" disabled class="form-check-input" {{ $atributos->plurianual ? 'checked' : '' }}>
+                            <input type="checkbox" id="plurianual" name="plurianual" disabled class="form-check" {{ $atributos->plurianual ? 'checked' : '' }}>
                         </div>
 
                         <div class="col-md-12 mt-2">
@@ -128,7 +128,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="item" class="form-label fs-6">Item presupuestario</label>
-                            <select id="item_presupuestario" name="item_presupuestario" class="form-select" required onchange="fetchItemData(this.value)" disabled>
+                            <select id="item_presupuestario" name="item_presupuestario" class="form-control" required onchange="fetchItemData(this.value)" disabled>
                                 @foreach($item_presupuestario as $item)
                                 @if($item->id == $atributos->id_item)
                                     <option value="{{$item->id}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
@@ -175,7 +175,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="unidad" class="form-label fs-6">Unidad ejecutora</label>
-                            <select id="unidad_ejecutora" name="unidad_ejecutora" class="form-select" required disabled>
+                            <select id="unidad_ejecutora" name="unidad_ejecutora" class="form-control" required disabled>
                                 @foreach($unidad_eje as $unidad)
                                     @if($unidad->id == $atributos->u_ejecutora)
                                         <option value="{{$unidad->id}}" selected>{{$unidad->nombre}}</option>
@@ -188,7 +188,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="programa" class="form-label fs-6">Programa</label>
-                            <select id="programa" name="programa" class="form-select" required disabled>
+                            <select id="programa" name="programa" class="form-control" required disabled>
                                 @foreach($programa as $prog)
                                     @if($prog->id == $atributos->programa)
                                         <option value="{{$prog->id}}" selected>{{$prog->nombre}}</option>
@@ -201,7 +201,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="proyecto" class="form-label fs-6">Proyecto</label>
-                            <select id="proyecto" name="proyecto" class="form-select" required disabled>
+                            <select id="proyecto" name="proyecto" class="form-control" required disabled>
                                 @foreach($proyecto as $proy)
                                     @if($proy->id == $atributos->proyecto)
                                         <option value="{{$proy->id}}" selected>{{$proy->nombre}}</option>
@@ -215,7 +215,7 @@
 
                         <div class="col-md-6 mt-2">
                             <label for="actividad" class="form-label fs-6">Actividad</label>
-                            <select id="actividad" name="actividad" class="form-select" required disabled>
+                            <select id="actividad" name="actividad" class="form-control" required disabled>
                                 @foreach($actividad as $act)
                                     @if($act->id == $atributos->actividad)
                                         <option value="{{$act->id}}" selected>{{$act->nombre}}</option>
@@ -228,7 +228,7 @@
 
                         <div class="col-md-6 mt-2">
                             <label for="fuente_financiamiento" class="form-label fs-6">Fuente de financiamiento</label>
-                            <select id="fuente_financiamiento" name="fuente_financiamiento" class="form-select" required disabled>
+                            <select id="fuente_financiamiento" name="fuente_financiamiento" class="form-control" required disabled>
                                 @foreach($fuente as $fue)
                                     @if($fue->id == $atributos->fuente)
                                         <option value="{{$fue->id}}" selected>{{$fue->nombre}}</option>
@@ -347,7 +347,7 @@
             @if(count($comentarios) > 0)
                     <div class="card mb-5">
                         <div class="card-head">
-                            <div class="d-flex align-items-center p-3 text-white bg-secondary rounded shadow-sm">
+                            <div class="d-flex align-items-center p-3 text-white bg-success rounded shadow-sm">
                                 <div class="lh-1">
                                     <h1 class="h3 mb-0 text-white lh-1">Comentarios sobre esta actividad</h1>
                                 </div>

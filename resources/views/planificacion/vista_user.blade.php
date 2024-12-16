@@ -45,6 +45,24 @@
                     </div>
                 </div>
 
+                <div class="col">
+                    <div class="card radius-10 border border-1 border-primary position-relative">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+
+                                <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-graph-up-arrow py-3 px-2 titulo-grande"></i>
+                                </div>
+
+                                <div>
+                                    <span>Monto ocupado</span>
+                                    <h4 class="my-1 text-primary ms-auto" id="total_ocupado">{{$totalOcupado}}</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
 

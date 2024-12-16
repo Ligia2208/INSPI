@@ -23,6 +23,7 @@ class Poa extends Model
                             'fuente',
                             'id_item',
                             'id_consumo',
+                            'id_item_dir',
                             'monto',
                             'presupuesto_proyectado',
                             'plurianual',

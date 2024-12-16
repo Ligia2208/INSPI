@@ -88,7 +88,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="poa" class="form-label fs-6">Tipo de Gasto</label>
-                            <select id="poa" name="poa" class="form-select single-select" required>
+                            <select id="poa" name="poa" class="form-control single-select" required>
                                 <!-- <option value="0">Seleccione Opción</option> -->
                                 @foreach($tipos as $tipo)
                                 @if($tipo->id == $atributos->idPoa)
@@ -102,7 +102,7 @@
 
                         <div class="col-md-2 mt-5" style="margin-left: 8%;">
                             <label for="plurianual" class="form-label fs-6">Plurianual</label>
-                            <input type="checkbox" id="plurianual" name="plurianual" class="form-check-input" {{ $atributos->plurianual ? 'checked' : '' }}>
+                            <input type="checkbox" id="plurianual" name="plurianual" class="form-check" {{ $atributos->plurianual ? 'checked' : '' }}>
                         </div>
 
                         <div class="col-md-12 mt-2">
@@ -140,7 +140,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="item" class="form-label fs-6">Item presupuestario</label>
-                            <select id="item_presupuestario" name="item_presupuestario" class="form-select single-select" required onchange="fetchItemData(this.value)">
+                            <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)">
                                 @foreach($item_presupuestario as $item)
                                 @if($item->id == $atributos->id_item)
                                     <option value="{{$item->id}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
@@ -170,13 +170,6 @@
                             <div class="invalid-feedback">Ingrese solo números</div>
                         </div>
 
-                        <div class="col-md-4 mt-2">
-                            <label for="presupuesto_proyectado" class="form-label fs-6">Presupuesto proyectado</label>
-                            <input type="number" id="presupuesto_proyectado" name="presupuesto_proyectado" class="form-control" required="" autofocus="" value="{{intval($atributos->presupuesto_proyectado)}}">
-                            <div class="valid-feedback">¡Se ve bien!</div>
-                            <div class="invalid-feedback">Ingrese solo números</div>
-                        </div>
-
                     </div>
                 </div>
             </div>
@@ -187,7 +180,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="unidad" class="form-label fs-6">Unidad ejecutora</label>
-                            <select id="unidad_ejecutora" name="unidad_ejecutora" class="form-select" required>
+                            <select id="unidad_ejecutora" name="unidad_ejecutora" class="form-control single-select" required disabled>
                                 @foreach($unidad_eje as $unidad)
                                     @if($unidad->id == $atributos->u_ejecutora)
                                         <option value="{{$unidad->id}}" selected>{{$unidad->nombre}}</option>
@@ -200,7 +193,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="programa" class="form-label fs-6">Programa</label>
-                            <select id="programa" name="programa" class="form-select" required>
+                            <select id="programa" name="programa" class="form-control single-select" required disabled>
                                 @foreach($programa as $prog)
                                     @if($prog->id == $atributos->programa)
                                         <option value="{{$prog->id}}" selected>{{$prog->nombre}}</option>
@@ -213,7 +206,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="proyecto" class="form-label fs-6">Proyecto</label>
-                            <select id="proyecto" name="proyecto" class="form-select" required>
+                            <select id="proyecto" name="proyecto" class="form-control single-select" required disabled>
                                 @foreach($proyecto as $proy)
                                     @if($proy->id == $atributos->proyecto)
                                         <option value="{{$proy->id}}" selected>{{$proy->nombre}}</option>
@@ -227,7 +220,7 @@
 
                         <div class="col-md-6 mt-2">
                             <label for="actividad" class="form-label fs-6">Actividad</label>
-                            <select id="actividad" name="actividad" class="form-select" required>
+                            <select id="actividad" name="actividad" class="form-control single-select" required disabled>
                                 @foreach($actividad as $act)
                                     @if($act->id == $atributos->actividad)
                                         <option value="{{$act->id}}" selected>{{$act->nombre}}</option>
@@ -240,7 +233,7 @@
 
                         <div class="col-md-6 mt-2">
                             <label for="fuente_financiamiento" class="form-label fs-6">Fuente de financiamiento</label>
-                            <select id="fuente_financiamiento" name="fuente_financiamiento" class="form-select" required>
+                            <select id="fuente_financiamiento" name="fuente_financiamiento" class="form-control single-select" required disabled>
                                 @foreach($fuente as $fue)
                                     @if($fue->id == $atributos->fuente)
                                         <option value="{{$fue->id}}" selected>{{$fue->nombre}}</option>
@@ -268,7 +261,7 @@
                 <div class="row p-2">
                     <div class="col-md-4 mt-2">
                         <label for="frecuencia" class="form-label fs-6">Frecuencia</label>
-                        <select id="frecuencia" name="frecuencia" class="form-select single-select" required>
+                        <select id="frecuencia" name="frecuencia" class="form-control single-select" required>
                             <option value="">Seleccione una frecuencia</option>
                             @foreach($tipoMonto as $tipoM)
                                 <option value="{{ $tipoM->id }}" {{ $atributos->idTipoMonto == $tipoM->id ? 'selected' : '' }}>
@@ -472,7 +465,7 @@
 
                         <div class="col-md-12 mt-1">
                             <label for="categoriaArti" class="form-label fs-6">Seleccione la Categoría</label>
-                            <select id="categoriaArti" name="categoriaArti" class="form-select single-select" required>
+                            <select id="categoriaArti" name="categoriaArti" class="form-control single-select" required>
                                 <option value="0">Seleccione Opción</option>
                                         <option value="">  </option>
                             </select>

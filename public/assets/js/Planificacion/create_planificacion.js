@@ -271,9 +271,13 @@ function guardarPlanificacion(){
     let actOpera = $('#actOpera').val();
     let subActi  = $('#subActi').val();
     // let desItem  = $('#desItem').val();
-    let item_presupuestario     = $('#item_presupuestario').val();
+    let id_item_dir         = $('#item_presupuestario').val();
+    let selectedOption      = $(`#item_presupuestario option[value="${id_item_dir}"]`);
+    let item_presupuestario = selectedOption.attr("data-id_item");
+
+
     let monto    = $('#monto').val();
-    let presupuesto_proyectado    = $('#presupuesto_proyectado').val();
+    //let presupuesto_proyectado    = $('#presupuesto_proyectado').val();
     // let monDisp  = $('#monDisp').val();
     let coordina = $('#coordina').val();
     // let nPOA     = $('#nPOA').val();
@@ -459,9 +463,10 @@ function guardarPlanificacion(){
                     actOpera: actOpera,
                     subActi : subActi ,
                     // desItem : desItem ,
-                    item_presupuestario    : item_presupuestario    ,
+                    item_presupuestario    : item_presupuestario,
+                    id_item_dir:  id_item_dir,
                     monto   : monto,
-                    presupuesto_proyectado : presupuesto_proyectado,
+                    //presupuesto_proyectado : presupuesto_proyectado,
                     unidad_ejecutora: unidad_ejecutora,
                     programa: programa,
                     proyecto: proyecto,
