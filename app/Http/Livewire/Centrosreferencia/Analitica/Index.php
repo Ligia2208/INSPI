@@ -132,4 +132,42 @@ class Index extends Component
                 ]);
         }
     }
+    public function duplicate($id)
+    {
+        try{
+            $Analiticas = Analitica::findOrFail($id);
+            $newAnalitica = new Analitica();
+            $newAnalitica->preanalitica_id = $Analiticas->preanalitica_id;
+            $newAnalitica->sedes_id = $Analiticas->sedes_id;
+            $newAnalitica->crns_id = $Analiticas->crns_id;
+            $newAnalitica->evento_id = $Analiticas->evento_id;
+            $newAnalitica->muestra_id = $Analiticas->muestra_id;
+            $newAnalitica->anio_registro = $Analiticas->anio_registro;
+            $newAnalitica->codigo_muestra = $Analiticas->codigo_muestra;
+            $newAnalitica->codigo_secuencial = $Analiticas->codigo_secuencial;
+            $newAnalitica->codigo_externo = $Analiticas->codigo_externo;
+            $newAnalitica->tecnica_id = $Analiticas->tecnica_id;
+            $newAnalitica->resultado_id = $Analiticas->resultado_id;
+            $newAnalitica->descripcion = $Analiticas->descripcion;
+            $newAnalitica->descripcion_responsable = $Analiticas->descripcion_responsable;
+            $newAnalitica->usuariot_id = $Analiticas->usuariot_id;
+            $newAnalitica->fecha_toma = $Analiticas->fecha_toma;
+            $newAnalitica->fecha_llegada_lab = $Analiticas->fecha_llegada_lab;
+            $newAnalitica->usuarior_id = $Analiticas->usuarior_id;
+            $newAnalitica->fecha_resultado = $Analiticas->fecha_resultado;
+            $newAnalitica->usuariop_id = $Analiticas->usuariop_id;
+            $newAnalitica->fecha_publicacion = $Analiticas->fecha_publicacion;
+            $newAnalitica->save();
+
+            $this->alert('success', 'Registro duplicado con exito');
+        }catch(Exception $e){
+            $this->alert('error',
+                'Ocurrio un error en la duplicación: '.$e->getMessage(),
+                [
+                    'showConfirmButton' => true,
+                    'confirmButtonText' => 'Entiendo',
+                    'timer' => null,
+                ]);
+        }
+    }
 }

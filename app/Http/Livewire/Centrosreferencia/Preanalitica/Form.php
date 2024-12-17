@@ -16,6 +16,7 @@ use App\Models\CentrosReferencia\Canton;
 use App\Models\CentrosReferencia\Reporte;
 use App\Models\CentrosReferencia\Tecnica;
 use App\Models\CentrosReferencia\Muestra;
+use App\Models\CentrosReferencia\Generacioncodigos;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -254,8 +255,14 @@ class Form extends Component
         $newToma->usuario_id =  $user;
         $newToma->save();
 
-        if($this->Preanaliticas->primera_id>0){
+        $tipogenera = $this->tipo_generacion($this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+        if($tipogenera==1){
             $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+        }
+        if($this->Preanaliticas->primera_id>0){
+            if($tipogenera==2){
+                $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            }
             $newMuestra = new Analitica();
             $newMuestra->preanalitica_id = $newToma->id;
             $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
@@ -265,11 +272,19 @@ class Form extends Component
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_primera;
             $newMuestra->codigo_muestra = $codigo;
+            if($tipogenera==1){
+                $newMuestra->codigo_secuencial = 1;
+            }
+            else{
+                $newMuestra->codigo_secuencial = $codigo;
+            }
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
         }
         if($this->Preanaliticas->segunda_id>0){
-            $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            if($tipogenera==2){
+                $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            }
             $newMuestra = new Analitica();
             $newMuestra->preanalitica_id = $newToma->id;
             $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
@@ -279,11 +294,19 @@ class Form extends Component
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_segunda;
             $newMuestra->codigo_muestra = $codigo;
+            if($tipogenera==1){
+                $newMuestra->codigo_secuencial = 2;
+            }
+            else{
+                $newMuestra->codigo_secuencial = $codigo;
+            }
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
         }
         if($this->Preanaliticas->tercera_id>0){
-            $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            if($tipogenera==2){
+                $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            }
             $newMuestra = new Analitica();
             $newMuestra->preanalitica_id = $newToma->id;
             $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
@@ -293,11 +316,19 @@ class Form extends Component
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_tercera;
             $newMuestra->codigo_muestra = $codigo;
+            if($tipogenera==1){
+                $newMuestra->codigo_secuencial = 3;
+            }
+            else{
+                $newMuestra->codigo_secuencial = $codigo;
+            }
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
         }
         if($this->Preanaliticas->cuarta_id>0){
-            $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            if($tipogenera==2){
+                $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            }
             $newMuestra = new Analitica();
             $newMuestra->preanalitica_id = $newToma->id;
             $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
@@ -307,11 +338,19 @@ class Form extends Component
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_cuarta;
             $newMuestra->codigo_muestra = $codigo;
+            if($tipogenera==1){
+                $newMuestra->codigo_secuencial = 4;
+            }
+            else{
+                $newMuestra->codigo_secuencial = $codigo;
+            }
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
         }
         if($this->Preanaliticas->quinta_id>0){
-            $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            if($tipogenera==2){
+                $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            }
             $newMuestra = new Analitica();
             $newMuestra->preanalitica_id = $newToma->id;
             $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
@@ -321,6 +360,12 @@ class Form extends Component
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_quinta;
             $newMuestra->codigo_muestra = $codigo;
+            if($tipogenera==1){
+                $newMuestra->codigo_secuencial = 5;
+            }
+            else{
+                $newMuestra->codigo_secuencial = $codigo;
+            }
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
         }
@@ -333,6 +378,11 @@ class Form extends Component
     public function sgte_codigomuestra($anio, $sede, $crn){
         $max = Analitica::where('estado','=','A')->where('anio_registro','=',$anio)->where('sedes_id','=',$sede)->where('crns_id','=',$crn)->max('codigo_muestra');
         return $max+1;
+    }
+
+    public function tipo_generacion($sede, $crn){
+        $tipog = Generacioncodigos::where('estado','=','A')->where('sedes_id','=',$sede)->where('crns_id','=',$crn)->max('tipo_id');
+        return $tipog;
     }
 
     public function update(){

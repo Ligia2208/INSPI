@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Centrosreferencia\Postanalitica;
 
 use App\Models\CentrosReferencia\Analitica;
+use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
@@ -54,8 +55,13 @@ class Index extends Component
         $eventos = [];
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
 
-        $count = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->count();
-        $analiticas = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->orderBy('id', 'desc');
+        $mresultados = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->pluck('preanalitica_id')->toArray();
+
+
+        //$count = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->count();
+        $analiticapac = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->pluck('id')->toArray();
+        $analiticas = Preanalitica::whereIn('id',$analiticapac);
+        $count = $analiticas->count();
 
         if($this->search){
             $analiticas = $analiticas->where('codigo_muestra', 'LIKE', "%{$this->search}%");

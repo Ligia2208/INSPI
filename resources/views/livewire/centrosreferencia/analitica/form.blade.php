@@ -118,7 +118,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Año - Período<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -137,7 +137,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Código Muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -156,8 +156,46 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label>Fecha Recepción de muestra<span class="text-danger">*</span></label>
+                                <div class="form-group col-md-2">
+                                    <label>Código Secuencial<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticas.codigo_secuencial"
+                                            type="text"
+                                            required
+                                            class="form-control form-control-solid @error('Analiticas.codigo_secuencial') is-invalid @enderror"
+                                            placeholder="Ej: 4A39982" />
+                                    </div>
+                                    @error('Analiticas.codigo_secuencial')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Código Externo<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticas.codigo_externo"
+                                            type="text"
+                                            required
+                                            class="form-control form-control-solid @error('Analiticas.codigo_externo') is-invalid @enderror"
+                                            placeholder="Ej: 4A39982" />
+                                    </div>
+                                    @error('Analiticas.codigo_externo')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Recepción de muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -172,8 +210,8 @@
                                         />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label>Fecha llegada a CRN-Laboratorio<span class="text-danger">*</span></label>
+                                <div class="form-group col-md-2">
+                                    <label>Llegada a CRN-Lab.<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">

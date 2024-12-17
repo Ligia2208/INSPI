@@ -116,7 +116,7 @@
                                         <div class="alert-icon">
                                             <i class="flaticon-questions-circular-button"></i>
                                         </div>
-                                        <div class="alert-text">Sin resultados "{{ $search }}"</div>
+                                        <div class="alert-text">Sin resultados</div>
                                     </div>
                                 </div>
                            @endforelse

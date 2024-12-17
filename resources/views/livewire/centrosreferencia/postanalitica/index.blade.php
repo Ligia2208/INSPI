@@ -157,12 +157,11 @@
                         <thead>
                             <tr class="text-uppercase">
                                 <th>Código Muestra</th>
-                                <th>Fecha Recepción</th>
+                                <th>Fecha Atención</th>
+                                <th>Paciente</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
-                                <th>Técnica</th>
                                 <th>Resultado</th>
-                                <th>Fecha Resultado</th>
                                 <th>Usuario Resultado</th>
                                 <th>Fecha Validación</th>
                                 <th>Acciones</th>
@@ -173,11 +172,15 @@
                                 <tr>
                                     <td>
                                         <span
-                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $postanalitica->codigo_muestra }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->instituciones->descripcion }}</span>
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->fecha_toma }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->fecha_atencion }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->paciente->identidad }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -188,36 +191,16 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->evento->simplificado }}</span>
                                     </td>
                                     <td>
-                                        @if($postanalitica->tecnica_id>0)
-                                            <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->tecnica->descripcion }}</span>
-                                        @else
-
-                                        @endif
-                                    </td>
-                                    <td>
-                                        @if($postanalitica->resultado_id>0)
-                                            <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->resultado->descripcion }}</span>
-                                        @else
-
-                                        @endif
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->fecha_resultado }}</span>
-                                    </td>
-                                    <td>
-                                        @if($postanalitica->usuarior_id>0)
-                                            <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->usuarior->name }}</span>
-                                        @else
-
-                                        @endif
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->fecha_publicacion }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
                                     </td>
                                     <td align="center">
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
@@ -225,6 +208,14 @@
                                                 <span class="navi-icon">
                                                     <i class="ace-icon fa fa-tag" style="color:lightblue"
                                                         title="Editar"></i>
+                                                </span>
+                                            </a>
+                                        </i>
+                                        <i class="navi-item" data-toggle="modal" data-target="_self">
+                                            <a href="{{ route('postanalitica.show', $postanalitica) }}" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-eye" style="color:rgb(122, 122, 122)"
+                                                        title="Mostrar"></i>
                                                 </span>
                                             </a>
                                         </i>

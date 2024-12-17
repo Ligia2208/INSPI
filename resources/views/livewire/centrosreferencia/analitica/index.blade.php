@@ -160,6 +160,7 @@
                                 <th>Fecha Recepción</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
+                                <th>Muestra</th>
                                 <th>Técnica</th>
                                 <th>Resultado</th>
                                 <th>Fecha Resultado</th>
@@ -172,7 +173,7 @@
                                 <tr>
                                     <td>
                                         <span
-                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->codigo_muestra }}</span>
+                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->anio_registro }} - {{ str_pad($analitica->codigo_muestra, 5, "0", STR_PAD_LEFT) }} - {{ str_pad($analitica->codigo_secuencial, 3, "0", STR_PAD_LEFT) }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -185,6 +186,10 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->evento->simplificado }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->muestra->descripcion }}</span>
                                     </td>
                                     <td>
                                         @if($analitica->tecnica_id>0)
@@ -239,6 +244,17 @@
                                             <span class="navi-icon">
                                                 <i class="fa fa-print" style="color:lightgray" alt="Editar"></i>
                                             </span>
+                                            </a>
+                                        </i>
+                                        @endif
+                                        @if($analitica->usuarior_id==0)
+                                        <i class="navi-item"
+                                            onclick="event.preventDefault(); confirmDuplicate({{ $analitica->id }})">
+                                            <a href="#" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-plus" style="color:rgb(139, 139, 139)"
+                                                        title="Duplicar"></i>
+                                                </span>
                                             </a>
                                         </i>
                                         @endif
@@ -306,6 +322,26 @@
                 }).then(function(result) {
                     if (result.isConfirmed) {
                         @this.call('destroy', id);
+                    }
+                });
+            }
+
+            function confirmDuplicate(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "El registro para los resultados analíticos se duplicarán para su posterior edición",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-check'></i> <span class='text-white'>Si, duplicar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('duplicate', id);
                     }
                 });
             }

@@ -74,6 +74,7 @@ class Form extends Component
 
     public function store(){
         $this->validate();
+        $this->Pacientes->hcu=$this->Pacientes->identidad;
         $this->Pacientes->save();
         $this->Pacientes = new Paciente();
         $this->alert('success', 'Paciente agregada con exito');
