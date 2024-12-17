@@ -122,6 +122,112 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('gastos', ExpenseController::class)->parameters(['gastos' => 'expense'])->names('expense');
 
 
+    /* =========================== PLANIFICACION =========================== */ 
+    Route::group(['namespace' => 'App\Http\Controllers\Planificacion'], function(){
+
+        Route::get('/planificacion', 'PlanificacionController@index')->name('planificacion'); //vista principal
+        Route::get('/planificacion/vistaUser', 'PlanificacionController@vistaUser')->name('planificacion.vistaUser'); //vista por id de usuario
+        Route::get('planificacion/crearPlanificacion/{id_direccion}', 'PlanificacionController@crearPlanificacion')->name('planificacion.crearPlanificacion');
+        Route::post('planificacion/savePlanificacion', 'PlanificacionController@savePlanificacion')->name('planificacion.savePlanificacion');
+        Route::post('/planificacion/deletePoa', 'PlanificacionController@deletePoa')->name('planificacion.deletePoa'); //Eliminar registro
+        Route::get('/planificacion/detalle', 'PlanificacionController@detalle')->name('planificacion.detalle');
+        Route::get('/planificacion/detalleUser', 'PlanificacionController@detalleUser')->name('planificacion.detalleUser');
+        Route::get('planificacion/crearPoa', 'PlanificacionController@crearPoa')->name('planificacion.crearPoa');
+        Route::post('planificacion/savePoa', 'PlanificacionController@savePoa')->name('planificacion.savePoa');
+        
+        Route::get('/planificacion/obtenerComentarios/{id?}', 'PlanificacionController@obtenerComentarios')->name('planificacion.obtenerComentario'); //COMENTARIOS
+    
+        Route::get('planificacion/editarPlanificacion/{id?}','PlanificacionController@editarPlanificacion')->name('planificacion.editarPlanificacion');
+        Route::put('planificacion/actualizarPlanificacion/{id?}','PlanificacionController@actualizarPlanificacion')->name('planificacion.actualizarPlanificacion');
+        Route::get('planificacion/editarEstadoPlanificacion/{id?}','PlanificacionController@editarEstadoPlanificacion')->name('planificacion.editarEstadoPlanificacion');
+        Route::post('/planificacion/agregarComentario', 'PlanificacionController@agregarComentario')->name('planificacion.agregarComentario');
+        Route::post('/planificacion/agregarComentarioEstado', 'PlanificacionController@agregarComentarioEstado')->name('planificacion.agregarComentarioEstado');
+    
+        Route::get('/planificacion/obtenerDatosItem/{id?}', 'PlanificacionController@obtenerDatosItem')->name('planificacion.obtenerDatosItem');
+    
+        Route::get('planificacion/reportHexa', 'PlanificacionController@reportHexa')->name('planificacion.reportHexa');
+    
+        Route::get('/planificacion/reformaIndex', 'PlanificacionController@reformaIndex')->name('planificacion.reformaIndex'); //vista principal
+        Route::get('/planificacion/reformaPrincipal', 'PlanificacionController@reformaPrincipal')->name('planificacion.reformaPrincipal'); //vista principal
+        Route::get('/planificacion/revisionReforma/{id}', 'PlanificacionController@revisionReforma')->name('planificacion.revisionReforma'); //vista principal
+        Route::post('/planificacion/agregarComentarioReforma', 'PlanificacionController@agregarComentarioReforma')->name('planificacion.agregarComentarioReforma');
+        Route::get('/planificacion/obtenerComentariosReforma/{id?}', 'PlanificacionController@obtenerComentariosReforma')->name('planificacion.obtenerComentariosReforma'); //COMENTARIOS
+    
+        Route::put('/planificacion/actualizarCalendarioPoa', 'PlanificacionController@actualizarCalendarioPoa')->name('planificacion.actualizarCalendarioPoa');
+    
+    
+        Route::get('/planificacion/crearReforma', 'PlanificacionController@crearReforma')->name('planificacion.crearReforma');
+        Route::post('planificacion/saveReforma', 'PlanificacionController@saveReforma')->name('planificacion.saveReforma');
+    
+        Route::get('/planificacion/editarReforma/{id}', 'PlanificacionController@editarReforma')->name('planificacion.editarReforma');
+        Route::put('/planificacion/actualizarReforma/{id}', 'PlanificacionController@actualizarReforma')->name('planificacion.actualizarReforma');
+        Route::post('/planificacion/guardarNuevaActividad', 'PlanificacionController@guardarNuevaActividad')->name('planificacion.guardarNuevaActividad');
+        Route::post('/planificacion/crearReformaConActividades', 'PlanificacionController@crearReformaConActividades')->name('planificacion.crearReformaConActividades');
+    
+    
+        Route::get('/planificacion/reformaActArea', 'PlanificacionController@reformaActArea')->name('planificacion.reformaActArea');
+        Route::get('/planificacion/getAreas/{czonal_id}', 'PlanificacionController@getAreas')->name('planificacion.getAreas');
+        Route::get('/planificacion/TblActArea', 'PlanificacionController@TblActArea')->name('planificacion.TblActArea');
+        Route::post('/planificacion/crearActArea', 'PlanificacionController@crearActArea')->name('planificacion.crearActArea'); //Crea una nueva actividad de otra área en la ventana de editar
+    
+        Route::post('/plani    fi    cacion/deleteReforma', 'PlanificacionController@deleteReforma')->name('planificacion.deleteReforma'); //Eliminar registro
+        Route::get('planificacion/reportReforma', 'PlanificacionController@reportReforma')->name('planificacion.reportReforma');
+    
+        //ESTRUCTUTA PRESUPUESTARIA
+        Route::get('/planificacion/get_unidad', 'PlanificacionController@get_unidad')->name('planificacion.get_unidad');
+        Route::get('/planificacion/get_programa_id', 'PlanificacionController@get_programa_id')->name('planificacion.get_programa_id');
+        Route::get('/planificacion/get_proyecto_id', 'PlanificacionController@get_proyecto_id')->name('planificacion.get_proyecto_id');
+        Route::get('/planificacion/get_actividad_id', 'PlanificacionController@get_actividad_id')->name('planificacion.get_actividad_id');
+        Route::get('/planificacion/get_fuente_id', 'PlanificacionController@get_fuente_id')->name('planificacion.get_fuente_id');
+        Route::get('/planificacion/get_actividades_id', 'PlanificacionController@get_actividades_id')->name('planificacion.get_actividades_id');
+    
+        Route::post('/planificacion/aproSolicitud', 'PlanificacionController@aproSolicitud')->name('planificacion.aproSolicitud'); //Aprobar o Rechazar solicitud
+    
+        Route::get('planificacion/reportDetalle', 'PlanificacionController@reportDetalle')->name('planificacion.reportDetalle');
+    
+        Route::get('planificacion/import_actividad', 'PlanificacionController@import_actividad')->name('planificacion.import_actividad');
+    
+    
+        Route::post('planificacion/import', 'PlanificacionController@import')->name('planificacion.import');
+    
+    });
+    /* =========================== PLANIFICACION =========================== */
+
+
+
+    /* =========================== ITEM PRESUPUESTARIO =========================== */
+    Route::group(['namespace' => 'App\Http\Controllers\ItemPresupuestario'], function(){
+        Route::get('/itemPresupuestario', 'ItemPresupuestarioController@index')->name('itemPresupuestario'); //vista principal
+        Route::post('/itemPresupuestario/saveItemPres', 'ItemPresupuestarioController@saveItemPres')->name('itemPresupuestario.saveItemPres'); //Modal para crear nuevo item
+        Route::post('/itemPresupuestario/deleteItemP', 'ItemPresupuestarioController@deleteItemP')->name('itemPresupuestario.deleteItemP');//Borrar item presupuestario
+        Route::get('/itemPresupuestario/obtenerItemP/{id?}', 'ItemPresupuestarioController@obtenerItemP')->name('itemPresupuestario.obtenerItemP');
+        Route::put('itemPresupuestario/actualizarItemP/{id?}','ItemPresupuestarioController@actualizarItemP')->name('itemPresupuestario.actualizarItemP');
+    
+        Route::get('/itemPresupuestario/rebootItems', 'ItemPresupuestarioController@rebootItems')->name('itemPresupuestario.rebootItems');
+        Route::get('/itemPresupuestario/traerHistorial', 'ItemPresupuestarioController@traerHistorial')->name('itemPresupuestario.traerHistorial');
+
+        //monto por direccion 
+        Route::get('/montoDireccion', 'ItemPresupuestarioController@montoDireccion')->name('montoDireccion'); //vista principal
+        Route::get('/itemPresupuestario/obtenerDireccionMonto/{id?}', 'ItemPresupuestarioController@obtenerDireccionMonto')->name('itemPresupuestario.obtenerDireccionMonto');
+        Route::put('itemPresupuestario/actualizarDireccionMonto/{id?}','ItemPresupuestarioController@actualizarDireccionMonto')->name('itemPresupuestario.actualizarDireccionMonto');
+        Route::post('/itemPresupuestario/deleteDireccionMonto', 'ItemPresupuestarioController@deleteDireccionMonto')->name('itemPresupuestario.deleteDireccionMonto');
+
+        //monto direccion item
+        Route::get('/itemPresupuestario/monto_item', 'ItemPresupuestarioController@monto_item')->name('itemPresupuestario.monto_item'); //vista principal
+        Route::post('/itemPresupuestario/actualizarItems', 'ItemPresupuestarioController@actualizarItems')->name('itemPresupuestario.actualizarItems');
+        Route::put('itemPresupuestario/actualizarEstructura','ItemPresupuestarioController@actualizarEstructura')->name('itemPresupuestario.actualizarEstructura');
+        Route::get('/itemPresupuestario/obtenerDireccionItem/{id?}', 'ItemPresupuestarioController@obtenerDireccionItem')->name('itemPresupuestario.obtenerDireccionItem');
+        Route::put('itemPresupuestario/actualizarItemMonto/{id?}','ItemPresupuestarioController@actualizarItemMonto')->name('itemPresupuestario.actualizarItemMonto');
+        Route::post('/itemPresupuestario/deleteItemDireccion', 'ItemPresupuestarioController@deleteItemDireccion')->name('itemPresupuestario.deleteItemDireccion');
+        Route::get('/itemPresupuestario/get_estructura/{id?}', 'ItemPresupuestarioController@get_estructura')->name('itemPresupuestario.get_estructura');
+        Route::get('/itemPresupuestario/get_montos/{id?}', 'ItemPresupuestarioController@get_montos')->name('itemPresupuestario.get_montos');
+
+    });
+    /* =========================== ITEM PRESUPUESTARIO =========================== */
+
+
+
+
     /* =========================== INVENTARIO =========================== */
     Route::group(['namespace' => 'App\Http\Controllers\InventarioReactivo'], function(){
 
@@ -246,11 +352,87 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/inventario/pdf', 'InventarioController@pdf')->name('inventario.pdf');
 
-        Route::get('/download/{fileName}', 'InventarioController@downloadExcel')->name('download.excel');
+        Route::get('/download/{fileName}', 'InventarioController@downloadExcel')->name('download.excel'); 
 
     });
     /* =========================== INVENTARIO =========================== */
 
+
+
+
+    /* =========================== ENCUESTAS =========================== */
+    Route::group(['namespace' => 'App\Http\Controllers\EvaluacionEncuesta'], function(){
+
+        Route::get('/encuestas', 'EncuestaController@index')->name('encuesta'); //vista principal
+
+        Route::get('/encuestas/create', 'EncuestaController@createView')->name('encuesta.createView'); // vista de crear encuesta
+        Route::post('/encuestas/save', 'EncuestaController@saveEncuesta')->name('encuesta.saveEncuesta');
+        Route::get('/encuestas/listarEncuesta', 'EncuestaController@listEncuesta')->name('encuesta.listEncuesta'); // vista de listar Encuestas
+        Route::get('/encuestas/eliminarEncuesta/{id}', 'EncuestaController@eliminarEncuesta')->name('encuesta.eliminarEncuesta');//eliminar encuesta
+        Route::get('/encuestas/visualizarEncuesta', 'EncuestaController@visualizarEncuesta')->name('encuesta.visualizarEncuesta');
+
+
+        Route::get('/encuestas/listarLaboratorio', 'EncuestaController@listLaboratorio')->name('encuesta.listLaboratorio'); // vista de listar laboratorio
+        Route::get('/encuestas/crearLaboratorio', 'EncuestaController@createLaboratorio')->name('encuesta.createLaboratorio'); // vista de crear laboratorio
+        Route::get('/encuestas/editLaboratorio/{id}', 'EncuestaController@editLaboratorio')->name('encuesta.editLaboratorio');
+        Route::get('/encuestas/eliminarLaboratorio/{id}', 'EncuestaController@eliminarLaboratorio')->name('encuesta.eliminarLaboratorio');//eliminar seguimiento
+
+
+        Route::post('/encuestas/saveLaboratorio', 'EncuestaController@saveLaboratorio')->name('encuesta.saveLaboratorio');
+        Route::get('/encuestas/enlazarEncuesta', 'EncuestaController@link_encuesta')->name('encuesta.link_encuesta'); // vista de crear laboratorio
+        Route::post('/encuestas/saveTipoEncuesta', 'EncuestaController@saveTipoEncuesta')->name('encuesta.saveTipoEncuesta');//para guardar el enlace, tipo y encuesta
+        Route::get('/encuestas/crearUsuario', 'EncuestaController@createUsuario_lab')->name('encuesta.createUsuario_lab'); // vista de crear usuarios
+        Route::get('/encuestas/createUsuario_int', 'EncuestaController@createUsuario_int')->name('encuesta.createUsuario_int'); // vista de crear usuarios interno
+        Route::post('/encuestas/saveUsuarioInt', 'EncuestaController@saveUsuarioInt')->name('encuesta.saveUsuarioInt');//para guardar el usuario de tipo interno
+        Route::post('/encuestas/deleteUsuarioInt', 'EncuestaController@deleteUsuarioInt')->name('encuesta.deleteUsuarioInt');//para eliminar el usuario de tipo interno
+        Route::get('/encuestas/createUsuario_nopre', 'EncuestaController@createUsuario_nopre')->name('encuesta.createUsuario_nopre'); // vista de crear usuarios no presencial
+        Route::post('/encuestas/saveUsuarioNopre', 'EncuestaController@saveUsuarioNopre')->name('encuesta.saveUsuarioNopre');//para guardar el usuario de tipo externo no presencial
+        Route::post('/encuestas/deleteUsuarioNopre', 'EncuestaController@deleteUsuarioNopre')->name('encuesta.deleteUsuarioNopre');//para eliminar el usuario de tipo externo no presencial
+        Route::get('/encuestas/createUsuario_pre', 'EncuestaController@createUsuario_pre')->name('encuesta.createUsuario_pre'); // vista de crear usuarios externo presencial
+        Route::post('/encuestas/saveUsuarioPre', 'EncuestaController@saveUsuarioPre')->name('encuesta.saveUsuarioPre');//para guardar el usuario de tipo externo presencial
+        Route::post('/encuestas/deleteUsuarioPre', 'EncuestaController@deleteUsuarioPre')->name('encuesta.deleteUsuarioPre');//para eliminar el usuario de tipo externo presencial
+        Route::get('/encuestas/crearEvento', 'EncuestaController@createEvento')->name('encuesta.createEvento'); // vista de crear laboratorio
+        Route::post('/encuestas/saveEvento', 'EncuestaController@saveEvento')->name('encuesta.saveEvento');
+        Route::post('/encuestas/moveUsuarioNopre', 'EncuestaController@moveUsuarioNopre')->name('encuesta.moveUsuarioNopre');
+        Route::get('/encuestas/editUsuario_nopre', 'EncuestaController@editUsuario_nopre')->name('encuesta.editUsuario_nopre'); // vista de crear usuarios externo presencial
+        Route::post('/encuestas/saveEditUsuarioNopre', 'EncuestaController@saveEditUsuarioNopre')->name('encuesta.saveEditUsuarioNopre');//para guardar el usuario de tipo externo no presencial
+
+
+        Route::get('/laboratoriosTipo/{id}', 'EncuestaController@laboratoriosTipo')->name('encuesta.laboratoriosTipo');
+        Route::get('/encuestas/usuEncuesta', 'EncuestaController@usuEncuesta')->name('encuesta.usuEncuesta'); // vista para visualizar todas las encuestas del lab
+        Route::get('/encuestas/getEncuestas', 'EncuestaController@getEncuestas')->name('encuesta.getEncuestas');
+        Route::get('/encuestas/getEncuestasTotales', 'EncuestaController@getEncuestasTotales')->name('encuesta.getEncuestasTotales');
+        Route::get('/eventoCorreo/{id}', 'EncuestaController@eventoCorreo')->name('encuesta.eventoCorreo');
+
+
+        Route::get('/obtenerDepartamentosEncuesta/{id}', 'EncuestaController@departamentos')->name('encuesta.departamentos');//devuelve departamento
+        Route::get('/obtenerLaboratoriosEncuesta/{id}', 'EncuestaController@laboratorios')->name('encuesta.laboratorios');//devuelve departamento
+
+        Route::get('/homeUsuario', 'EncuestaController@homeUsuario')->name('encuesta.homeUsuario'); //vista principal
+        Route::get('/encuestas/doEncuesta', 'EncuestaController@doEncuesta')->name('encuesta.doEncuesta');
+        Route::get('/encuestas/finishEncuesta', 'EncuestaController@finishEncuesta')->name('encuesta.finishEncuesta');
+        Route::post('/encuestas/saveUser', 'EncuestaController@saveUser')->name('encuesta.saveUser');
+
+        Route::get('encuestas/reportNoPresencial', 'EncuestaController@reportNoPresencial')->name('encuesta.reportNoPresencial');
+
+        Route::get('/obtenerLink/{id}', 'EncuestaController@obtenerLink')->name('encuesta.obtenerLink');//devuelve departamento
+
+        Route::post('/encuestas/deleteEncuestaUser', 'EncuestaController@deleteEncuestaUser')->name('encuesta.deleteCategoria');
+
+        //Route::middleware('guest')->get('/EncuestaSatisfaccion/{id_url}', 'EncuestaController@doEncuestaSatisfaccion')->name('encuesta.doEncuestaSatisfaccion');
+
+    });
+    /* =========================== ENCUESTAS =========================== */
+
+
+    Route::middleware('guest')->group(function () {
+        Route::get('/EncuestaSatisfaccion/{id_url}', [EncuestaController::class, 'doEncuestaSatisfaccion'])->name('encuesta.doEncuestaSatisfaccion');
+        Route::post('/encuestas/guardarEncuesta', [EncuestaController::class, 'guardarEncuesta'])->name('encuesta.guardarEncuesta');
+        Route::get('/completed', [EncuestaController::class, 'completed'])->name('encuesta.completed');
+    
+        Route::post('/result_post', [InventarioController::class, 'result_post'])->name('inventario.result_post');
+    
+    });
 
 
 });

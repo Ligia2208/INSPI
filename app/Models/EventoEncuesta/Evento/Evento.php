@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Models\EventoEncuesta\Evento;
+
+use Illuminate\Database\Eloquent\Model;
+
+class Evento extends Model
+{
+
+    protected $fillable =
+        [
+            'id',
+            'laboratorio_id',
+            'nombre',
+            'periodo',
+            'anio',
+            'link',
+            'estado',
+            'created_at',
+            'updated_at'
+        ];
+
+    //Evento
+    protected static $logName = 'Evento';
+    protected static $logAttributes = ['*'];
+    protected static $logOnlyDirty = true;
+    protected static $submitEmptyLogs = false;
+    protected $connection = 'encuestas';
+    public $table = 'enc_evento';
+    //protected $primaryKey = 'id';
+
+
+    public function getDescriptionForEvent(string $eventName)
+    {
+        return "Un Módulo ha sido {$eventName}";
+    }
+
+
+}

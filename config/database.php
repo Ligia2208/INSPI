@@ -78,6 +78,26 @@ return [
             'engine' => 'InnoDB',
         ],
 
+        'planificacion' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DP_HOST', '127.0.0.1'),
+            'port' => env('DP_PORT', '3306'),
+            'database' => env('DP_DATABASE', 'forge'),
+            'username' => env('DP_USERNAME', 'forge'),
+            'password' => env('DP_PASSWORD', ''),
+            'unix_socket' => env('DP_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => 'InnoDB',
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
         'documental' => [
             'driver' => 'mysql',
             'host' => env('DB_HOST_DOC', '127.0.0.1'),
@@ -192,6 +212,26 @@ return [
             'database' => env('DB_DATABASE_COR', 'forge'),
             'username' => env('DB_USERNAME_COR', 'forge'),
             'password' => env('DB_PASSWORD_COR', ''),
+            'unix_socket' => env('DP_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => 'InnoDB',
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+
+        'encuestas' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_ENC', '127.0.0.1'),
+            'port' => env('DB_PORT_ENC', '3306'),
+            'database' => env('DB_DATABASE_ENC', 'forge'),
+            'username' => env('DB_USERNAME_ENC', 'forge'),
+            'password' => env('DB_PASSWORD_ENC', ''),
             'unix_socket' => env('DP_SOCKET', ''),
             'charset' => 'utf8mb4',
             'collation' => 'utf8mb4_unicode_ci',
