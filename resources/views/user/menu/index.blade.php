@@ -95,12 +95,21 @@
                     </a>
                 </div>
                 <div class="navi-item mb-2">
+                    @if($user->roles()->first()->name=="Administrador")
                     <a href="{{ route('user.index') }}" class="navi-link py-4 {{ active('user.index') }}">
                         <span class="navi-icon mr-2">
                             <i class="fa fa-times"></i>
                         </span>
                         <span class="navi-text font-size-lg">Cerrar</span>
                     </a>
+                    @else
+                    <a href="{{ route('dashboard.index') }}" class="navi-link py-4 {{ active('dashboard.index') }}">
+                        <span class="navi-icon mr-2">
+                            <i class="fa fa-times"></i>
+                        </span>
+                        <span class="navi-text font-size-lg">Cerrar</span>
+                    </a>
+                    @endif
                 </div>
             </div>
             <!--end::Nav-->
