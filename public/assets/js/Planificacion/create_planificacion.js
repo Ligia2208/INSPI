@@ -284,9 +284,10 @@ function guardarPlanificacion(){
     let fecha    = $('#fecha').val();
     let poa      = $('#poa').val();
     let plurianual = $('#plurianual').is(':checked');
-    let justifi  = $('#justifi').val();
+    let justifi  = '';//$('#justifi').val();
 
     var frecuencia = $('#frecuencia').val();
+    var proceso    = $('#proceso').val();
 
     var unidad_ejecutora = $('#unidad_ejecutora').val();
     var programa = $('#programa').val();
@@ -324,31 +325,23 @@ function guardarPlanificacion(){
             text: 'Debe de selecionar un tipo de POA.',
             showConfirmButton: true,
         });
-    // }else if( justifi == '' ){
 
-    //     Swal.fire({
-    //         icon: 'warning',
-    //         type:  'warning',
-    //         title: 'SoftInspi',
-    //         text: 'Debe de ingresar una Justificación del área requirente.',
-    //         showConfirmButton: true,
-    //     });
-    }else if( justifi == '' ){
+    }else if( proceso == '' || proceso == 0 ){
 
         Swal.fire({
             icon: 'warning',
             type:  'warning',
             title: 'SoftInspi',
-            text: 'Debe de ingresar una Justificación del área requirente.',
+            text: 'Debe de seleccionar un Tipo de Proceso.',
             showConfirmButton: true,
         });
-    }else if(obOpera == ''){
+    }else if(obOpera == '' || obOpera == 0){
 
         Swal.fire({
             icon: 'warning',
             type:  'warning',
             title: 'SoftInspi',
-            text: 'Debe de ingresar un Objetivo Operativo',
+            text: 'Debe de seleccionar un Objetivo Operativo',
             showConfirmButton: true,
         });
 
@@ -475,15 +468,15 @@ function guardarPlanificacion(){
                     // monDisp : monDisp ,
                     coordina: coordina,
                     // nPOA    : nPOA    ,
-                    fecha   : fecha   ,
-                    poa     : poa     ,
+                    fecha     : fecha,
+                    poa       : poa,
                     plurianual: plurianual ? 1 :0,
-                    justifi : justifi,
-                    // justifi : justifi ,
+                    justifi   : justifi,
 
                     frecuencia: frecuencia,
-                    meses: meses,
-                    anio:  anio,
+                    meses     : meses,
+                    anio      : anio,
+                    proceso   : proceso,
                 },
                 success: function(response) {
 

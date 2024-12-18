@@ -125,12 +125,12 @@ Route::middleware(['auth'])->group(function () {
     /* =========================== PLANIFICACION =========================== */ 
     Route::group(['namespace' => 'App\Http\Controllers\Planificacion'], function(){
 
-        Route::get('/planificacion', 'PlanificacionController@index')->name('planificacion'); //vista principal
-        Route::get('/planificacion/vistaUser', 'PlanificacionController@vistaUser')->name('planificacion.vistaUser'); //vista por id de usuario
+        Route::get('/planificacion', 'PlanificacionController@index')->middleware('permission:plaActividades')->name('planificacion'); //vista principal
+        Route::get('/planificacion/vistaUser', 'PlanificacionController@vistaUser')->middleware('permission:plaActividadesitems')->name('planificacion.vistaUser'); //vista por id de usuario
         Route::get('planificacion/crearPlanificacion/{id_direccion}', 'PlanificacionController@crearPlanificacion')->name('planificacion.crearPlanificacion');
         Route::post('planificacion/savePlanificacion', 'PlanificacionController@savePlanificacion')->name('planificacion.savePlanificacion');
         Route::post('/planificacion/deletePoa', 'PlanificacionController@deletePoa')->name('planificacion.deletePoa'); //Eliminar registro
-        Route::get('/planificacion/detalle', 'PlanificacionController@detalle')->name('planificacion.detalle');
+        Route::get('/planificacion/detalle', 'PlanificacionController@detalle')->middleware('permission:plaDetalle')->name('planificacion.detalle');
         Route::get('/planificacion/detalleUser', 'PlanificacionController@detalleUser')->name('planificacion.detalleUser');
         Route::get('planificacion/crearPoa', 'PlanificacionController@crearPoa')->name('planificacion.crearPoa');
         Route::post('planificacion/savePoa', 'PlanificacionController@savePoa')->name('planificacion.savePoa');
@@ -207,13 +207,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/itemPresupuestario/traerHistorial', 'ItemPresupuestarioController@traerHistorial')->name('itemPresupuestario.traerHistorial');
 
         //monto por direccion 
-        Route::get('/montoDireccion', 'ItemPresupuestarioController@montoDireccion')->name('montoDireccion'); //vista principal
+        Route::get('/montoDireccion', 'ItemPresupuestarioController@montoDireccion')->middleware('permission:plaDireccion')->name('montoDireccion'); //vista principal
         Route::get('/itemPresupuestario/obtenerDireccionMonto/{id?}', 'ItemPresupuestarioController@obtenerDireccionMonto')->name('itemPresupuestario.obtenerDireccionMonto');
         Route::put('itemPresupuestario/actualizarDireccionMonto/{id?}','ItemPresupuestarioController@actualizarDireccionMonto')->name('itemPresupuestario.actualizarDireccionMonto');
         Route::post('/itemPresupuestario/deleteDireccionMonto', 'ItemPresupuestarioController@deleteDireccionMonto')->name('itemPresupuestario.deleteDireccionMonto');
 
         //monto direccion item
-        Route::get('/itemPresupuestario/monto_item', 'ItemPresupuestarioController@monto_item')->name('itemPresupuestario.monto_item'); //vista principal
+        Route::get('/itemPresupuestario/monto_item', 'ItemPresupuestarioController@monto_item')->middleware('permission:plaMontoitem')->name('itemPresupuestario.monto_item'); //vista principal
         Route::post('/itemPresupuestario/actualizarItems', 'ItemPresupuestarioController@actualizarItems')->name('itemPresupuestario.actualizarItems');
         Route::put('itemPresupuestario/actualizarEstructura','ItemPresupuestarioController@actualizarEstructura')->name('itemPresupuestario.actualizarEstructura');
         Route::get('/itemPresupuestario/obtenerDireccionItem/{id?}', 'ItemPresupuestarioController@obtenerDireccionItem')->name('itemPresupuestario.obtenerDireccionItem');

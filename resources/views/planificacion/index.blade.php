@@ -36,6 +36,12 @@
             </div>
 
             <div class="card">
+                <select id="filterDireccion" class="form-control js-example-basic-single mt-2">
+                    <option value="">Todas las Direcciones</option>
+                    @foreach($direcciones as $direccion)
+                        <option value="{{ $direccion->departamento }}">{{ $direccion->departamento }}</option>
+                    @endforeach
+                </select>
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="tblPlanificacionIndex" class="table table-striped table-bordered" style="width:100%">
@@ -46,6 +52,7 @@
                                     <th>Objetivo Operativo</th>
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
+                                    <th>Proceso</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th>Revisión</th>
@@ -61,6 +68,7 @@
                                     <th>Objetivo Operativo</th>
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
+                                    <th>Proceso</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th>Revisión</th>
@@ -70,6 +78,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>

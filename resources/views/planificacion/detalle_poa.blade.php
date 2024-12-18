@@ -25,15 +25,11 @@
         <div class="page-content">
 
             <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> DETALLE DE PAPP </h2>
-            <!-- <hr/>
-            <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('inventario.crearMovimiento') }}" type="button" >
-                <i class="lni lni-circle-plus"></i> Crear Movimiento
-            </a> -->
 
             <div class="row mt-4">
                 <div class="col-md-2">
                     <label for="nameItemPU" class="form-label fs-6">Seleccionar fecha</label>
-                    <select id="yearSelect" class="form-select js-example-basic-single" onchange="actualizarTabla()"></select>
+                    <select id="yearSelect" class="form-control js-example-basic-single" onchange="actualizarTabla()"></select>
                 </div>
                 <div class="col-md-2">
                     <label class="form-label fs-6">&nbsp;</label>
@@ -228,5 +224,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.0')}}"></script>
 @endpush
