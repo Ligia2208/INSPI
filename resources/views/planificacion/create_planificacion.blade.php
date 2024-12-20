@@ -24,7 +24,7 @@
 
     <div class="container2">
         <div class="page-content mb-5">
-            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus titulo-grande"></i> Registrar Actividad </h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus titulo-grande"></i> Creación de Actividad Operativa </h2>
 
             <hr/>
 
@@ -39,6 +39,92 @@
                     </div>
                 </div>
 
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row p-2">
+
+                            <div class="col-md-6">
+                                <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
+
+                                <select id="obOpera" name="item_presupuestario" class="form-control single-select" required>
+                                    <option value="0">Seleccione Opción</option>
+                                    @foreach($objExistente as $obj)
+                                        <option value="{{$obj->id}}">{{$obj->nombre}}</option>
+                                    @endforeach
+                                </select>
+
+                                <!--
+                                <input type="text" id="obOpera" name="obOpera" class="form-control" required="" autofocus="" value="">
+                                <div class="valid-feedback">Looks good!</div>
+                                -->
+                                
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="actOpera" class="form-label fs-6">Actividad Operativa</label>
+                                <input type="text" id="actOpera" name="actOpera" class="form-control" required="" autofocus="" value="">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación</label>
+                                <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+
+                            <div class="col-md-4 mt-2">
+                                <label for="item" class="form-label fs-6">Item presupuestario</label>
+                                <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)">
+                                    <option value="0">Seleccione Opción</option>
+                                    @foreach($item_presupuestario as $item)
+                                        <option value="{{$item->id}}" data-id_item="{{$item->id_item}}" >{{$item->nombre}} - {{$item->descripcion}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="monDisp" class="form-label fs-6">Monto Disponible del Item</label>
+                                <input type="text" id="monDisp" name="monDisp" class="form-control" required="" autofocus="" value="" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <!--
+                            <div class="col-md-4 mt-2">
+                                <label for="desItem" class="form-label fs-6">Descripción del Item Presupuestario</label>
+                                <input type="text" id="desItem" name="desItem" class="form-control" required="" autofocus="" value="" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+                            -->
+
+                            <div class="col-md-4 mt-2">
+                                <label for="monto" class="form-label fs-6">Monto</label>
+                                <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="0">
+                                <div class="valid-feedback">¡Se ve bien!</div>
+                                <div class="invalid-feedback">Ingrese solo números</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="proceso" class="form-label fs-6">Tipo de Proceso</label>
+                                <select id="proceso" name="proceso" class="form-control single-select" required >
+                                    <option value="0">Seleccione Opción</option>
+                                    @foreach($proceso as $tipo)
+                                    <option value="{{$tipo->id}}"> {{$tipo->nombre}} </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <!-- <div class="col-md-4 mt-2">
+                                <label for="presupuesto_proyectado" class="form-label fs-6">Presupuesto proyectado</label>
+                                <input type="number" id="presupuesto_proyectado" name="presupuesto_proyectado" class="form-control" required="" autofocus="" value="0">
+                                <div class="valid-feedback">¡Se ve bien!</div>
+                                <div class="invalid-feedback">Ingrese solo números</div>
+                            </div> -->
+
+                        </div>
+                    </div>
+                </div>
+
                 <div class="card-body">
 
                     <div class="row p-2">
@@ -47,19 +133,13 @@
 
                         <div class="col-md-12">
                             <label for="coordina" class="form-label fs-6">Coordinación/Dirección/Proyecto</label>
-                            <input type="text" id="coordina" name="coordina" class="form-control" required="" autofocus="" value="">
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2" hidden>
-                            <label for="nPOA" class="form-label fs-6">N° de POA</label>
-                            <input type="text" id="nPOA" name="nPOA" class="form-control" required="" autofocus="" value="">
+                            <input type="text" id="coordina" name="coordina" class="form-control" required="" autofocus="" value="{{$nombre}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-4 mt-2">
                             <label for="fecha" class="form-label fs-6">Fecha</label>
-                            <input type="date" id="fecha" name="fecha" class="form-control" required="" autofocus="" value="<?php echo date('Y-m-d'); ?>" >
+                            <input type="date" id="fecha" name="fecha" class="form-control" required="" autofocus="" value="<?php echo date('Y-m-d'); ?>" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
@@ -79,79 +159,20 @@
                             <input type="checkbox" id="plurianual" name="plurianual" class="form-check">
                         </div>
 
+                        <!--
                         <div class="col-md-12 mt-2">
                             <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
                             <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
+                        -->
 
                     </div>
 
                 </div>
             </div>
 
-            <div class="card">
-                <div class="card-body">
-                    <div class="row p-2">
 
-                        <div class="col-md-6">
-                            <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
-                            <input type="text" id="obOpera" name="obOpera" class="form-control" required="" autofocus="" value="">
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label for="actOpera" class="form-label fs-6">Actividad Operativa</label>
-                            <input type="text" id="actOpera" name="actOpera" class="form-control" required="" autofocus="" value="">
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación</label>
-                            <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="">
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-
-                        <div class="col-md-4 mt-2">
-                            <label for="item" class="form-label fs-6">Item presupuestario</label>
-                            <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)">
-                                <option value="0">Seleccione Opción</option>
-                                @foreach($item_presupuestario as $item)
-                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}" >{{$item->nombre}} - {{$item->descripcion}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="monDisp" class="form-label fs-6">Monto Disponible del Item</label>
-                            <input type="text" id="monDisp" name="monDisp" class="form-control" required="" autofocus="" value="" disabled>
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="desItem" class="form-label fs-6">Descripción del Item Presupuestario</label>
-                            <input type="text" id="desItem" name="desItem" class="form-control" required="" autofocus="" value="" disabled>
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="monto" class="form-label fs-6">Monto</label>
-                            <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="0">
-                            <div class="valid-feedback">¡Se ve bien!</div>
-                            <div class="invalid-feedback">Ingrese solo números</div>
-                        </div>
-
-                        <!-- <div class="col-md-4 mt-2">
-                            <label for="presupuesto_proyectado" class="form-label fs-6">Presupuesto proyectado</label>
-                            <input type="number" id="presupuesto_proyectado" name="presupuesto_proyectado" class="form-control" required="" autofocus="" value="0">
-                            <div class="valid-feedback">¡Se ve bien!</div>
-                            <div class="invalid-feedback">Ingrese solo números</div>
-                        </div> -->
-
-                    </div>
-                </div>
-            </div>
 
             <div class="card">
                 <div class="card-body">
@@ -294,7 +315,7 @@
 
             <div class="col-lg-12 d-flex align-items-center justify-content-center">
                 <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="guardarPlanificacion()" style="margin-right: 2%">
-                    <i class="bi bi-send-check"></i> Registrar
+                    <i class="bi bi-send-check"></i> Guardar
                 </a>
 
                 <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/planificacion/vistaUser'">

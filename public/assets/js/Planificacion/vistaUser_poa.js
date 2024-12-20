@@ -29,6 +29,7 @@ $( function () {
             { data: 'act_operativa',       name: 'act_operativa' },
             { data: 'sub_actividad',       name: 'sub_actividad' },
             { data: 'monto',               name: 'monto' },
+            { data: 'proceso',             name: 'proceso' },
             { data: 'fecha',               name: 'fecha' },
             {
                 data: null,
@@ -37,15 +38,15 @@ $( function () {
 
                     var array = "";
                     if(full.estado == 'A' ){
-                        array = '<div class="center"><span class="badge text-bg-primary">Ingresado</span><div>';
+                        array = '<div class="center"><span class="badge badge-primary text-bg-primary">Registrado</span><div>';
                     }else if(full.estado == 'O'){
-                        array = '<div class="center"><span class="badge text-bg-success">Aprobado</span>';
+                        array = '<div class="center"><span class="badge badge-success text-bg-success">Aprobado</span>';
                     }else if(full.estado == 'R'){
-                        array = '<div class="center"><span class="badge text-bg-warning">Rechazado</span>';
+                        array = '<div class="center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
-                        array = '<div class="center"><span class="badge text-bg-info">Corregido</span>';
+                        array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span>';
                     }else{
-                        array = '<div class="center"><span class="badge text-bg-warning">Indefinido</span>';
+                        array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                     }
 
                 return array;

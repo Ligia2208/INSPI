@@ -24,6 +24,7 @@ class Poa extends Model
                             'id_item',
                             'id_consumo',
                             'id_item_dir',
+                            'id_proceso',
                             'monto',
                             'presupuesto_proyectado',
                             'plurianual',

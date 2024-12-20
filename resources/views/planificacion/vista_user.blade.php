@@ -54,7 +54,7 @@
                                 </div>
 
                                 <div>
-                                    <span>Monto ocupado</span>
+                                    <span>Total de Actividades Operativas</span>
                                     <h4 class="my-1 text-primary ms-auto" id="total_ocupado">{{$totalOcupado}}</h4>
                                 </div>
 
@@ -101,6 +101,7 @@
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
                                     <th>Monto</th>
+                                    <th>Proceso</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th> <center> Solicitado </center></th>
@@ -118,6 +119,7 @@
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
                                     <th>Monto</th>
+                                    <th>Proceso</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th> <center> Solicitado </center></th>
