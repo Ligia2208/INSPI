@@ -156,7 +156,7 @@
                         class="table table-head-custom table-head-bg table-borderless table-vertical-center">
                         <thead>
                             <tr class="text-uppercase">
-                                <th>Código Muestra</th>
+                                <th>Intitución Salud</th>
                                 <th>Fecha Atención</th>
                                 <th>Paciente</th>
                                 <th>CRN - Laboratorio</th>

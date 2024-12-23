@@ -145,7 +145,7 @@ class Index extends Component
             $newAnalitica->anio_registro = $Analiticas->anio_registro;
             $newAnalitica->codigo_muestra = $Analiticas->codigo_muestra;
             $newAnalitica->codigo_secuencial = $Analiticas->codigo_secuencial;
-            $newAnalitica->codigo_externo = $Analiticas->codigo_externo;
+            $newAnalitica->codigo_externo = $Analiticas->anio_registro.'-'.str_pad($Analiticas->codigo_muestra, 5, "0", STR_PAD_LEFT).'-'.str_pad($Analiticas->codigo_secuencial, 3, "0", STR_PAD_LEFT).'-d';
             $newAnalitica->tecnica_id = $Analiticas->tecnica_id;
             $newAnalitica->resultado_id = $Analiticas->resultado_id;
             $newAnalitica->descripcion = $Analiticas->descripcion;

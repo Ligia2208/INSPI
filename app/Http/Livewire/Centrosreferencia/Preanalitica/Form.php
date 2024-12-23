@@ -77,6 +77,7 @@ class Form extends Component
 
             'Preanaliticas.embarazo' => 'sometimes|numeric',
             'Preanaliticas.gestacion' => 'sometimes|numeric',
+            'Preanaliticas.evolucion' => 'sometimes|numeric',
             'Preanaliticas.laboratorio' => 'sometimes|numeric',
             'Preanaliticas.nombre_laboratorio' => 'sometimes|max:100',
 

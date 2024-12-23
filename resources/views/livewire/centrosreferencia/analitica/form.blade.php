@@ -88,7 +88,7 @@
                                             <option value="">Selecciona un Evento</option>
                                             @if(!is_null($eventos))
                                             @foreach ($eventos as $objEvento)
-                                                <option data-subtext="" value="{{ $objEvento->id }}">{{ $objEvento->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}</option>
                                             @endforeach
                                             @endif
                                         </select>
@@ -176,7 +176,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-2">
-                                    <label>Código Externo<span class="text-danger">*</span></label>
+                                    <label>Código Externo<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">

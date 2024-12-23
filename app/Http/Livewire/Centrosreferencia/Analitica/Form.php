@@ -53,7 +53,7 @@ class Form extends Component
             'Analiticas.muestra_id' => 'required|numeric',
             'Analiticas.codigo_muestra' => 'required|numeric',
             'Analiticas.codigo_secuencial' => 'required|numeric',
-            'Analiticas.codigo_externo' => 'required|max:15',
+            'Analiticas.codigo_externo' => 'sometimes|max:25',
             'Analiticas.fecha_toma' => 'required|max:10',
             'Analiticas.anio_registro' => 'required|max:10',
             'Analiticas.fecha_llegada_lab' => 'required|max:10',

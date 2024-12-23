@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CentrosReferencia\Postanalitica;
 include_once dirname(__FILE__)."/phpqrcode/qrlib.php";
 use App\Http\Controllers\Controller;
 use App\Models\CentrosReferencia\Postanalitica;
+use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Institucion;
 use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Paciente;
@@ -27,8 +28,10 @@ class PostanaliticaController extends Controller
         return view('centrosreferencia.postanalitica.create', compact('postanalitica'));
     }
 
-    public function show(Postanalitica $postanalitica){
-        return view('centrosreferencia.postanalitica.show', compact('postanalitica'));
+    public function show(Preanalitica $postanalitica){
+
+        $muestras = Analitica::where('estado','=','A')->where('preanalitica_id','=',$postanalitica->id)->get();
+        return view('centrosreferencia.postanalitica.show', compact('postanalitica','muestras'));
     }
 
     public function edit(Postanalitica $postanalitica){

@@ -171,10 +171,17 @@
                         <tbody>
                             @forelse ($analiticas as $analitica)
                                 <tr>
+                                    @if($analitica->codigo_externo=='')
                                     <td>
                                         <span
                                             class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->anio_registro }} - {{ str_pad($analitica->codigo_muestra, 5, "0", STR_PAD_LEFT) }} - {{ str_pad($analitica->codigo_secuencial, 3, "0", STR_PAD_LEFT) }}</span>
                                     </td>
+                                    @else
+                                    <td>
+                                        <span
+                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->codigo_externo }}</span>
+                                    </td>
+                                    @endif
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->fecha_toma }}</span>
