@@ -467,7 +467,7 @@ $(function(){
             },
             cache: false,
             success: function(res){
-                console.log(res);
+                //console.log(res);
 
                 let id_monto    = res.datos.id;
                 let nombre      = res.datos.nombre;
@@ -500,7 +500,8 @@ $(function(){
                                     <div class="col-md-12">
                                         <label for="montoEdit" class="form-label fs-6">Monto</label>
                                         <input type="text" id="montoEdit" name="montoEdit" class="form-control" required="" autofocus="" value="${monto}">
-                                        <div class="valid-feedback">Looks good!</div>
+                                        <div class="valid-feedback">¡Se ve bien!</div>
+                                        <div class="invalid-feedback">Ingrese solo números</div>
                                     </div>
 
 
@@ -519,6 +520,10 @@ $(function(){
 
                 // Abre el modal una vez que se ha creado
                 $(`#updateItemP`).modal('show');
+
+                $('#montoEdit').on('input', function () {
+                    validarInputNumerico(this);
+                });
 
             },
             error: function(error) {
@@ -542,6 +547,7 @@ $(function(){
 
         let id_direccion = $('#id_item_monto').val();
         let montoEdit    = $('#montoEdit').val();
+        let isValid = /^\d+(\.\d+)?$/.test(montoEdit);
 
         if(montoEdit === ''){
 
@@ -552,9 +558,23 @@ $(function(){
                 text: 'Debe de ingresar un monto',
                 showConfirmButton: true,
             });
-        }
+        }else if (!isValid) {
 
-        else{
+            Swal.fire({
+                icon: 'error',
+                title: 'SoftInspi',
+                text: 'El valor ingresado no es válido. Debe ser un número entero o decimal.',
+                showConfirmButton: true,
+            });
+        }else if (parseFloat(montoEdit) < 0) {
+            // Validación si el monto es negativo
+            Swal.fire({
+                icon: 'error',
+                title: 'SoftInspi',
+                text: 'El monto no puede ser negativo.',
+                showConfirmButton: true,
+            });
+        }else{
 
             $.ajax({
                 type: 'PUT',
@@ -567,20 +587,44 @@ $(function(){
                 },
                 success: function(response) {
 
-                    $('#updateItemP').modal('hide');
-                    table.ajax.reload();
-                    actualizarMontos();
+                    if(response.error){
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        type:  'success',
-                        text: response.message,
-                    });
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'CoreInspi',
+                            type:  'error',
+                            text: response.message,
+                        });
+
+                    }else{
+
+                        $('#updateItemP').modal('hide');
+                        table.ajax.reload();
+                        actualizarMontos();
+    
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            type:  'success',
+                            text: response.message,
+                        });
+
+                    }
 
                 },
                 error: function(error) {
-                    console.error('Error al actualizar el item:', error);
+
+                    let response = JSON.parse(error.responseText);
+                    if(response.error){
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'CoreInspi',
+                            type:  'error',
+                            text: response.message,
+                        });
+
+                    }
                 }
             });
 
@@ -698,6 +742,25 @@ $(function(){
 
 
 });
+
+
+
+
+// Función para validar input numérico
+function validarInputNumerico(input) {
+    var inputValue = input.value;
+    var isValid = /^\d+(\.\d+)?$/.test(inputValue);
+
+    if (!isValid) {
+        input.setCustomValidity('Ingrese solo números');
+        input.classList.add('is-invalid');
+        input.classList.remove('is-valid');
+    } else {
+        input.setCustomValidity('');
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+    }
+}
 
 
 
@@ -898,15 +961,23 @@ function guardarItemsSeleccionados() {
                 text: response.message,
                 showConfirmButton: true,
             });
+
+            $('#selected-items').text('');
+
         },
         error: function (error) {
-            console.error('Error al actualizar los ítems:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'SoftInspi',
-                text: 'Ocurrió un error al intentar guardar los ítems.',
-                showConfirmButton: true,
-            });
+
+            let response = JSON.parse(error.responseText);
+            if(response.error){
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'CoreInspi',
+                    type:  'error',
+                    text: response.message,
+                });
+            }
+
         }
     });
 }

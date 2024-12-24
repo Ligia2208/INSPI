@@ -73,6 +73,8 @@ use App\Models\Planificacion\ItemDireccion\ItemDireccion;
 //use App\Models\Area\Area;
 use App\Models\CoreBase\Area;
 
+
+use App\Models\RecursosHumanos\Persona;
 use App\Imports\ActividadImport;
 
 class PlanificacionController extends Controller
@@ -91,7 +93,7 @@ class PlanificacionController extends Controller
                 ->join('db_inspi_planificacion.pla_actividad_operativa as actOpe', 'actOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_actividad')
                 ->join('db_inspi_planificacion.pla_sub_actividad as subAct', 'subAct.id', '=', 'db_inspi_planificacion.pla_poa1.id_sub_actividad')
                 ->join('pla_tipo_proceso as pro', 'pro.id', '=', 'db_inspi_planificacion.pla_poa1.id_proceso')
-                ->whereIn('pla_poa1.estado', ['A','O','R','C'])
+                ->whereIn('pla_poa1.estado', ['A','O','R','C', 'S'])
                 ->groupBy('id', 'pla_poa1.departamento', 'pla_poa1.nro_poa', 'pla_poa1.created_at', 'pro.nombre',
                 'tipo_poa.nombre' ,'obj_operativo','act_operativa','sub_actividad', 'pla_poa1.estado')
                 ->get()
@@ -126,16 +128,25 @@ class PlanificacionController extends Controller
 
         $item_presupuestario = ItemPresupuestario::select('itemdir.id_item as id_item', 'itemdir.id as id', 'pla_item_presupuestario.nombre', 
             'pla_item_presupuestario.descripcion', 'itemdir.monto')
-        ->join('pla_items_direcciones as itemdir', 'itemdir.id_item', '=', 'pla_item_presupuestario.id')
-        ->where('itemdir.estado', 'A')
-        ->where('itemdir.id_direcciones', $id_direccion)->get();
+            ->join('pla_items_direcciones as itemdir', 'itemdir.id_item', '=', 'pla_item_presupuestario.id')
+            ->where('itemdir.estado', 'A')
+            ->where('itemdir.id_direcciones', $id_direccion)->get();
 
-        $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre')->where('id', $id_direccion)->first();
-        $id_fuente = $direccion->id_fuente;
-        $nombre    = $direccion->nombre;
+        $direccion  = MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre')->where('id', $id_direccion)->first();
+        $montoTotal = ItemDireccion::where('id_direcciones', $id_direccion)->where('estado', 'A')->sum('monto');
+        $id_fuente  = $direccion->id_fuente;
+        $nombre     = $direccion->nombre;
+        $monto      = $direccion->monto;
+
+        $monto = $monto - $montoTotal;
+        if($monto == 0){
+            $monto = true;
+        }else{
+            $monto = false;
+        }
 
         //respuesta para la vista
-        return view('planificacion.create_planificacion', compact('tipos', 'item_presupuestario', 'id_fuente', 'nombre', 'objExistente', 'proceso'));
+        return view('planificacion.create_planificacion', compact('tipos', 'item_presupuestario', 'id_fuente', 'nombre', 'objExistente', 'proceso', 'monto'));
     }
     /* VISTA - CREAR NUEVO EGRESO */
 
@@ -202,11 +213,11 @@ class PlanificacionController extends Controller
 
         if($id_area == 7){
             $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir_tec', $direccion_id)->first();
-            $id_area = $direccion->id;
+            $id_area   = $direccion->id;
 
         }else{
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->find($id_area);
-            $id_area = $direccion->id;
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir', $id_area)->first();
+            $id_area   = $direccion->id;
         }
 
         /*
@@ -252,6 +263,7 @@ class PlanificacionController extends Controller
             $sub = new SubActividad;
             $sub->id_area = $id_area;
             $sub->nombre  = $subActi;
+            $sub->estado  = 'A';
             $sub->save();
             $id_sub_actividad = $sub->id;
         }
@@ -328,7 +340,7 @@ class PlanificacionController extends Controller
             $monto        = number_format($monto, 2);
             $id_fuente    = $direccion->id_fuente;
         }else{
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->find($id_area);
+            $direccion    = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir', $id_area)->first();
             $id_direccion = $direccion->id;
             $monto        = $direccion->monto;
             $monto        = number_format($monto, 2);
@@ -355,7 +367,7 @@ class PlanificacionController extends Controller
                 ->join('pla_tipo_proceso as pro', 'pro.id', '=', 'db_inspi_planificacion.pla_poa1.id_proceso')
                 ->leftJoin('db_inspi_planificacion.pla_solicitud as sp', 'pla_poa1.id', '=', 'sp.id_actividad')//para saber si es una actividad solicitada
                 //->where('sp.estado_solicitud', 'pendiente')
-                ->whereIn('pla_poa1.estado', ['A', 'R', 'O', 'C'])
+                ->whereIn('pla_poa1.estado', ['A', 'R', 'O', 'C', 'S'])
                 ->where('pla_poa1.id_area', '=', $id_direccion)
                 ->groupBy('id','pla_poa1.departamento', 'pla_poa1.nro_poa', 'pla_poa1.created_at', 'sp.id', 'pro.nombre',
                 'tipo_poa.nombre' ,'obj_operativo','act_operativa','sub_actividad', 'monto', 'pla_poa1.estado', 'sp.estado_solicitud')
@@ -396,63 +408,75 @@ class PlanificacionController extends Controller
 
     //--------------------------------------------------------------------------------------------------------
     //Detalle del POA en base al calendario
-    public function detalle(Request $request){
-        //respuesta para la vista
-
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-
-        $anio = $request->input('anio');
-        if (isset($anio)) {
-            $anio = $request->input('anio');
-        }else{
-            $anio = date('Y');
+    public function detalle(Request $request)
+    {
+        $id_usuario = Auth::user()->id;
+    
+        $anio = $request->input('anio') ?? date('Y'); // Por defecto, el año actual
+        $direccion = $request->input('direccion');   // Dirección seleccionada
+        $item = $request->input('item');             // Item seleccionado
+        $sub_actividad = $request->input('sub_actividad'); // Sub actividad seleccionada
+    
+        if (request()->ajax()) {
+            $query = Poa::select(
+                'pla_poa1.id as id', 'area.nombre as Area', 'tipo_poa.nombre as POA',
+                'actOpe.nombre as act_operativa', 'itep.nombre as item',
+                'objOpe.nombre as obj_operativo', 'subAct.nombre as sub_actividad',
+                'cal.enero as enero', 'cal.febrero as febrero', 'cal.marzo as marzo', 
+                'cal.abril as abril', 'cal.mayo as mayo', 'cal.junio as junio',
+                'cal.julio as julio', 'cal.agosto as agosto', 'cal.septiembre as septiembre', 
+                'cal.octubre as octubre', 'cal.noviembre as noviembre', 'cal.diciembre as diciembre'
+            )
+            ->join('db_inspi_planificacion.pla_tipo_poa as tipo_poa', 'tipo_poa.id', '=', 'db_inspi_planificacion.pla_poa1.id_tipo_poa')
+            ->join('db_inspi_planificacion.pla_actividad_operativa as actOpe', 'actOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_actividad')
+            ->join('db_inspi_planificacion.pla_calendario as cal', 'cal.id_poa', '=', 'db_inspi_planificacion.pla_poa1.id')
+            ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'db_inspi_planificacion.pla_poa1.id_area')
+            ->join('db_inspi_planificacion.pla_items_direcciones as ite', 'ite.id', '=', 'db_inspi_planificacion.pla_poa1.id_item_dir')
+            ->join('db_inspi_planificacion.pla_item_presupuestario as itep', 'itep.id', '=', 'ite.id_item')
+            ->join('db_inspi_planificacion.pla_obj_operativo as objOpe', 'objOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_obj_operativo')
+            ->join('db_inspi_planificacion.pla_sub_actividad as subAct', 'subAct.id', '=', 'db_inspi_planificacion.pla_poa1.id_sub_actividad')
+            ->where('pla_poa1.estado', 'O')
+            ->where('pla_poa1.año', $anio);
+    
+            // Filtros dinámicos
+            if ($direccion) {
+                $query->where('area.id', $direccion);
+            }
+            if ($item) {
+                $query->where('itep.id', $item);
+            }
+            if ($sub_actividad) {
+                $query->where('subAct.id', $sub_actividad);
+            }
+    
+            $data = $query->groupBy(
+                'id', 'Area', 'POA', 'obj_operativo', 'act_operativa', 'sub_actividad', 'itep.nombre',
+                'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 
+                'septiembre', 'octubre', 'noviembre', 'diciembre'
+            )->get();
+    
+            return datatables()->of($data)->addIndexColumn()->make(true);
         }
-
-        if(request()->ajax()) {
-
-                return datatables()->of(Poa::select('pla_poa1.id as id', 'area.nombre as Area',
-                'tipo_poa.nombre as POA','actOpe.nombre as act_operativa',
-                'objOpe.nombre as obj_operativo','subAct.nombre as sub_actividad',
-                'cal.enero as enero', 'cal.febrero as febrero','cal.marzo as marzo','cal.abril as abril',
-                'cal.mayo as mayo','cal.junio as junio','cal.julio as julio','cal.agosto as agosto',
-                'cal.septiembre as septiembre','cal.octubre as octubre','cal.noviembre as noviembre','cal.diciembre as diciembre')
-                ->join('db_inspi_planificacion.pla_tipo_poa as tipo_poa', 'tipo_poa.id', '=', 'db_inspi_planificacion.pla_poa1.id_tipo_poa')
-                ->join('db_inspi_planificacion.pla_actividad_operativa as actOpe', 'actOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_actividad')
-                ->join('db_inspi_planificacion.pla_calendario as cal', 'cal.id_poa', '=', 'db_inspi_planificacion.pla_poa1.id')
-
-                //->join('db_inspi.inspi_area as area', 'area.id', '=', 'db_inspi_planificacion.pla_poa1.id_area')
-                ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'db_inspi_planificacion.pla_poa1.id_area')
-                
-
-                ->join('db_inspi_planificacion.pla_obj_operativo as objOpe', 'objOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_obj_operativo')
-                ->join('db_inspi_planificacion.pla_sub_actividad as subAct', 'subAct.id', '=', 'db_inspi_planificacion.pla_poa1.id_sub_actividad')
-                ->where('pla_poa1.estado', 'O')
-                ->where('pla_poa1.año', $anio)
-                ->groupBy('id', 'Area', 'POA', 'obj_operativo','act_operativa','sub_actividad',
-                'enero' ,'febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre')
-                // ->where('pla_poa1.estado', 'A')
-                ->get()
-
-                )
-
-                ->addIndexColumn()
-                ->make(true);
-
-        }
-
-        $tipo_Poa   = TipoPoa::where('estado', 'A')->get();
+    
+        $tipo_Poa = TipoPoa::where('estado', 'A')->get();
         $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
         $calendario = Calendario::where('estado', 'A')->get();
-        $sumaMontos = ItemPresupuestario::where('estado', 'A')->sum('monto');
+        $direcciones = MontoDireccion::where('estado', 'A')->get();
+        $items = ItemPresupuestario::where('estado', 'A')->get();
+        $sub_actividades = SubActividad::where('estado', 'A')->get();
+
+        $sumaMontos = ItemDireccion::where('estado', 'A')->sum('monto');
+
         $sumaActividades = Poa::where('estado', 'O')
             ->where('año', $anio)
             ->sum('monto');
-
-        //respuesta para la vista
-        return view('planificacion.detalle_poa', compact('tipo_Poa'
-        ,'act_Operativa','calendario', 'sumaMontos', 'sumaActividades'));
-
+    
+        return view('planificacion.detalle_poa', compact(
+            'tipo_Poa', 'act_Operativa', 'calendario', 'direcciones', 'items', 'sub_actividades',
+            'sumaMontos', 'sumaActividades'
+        ));
     }
+    
 
 
     //Detalle del POA en base al calendario
@@ -461,7 +485,21 @@ class PlanificacionController extends Controller
         $id_user   = Auth::user()->id;
         $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
         $id_area   = $filiacion->area_id;
+        $direccion_id = $filiacion->direccion_id;
 
+        if($id_area == 7){
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir_tec', $direccion_id)->first();
+            $id_direccion = $direccion->id;
+            $monto        = $direccion->monto;
+            $monto        = number_format($monto, 2);
+            $id_fuente    = $direccion->id_fuente;
+        }else{
+            $direccion    = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir', $id_area)->first();
+            $id_direccion = $direccion->id;
+            $monto        = $direccion->monto;
+            $monto        = number_format($monto, 2);
+            $id_fuente    = $direccion->id_fuente;
+        }
 
         $anio = $request->input('anio');
         if (isset($anio)) {
@@ -473,24 +511,23 @@ class PlanificacionController extends Controller
         if(request()->ajax()) {
 
                 return datatables()->of(Poa::select('pla_poa1.id as id', 'area.nombre as Area',
-                'tipo_poa.nombre as POA','actOpe.nombre as act_operativa',
-                'objOpe.nombre as obj_operativo','subAct.nombre as sub_actividad',
-                'cal.enero as enero', 'cal.febrero as febrero','cal.marzo as marzo','cal.abril as abril',
-                'cal.mayo as mayo','cal.junio as junio','cal.julio as julio','cal.agosto as agosto',
-                'cal.septiembre as septiembre','cal.octubre as octubre','cal.noviembre as noviembre','cal.diciembre as diciembre')
-                ->join('db_inspi_planificacion.pla_tipo_poa as tipo_poa', 'tipo_poa.id', '=', 'db_inspi_planificacion.pla_poa1.id_tipo_poa')
-                ->join('db_inspi.inspi_actividad_operativa as actOpe', 'actOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_actividad')
-                ->join('db_inspi_planificacion.pla_calendario as cal', 'cal.id_poa', '=', 'db_inspi_planificacion.pla_poa1.id')
-                ->join('db_inspi.inspi_area as area', 'area.id', '=', 'db_inspi_planificacion.pla_poa1.id_area')
-                ->join('db_inspi.inspi_obj_operativo as objOpe', 'objOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_obj_operativo')
-                ->join('db_inspi.inspi_sub_actividad as subAct', 'subAct.id', '=', 'db_inspi_planificacion.pla_poa1.id_sub_actividad')
-                ->where('pla_poa1.estado', 'O')
-                ->where('pla_poa1.id_area', '=', $id_area)
-                ->where('pla_poa1.año', $anio)
-                ->groupBy('id', 'Area', 'POA', 'obj_operativo','act_operativa','sub_actividad',
-                'enero' ,'febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre')
-                // ->where('pla_poa1.estado', 'A')
-                ->get()
+                    'tipo_poa.nombre as POA','actOpe.nombre as act_operativa',
+                    'objOpe.nombre as obj_operativo','subAct.nombre as sub_actividad',
+                    'cal.enero as enero', 'cal.febrero as febrero','cal.marzo as marzo','cal.abril as abril',
+                    'cal.mayo as mayo','cal.junio as junio','cal.julio as julio','cal.agosto as agosto',
+                    'cal.septiembre as septiembre','cal.octubre as octubre','cal.noviembre as noviembre','cal.diciembre as diciembre')
+                    ->join('db_inspi_planificacion.pla_tipo_poa as tipo_poa', 'tipo_poa.id', '=', 'db_inspi_planificacion.pla_poa1.id_tipo_poa')
+                    ->join('db_inspi_planificacion.pla_actividad_operativa as actOpe', 'actOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_actividad')
+                    ->join('db_inspi_planificacion.pla_calendario as cal', 'cal.id_poa', '=', 'db_inspi_planificacion.pla_poa1.id')
+                    ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'db_inspi_planificacion.pla_poa1.id_area')
+                    ->join('db_inspi_planificacion.pla_obj_operativo as objOpe', 'objOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_obj_operativo')
+                    ->join('db_inspi_planificacion.pla_sub_actividad as subAct', 'subAct.id', '=', 'db_inspi_planificacion.pla_poa1.id_sub_actividad')
+                    ->where('pla_poa1.estado', 'O')
+                    ->where('pla_poa1.id_area', '=', $id_direccion)
+                    ->where('pla_poa1.año', $anio)
+                    ->groupBy('id', 'Area', 'POA', 'obj_operativo','act_operativa','sub_actividad',
+                    'enero' ,'febrero','marzo','abril','mayo','junio','julio','agosto','septiembre','octubre','noviembre','diciembre')
+                    ->get()
 
                 )
 
@@ -499,18 +536,13 @@ class PlanificacionController extends Controller
 
         }
 
-        $tipo_Poa   = TipoPoa::where('estado', 'A')->get();
-        $calendario = Calendario::where('estado', 'A')->get();
-        $sumaMontos = ItemPresupuestario::where('estado', 'A')->sum('monto');
-        $act_Operativa   = ActividadOperativa::where('estado', 'A')->get();
         $sumaActividades = Poa::where('estado', 'O')
             ->where('año', $anio)
-            ->where('pla_poa1.id_area', '=', $id_area)
+            ->where('pla_poa1.id_area', '=', $id_direccion)
             ->sum('monto');
 
         //respuesta para la vista
-        return view('planificacion.detalleUser_poa', compact('tipo_Poa'
-        ,'act_Operativa','calendario', 'sumaMontos', 'sumaActividades'));
+        return view('planificacion.detalleUser_poa', compact('sumaActividades', 'id_direccion'));
 
     }
 
@@ -586,7 +618,7 @@ class PlanificacionController extends Controller
             ->join('db_inspi_planificacion.pla_tipo_poa', 'pla_poa1.id_tipo_poa', '=', 'pla_tipo_poa.id')
             ->join('db_inspi_planificacion.pla_item_presupuestario', 'pla_poa1.id_item', '=', 'pla_item_presupuestario.id')
             ->where('pla_poa1.id', $id)
-            ->whereIn('pla_poa1.estado', ['A','R','O','C'])
+            //->whereIn('pla_poa1.estado', ['A','R','O','C'])
             ->first();
 
             $item_presupuestario = ItemPresupuestario::where('estado', 'A')->get();
@@ -768,7 +800,7 @@ class PlanificacionController extends Controller
             $id_direccion = $direccion->id;
             $id_fuente    = $direccion->id_fuente;
         }else{
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->find($id_area);
+            $direccion    = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir', $id_area)->first();
             $id_direccion = $direccion->id;
             $id_fuente    = $direccion->id_fuente;
         }
@@ -1002,42 +1034,42 @@ class PlanificacionController extends Controller
             ->select('pla_poa1.id as id','pla_poa1.departamento as departamento', 'pla_poa1.nro_poa as numero',
             DB::raw('DATE_FORMAT(pla_poa1.created_at, "%Y-%m-%d") as fecha_sol'),
             DB::raw('DATE_FORMAT(pla_poa1.updated_at, "%Y-%m-%d") as fecha_apr'),
-            DB::raw('SUM(consumo_item.monto + consumo_item.monto_consumido) as consumoItem'),
+            DB::raw('SUM(pla_consumo_item.monto + pla_consumo_item.monto_consumido) as consumoItem'),
             'pla_poa1.fecha as fecha', 'pla_poa1.id_tipo_poa as idPoa',
-            'pla_calendario.justificacion_area as justificacion', 'pla_poa1.plurianual as plurianual','inspi_obj_operativo.nombre as nombreObjOperativo', 'inspi_actividad_operativa.nombre as nombreActividadOperativa',
-            'inspi_sub_actividad.nombre as nombreSubActividad', 'pla_poa1.monto as monto', 'pla_poa1.id_tipo_monto as idTipoMonto', 'pla_calendario.justificacion_area as justificacion_area',
+            'pla_calendario.justificacion_area as justificacion', 'pla_poa1.plurianual as plurianual','pla_obj_operativo.nombre as nombreObjOperativo', 'pla_actividad_operativa.nombre as nombreActividadOperativa',
+            'pla_sub_actividad.nombre as nombreSubActividad', 'pla_poa1.monto as monto', 'pla_poa1.id_tipo_monto as idTipoMonto', 'pla_calendario.justificacion_area as justificacion_area',
             'pla_unidad_ejecutora.nombre as u_ejecutora', 'pla_programa.nombre as programa', 'pla_proyecto.nombre as proyecto', 'pla_actividad_act.nombre as actividad',
             'pla_fuente.nombre as fuente', 'pla_calendario.enero', 'pla_calendario.febrero', 'pla_calendario.marzo', 'pla_calendario.abril', 'pla_calendario.mayo',
             'pla_calendario.junio', 'pla_calendario.julio', 'pla_calendario.agosto', 'pla_calendario.septiembre', 'pla_calendario.octubre',
-            'pla_calendario.noviembre', 'pla_calendario.diciembre', 'pla_poa1.id_item as id_item', 'inspi_item_presupuestario.nombre as nombreItem',
-            'inspi_item_presupuestario.descripcion as descripcionItem', 'inspi_item_presupuestario.monto as montoItem')
+            'pla_calendario.noviembre', 'pla_calendario.diciembre', 'pla_poa1.id_item as id_item', 'pla_item_presupuestario.nombre as nombreItem',
+            'pla_item_presupuestario.descripcion as descripcionItem', 'pla_item_presupuestario.monto as montoItem')
             ->join('db_inspi_planificacion.pla_calendario', 'pla_poa1.id', '=', 'pla_calendario.id_poa')
             ->join('db_inspi_planificacion.pla_unidad_ejecutora', 'pla_poa1.u_ejecutora', '=', 'pla_unidad_ejecutora.id')
             ->join('db_inspi_planificacion.pla_programa', 'pla_poa1.programa', '=', 'pla_programa.id')
             ->join('db_inspi_planificacion.pla_proyecto', 'pla_poa1.proyecto', '=', 'pla_proyecto.id')
             ->join('db_inspi_planificacion.pla_actividad_act', 'pla_poa1.actividad', '=', 'pla_actividad_act.id')
             ->join('db_inspi_planificacion.pla_fuente', 'pla_poa1.fuente', '=', 'pla_fuente.id')
-            ->join('db_inspi.inspi_obj_operativo', 'pla_poa1.id_obj_operativo', '=', 'inspi_obj_operativo.id')
-            ->join('db_inspi.inspi_actividad_operativa', 'pla_poa1.id_actividad', '=', 'inspi_actividad_operativa.id')
-            ->join('db_inspi.inspi_sub_actividad', 'pla_poa1.id_sub_actividad', '=', 'inspi_sub_actividad.id')
+            ->join('db_inspi_planificacion.pla_obj_operativo', 'pla_poa1.id_obj_operativo', '=', 'pla_obj_operativo.id')
+            ->join('db_inspi_planificacion.pla_actividad_operativa', 'pla_poa1.id_actividad', '=', 'pla_actividad_operativa.id')
+            ->join('db_inspi_planificacion.pla_sub_actividad', 'pla_poa1.id_sub_actividad', '=', 'pla_sub_actividad.id')
             ->join('db_inspi_planificacion.pla_tipo_monto', 'pla_poa1.id_tipo_monto', '=', 'pla_tipo_monto.id')
             ->join('db_inspi_planificacion.pla_tipo_poa', 'pla_poa1.id_tipo_poa', '=', 'pla_tipo_poa.id')
-            ->join('db_inspi.inspi_item_presupuestario', 'pla_poa1.id_item', '=', 'inspi_item_presupuestario.id')
-            ->join('db_inspi.consumo_item', 'pla_poa1.id_consumo', '=', 'consumo_item.id')
+            ->join('db_inspi_planificacion.pla_item_presupuestario', 'pla_poa1.id_item', '=', 'pla_item_presupuestario.id')
+            ->join('db_inspi_planificacion.pla_consumo_item', 'pla_poa1.id_consumo', '=', 'pla_consumo_item.id')
 
         ->where('pla_poa1.id',"=", $id_poa)
         ->whereIn('pla_poa1.estado', ['A','R','O','C'])
         ->groupBy('id', 'pla_poa1.departamento', 'pla_poa1.nro_poa', 'pla_poa1.created_at', 'pla_poa1.updated_at',
         'pla_poa1.fecha', 'pla_poa1.id_tipo_poa', 'pla_calendario.justificacion_area', 'pla_poa1.plurianual',
-        'inspi_obj_operativo.nombre', 'inspi_actividad_operativa.nombre', 'inspi_sub_actividad.nombre', 'pla_poa1.monto',
+        'pla_obj_operativo.nombre', 'pla_actividad_operativa.nombre', 'pla_sub_actividad.nombre', 'pla_poa1.monto',
         'pla_poa1.id_tipo_monto', 'pla_calendario.justificacion_area', 'pla_unidad_ejecutora.nombre',
         'pla_programa.nombre', 'pla_proyecto.nombre', 'pla_actividad_act.nombre', 'pla_fuente.nombre',
         'pla_calendario.enero', 'pla_calendario.febrero', 'pla_calendario.marzo',
         'pla_calendario.abril', 'pla_calendario.mayo', 'pla_calendario.junio',
         'pla_calendario.julio', 'pla_calendario.agosto', 'pla_calendario.septiembre',
         'pla_calendario.octubre', 'pla_calendario.noviembre', 'pla_calendario.diciembre',
-        'pla_poa1.id_item', 'inspi_item_presupuestario.nombre', 'inspi_item_presupuestario.descripcion',
-        'inspi_item_presupuestario.monto')
+        'pla_poa1.id_item', 'pla_item_presupuestario.nombre', 'pla_item_presupuestario.descripcion',
+        'pla_item_presupuestario.monto')
         ->first();
 
         $comentarios = Comentario::select('pla_comentario.comentario', 'pla_comentario.id_poa',
@@ -1048,14 +1080,11 @@ class PlanificacionController extends Controller
         ->first();
 
         $pdf = \PDF::loadView('pdf.pdfPOA', ['usuarios' => $usuarios, 'atributos' => $atributos,'comentarios'=>$comentarios])->setPaper('A3', 'landscape');
-
         $pdfFileName = 'pdf_' . time() . '.pdf';
-
         $pdf->save(public_path("pdf/{$pdfFileName}"));
-
         $pdfUrl = asset("pdf/{$pdfFileName}");
 
-        // return response()->json(['pdf_url' => $pdfUrl]);
+        //return response()->json(['pdf_url' => $atributos]);
         return $pdf->download('reporte_poa.pdf');
     }
 
@@ -2513,7 +2542,10 @@ class PlanificacionController extends Controller
 
     public function reportDetalle(Request $request)
     {
-        $id_poa  = $request->query('id_poa');
+        $filterAnio         = $request->input('filterAnio');
+        $filterDireccion    = $request->input('filterDireccion');
+        $filterItem         = $request->input('filterItem');
+        $filterSubActividad = $request->input('filterSubActividad');
 
         $usuarios = [
             'elabora' => ['name' => $request->input('elabora'),'cargo' => $request->input('cargo_elabora')],
@@ -2521,8 +2553,8 @@ class PlanificacionController extends Controller
             'aprueba' => ['name' => $request->input('aprueba'),'cargo' => $request->input('cargo_aprueba')],
         ];
 
-        // Obtener todas las actividades relacionadas con esta reforma
-        $actividades = DB::table('db_inspi_planificacion.pla_poa1')
+        // Construir el query base
+        $query = DB::table('db_inspi_planificacion.pla_poa1')
             ->select(
                 'pla_poa1.id as id', 'pla_actividad_operativa.nombre as actividad_operativa', 'pla_obj_operativo.nombre as objOperativo',
                 'pla_sub_actividad.nombre as sub_actividad', 'pla_item_presupuestario.nombre as item_presupuestario', 'pla_item_presupuestario.descripcion as descripcion_item',
@@ -2530,7 +2562,8 @@ class PlanificacionController extends Controller
                 'pla_fuente.nombre as fuente', 'pla_calendario.enero as enero', 'pla_calendario.febrero as febrero', 'pla_calendario.marzo as marzo', 'pla_calendario.abril as abril',
                 'pla_calendario.mayo as mayo', 'pla_calendario.junio as junio', 'pla_calendario.julio as julio', 'pla_calendario.agosto as agosto', 'pla_calendario.septiembre as septiembre',
                 'pla_calendario.octubre as octubre', 'pla_calendario.noviembre as noviembre', 'pla_calendario.diciembre as diciembre', 'pla_calendario.total as total', 'pla_tipo_monto.nombre as frecuencia',
-                'pla_tipo_poa.nombre as tipoPoa')
+                'pla_tipo_poa.nombre as tipoPoa'
+            )
             ->join('db_inspi_planificacion.pla_tipo_poa', 'pla_poa1.id_tipo_poa', '=', 'pla_tipo_poa.id')
             ->join('db_inspi_planificacion.pla_tipo_monto', 'pla_poa1.id_tipo_monto', '=', 'pla_tipo_monto.id')
             ->join('db_inspi_planificacion.pla_unidad_ejecutora', 'pla_poa1.u_ejecutora', '=', 'pla_unidad_ejecutora.id')
@@ -2543,9 +2576,27 @@ class PlanificacionController extends Controller
             ->join('db_inspi_planificacion.pla_item_presupuestario', 'pla_poa1.id_item', '=', 'pla_item_presupuestario.id')
             ->join('db_inspi_planificacion.pla_obj_operativo', 'pla_poa1.id_obj_operativo', '=', 'pla_obj_operativo.id')
             ->join('db_inspi_planificacion.pla_calendario', 'pla_poa1.id', '=', 'pla_calendario.id_poa')
-            //->where('pla_poa1.id', $id_poa)
-            ->whereIn('pla_poa1.estado', ['O'])
-            ->get();
+            ->whereIn('pla_poa1.estado', ['O']);
+
+        // Aplicar los filtros condicionalmente
+        if (!empty($filterAnio)) {
+            $query->where('pla_poa1.año', $filterAnio);
+        }
+
+        if (!empty($filterDireccion)) {
+            $query->where('area.id', $filterDireccion);
+        }
+
+        if (!empty($filterItem)) {
+            $query->where('pla_item_presupuestario.id', $filterItem);
+        }
+
+        if (!empty($filterSubActividad)) {
+            $query->where('pla_sub_actividad.id', $filterSubActividad);
+        }
+
+        // Ejecutar el query
+        $actividades = $query->get();
 
         $pdf = \PDF::loadView('pdf.pdfDetalle', ['usuarios' => $usuarios, 'actividades' => $actividades])->setPaper('A3', 'landscape');
 
@@ -2559,6 +2610,67 @@ class PlanificacionController extends Controller
         return $pdf->download('reporte_detalle.pdf');
     }
 
+
+
+    /* USUARIOS */
+    public function reportDetalleUser(Request $request)
+    {
+        $filterAnio   = $request->input('filterAnio');
+        $id_direccion = $request->input('id_direccion');
+
+        $usuarios = [
+            'elabora' => ['name' => $request->input('elabora'),'cargo' => $request->input('cargo_elabora')],
+            'revisa'  => ['name' => $request->input('revisa'),'cargo' => $request->input('cargo_revisa')],
+            'aprueba' => ['name' => $request->input('aprueba'),'cargo' => $request->input('cargo_aprueba')],
+        ];
+
+        // Construir el query base
+        $query = DB::table('db_inspi_planificacion.pla_poa1')
+            ->select(
+                'pla_poa1.id as id', 'pla_actividad_operativa.nombre as actividad_operativa', 'pla_obj_operativo.nombre as objOperativo',
+                'pla_sub_actividad.nombre as sub_actividad', 'pla_item_presupuestario.nombre as item_presupuestario', 'pla_item_presupuestario.descripcion as descripcion_item',
+                'pla_unidad_ejecutora.nombre as u_ejecutora', 'pla_programa.nombre as programa', 'pla_proyecto.nombre as proyecto', 'pla_actividad_act.nombre as actividad',
+                'pla_fuente.nombre as fuente', 'pla_calendario.enero as enero', 'pla_calendario.febrero as febrero', 'pla_calendario.marzo as marzo', 'pla_calendario.abril as abril',
+                'pla_calendario.mayo as mayo', 'pla_calendario.junio as junio', 'pla_calendario.julio as julio', 'pla_calendario.agosto as agosto', 'pla_calendario.septiembre as septiembre',
+                'pla_calendario.octubre as octubre', 'pla_calendario.noviembre as noviembre', 'pla_calendario.diciembre as diciembre', 'pla_calendario.total as total', 'pla_tipo_monto.nombre as frecuencia',
+                'pla_tipo_poa.nombre as tipoPoa'
+            )
+            ->join('db_inspi_planificacion.pla_tipo_poa', 'pla_poa1.id_tipo_poa', '=', 'pla_tipo_poa.id')
+            ->join('db_inspi_planificacion.pla_tipo_monto', 'pla_poa1.id_tipo_monto', '=', 'pla_tipo_monto.id')
+            ->join('db_inspi_planificacion.pla_unidad_ejecutora', 'pla_poa1.u_ejecutora', '=', 'pla_unidad_ejecutora.id')
+            ->join('db_inspi_planificacion.pla_programa', 'pla_poa1.programa', '=', 'pla_programa.id')
+            ->join('db_inspi_planificacion.pla_proyecto', 'pla_poa1.proyecto', '=', 'pla_proyecto.id')
+            ->join('db_inspi_planificacion.pla_actividad_act', 'pla_poa1.actividad', '=', 'pla_actividad_act.id')
+            ->join('db_inspi_planificacion.pla_fuente', 'pla_poa1.fuente', '=', 'pla_fuente.id')
+            ->join('db_inspi_planificacion.pla_actividad_operativa', 'pla_poa1.id_actividad', '=', 'pla_actividad_operativa.id')
+            ->join('db_inspi_planificacion.pla_sub_actividad', 'pla_poa1.id_sub_actividad', '=', 'pla_sub_actividad.id')
+            ->join('db_inspi_planificacion.pla_item_presupuestario', 'pla_poa1.id_item', '=', 'pla_item_presupuestario.id')
+            ->join('db_inspi_planificacion.pla_obj_operativo', 'pla_poa1.id_obj_operativo', '=', 'pla_obj_operativo.id')
+            ->join('db_inspi_planificacion.pla_calendario', 'pla_poa1.id', '=', 'pla_calendario.id_poa')
+            ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_poa1.id_area')
+            ->whereIn('pla_poa1.estado', ['O'])
+            ->where('area.id', $id_direccion);
+
+        // Aplicar los filtros condicionalmente
+        if (!empty($filterAnio)) {
+            $query->where('pla_poa1.año', $filterAnio);
+        }
+
+        // Ejecutar el query
+        $actividades = $query->get();
+
+        $pdf = \PDF::loadView('pdf.pdfDetalle', ['usuarios' => $usuarios, 'actividades' => $actividades])->setPaper('A3', 'landscape');
+
+        $pdfFileName = 'pdf_' . time() . '.pdf';
+
+        $pdf->save(public_path("pdf/{$pdfFileName}"));
+
+        $pdfUrl = asset("pdf/{$pdfFileName}");
+
+        // return response()->json(['pdf_url' => $pdfUrl]);
+        return $pdf->download('reporte_detalle.pdf');
+    }
+    /* USUARIOS */
 
 
 
@@ -2595,6 +2707,104 @@ class PlanificacionController extends Controller
             \DB::rollBack();
             return response()->json(['success' => false, 'message' => 'Error al importar datos', 'error' => $e->getMessage()]);
         }
+    }
+
+
+
+    /*
+    public function ejecutarPla(){
+
+        $consultaPersonas = Persona::select('*')->where('status', 'A')->get();
+
+        foreach ($consultaPersonas as $persona) {
+
+            $nombre   = $persona->nombres;
+            $apellido = $persona->apellidos;
+            $correo   = $persona->correo;
+
+            $nombre_comp = $nombre .' ' . $apellido;
+
+            $datos = [
+                'name'     => $nombre_comp,
+                'email'    => $correo,
+                'position' => 'Trabajador',
+                'password' => '$10$YM0.FGtZ5yh.EJwJ1Iv8w.yb8reAS.Q4o4uzPPZdtEHfwRCKhi51C',
+            ];
+
+            $consultaUser = User::create($datos);
+            $consultaUser->save();
+
+        }
+
+
+
+    }
+    */
+
+
+
+    /* TRAER DATOS DEL POA POR ID */
+    public function obtenerPoa($id)
+    {
+        // Busca el POA por su ID
+        $poa = Poa::select('pla_poa1.id', 'pla_poa1.departamento', 'pla_poa1.monto', 'act.nombre as actividad', 'sub.nombre as subactividad')
+            ->join('pla_actividad_act as act', 'act.id', '=', 'pla_poa1.id_actividad')
+            ->join('pla_sub_actividad as sub', 'sub.id', '=', 'pla_poa1.id_sub_actividad')
+            ->where('pla_poa1.estado', 'A')
+            ->where('pla_poa1.id', $id)
+            ->first();
+
+
+        if (!$poa) {
+            return response()->json(['message' => 'POA no encontrado', 'success' => false], 404);
+        }
+
+        return response()->json(['poa' => $poa, 'success' => true]);
+    }
+    /* TRAER DATOS DEL POA POR ID */
+
+
+
+    /* TRAER DATOS DEL POA POR ID */
+    public function solicitadPOA(Request $request)
+    {
+
+        $data = $request->validate([
+            'solicitud_id' => 'required|string',
+            'justifi'      => 'required|string',
+        ]);
+
+        $id_poa  = $request->input('solicitud_id');
+        $justifi = $request->input('justifi');
+
+        $poa = Poa::find($id_poa);
+        $poa->estado = 'S';
+        $poa->save();
+
+        $calendario = Calendario::where('id_poa', $id_poa)->first();
+        $calendario->justificacion_area = $justifi;
+        $calendario->save();
+
+        $id_usuario = Auth::user()->id;
+
+        $datos = [
+            'id_poa' => $id_poa,
+            'id_usuario' => $id_usuario,
+            'comentario' => $justifi,
+            'estado_planificacion' => 'Solicitado'
+         ];
+        $comentario = Comentario::create($datos);
+
+        if ($comentario) {
+
+            return response()->json(['message' => 'Solicitud POA enviada.', 'data' => true], 200);
+
+        } else {
+
+            return response()->json(['message' => 'Error al enviar la solicitud', 'data' => false], 500);
+
+        }
+
     }
  
 

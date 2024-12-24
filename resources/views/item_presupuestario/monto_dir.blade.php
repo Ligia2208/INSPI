@@ -29,10 +29,11 @@
                 <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE DIRECCIONES </h2>
 
                 <hr/>
-
+                <!--
                 <a class="col-2 mb-3 btn btn-primary d-flex align-items-center justify-content-center mr-2" type="button" data-toggle= "modal" data-target="#modalItemPres">
                     <i class="lni lni-circle-plus"></i> Crear Dirección
                 </a>
+                -->
 
             </div>
 

@@ -33,15 +33,20 @@
             <div class="row mt-4">
                 <div class="col-md-2">
                     <label for="nameItemPU" class="form-label fs-6">Seleccionar fecha</label>
-                    <select id="yearSelect" class="form-select js-example-basic-single" onchange="actualizarTabla()"></select>
+                    <select id="yearSelect" class="form-control js-example-basic-single" onchange="actualizarTabla()"></select>
                 </div>
 
-                <div class="col-md-5 d-flex align-items-center justify-content-center">
-                    <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Planificación: </h2> <h1 class="ms-2"> {{$sumaActividades}} </h1>
+                <div class="col-md-2">
+                    <label class="form-label fs-6">&nbsp;</label>
+                    <button id="btnGeneratePDF" class="btn btn-primary form-control">Generar PDF</button>
+                </div>
+
+                <div class="col-md-8 d-flex align-items-center justify-content-center">
+                    <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Planificación: </h2> <h1 class="ml-2"> {{$sumaActividades}} </h1>
                 </div>
             </div>
 
-
+            <input id="id_direccion" name="id_direccion" value="{{$id_direccion}}" type="hidden">
             <hr/>
 
             <div class="card">
@@ -124,6 +129,62 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
             </div>
+            </div>
+        </div>
+    </div>
+
+
+    <a id="btnModalReportPOA" data-toggle="modal" data-target="#addReportDetalle" class="d-none"></a>
+
+    <div class="modal fade" id="addReportDetalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Generar Reporte de PAPP</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modalContent">
+                        <div class="row">
+
+                            <div class="col-md-4 mt-1">
+                                <label for="creado" class="form-label fs-6">Usuario que elabora</label>
+                                <input type="text" id="elabora" name="elabora" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_creado" class="form-label fs-6 mt-2">Cargo</label>
+                                <input type="text" id="cargo_elabora" name="cargo_elabora" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+
+                            <div class="col-md-4 mt-1">
+                                <label for="autorizado" class="form-label fs-6">Usuario que revisa</label>
+                                <input type="text" id="revisa" name="revisa" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_autorizado" class="form-label fs-6 mt-2">Cargo</label>
+                                <input type="text" id="cargo_revisa" name="cargo_revisa" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+
+                            <div class="col-md-4 mt-1">
+                                <label for="reporta" class="form-label fs-6">Usuario que aprueba</label>
+                                <input type="text" id="aprueba" name="aprueba" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_reporta" class="form-label fs-6 mt-2">Cargo</label>
+                                <input type="text" id="cargo_aprueba" name="cargo_aprueba" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnGenerarReportPOA">Guardar</button>
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModalPOA" data-dismiss="modal">Cerrar</button>
+                </div>
             </div>
         </div>
     </div>

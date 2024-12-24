@@ -353,7 +353,7 @@ function actualizarReforma() {
         if (Math.abs(totalDisminuye - totalAumenta) > 0.01) { // Utiliza un margen de error pequeño para evitar problemas de precisión
             Swal.fire({
                 icon:  'error',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 type:  'error',
                 text: 'Los totales de disminución y aumento no coinciden. Por favor, ajuste los valores.',
                 showConfirmButton: true
@@ -392,7 +392,7 @@ function actualizarReforma() {
                 error: function(error) {
                     Swal.fire({
                         icon:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         type:  'error',
                         text: 'Error al actualizar la reforma: ' + error.responseJSON.message,
                         showConfirmButton: true,
@@ -403,7 +403,7 @@ function actualizarReforma() {
             // Mostrar mensaje de error si no hay datos para enviar
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 type:  'error',
                 text: 'No hay datos para guardar. Por favor, agregue al menos una actividad.',
                 showConfirmButton: true
@@ -464,7 +464,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Coordinación/Dirección/Proyecto.',
             showConfirmButton: true,
         });
@@ -474,7 +474,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Fecha.',
             showConfirmButton: true,
         });
@@ -484,7 +484,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de selecionar un tipo de POA.',
             showConfirmButton: true,
         });
@@ -494,7 +494,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Justificación del área requirente.',
             showConfirmButton: true,
         });
@@ -503,7 +503,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar un Objetivo Operativo',
             showConfirmButton: true,
         });
@@ -513,7 +513,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Actividad Operativa',
             showConfirmButton: true,
         });
@@ -523,7 +523,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Sub Actividad',
             showConfirmButton: true,
         });
@@ -532,7 +532,7 @@ function guardarNuevaActividad() {
        Swal.fire({
        icon: 'warning',
        type:  'warning',
-       title: 'SoftInspi',
+       title: 'CoreInspi',
        text: 'Debe seleccionar el Item Presupuestario.',
        showConfirmButton: true,
     });
@@ -541,7 +541,7 @@ function guardarNuevaActividad() {
     Swal.fire({
         icon: 'warning',
         type:  'warning',
-        title: 'SoftInspi',
+        title: 'CoreInspi',
         text: 'Debe seleccionar una unidad ejecutora',
         showConfirmButton: true,
     });
@@ -549,7 +549,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un programa',
             showConfirmButton: true,
         });
@@ -557,7 +557,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un proyecto',
             showConfirmButton: true,
         });
@@ -565,7 +565,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una actividad',
             showConfirmButton: true,
         });
@@ -573,7 +573,7 @@ function guardarNuevaActividad() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una fuente de financiamiento',
             showConfirmButton: true,
         });
@@ -618,7 +618,7 @@ function guardarNuevaActividad() {
                 } else {
                     Swal.fire({
                         icon:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         type:  'error',
                         text: 'No se pudo guardar la actividad: ' + response.message,
                     });
@@ -951,14 +951,14 @@ function CrearActArea(element){
                 Swal.fire({
                     icon: 'success',
                     type: 'success',
-                    title: 'Éxito',
+                    title: 'CoreInspi',
                     text: 'Actividad agregada correctamente',
                 });
             // $('#contenedorBotonAgregarActividad').show();
             } else {
                 Swal.fire({
                     icon:  'error',
-                    title: 'SoftInspi',
+                    title: 'CoreInspi',
                     type:  'error',
                     text: 'No se pudo guardar la actividad: ' + response.message,
                 });

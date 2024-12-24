@@ -18,7 +18,7 @@ $( function () {
             Swal.fire({
                 icon: 'warning',
                 type:  'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe de ingresar un monto',
                 showConfirmButton: true,
             });
@@ -28,7 +28,7 @@ $( function () {
             Swal.fire({
                 icon: 'warning',
                 type:  'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'El monto no es un número',
                 showConfirmButton: true,
             });
@@ -236,7 +236,7 @@ function agregarComentario(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar el estado de la actividad',
             showConfirmButton: true,
         });
@@ -246,7 +246,7 @@ function agregarComentario(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe justificar su selección con un comentario',
             showConfirmButton: true,
         });
@@ -272,7 +272,7 @@ function agregarComentario(){
                         Swal.fire({
                             icon: 'success',
                             type: 'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             text: response['message'],
                             showConfirmButton: true,
                         }).then((result) => {
@@ -289,7 +289,7 @@ function agregarComentario(){
             error: function(error) {
                 Swal.fire({
                     icon:  'error',
-                    title: 'SoftInspi',
+                    title: 'CoreInspi',
                     type:  'error',
                     text:   error,
                     showConfirmButton: true,
@@ -313,7 +313,7 @@ function agregarComentarioEstado(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar el estado de la actividad',
             showConfirmButton: true,
         });
@@ -323,7 +323,7 @@ function agregarComentarioEstado(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe justificar su selección con un comentario',
             showConfirmButton: true,
         });
@@ -349,7 +349,7 @@ function agregarComentarioEstado(){
                         Swal.fire({
                             icon: 'success',
                             type: 'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             text: response['message'],
                             showConfirmButton: true,
                         }).then((result) => {
@@ -366,7 +366,7 @@ function agregarComentarioEstado(){
             error: function(error) {
                 Swal.fire({
                     icon:  'error',
-                    title: 'SoftInspi',
+                    title: 'CoreInspi',
                     type:  'error',
                     text:   error,
                     showConfirmButton: true,
@@ -421,7 +421,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Coordinación/Dirección/Proyecto.',
             showConfirmButton: true,
         });
@@ -431,7 +431,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Fecha.',
             showConfirmButton: true,
         });
@@ -441,7 +441,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de selecionar un tipo de POA.',
             showConfirmButton: true,
         });
@@ -451,7 +451,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Justificación del área requirente.',
             showConfirmButton: true,
         });
@@ -461,7 +461,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar un Objetivo Operativo',
             showConfirmButton: true,
         });
@@ -471,7 +471,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Actividad Operativa',
             showConfirmButton: true,
         });
@@ -481,7 +481,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Sub Actividad',
             showConfirmButton: true,
         });
@@ -490,7 +490,7 @@ function actualizarPlanificacion(){
        Swal.fire({
        icon: 'warning',
        type:  'warning',
-       title: 'SoftInspi',
+       title: 'CoreInspi',
        text: 'Debe seleccionar el Item Presupuestario.',
        showConfirmButton: true,
     });
@@ -500,7 +500,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar un Monto.',
             showConfirmButton: true,
         });
@@ -509,7 +509,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una unidad ejecutora',
             showConfirmButton: true,
         });
@@ -517,7 +517,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un programa',
             showConfirmButton: true,
         });
@@ -525,7 +525,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un proyecto',
             showConfirmButton: true,
         });
@@ -533,7 +533,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una actividad',
             showConfirmButton: true,
         });
@@ -541,7 +541,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una fuente de financiamiento',
             showConfirmButton: true,
         });
@@ -550,7 +550,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de seleccionar la Frecuencia.',
             showConfirmButton: true,
         });
@@ -559,7 +559,7 @@ function actualizarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe describir la edición realizada.',
             showConfirmButton: true,
         });
@@ -617,7 +617,7 @@ function actualizarPlanificacion(){
                             Swal.fire({
                                 icon: 'success',
                                 type: 'success',
-                                title: 'SoftInspi',
+                                title: 'CoreInspi',
                                 text: response['message'],
                                 showConfirmButton: true,
                             }).then((result) => {
@@ -634,7 +634,7 @@ function actualizarPlanificacion(){
                 error: function(error) {
                     Swal.fire({
                         icon:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         type:  'error',
                         text:   error,
                         showConfirmButton: true,
@@ -695,7 +695,7 @@ function validarCalculos() {
 
         Swal.fire({
             icon:  'error',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             type:  'error',
             text: comentario,
             showConfirmButton: true,
@@ -714,14 +714,14 @@ $(document).on('change', '#monto, #frecuencia', function() {
     if (monto === 0 || isNaN(monto)) {
         Swal.fire({
             icon: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar un monto válido',
             showConfirmButton: true,
         });
     } else if (!isValid) {
         Swal.fire({
             icon: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'El monto no es válido',
             showConfirmButton: true,
         });

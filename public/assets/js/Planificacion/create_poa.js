@@ -14,7 +14,7 @@ $( function () {
             Swal.fire({
                 icon: 'warning',
                 type:  'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe de ingresar un monto',
                 showConfirmButton: true,
             });
@@ -24,7 +24,7 @@ $( function () {
             Swal.fire({
                 icon: 'warning',
                 type:  'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'El monto no es un número',
                 showConfirmButton: true,
             });
@@ -154,7 +154,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar un Objetivo Operativo',
             showConfirmButton: true,
         });
@@ -164,7 +164,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Actividad Operativa',
             showConfirmButton: true,
         });
@@ -174,7 +174,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Sub Actividad',
             showConfirmButton: true,
         });
@@ -184,7 +184,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la descripción del Item Presupuestario.',
             showConfirmButton: true,
         });
@@ -194,7 +194,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar el Item Presupuestario.',
             showConfirmButton: true,
         });
@@ -204,7 +204,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar un Monto.',
             showConfirmButton: true,
         });
@@ -214,7 +214,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar el Monto Disponible.',
             showConfirmButton: true,
         });
@@ -224,7 +224,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Coordinación/Dirección/Proyecto.',
             showConfirmButton: true,
         });
@@ -234,7 +234,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar un número de POA.',
             showConfirmButton: true,
         });
@@ -244,7 +244,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Fecha.',
             showConfirmButton: true,
         });
@@ -254,7 +254,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de selecionar un tipo de POA.',
             showConfirmButton: true,
         });
@@ -264,7 +264,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Justificación.',
             showConfirmButton: true,
         });
@@ -274,7 +274,7 @@ function guardarPoa(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de seleccionar la Frecuencia.',
             showConfirmButton: true,
         });
@@ -322,7 +322,7 @@ function guardarPoa(){
                             Swal.fire({
                                 icon: 'success',
                                 type: 'success',
-                                title: 'SoftInspi',
+                                title: 'CoreInspi',
                                 text: response['message'],
                                 showConfirmButton: true,
                             }).then((result) => {
@@ -339,7 +339,7 @@ function guardarPoa(){
                 error: function(error) {
                     Swal.fire({
                         icon:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         type:  'error',
                         text:   error,
                         showConfirmButton: true,
@@ -389,7 +389,7 @@ function validarCalculos() {
 
         Swal.fire({
             icon:  'error',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             type:  'error',
             text:   comentario,
             showConfirmButton: true,

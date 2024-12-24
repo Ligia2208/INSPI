@@ -9,7 +9,7 @@ function agregarComentarioReforma() {
         Swal.fire({
             icon: 'warning',
             type: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar el estado de la reforma',
             showConfirmButton: true,
         });
@@ -17,7 +17,7 @@ function agregarComentarioReforma() {
         Swal.fire({
             icon: 'warning',
             type: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe justificar su selección con un comentario',
             showConfirmButton: true,
         });
@@ -41,7 +41,7 @@ function agregarComentarioReforma() {
                         Swal.fire({
                             icon: 'success',
                             type: 'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             text: 'Se ha revisado la reforma',
                             showConfirmButton: true,
                         }).then((result) => {
@@ -56,7 +56,7 @@ function agregarComentarioReforma() {
             error: function(error) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'SoftInspi',
+                    title: 'CoreInspi',
                     type: 'error',
                     text: error,
                     showConfirmButton: true,

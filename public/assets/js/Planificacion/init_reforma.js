@@ -135,7 +135,7 @@ $( function () {
         Swal.fire({
             icon: 'warning',
             type: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Seguro que quiere aplicar los cambios de la reforma a la planificación?',
             showConfirmButton: true,
             confirmButtonText: 'Sí, aplicar',
@@ -165,7 +165,7 @@ $( function () {
 
                             Swal.fire({
                                 icon: 'success',
-                                title: 'SoftInspi',
+                                title: 'CoreInspi',
                                 type: 'success',
                                 text: res.message,
                                 showConfirmButton: false,
@@ -179,7 +179,7 @@ $( function () {
         
                             Swal.fire({
                                 icon: 'error',
-                                title: 'SoftInspi',
+                                title: 'CoreInspi',
                                 type: 'error',
                                 text: res.message,
                                 showConfirmButton: true,
@@ -214,7 +214,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: '¿Seguro que quiere eliminar esta reforma?',
             showConfirmButton: true,
             showCancelButton: true,
@@ -241,7 +241,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'success',
                                     type: 'success',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 }).then((result) => {
@@ -254,7 +254,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'error',
                                     type:  'error',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 });
@@ -264,7 +264,7 @@ $(function(){
                     error: function(error) {
                         Swal.fire({
                             icon:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             type:  'success',
                             text:   error,
                             showConfirmButton: true,

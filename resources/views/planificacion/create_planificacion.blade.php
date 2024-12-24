@@ -22,6 +22,29 @@
 
 <div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
+    @if($id_fuente == '' || $monto == false)
+
+    <div class="container2">
+
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">¡Acción requerida!</h4>
+            @if($monto == false)
+            <p>El monto presupuestado de su dirección no coincide con el monto asignado a sus ítems presupuestarios. Por favor, revise y corrija esta discrepancia antes de continuar.</p>
+            @endif
+            <hr>
+            @if($id_fuente == '')
+            <p class="mb-0">No ha seleccionado una estructura presupuestaria. Complete este paso para proceder.</p>
+            @endif
+        </div>
+
+        <a class="col-2 btn btn-danger px-1 d-flex align-items-center justify-content-center mt-4" href="{{ route('itemPresupuestario.monto_item') }}" type="button" >
+            <i class="bi bi-arrow-return-left"></i> Regresar
+        </a>
+
+    </div>
+
+    @else
+
     <div class="container2">
         <div class="page-content mb-5">
             <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus titulo-grande"></i> Creación de Actividad Operativa </h2>
@@ -329,6 +352,8 @@
 
 
     </div>
+
+    @endif
 
 </div>
 

@@ -77,7 +77,7 @@ class Form extends Component
 
             'Preanaliticas.embarazo' => 'sometimes|numeric',
             'Preanaliticas.gestacion' => 'sometimes|numeric',
-            'Preanaliticas.evolucion' => 'sometimes|numeric',
+            'Preanaliticas.evolucion' => 'sometimes',
             'Preanaliticas.laboratorio' => 'sometimes|numeric',
             'Preanaliticas.nombre_laboratorio' => 'sometimes|max:100',
 
@@ -108,6 +108,7 @@ class Form extends Component
         $this->Preanaliticas->tercera_id = 0;
         $this->Preanaliticas->cuarta_id = 0;
         $this->Preanaliticas->quinta_id = 0;
+        $this->Preanaliticas->evolucion = 0;
     }
 
     public function updatedchangedInstitucion($institucion_id){

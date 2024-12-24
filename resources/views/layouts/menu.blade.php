@@ -234,12 +234,12 @@
                 @endcan
             @endcanany
 
-            @canany(['plaDetalle', 'plaActividades', 'plaDireccion'])
+            @canany(['pladetalle', 'plaactividades', 'pladireccion'])
                 <li class="menu-section">
                     <h4 class="menu-text">Admin Planificación</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
-                @can('plaDetalle')
+                @can('pladetalle')
                     <li class="menu-item {{ active('persona.*') }}">
                         <a href="{{ route('planificacion.detalle') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-list-task"></i>
@@ -248,32 +248,32 @@
                     </li>
                 @endcan
 
-                @can('plaActividades')
+                @can('plaactividades')
                     <li class="menu-item {{ active('persona.*') }}">
                         <a href="{{ route('planificacion') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-clipboard-check"></i>
-                            <span class="menu-text">List Actividades</span>
+                            <span class="menu-text">Lista de Actividades</span>
                         </a>
                     </li>
                 @endcan
 
-                @can('plaDireccion')
+                @can('pladireccion')
                     <li class="menu-item {{ active('persona.*') }}">
                         <a href="{{ route('montoDireccion') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-map"></i>
-                            <span class="menu-text">List Direcciones</span>
+                            <span class="menu-text">Lista de Direcciones</span>
                         </a>
                     </li>
                 @endcan
 
             @endcanany
 
-            @canany(['plaMontoitem', 'plaActividadesitems'])
+            @canany(['plamontoitem', 'plaactividadesitems'])
                 <li class="menu-section">
                     <h4 class="menu-text">Planificación</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
-                @can('plaMontoitem')
+                @can('plamontoitem')
                     <li class="menu-item {{ active('persona.*') }}">
                         <a href="{{ route('itemPresupuestario.monto_item') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-plus-circle"></i>
@@ -282,11 +282,11 @@
                     </li>
                 @endcan
 
-                @can('plaActividadesitems')
+                @can('plaactividadesitems')
                     <li class="menu-item {{ active('persona.*') }}">
                         <a href="{{ route('planificacion.vistaUser') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-person-lines-fill"></i>
-                            <span class="menu-text">List Actividades</span>
+                            <span class="menu-text">Lista de Actividades</span>
                         </a>
                     </li>
                 @endcan
