@@ -102,6 +102,7 @@ class Form extends Component
         $this->Preanaliticas = $Preanalitica;
         $this->method = $method;
         $this->Preanaliticas->embarazo = 2;
+        $this->Preanaliticas->evolucion = 0;
         $this->Preanaliticas->laboratorio = 2;
         $this->Preanaliticas->gestacion = 0;
         $this->Preanaliticas->segunda_id = 0;

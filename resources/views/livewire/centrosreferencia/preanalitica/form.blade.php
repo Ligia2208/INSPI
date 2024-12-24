@@ -5,14 +5,15 @@
     @endsection
 
     <!--begin::Card-->
-    <div class="card card-custom card-sticky" id="kt_page_sticky_card" >
+    <div class="card card-custom card-sticky" id="kt_page_sticky_card">
         <div class="card-body">
             <!--begin::Form-->
-            <form class="form" wire:submit.prevent="{{ $method }}" >
+            <form class="form" wire:submit.prevent="{{ $method }}">
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="my-5">
-                            <a href="{{ route('preanalitica.index') }}" class="navi-link py-4 {{ active('user.index') }}">
+                            <a href="{{ route('preanalitica.index') }}"
+                                class="navi-link py-4 {{ active('user.index') }}">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <i aria-hidden="true" class="ki ki-bold-close icon-lg"></i>
                                 </button>
@@ -28,17 +29,15 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.instituciones_id"
+                                        <select wire:model.defer="Preanaliticas.instituciones_id"
                                             wire:model="changedInstitucion"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.sedes_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona una Institución de Salud</option>
                                             @foreach ($instituciones as $objIns)
-                                                <option data-subtext="{{ $objIns->provincia->descripcion }} - {{ $objIns->canton->descripcion }}" value="{{ $objIns->id }}">{{ $objIns->descripcion }}</option>
+                                                <option
+                                                    data-subtext="{{ $objIns->provincia->descripcion }} - {{ $objIns->canton->descripcion }}"
+                                                    value="{{ $objIns->id }}">{{ $objIns->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -51,9 +50,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.institucion_tipologia"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.institucion_tipologia" type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_tipologia') is-invalid @enderror"
                                             placeholder="Ej: MSP - IESS - SOLCA" />
@@ -72,9 +69,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.institucion_nombre"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.institucion_nombre" type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_nombre') is-invalid @enderror"
                                             placeholder="Ej: Teodoro Maldonado C." />
@@ -91,9 +86,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.institucion_tipologia"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.institucion_tipologia" type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_tipologia') is-invalid @enderror"
                                             placeholder="Ej: Centro de Salud Tipo A" />
@@ -110,9 +103,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.institucion_nivel"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.institucion_nivel" type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_nivel') is-invalid @enderror"
                                             placeholder="Ej: Nivel 1" />
@@ -129,9 +120,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.institucion_ubicacion"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.institucion_ubicacion" type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_ubicacion') is-invalid @enderror"
                                             placeholder="Ej: Guayas - Guayaquil" />
@@ -143,12 +132,9 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-1" style="display: none">
-                                    <input
-                                            wire:model.defer="Preanaliticas.paciente_id"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Preanaliticas.paciente_id') is-invalid @enderror"
-                                            placeholder="Ej: 123" />
+                                    <input wire:model.defer="Preanaliticas.paciente_id" type="text" required
+                                        class="form-control form-control-solid @error('Preanaliticas.paciente_id') is-invalid @enderror"
+                                        placeholder="Ej: 123" />
                                 </div>
                                 <div class="form-group col-md-2">
                                     <label>Identificación Paciente<span class="text-danger">*</span></label>
@@ -158,11 +144,8 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.identidad"
-                                             wire:model="changedIdentidad"
-                                            type="text"
-                                            required
+                                        <input wire:model.defer="Preanaliticas.identidad"
+                                            wire:model="changedIdentidad" type="text" required
                                             class="form-control form-control-solid @error('Preanaliticas.identidad') is-invalid @enderror"
                                             placeholder="Ej: 0900786523" />
                                     </div>
@@ -178,9 +161,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.paciente_apellidos"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.paciente_apellidos" type="text"
                                             required
                                             class="form-control form-control-solid @error('Preanaliticas.paciente_apellidos') is-invalid @enderror"
                                             placeholder="Ej: Jácome Castro" />
@@ -197,9 +178,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.paciente_nombres"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.paciente_nombres" type="text"
                                             required
                                             class="form-control form-control-solid @error('Preanaliticas.paciente_nombres') is-invalid @enderror"
                                             placeholder="Ej: Fernanda Lorena" />
@@ -216,16 +195,13 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.paciente_sexo"
+                                        <select wire:model.defer="Preanaliticas.paciente_sexo"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.paciente_sexo') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona Sexo</option>
                                             @foreach ($sexos as $objSex)
-                                                <option data-subtext="" value="{{ $objSex->id }}">{{ $objSex->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objSex->id }}">
+                                                    {{ $objSex->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -238,13 +214,10 @@
                                                 <i class="fas fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.paciente_fechanac"
-                                            value="Preanaliticas.paciente_fechanac"
-                                            type="date"
+                                        <input wire:model.defer="Preanaliticas.paciente_fechanac"
+                                            value="Preanaliticas.paciente_fechanac" type="date"
                                             class="start_date form-control form-control-solid @error('Preanaliticas.paciente_fechanac') is-invalid @enderror"
-                                            placeholder="Seleccione la fecha nacimiento"
-                                        />
+                                            placeholder="Seleccione la fecha nacimiento" />
                                     </div>
                                 </div>
                             </div>
@@ -257,9 +230,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.paciente_direccion"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.paciente_direccion" type="text"
                                             required
                                             class="form-control form-control-solid @error('Preanaliticas.paciente_direccion') is-invalid @enderror"
                                             placeholder="Ej: Urdesa Central" />
@@ -276,9 +247,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.paciente_telefono"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.paciente_telefono" type="text"
                                             required
                                             class="form-control form-control-solid @error('Preanaliticas.paciente_telefono') is-invalid @enderror"
                                             placeholder="Ej: 0998253411" />
@@ -295,9 +264,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.paciente_ubicacion"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.paciente_ubicacion" type="text"
                                             required
                                             class="form-control form-control-solid @error('Preanaliticas.paciente_ubicacion') is-invalid @enderror"
                                             placeholder="Ej: Guayas - Guayaquil" />
@@ -314,9 +281,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.paciente_nacionalidad"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.paciente_nacionalidad" type="text"
                                             required
                                             class="form-control form-control-solid @error('Preanaliticas.paciente_nacionalidad') is-invalid @enderror"
                                             placeholder="Ej: Ecuatoriano" />
@@ -335,13 +300,10 @@
                                                 <i class="fas fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.fecha_atencion"
-                                            value="Preanaliticas.fecha_atencion"
-                                            type="date"
+                                        <input wire:model.defer="Preanaliticas.fecha_atencion"
+                                            value="Preanaliticas.fecha_atencion" type="date"
                                             class="start_date form-control form-control-solid @error('Preanaliticas.fecha_atencion') is-invalid @enderror"
-                                            placeholder="Seleccione la fecha de atención"
-                                        />
+                                            placeholder="Seleccione la fecha de atención" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -352,10 +314,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.quien_notifica"
-                                            type="text"
-                                            required
+                                        <input wire:model.defer="Preanaliticas.quien_notifica" type="text" required
                                             class="form-control form-control-solid @error('Preanaliticas.quien_notifica') is-invalid @enderror"
                                             placeholder="Ej: Dr. Julio Robles" />
                                     </div>
@@ -371,9 +330,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.probable_infeccion"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.probable_infeccion" type="text"
                                             required
                                             class="form-control form-control-solid @error('Preanaliticas.probable_infeccion') is-invalid @enderror"
                                             placeholder="Ej: Sur de la ciudad" />
@@ -392,13 +349,10 @@
                                                 <i class="fas fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.fecha_sintomas"
-                                            value="Preanaliticas.fecha_sintomas"
-                                            type="date"
+                                        <input wire:model.defer="Preanaliticas.fecha_sintomas"
+                                            value="Preanaliticas.fecha_sintomas" type="date"
                                             class="start_date form-control form-control-solid @error('Preanaliticas.fecha_sintomas') is-invalid @enderror"
-                                            placeholder="Seleccione la fecha de inicio sintomas"
-                                        />
+                                            placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-1">
@@ -409,9 +363,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.evolucion"
-                                            type="numeric"
+                                        <input wire:model.defer="Preanaliticas.evolucion" type="numeric" value=0
                                             class="form-control form-control-solid @error('Preanaliticas.evolucion') is-invalid @enderror"
                                             placeholder="Ej: 8" />
                                     </div>
@@ -427,13 +379,9 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.embarazo"
+                                        <select wire:model.defer="Preanaliticas.embarazo"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.embarazo') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona opción</option>
                                             <option data-subtext="" value="1">Si</option>
                                             <option data-subtext="" value="2">No</option>
@@ -448,9 +396,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.gestacion"
-                                            type="numeric"
+                                        <input wire:model.defer="Preanaliticas.gestacion" type="numeric"
                                             class="form-control form-control-solid @error('Preanaliticas.gestacion') is-invalid @enderror"
                                             placeholder="Ej: 8" />
                                     </div>
@@ -466,13 +412,9 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.laboratorio"
+                                        <select wire:model.defer="Preanaliticas.laboratorio"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.laboratorio') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona opción</option>
                                             <option data-subtext="" value="1">Si</option>
                                             <option data-subtext="" value="2">No</option>
@@ -487,9 +429,7 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.nombre_laboratorio"
-                                            type="text"
+                                        <input wire:model.defer="Preanaliticas.nombre_laboratorio" type="text"
                                             class="form-control form-control-solid @error('Preanaliticas.nombre_laboratorio') is-invalid @enderror"
                                             placeholder="Ej: Interlab" />
                                     </div>
@@ -507,17 +447,13 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.sedes_id"
-                                            wire:model="selectedSedep"
+                                        <select wire:model.defer="Preanaliticas.sedes_id" wire:model="selectedSedep"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.sedes_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona una Sede</option>
                                             @foreach ($sedes as $objSed)
-                                                <option data-subtext="" value="{{ $objSed->id }}">{{ $objSed->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objSed->id }}">
+                                                    {{ $objSed->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -530,19 +466,16 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.crns_id"
+                                        <select wire:model.defer="Preanaliticas.crns_id"
                                             wire:model.live="selectedCrnp"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.crns_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona un CRN</option>
-                                            @if(!is_null($crns))
-                                            @foreach ($crns as $objCrn)
-                                                <option data-subtext="" value="{{ $objCrn->id }}">{{ $objCrn->descripcion }}</option>
-                                            @endforeach
+                                            @if (!is_null($crns))
+                                                @foreach ($crns as $objCrn)
+                                                    <option data-subtext="" value="{{ $objCrn->id }}">
+                                                        {{ $objCrn->descripcion }}</option>
+                                                @endforeach
                                             @endif
                                         </select>
                                     </div>
@@ -557,18 +490,16 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.evento_id"
+                                        <select wire:model.defer="Preanaliticas.evento_id"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.evento_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona un Evento</option>
-                                            @if(!is_null($eventos))
-                                            @foreach ($eventos as $objEvento)
-                                                <option data-subtext="{{ $objEvento->descripcion }}" value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}</option>
-                                            @endforeach
+                                            @if (!is_null($eventos))
+                                                @foreach ($eventos as $objEvento)
+                                                    <option data-subtext="{{ $objEvento->descripcion }}"
+                                                        value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}
+                                                    </option>
+                                                @endforeach
                                             @endif
                                         </select>
                                     </div>
@@ -581,16 +512,13 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.primera_id"
+                                        <select wire:model.defer="Preanaliticas.primera_id"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.primera_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona un tipo muestra</option>
                                             @foreach ($muestras as $objMuestra)
-                                                <option data-subtext="" value="{{ $objMuestra->id }}">{{ $objMuestra->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objMuestra->id }}">
+                                                    {{ $objMuestra->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -603,20 +531,18 @@
                                                 <i class="fas fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.fecha_toma_primera"
-                                            value="Preanaliticas.fecha_toma_primera"
-                                            type="date"
+                                        <input wire:model.defer="Preanaliticas.fecha_toma_primera"
+                                            value="Preanaliticas.fecha_toma_primera" type="date"
                                             class="start_date form-control form-control-solid @error('Preanaliticas.fecha_toma_primera') is-invalid @enderror"
-                                            placeholder="Seleccione la fecha de inicio sintomas"
-                                        />
+                                            placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
                             </div>
                             <div class="form-row">
                                 &nbsp;&nbsp;
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <i aria-hidden="true" class="fa fa-plus icon-lg" onclick="ver_ocultar()" title="Agregar mas muestras"></i>
+                                    <i aria-hidden="true" class="fa fa-plus icon-lg" onclick="ver_ocultar()"
+                                        title="Agregar mas muestras"></i>
                                 </button>
                             </div>
                             <div class="form-row" id="add_muestras" style="visibility:hidden">
@@ -628,15 +554,13 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.segunda_id"
+                                        <select wire:model.defer="Preanaliticas.segunda_id"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.segunda_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true">
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
                                             <option value="0">Selecciona un tipo muestra</option>
                                             @foreach ($muestras as $objMuestra)
-                                                <option data-subtext="" value="{{ $objMuestra->id }}">{{ $objMuestra->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objMuestra->id }}">
+                                                    {{ $objMuestra->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -649,13 +573,10 @@
                                                 <i class="fas fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.fecha_toma_segunda"
-                                            value="Preanaliticas.fecha_toma_segunda"
-                                            type="date"
+                                        <input wire:model.defer="Preanaliticas.fecha_toma_segunda"
+                                            value="Preanaliticas.fecha_toma_segunda" type="date"
                                             class="start_date form-control form-control-solid @error('Preanaliticas.fecha_toma_segunda') is-invalid @enderror"
-                                            placeholder="Seleccione la fecha de inicio sintomas"
-                                        />
+                                            placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -666,15 +587,13 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.tercera_id"
+                                        <select wire:model.defer="Preanaliticas.tercera_id"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.tercera_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true">
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
                                             <option value="0">Selecciona un tipo muestra</option>
                                             @foreach ($muestras as $objMuestra)
-                                                <option data-subtext="" value="{{ $objMuestra->id }}">{{ $objMuestra->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objMuestra->id }}">
+                                                    {{ $objMuestra->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -687,13 +606,10 @@
                                                 <i class="fas fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.fecha_toma_tercera"
-                                            value="Preanaliticas.fecha_toma_tercera"
-                                            type="date"
+                                        <input wire:model.defer="Preanaliticas.fecha_toma_tercera"
+                                            value="Preanaliticas.fecha_toma_tercera" type="date"
                                             class="start_date form-control form-control-solid @error('Preanaliticas.fecha_toma_tercera') is-invalid @enderror"
-                                            placeholder="Seleccione la fecha de inicio sintomas"
-                                        />
+                                            placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -704,15 +620,13 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.cuarta_id"
+                                        <select wire:model.defer="Preanaliticas.cuarta_id"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.cuarta_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true">
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
                                             <option value="0">Selecciona un tipo muestra</option>
                                             @foreach ($muestras as $objMuestra)
-                                                <option data-subtext="" value="{{ $objMuestra->id }}">{{ $objMuestra->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objMuestra->id }}">
+                                                    {{ $objMuestra->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -725,13 +639,10 @@
                                                 <i class="fas fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.fecha_toma_cuarta"
-                                            value="Preanaliticas.fecha_toma_cuarta"
-                                            type="date"
+                                        <input wire:model.defer="Preanaliticas.fecha_toma_cuarta"
+                                            value="Preanaliticas.fecha_toma_cuarta" type="date"
                                             class="start_date form-control form-control-solid @error('Preanaliticas.fecha_toma_cuarta') is-invalid @enderror"
-                                            placeholder="Seleccione la fecha de inicio sintomas"
-                                        />
+                                            placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
@@ -742,15 +653,13 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Preanaliticas.quinta_id"
+                                        <select wire:model.defer="Preanaliticas.quinta_id"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.quinta_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true">
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
                                             <option value="">Selecciona un tipo muestra</option>
                                             @foreach ($muestras as $objMuestra)
-                                                <option data-subtext="" value="{{ $objMuestra->id }}">{{ $objMuestra->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objMuestra->id }}">
+                                                    {{ $objMuestra->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -763,13 +672,10 @@
                                                 <i class="fas fa-calendar"></i>
                                             </span>
                                         </div>
-                                        <input
-                                            wire:model.defer="Preanaliticas.fecha_toma_quinta"
-                                            value="Preanaliticas.fecha_toma_quinta"
-                                            type="date"
+                                        <input wire:model.defer="Preanaliticas.fecha_toma_quinta"
+                                            value="Preanaliticas.fecha_toma_quinta" type="date"
                                             class="start_date form-control form-control-solid @error('Preanaliticas.fecha_toma_quinta') is-invalid @enderror"
-                                            placeholder="Seleccione la fecha de inicio sintomas"
-                                        />
+                                            placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
                             </div>
@@ -780,13 +686,10 @@
             </form>
             <!--end::Form-->
         </div>
-        <div class="card-header" >
+        <div class="card-header">
             <div class="card-toolbar">
-                <button
-                    wire:click="{{ $method }}"
-                    wire:loading.class="spinner spinner-white spinner-right"
-                    wire:target="{{ $method }}"
-                    class="btn btn-primary font-weight-bolder mr-2">
+                <button wire:click="{{ $method }}" wire:loading.class="spinner spinner-white spinner-right"
+                    wire:target="{{ $method }}" class="btn btn-primary font-weight-bolder mr-2">
                     <i class="fa fa-save"></i>
                     Guardar Cambios
                 </button>
@@ -803,12 +706,12 @@
                 return {
                     removeFile(functionRemove, fileId) {
                         @this.call(functionRemove);
-                        bfi_clear('#'+fileId);
+                        bfi_clear('#' + fileId);
                     },
                 }
             }
 
-            Livewire.on('renderJs', function(){
+            Livewire.on('renderJs', function() {
                 $('.selectpicker').selectpicker({
                     liveSearch: true
                 });
