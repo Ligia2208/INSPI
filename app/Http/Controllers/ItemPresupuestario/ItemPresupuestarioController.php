@@ -33,6 +33,8 @@ use App\Models\ItemPresupuestario\ItemPresupuestario;
 use App\Models\Planificacion\MontoDireccion\MontoDireccion;
 use App\Models\Planificacion\ItemDireccion\ItemDireccion;
 
+use App\Models\Planificacion\Poa1\Poa;
+
 use App\Models\ConsumoItem\ConsumoItem;
 use App\Models\RecursosHumanos\Filiacion;
 
@@ -203,26 +205,30 @@ class ItemPresupuestarioController extends Controller{
 
 
     /* ============================================ MONTO DIRECCION ============================================ */
-    public function montoDireccion(Request $request){
-
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
-
+    public function montoDireccion(Request $request)
+    {
+        $id_usuario = Auth::user()->id; // Trae el ID del usuario
+    
         if(request()->ajax()) {
-
             return datatables()->of(MontoDireccion::select('id',
-            'id_dir', 'descripcion', 'estado', 
-            'id_dir_tec', 'nombre', 'monto', 
-            DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i:%s") as fecha'))
+                'id_dir', 'descripcion', 'estado', 'proceso_estado',
+                'id_dir_tec', 'nombre', 'monto', 
+                DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i:%s") as fecha'),
+                // Subconsulta para obtener el total_monto por id_area
+                DB::raw('COALESCE((SELECT SUM(monto) FROM pla_poa1 WHERE id_area = pla_direcciones.id AND estado = "A"), 0) AS total_monto'),
+                DB::raw('COALESCE((SELECT SUM(monto) FROM pla_items_direcciones WHERE id_direcciones = pla_direcciones.id AND estado = "A"), 0) AS total_monto_direcciones')           
+                )
             ->where('estado', 'A')
             ->orderBy('nombre', 'asc')
-            ->get() 
-            )
+            ->get())
             ->addIndexColumn()
             ->make(true);
         }
-        //respuesta para la vista
+    
+        // Respuesta para la vista
         return view('item_presupuestario.monto_dir');
     }
+    
 
 
     /* TRAER DIRECCION POR ID */
@@ -252,6 +258,38 @@ class ItemPresupuestarioController extends Controller{
 
     }
     /* ACTUALIZA DIRECCION POR ID */
+
+
+
+    /* CIERRA EL PROCESO DE PLANIFICACIÓN */
+    public function cerrarDireccionMonto(Request $request, $id) {
+
+        //Actualiza los datos en la tabla
+        $montoDireccion = MontoDireccion::find($id);
+        $montoDireccion->proceso_estado = true;
+        $montoDireccion->save();
+    
+        return response()->json(['success' => true, 'message' => 'El proceso de planificación se ha cerrado.']);
+
+    }
+    /* CIERRA EL PROCESO DE PLANIFICACIÓN */
+
+
+
+
+    /* ABRIR EL PROCESO DE PLANIFICACIÓN */
+    public function abrirDireccionMonto(Request $request, $id) {
+
+        //Actualiza los datos en la tabla
+        $montoDireccion = MontoDireccion::find($id);
+        $montoDireccion->proceso_estado = FALSE;
+        $montoDireccion->save();
+    
+        return response()->json(['success' => true, 'message' => 'El proceso de planificación se ha abierto.']);
+
+    }
+    /* ABRIR EL PROCESO DE PLANIFICACIÓN */
+
 
 
 
@@ -291,18 +329,20 @@ class ItemPresupuestarioController extends Controller{
         $direccion_id = $filiacion->direccion_id;
 
         if($id_area == 7){
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre')->where('id_dir_tec', $direccion_id)->first();
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre', 'proceso_estado')->where('id_dir_tec', $direccion_id)->first();
             $id_direccion = $direccion->id;
             $monto        = $direccion->monto;
             $id_fuente    = $direccion->id_fuente;
             $nombreDir    = $direccion->nombre;
+            $proestado    = $direccion->proceso_estado;
 
         }else{
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre')->where('id_dir', $id_area)->first();
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre', 'proceso_estado')->where('id_dir', $id_area)->first();
             $id_direccion = $direccion->id;
             $monto        = $direccion->monto;
             $id_fuente    = $direccion->id_fuente;
             $nombreDir    = $direccion->nombre;
+            $proestado    = $direccion->proceso_estado;
 
         }
 
@@ -317,7 +357,7 @@ class ItemPresupuestarioController extends Controller{
         if(request()->ajax()) {
 
             return datatables()->of(ItemDireccion::select('pla_items_direcciones.id', 'dir.nombre as direccion', 'ite.nombre as n_item', 'pla_items_direcciones.estado', 
-            'ite.descripcion as nombre_item', 'pla_items_direcciones.monto', 
+            'ite.descripcion as nombre_item', 'pla_items_direcciones.monto', 'dir.proceso_estado',
             DB::raw('DATE_FORMAT(pla_items_direcciones.created_at, "%Y-%m-%d %H:%i:%s") as fecha'))
             ->join('pla_direcciones as dir', 'dir.id', '=', 'pla_items_direcciones.id_direcciones')
             ->join('pla_item_presupuestario as ite', 'ite.id', '=', 'pla_items_direcciones.id_item')
@@ -330,7 +370,8 @@ class ItemPresupuestarioController extends Controller{
             ->make(true);
         }
         //respuesta para la vista
-        return view('item_presupuestario.monto_item', compact('items', 'id_area', 'direccion_id', 'id_user', 'id_direccion', 'monto', 'id_fuente', 'nombreDir'));
+        return view('item_presupuestario.monto_item', compact('items', 'id_area', 'direccion_id', 'id_user', 'id_direccion', 'monto', 'id_fuente', 'nombreDir',
+                    'proestado'));
     }
 
 
@@ -447,7 +488,7 @@ class ItemPresupuestarioController extends Controller{
     }
     /* TRAER EL ITEM ESPECIFICO DE LA DIRECCION POR ID */
 
-    
+
 
     /* ACTUALIZA ACTUALIZA EL MONTO DEL ITEM POR DIRECCION */
     public function actualizarItemMonto(Request $request, $id) {

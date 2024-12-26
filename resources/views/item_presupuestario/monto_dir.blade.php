@@ -92,6 +92,8 @@
                                     <th>Nombre</th>
                                     <th>Descripcion</th>
                                     <th>Monto</th>
+                                    <th>Pla. Items</th>
+                                    <th>Pla. Actividades</th>
                                     <th>Fecha</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -104,6 +106,8 @@
                                     <th>Nombre</th>
                                     <th>Descripcion</th>
                                     <th>Monto</th>
+                                    <th>Pla. Items</th>
+                                    <th>Pla. Actividades</th>
                                     <th>Fecha</th>
                                     <th>Acciones</th>
                                 </tr>

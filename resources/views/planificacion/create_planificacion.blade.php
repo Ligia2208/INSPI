@@ -22,7 +22,7 @@
 
 <div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
-    @if($id_fuente == '' || $monto == false)
+    @if($id_fuente == '' || $monto == false || $montoDir == 0)
 
     <div class="container2">
 
@@ -34,6 +34,10 @@
             <hr>
             @if($id_fuente == '')
             <p class="mb-0">No ha seleccionado una estructura presupuestaria. Complete este paso para proceder.</p>
+            @endif
+            <hr>
+            @if($montoDir == 0)
+            <p class="mb-0">No puede crear una actividad hasta que su Área tenga un monto asignado.</p>
             @endif
         </div>
 
@@ -122,7 +126,7 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="monto" class="form-label fs-6">Monto</label>
-                                <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="0">
+                                <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="0" onchange="">
                                 <div class="valid-feedback">¡Se ve bien!</div>
                                 <div class="invalid-feedback">Ingrese solo números</div>
                             </div>
@@ -433,5 +437,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.5')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.6')}}"></script>
 @endpush

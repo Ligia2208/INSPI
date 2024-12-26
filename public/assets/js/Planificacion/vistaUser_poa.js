@@ -98,8 +98,11 @@ $( function () {
                     // Condición si full.estado es 'O'
                     if (full.estado == 'O') {
                         array += `
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip" data-title="Comentarios">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
                             <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
                                 <i class="font-22 bi bi-filetype-pdf"></i>
@@ -110,6 +113,9 @@ $( function () {
                         array += `
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
                         `;
 
@@ -126,9 +132,7 @@ $( function () {
                             <a id="btnEditarPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
                                 <i class="font-22 fadeIn animated bi bi-pen"></i>
                             </a>
-                            <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip mr-1" data-title="PDF POA">
-                                <i class="font-22 bi bi-filetype-pdf"></i>
-                            </a>
+
                             <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
                                 <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
@@ -182,6 +186,16 @@ $( function () {
 
     });
     /* CARGAR REGISTRO */
+
+
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
+    $(document).on('click', '#btnVisualizaPOA', function(){
+        let id_planificacion = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/visualizarPlanificacion/'+ id_planificacion;
+
+    });
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
 
 
     //validar solicitud
@@ -690,8 +704,8 @@ $(function(){
                     <div class="modal fade" id="modalComentarios" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Comentarios del registro: "${departamento}"</h5>
+                                <div class="modal-header bg-success">
+                                    <h5 class="modal-title text-white" id="exampleModalLabel">Comentarios del registro: "${departamento}"</h5>
                                 </div>
                                 <div class="modal-body">
                                     <ul class="list-group">

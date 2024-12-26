@@ -136,9 +136,9 @@ class PlanificacionController extends Controller
         $montoTotal = ItemDireccion::where('id_direcciones', $id_direccion)->where('estado', 'A')->sum('monto');
         $id_fuente  = $direccion->id_fuente;
         $nombre     = $direccion->nombre;
-        $monto      = $direccion->monto;
+        $montoDir      = $direccion->monto;
 
-        $monto = $monto - $montoTotal;
+        $monto = $montoDir - $montoTotal;
         if($monto == 0){
             $monto = true;
         }else{
@@ -146,7 +146,7 @@ class PlanificacionController extends Controller
         }
 
         //respuesta para la vista
-        return view('planificacion.create_planificacion', compact('tipos', 'item_presupuestario', 'id_fuente', 'nombre', 'objExistente', 'proceso', 'monto'));
+        return view('planificacion.create_planificacion', compact('tipos', 'item_presupuestario', 'id_fuente', 'nombre', 'objExistente', 'proceso', 'monto', 'montoDir'));
     }
     /* VISTA - CREAR NUEVO EGRESO */
 
@@ -632,105 +632,93 @@ class PlanificacionController extends Controller
 
     public function agregarComentarioEstado(Request $request)
     {
-         $data = $request->validate([
-             'id_poa'    => 'required|string',
-             'estadoPoa' => 'required|string',
-             'justificacionPoa'  => 'required|string',
-         ]);
-
-         $id_poa    = $request->input('id_poa');
-         $estadoPoa = $request->input('estadoPoa');
-         $justificacionPoa  = $request->input('justificacionPoa');
-
+        $data = $request->validate([
+            'id_poa'    => 'required|string',
+            'estadoPoa' => 'required|string',
+            'justificacionPoa'  => 'required|string',
+        ]);
+    
+        $id_poa    = $request->input('id_poa');
+        $estadoPoa = $request->input('estadoPoa');
+        $justificacionPoa  = $request->input('justificacionPoa');
+    
         $estados = [
             'R' => 'Rechazado',
             'O' => 'Aprobado',
             'C' => 'Corregido',
         ];
-
-        if (isset($estados[$estadoPoa])) {
-            $estadoTexto = $estados[$estadoPoa];
-        } else {
-            $estadoTexto = 'Desconocido';
-        }
-
+    
+        $estadoTexto = $estados[$estadoPoa] ?? 'Desconocido';
+    
         $id_usuario = Auth::user()->id;
-
-        $datos = [
-            'id_poa'     => $id_poa,
-            'id_usuario' => $id_usuario,
-            'comentario' => $justificacionPoa,
-            'estado_planificacion' => $estadoTexto
-         ];
-        $comentario = Comentario::create($datos);
-
-        $Poa = Poa::where('id', $id_poa)->first();
-        $calendario = Calendario::where('id_poa', $id_poa)->first();
-
-        // Si el estado es "O" (Aprobado), asignar el siguiente número de POA secuencial
-        if ($estadoPoa == 'O') {
-
-            //id_item_dir
-
-            $itemPre = ItemDireccion::where('id', $Poa->id_item_dir)
-                ->where('estado', 'A')
-                ->first();
-
-            //actualiza item y historial
-            //$itemPre = ItemPresupuestario::find($Poa->id_item);
-
-
-            if ($itemPre) {
-
-                $monto = $itemPre->monto - $calendario->total;
-                $tipo = 'I';
-
-                $itemPre->monto = $monto;
-                $itemPre->save();
-
-                //actualizo los estados anteriores
-                ConsumoItem::actualizarEstadosPorIdItem($Poa->id_item);
-
-                $fecha = date('Y-m-d H:i:s');
-                $anio = date('Y');
-
-                // Crear un nuevo registro en ConsumoItem
-                $consumo = ConsumoItem::create([
-                    'id_item'         => $itemPre->id,
-                    'id_actividad'    => $id_poa,
-                    'monto_consumido' => $calendario->total,
-                    'monto'           => $monto,
-                    'fecha'           => $fecha,
-                    'anio'            => $anio,
-                    'tipo'            => $tipo,
+    
+        DB::beginTransaction(); // Inicia la transacción
+    
+        try {
+            $datos = [
+                'id_poa'     => $id_poa,
+                'id_usuario' => $id_usuario,
+                'comentario' => $justificacionPoa,
+                'estado_planificacion' => $estadoTexto
+            ];
+            $comentario = Comentario::create($datos);
+    
+            $Poa = Poa::where('id', $id_poa)->first();
+            $calendario = Calendario::where('id_poa', $id_poa)->first();
+    
+            if ($estadoPoa == 'O') {
+                $itemPre = ItemDireccion::where('id', $Poa->id_item_dir)
+                    ->where('estado', 'A')
+                    ->first();
+    
+                if ($itemPre) {
+                    $monto = $itemPre->monto - $calendario->total;
+                    $tipo = 'I';
+    
+                    $itemPre->monto = $monto;
+                    $itemPre->save();
+    
+                    ConsumoItem::actualizarEstadosPorIdItem($Poa->id_item);
+    
+                    $fecha = date('Y-m-d H:i:s');
+                    $anio = date('Y');
+    
+                    $consumo = ConsumoItem::create([
+                        'id_item'         => $itemPre->id,
+                        'id_actividad'    => $id_poa,
+                        'monto_consumido' => $calendario->total,
+                        'monto'           => $monto,
+                        'fecha'           => $fecha,
+                        'anio'            => $anio,
+                        'tipo'            => $tipo,
+                    ]);
+    
+                    $id_consumo = $consumo->id;
+                }
+    
+                $ultimoNroPoa = Poa::where('estado', 'O')->max('nro_poa');
+                $nuevoNroPoa = $ultimoNroPoa ? $ultimoNroPoa + 1 : 1;
+    
+                $Poa->update([
+                    'estado' => $estadoPoa,
+                    'nro_poa' => $nuevoNroPoa,
+                    'id_consumo' => $id_consumo ?? null,
                 ]);
-
-                $id_consumo = $consumo->id;
-
+            } else {
+                $Poa->update([
+                    'estado' => $estadoPoa,
+                ]);
             }
-
-            $ultimoNroPoa = Poa::where('estado', 'O')->max('nro_poa');
-            $nuevoNroPoa = $ultimoNroPoa ? $ultimoNroPoa + 1 : 1;
-            $Poa->update([
-                'estado' => $estadoPoa,
-                'nro_poa' => $nuevoNroPoa,
-                'id_consumo' => $id_consumo,
-            ]);
-
-
-        } else {
-            $Poa->update([
-                'estado' => $estadoPoa,
-            ]);
-        }
-
-        if ($comentario) {
+    
+            DB::commit(); // Confirma la transacción
+    
             return response()->json(['message' => 'La actividad se ha revisado exitosamente', 'data' => true], 200);
-
-        } else {
-            return response()->json(['message' => 'Error al validar la actividad', 'data' => false], 500);
+    
+        } catch (\Exception $e) {
+            DB::rollBack(); // Revierte la transacción en caso de error
+    
+            return response()->json(['message' => 'Error al validar la actividad: ' . $e->getMessage(), 'data' => false], 500);
         }
-
     }
 
     //------------------------------------------------------------------------------------------------------------
@@ -870,6 +858,94 @@ class PlanificacionController extends Controller
             ->first();
 
             return view('planificacion.edit_planificacion', compact('tipos', 'atributos', 'tipoMonto', 'comentarios', 'item_presupuestario', 'atributos_operativos',
+            'unidad_eje', 'programa', 'proyecto', 'actividad', 'fuente'));
+
+    }
+
+
+    public function visualizarPlanificacion(Request $request, $id){
+
+        // ====== para traer la estructura presupuestaria
+        $id_user   = Auth::user()->id;
+        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
+        $id_area   = $filiacion->area_id;
+        $direccion_id = $filiacion->direccion_id;
+
+        if($id_area == 7){
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir_tec', $direccion_id)->first();
+            $id_direccion = $direccion->id;
+            $id_fuente    = $direccion->id_fuente;
+        }else{
+            $direccion    = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir', $id_area)->first();
+            $id_direccion = $direccion->id;
+            $id_fuente    = $direccion->id_fuente;
+        }
+
+        $estrutura = Fuente::select('pla_fuente.id as id_fuente', 'act.id as id_actividad', 'pro.id as id_proyecto',
+                'proy.id as id_programa', 'uni.id as id_unidad')
+            ->join('pla_actividad_act as act', 'act.id', '=', 'pla_fuente.id_actividad')
+            ->join('pla_proyecto as pro', 'pro.id', '=', 'act.id_proyecto')
+            ->join('pla_programa as proy', 'proy.id', '=', 'pro.id_programa')
+            ->join('pla_unidad_ejecutora as uni', 'uni.id', '=', 'proy.id_unidad')
+            ->where('pla_fuente.id', $id_fuente)->first();
+
+        $tipos      = TipoPoa::select('id', 'nombre')->where('estado', 'A')->get();
+        $unidad_eje = UnidadEjecutora::select('id', 'nombre')->where('estado', 'A')->get();
+        $programa   = Programa::where('estado', 'A')->where('id_unidad', $estrutura->id_unidad)->get();
+        $proyecto   = Proyecto::where('estado', 'A')->where('id_programa', $estrutura->id_programa)->get();
+        $actividad  = ActividadPre::where('estado', 'A')->where('id_proyecto', $estrutura->id_proyecto)->get();
+        $fuente     = Fuente::where('estado', 'A')->where('id_actividad', $estrutura->id_actividad)->get();
+        $tipoMonto  = TipoMonto::select('id', 'nombre')->where('estado', 'A')->get();
+        // ====== para traer la estructura presupuestaria
+
+
+        //El where hace que se asocie con el Id_poa. Tenía otro where para que se asocie con el id_usuario pero creo que no es la finalidad de la vista.
+        $comentarios = Comentario::select('users.name as id_usuario', 'pla_comentario.comentario', 'pla_comentario.id_poa', 'pla_comentario.created_at',
+            'pla_comentario.estado_planificacion as estado_planificacion')
+            ->where('id_poa', $id)
+            ->join('bdcoreinspi.users', 'users.id', '=', 'pla_comentario.id_usuario')
+            // ->where('id_usuario', $id_usuario)
+            ->orderBy('created_at', 'asc')
+            // ->where()
+            ->get();
+
+        $atributos_operativos = DB::table('db_inspi_planificacion.pla_poa1')
+            ->select('pla_poa1.id as id', 'pla_obj_operativo.id as id_objetivo_operativo', 'pla_actividad_operativa.id as id_actividad_operativa',
+            'pla_sub_actividad.id as id_sub_actividad')
+            ->join('db_inspi_planificacion.pla_obj_operativo', 'pla_poa1.id_obj_operativo', '=', 'pla_obj_operativo.id')
+            ->join('db_inspi_planificacion.pla_actividad_operativa', 'pla_poa1.id_actividad', '=', 'pla_actividad_operativa.id')
+            ->join('db_inspi_planificacion.pla_sub_actividad', 'pla_poa1.id_sub_actividad', '=', 'pla_sub_actividad.id')
+            ->where('pla_poa1.id', $id)
+            ->whereIn('pla_poa1.estado', ['A','R','O', 'C'])
+            ->first();
+
+        $item_presupuestario = ItemPresupuestario::where('estado', 'A')->get();
+
+
+        //VERSION2 DEL QUERY GENERAL
+        $atributos = DB::table('db_inspi_planificacion.pla_poa1')
+            ->select('pla_poa1.id as id','pla_poa1.departamento as departamento', 'pla_poa1.nro_poa as numero', 'pla_poa1.fecha as fecha', 'pla_poa1.id_tipo_poa as idPoa',
+            'pla_calendario.justificacion_area as justificacion', 'pla_poa1.plurianual as plurianual','pla_obj_operativo.nombre as nombreObjOperativo', 'pla_actividad_operativa.nombre as nombreActividadOperativa',
+            'pla_sub_actividad.nombre as nombreSubActividad', 'pla_poa1.monto as monto', 'pla_poa1.presupuesto_proyectado as presupuesto_proyectado',
+            'pla_poa1.u_ejecutora as u_ejecutora', 'pla_poa1.programa as programa', 'pla_poa1.proyecto as proyecto',
+            'pla_poa1.actividad as actividad', 'pla_poa1.fuente as fuente', 'pla_poa1.id_tipo_monto as idTipoMonto',
+            'pla_calendario.enero', 'pla_calendario.febrero', 'pla_calendario.marzo', 'pla_calendario.abril', 'pla_calendario.mayo',
+            'pla_calendario.junio', 'pla_calendario.julio', 'pla_calendario.agosto', 'pla_calendario.septiembre', 'pla_calendario.octubre',
+            'pla_calendario.noviembre', 'pla_calendario.diciembre', 'pla_poa1.id_item as id_item', 'pla_item_presupuestario.nombre as nombreItem',
+            'pla_item_presupuestario.descripcion as descripcionItem', 'pla_item_presupuestario.monto as montoItem')
+            ->join('db_inspi_planificacion.pla_calendario', 'pla_poa1.id', '=', 'pla_calendario.id_poa')
+            ->join('db_inspi_planificacion.pla_obj_operativo', 'pla_poa1.id_obj_operativo', '=', 'pla_obj_operativo.id')
+            ->join('db_inspi_planificacion.pla_actividad_operativa', 'pla_poa1.id_actividad', '=', 'pla_actividad_operativa.id')
+            ->join('db_inspi_planificacion.pla_sub_actividad', 'pla_poa1.id_sub_actividad', '=', 'pla_sub_actividad.id')
+            // ->join('db_inspi_planificacion.pla_tipo_monto', 'pla_poa1.id_tipo_monto', '=', 'pla_tipo_monto.id')
+            ->leftJoin('db_inspi_planificacion.pla_tipo_monto', 'pla_poa1.id_tipo_monto', '=', 'pla_tipo_monto.id')
+            ->join('db_inspi_planificacion.pla_tipo_poa', 'pla_poa1.id_tipo_poa', '=', 'pla_tipo_poa.id')
+            ->join('db_inspi_planificacion.pla_item_presupuestario', 'pla_poa1.id_item', '=', 'pla_item_presupuestario.id')
+            ->where('pla_poa1.id', $id)
+            ->whereIn('pla_poa1.estado', ['A','R','O', 'C'])
+            ->first();
+
+            return view('planificacion.view_planificacion', compact('tipos', 'atributos', 'tipoMonto', 'comentarios', 'item_presupuestario', 'atributos_operativos',
             'unidad_eje', 'programa', 'proyecto', 'actividad', 'fuente'));
 
     }

@@ -27,14 +27,11 @@ $( function () {
                 searchable: false ,
                 render: function (data, type, full, meta) {
                 var array = "";
-                array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
-                        <!--
-                        <a id="btnRecordItemP" data-id_item="${full.id}" title="Historial del Item" class="show-tooltip mr-1" data-title="Historial del Item" data-toggle="modal" data-target="#modalRecordItem">
-                            <i class="font-22 bi bi-bar-chart-steps text-success"></i>
-                        </a>
-                        -->
+                if(!full.proceso_estado){
+
+                    array =`
+                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
                         <a id="btnEditarMonto" data-id_editar="${full.id}" title="Editar Monto" class="show-tooltip mr-1" data-title="Editar Monto">
                             <i class="font-22 fadeIn animated bi bi-pen" ></i>
@@ -45,6 +42,14 @@ $( function () {
 
                     </div>
                     `;
+
+                }else{
+                    array =`
+                        <div class="text-center">
+                            <span class="badge badge-primary text-bg-warning">Proceso Cerrado</span>
+                        </div>
+                    `;
+                }
 
                 return array;
 
@@ -634,17 +639,6 @@ $(function(){
     /* GUARDAR UPDATE */
 
     var table = $('#tblItemPresupuestarioIndex').DataTable();
-
-
-
-    /* ABRIL MODAL PARA GENERAR EL HISTORIAL */
-    $(document).on('click', '#btnRecordItemP', function(){
-
-        var itemId = $(this).data('id_item');
-        $('#id_itemPres').val(itemId);
-
-    });
-    /* ABRIL MODAL PARA GENERAR EL HISTORIAL */
 
 
 

@@ -230,9 +230,11 @@
 
                 <div class="col-lg-12 d-flex align-items-center justify-content-center mt-4">
 
+                    @if(!$proestado)
                     <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="guardarEstructura()" style="margin-right: 2%">
                         <i class="bi bi-send-check"></i> Registrar
                     </a>
+                    @endif
 
                 </div>
 
@@ -244,6 +246,7 @@
 
     </hr>
 
+    @if(!$proestado)
     <div class="container2 mt-5">
 
         <div class="card  p-4">
@@ -280,6 +283,7 @@
         </div>
 
     </div>
+    @endif
 
 </div>
 

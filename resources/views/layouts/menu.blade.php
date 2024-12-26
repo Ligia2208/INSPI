@@ -273,6 +273,16 @@
                     <h4 class="menu-text">Planificación</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
+
+                @can('pladetalleuser')
+                    <li class="menu-item {{ active('persona.*') }}">
+                        <a href="{{ route('planificacion.detalleUser') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-list-task"></i>
+                            <span class="menu-text">Detalle Planificación</span>
+                        </a>
+                    </li>
+                @endcan
+
                 @can('plamontoitem')
                     <li class="menu-item {{ active('persona.*') }}">
                         <a href="{{ route('itemPresupuestario.monto_item') }}" class="menu-link">

@@ -10,17 +10,29 @@ $( function () {
 
         limpiar();
 
+        var monDisp = $('#monDisp').val();
+
         var monto = $('#monto').val();
         //var isValid = /^\d+$/.test(monto);
         var isValid = /^\d+(\.\d+)?$/.test(monto);
 
-        if(monto === '0'){
+        if(monDisp === ''){
 
             Swal.fire({
                 icon: 'warning',
                 type:  'warning',
                 title: 'CoreInspi',
-                text: 'Debe de ingresar un monto',
+                text: 'Debe de seleccionar un Item Presupuestario.',
+                showConfirmButton: true,
+            });
+
+        }else if(monto === '0'){
+
+            Swal.fire({
+                icon: 'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text: 'Debe de ingresar un monto.',
                 showConfirmButton: true,
             });
 
@@ -34,8 +46,17 @@ $( function () {
                 showConfirmButton: true,
             });
 
-        }else{
+        }else if(monto > monDisp){
 
+            Swal.fire({
+                icon: 'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text: 'El monto es mayor al monto disponible del Item Presupuestario.',
+                showConfirmButton: true,
+            });
+
+        }else{
 
             switch ($(this).val()) {
                 case '1':

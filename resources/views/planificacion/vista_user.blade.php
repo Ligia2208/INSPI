@@ -70,19 +70,13 @@
                 <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> ACTIVIDADES - {{$area}}</h2>
                 <hr/>
 
-                <a type="button" onclick="ejecutar()"  class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center">
+                <!-- <a type="button" onclick="ejecutar()"  class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center">
                     Ejecutar
-                </a>
-
-
-                <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
-                    <i class="lni lni-circle-plus"></i> Crear Actividad
-                </a>
+                </a> -->
 
                 <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
                     <i class="lni lni-circle-plus"></i> Crear Actividad
                 </a>
-                <!-- Redirige a planificacion/crearPoa -->
 
                 <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
                     <i class="lni lni-circle-plus"></i> Reformas
@@ -438,5 +432,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.11')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.12')}}"></script>
 @endpush

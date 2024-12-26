@@ -59,6 +59,11 @@ $( function () {
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
+
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
+                            </a>
+
                             <!--
                             <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
                                 <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
@@ -154,6 +159,17 @@ $(function(){
 
     });
     /* CARGAR REGISTRO */
+
+
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
+    $(document).on('click', '#btnVisualizaPOA', function(){
+        let id_planificacion = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/visualizarPlanificacion/'+ id_planificacion;
+
+    });
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
+
 })
 
 

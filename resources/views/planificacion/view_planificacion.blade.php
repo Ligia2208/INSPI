@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Editar Actividad')
+@section('title', 'Visualizar Planificación')
 
 <!-- DataTables CSS -->
 @push('styles')
@@ -13,7 +13,7 @@
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <div class="d-flex align-items-center flex-wrap mr-1">
             <div class="d-flex align-items-baseline mr-5">
-                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Editar Actividad</h5></a>
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Visualizar Actividad</h5></a>
             </div>
         </div>
     </div>
@@ -45,50 +45,50 @@
 
                         <div class="col-md-4" hidden>
                             <label for="coordina" class="form-label fs-6">ID OBJETIVO OPERATIVO</label>
-                            <input type="text" id="id_obj_operativo" name="id_obj_operativo" class="form-control" required="" autofocus="" value="{{$atributos_operativos->id_objetivo_operativo}}">
+                            <input type="text" id="id_obj_operativo" name="id_obj_operativo" class="form-control" required="" autofocus="" value="{{$atributos_operativos->id_objetivo_operativo}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-4" hidden>
                             <label for="coordina" class="form-label fs-6">ID ACTIVIDAD OPERATIVA</label>
-                            <input type="text" id="id_actividad_operativa" name="id_actividad_operativa" class="form-control" required="" autofocus="" value="{{$atributos_operativos->id_actividad_operativa}}">
+                            <input type="text" id="id_actividad_operativa" name="id_actividad_operativa" class="form-control" required="" autofocus="" value="{{$atributos_operativos->id_actividad_operativa}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-4" hidden>
                             <label for="coordina" class="form-label fs-6">ID SUB ACTIVIDAD</label>
-                            <input type="text" id="id_sub_actividad" name="id_sub_actividad" class="form-control" required="" autofocus="" value="{{$atributos_operativos->id_sub_actividad}}">
+                            <input type="text" id="id_sub_actividad" name="id_sub_actividad" class="form-control" required="" autofocus="" value="{{$atributos_operativos->id_sub_actividad}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-12" hidden>
                             <label for="coordina" class="form-label fs-6">ID</label>
-                            <input type="text" id="id_poa" name="id_poa" class="form-control" required="" autofocus="" value="{{$atributos->id}}">
+                            <input type="text" id="id_poa" name="id_poa" class="form-control" required="" autofocus="" value="{{$atributos->id}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-12">
                             <label for="coordina" class="form-label fs-6">Coordinación/Dirección/Proyecto</label>
-                            <input type="text" id="coordina" name="coordina" class="form-control" required="" autofocus="" value="{{$atributos->departamento}}">
+                            <input type="text" id="coordina" name="coordina" class="form-control" required="" autofocus="" value="{{$atributos->departamento}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-4 mt-2" hidden>
                             <label for="nPOA" class="form-label fs-6">N° de POA</label>
-                            <input type="text" id="nPOA" name="nPOA" class="form-control" required="" autofocus="" value="{{$atributos->numero}}">
+                            <input type="text" id="nPOA" name="nPOA" class="form-control" required="" autofocus="" value="{{$atributos->numero}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-4 mt-2">
                             <label for="fecha" class="form-label fs-6">Fecha</label>
-                            <input type="date" id="fecha" name="fecha" class="form-control" required="" autofocus="" value="{{$atributos->fecha}}">
+                            <input type="date" id="fecha" name="fecha" class="form-control" required="" autofocus="" value="{{$atributos->fecha}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
 
                         <div class="col-md-4 mt-2">
                             <label for="poa" class="form-label fs-6">Tipo de Gasto</label>
-                            <select id="poa" name="poa" class="form-control single-select" required>
+                            <select id="poa" name="poa" class="form-control single-select" required disabled>
                                 <!-- <option value="0">Seleccione Opción</option> -->
                                 @foreach($tipos as $tipo)
                                 @if($tipo->id == $atributos->idPoa)
@@ -102,12 +102,12 @@
 
                         <div class="col-md-2 mt-5" style="margin-left: 8%;">
                             <label for="plurianual" class="form-label fs-6">Plurianual</label>
-                            <input type="checkbox" id="plurianual" name="plurianual" class="form-check" {{ $atributos->plurianual ? 'checked' : '' }}>
+                            <input type="checkbox" id="plurianual" name="plurianual" class="form-check" {{ $atributos->plurianual ? 'checked' : '' }} disabled>
                         </div>
 
                         <div class="col-md-12 mt-2">
                             <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
-                            <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4">{{$atributos->justificacion}}</textarea>
+                            <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4" disabled>{{$atributos->justificacion}}</textarea>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
@@ -122,25 +122,25 @@
 
                         <div class="col-md-6">
                             <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
-                            <input type="text" id="obOpera" name="obOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreObjOperativo}}">
+                            <input type="text" id="obOpera" name="obOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreObjOperativo}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-6">
                             <label for="actOpera" class="form-label fs-6">Actividad Operativa</label>
-                            <input type="text" id="actOpera" name="actOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreActividadOperativa}}">
+                            <input type="text" id="actOpera" name="actOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreActividadOperativa}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-4 mt-2">
                             <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación</label>
-                            <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="{{$atributos->nombreSubActividad}}">
+                            <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="{{$atributos->nombreSubActividad}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-4 mt-2">
                             <label for="item" class="form-label fs-6">Item presupuestario</label>
-                            <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)">
+                            <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)" disabled>
                                 @foreach($item_presupuestario as $item)
                                 @if($item->id == $atributos->id_item)
                                     <option value="{{$item->id}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
@@ -165,7 +165,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="monto" class="form-label fs-6">Monto</label>
-                            <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="{{intval($atributos->monto)}}">
+                            <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="{{intval($atributos->monto)}}" disabled>
                             <div class="valid-feedback">¡Se ve bien!</div>
                             <div class="invalid-feedback">Ingrese solo números</div>
                         </div>
@@ -261,7 +261,7 @@
                 <div class="row p-2">
                     <div class="col-md-4 mt-2">
                         <label for="frecuencia" class="form-label fs-6">Frecuencia</label>
-                        <select id="frecuencia" name="frecuencia" class="form-control single-select" required>
+                        <select id="frecuencia" name="frecuencia" class="form-control single-select" required disabled>
                             <option value="">Seleccione una frecuencia</option>
                             @foreach($tipoMonto as $tipoM)
                                 <option value="{{ $tipoM->id }}" {{ $atributos->idTipoMonto == $tipoM->id ? 'selected' : '' }}>
@@ -276,73 +276,73 @@
 
                         <div class="col-md-3">
                             <label for="enero" class="form-label fs-6">Enero</label>
-                            <input type="text" id="enero" name="enero" class="form-control" required="" autofocus="" value="{{$atributos->enero}}">
+                            <input type="text" id="enero" name="enero" class="form-control" required="" autofocus="" value="{{$atributos->enero}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3">
                             <label for="febre" class="form-label fs-6">Febrero</label>
-                            <input type="text" id="febre" name="febre" class="form-control" required="" autofocus="" value="{{$atributos->febrero}}">
+                            <input type="text" id="febre" name="febre" class="form-control" required="" autofocus="" value="{{$atributos->febrero}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3">
                             <label for="marzo" class="form-label fs-6">Marzo</label>
-                            <input type="text" id="marzo" name="marzo" class="form-control" required="" autofocus="" value="{{$atributos->marzo}}">
+                            <input type="text" id="marzo" name="marzo" class="form-control" required="" autofocus="" value="{{$atributos->marzo}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3">
                             <label for="abril" class="form-label fs-6">Abril</label>
-                            <input type="text" id="abril" name="abril" class="form-control" required="" autofocus="" value="{{$atributos->abril}}">
+                            <input type="text" id="abril" name="abril" class="form-control" required="" autofocus="" value="{{$atributos->abril}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3 mt-2">
                             <label for="mayo" class="form-label fs-6">Mayo</label>
-                            <input type="text" id="mayo" name="mayo" class="form-control" required="" autofocus="" value="{{$atributos->mayo}}">
+                            <input type="text" id="mayo" name="mayo" class="form-control" required="" autofocus="" value="{{$atributos->mayo}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3 mt-2">
                             <label for="junio" class="form-label fs-6">Junio</label>
-                            <input type="text" id="junio" name="junio" class="form-control" required="" autofocus="" value="{{$atributos->junio}}">
+                            <input type="text" id="junio" name="junio" class="form-control" required="" autofocus="" value="{{$atributos->junio}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3 mt-2">
                             <label for="julio" class="form-label fs-6">Julio</label>
-                            <input type="text" id="julio" name="julio" class="form-control" required="" autofocus="" value="{{$atributos->julio}}">
+                            <input type="text" id="julio" name="julio" class="form-control" required="" autofocus="" value="{{$atributos->julio}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3 mt-2">
                             <label for="agosto" class="form-label fs-6">Agosto</label>
-                            <input type="text" id="agosto" name="agosto" class="form-control" required="" autofocus="" value="{{$atributos->agosto}}">
+                            <input type="text" id="agosto" name="agosto" class="form-control" required="" autofocus="" value="{{$atributos->agosto}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3 mt-2">
                             <label for="septiem" class="form-label fs-6">Septiembre</label>
-                            <input type="text" id="septiem" name="septiem" class="form-control" required="" autofocus="" value="{{$atributos->septiembre}}">
+                            <input type="text" id="septiem" name="septiem" class="form-control" required="" autofocus="" value="{{$atributos->septiembre}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3 mt-2">
                             <label for="octubre" class="form-label fs-6">Octubre</label>
-                            <input type="text" id="octubre" name="octubre" class="form-control" required="" autofocus="" value="{{$atributos->octubre}}">
+                            <input type="text" id="octubre" name="octubre" class="form-control" required="" autofocus="" value="{{$atributos->octubre}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3 mt-2">
                             <label for="noviem" class="form-label fs-6">Noviembre</label>
-                            <input type="text" id="noviem" name="noviem" class="form-control" required="" autofocus="" value="{{$atributos->noviembre}}">
+                            <input type="text" id="noviem" name="noviem" class="form-control" required="" autofocus="" value="{{$atributos->noviembre}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-3 mt-2">
                             <label for="diciem" class="form-label fs-6">Diciembre</label>
-                            <input type="text" id="diciem" name="diciem" class="form-control" required="" autofocus="" value="{{$atributos->diciembre}}">
+                            <input type="text" id="diciem" name="diciem" class="form-control" required="" autofocus="" value="{{$atributos->diciembre}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
                     </div>
@@ -386,7 +386,7 @@
                     </div>
                     @endif
 
-            <div class="card mb-5">
+            <!-- <div class="card mb-5">
                 <div class="card-head">
                     <div class="d-flex align-items-center p-3 text-white bg-warning rounded shadow-sm">
                         <div class="lh-1">
@@ -403,15 +403,15 @@
                     </div>
 
                 </div>
-            </div>
+            </div> -->
 
             <div class="col-lg-12 d-flex align-items-center justify-content-center">
-                <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="actualizarPlanificacion()" style="margin-right: 2%">
+                <!-- <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="actualizarPlanificacion()" style="margin-right: 2%">
                     <i class="bi bi-send-check"></i> Editar actividad
-                </a>
+                </a> -->
 
                 <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/planificacion/vistaUser'">
-                <i class="bi bi-caret-left"></i> Regresar
+                    <i class="bi bi-caret-left"></i> Regresar
                 </a>
             </div>
 
