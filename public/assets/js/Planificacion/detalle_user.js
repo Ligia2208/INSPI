@@ -137,10 +137,15 @@ $( function () {
     $('#tblPlanificacionDetalleUser').DataTable({ //id de la tabla en el visual (index)
         processing: false,
         serverSide: false,
+        autoWidth: false,
         lengthMenu: [8, 15, 25, 50, 100],
         ajax: {
             url: '/planificacion/detalleUser', // La URL que devuelve los datos en JSON
         },
+        columnDefs: [
+            { width: '400px', targets: 2 } // Ajusta el índice según la posición de "Obj. Operativo"
+        ],
+        
         columns: [
             { data: 'Area',                name: 'Area' },
             { data: 'POA',                 name: 'POA' },
@@ -231,6 +236,14 @@ $( function () {
                             "showing": "Mostrando"
                         }
         },
+        createdRow: function (row, data, dataIndex) {
+            // Aquí aplicas el colspan a la celda deseada (por ejemplo, la celda de la columna "enero")
+            if (data.POA) {
+                // Buscas la celda correspondiente y le aplicas colspan
+                $(row).find('td:eq(5)').attr('colspan', 3);  // Aplica colspan a la columna 5 (enero) para que ocupe 3 columnas
+            }
+        },
+        
 
     });
 

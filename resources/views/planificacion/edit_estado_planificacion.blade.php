@@ -121,7 +121,7 @@
                         </div>
 
                         <div class="col-md-4 mt-2">
-                            <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación</label>
+                            <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación / Convenio</label>
                             <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="{{$atributos->nombreSubActividad}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>

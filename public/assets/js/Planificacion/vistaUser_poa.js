@@ -2,12 +2,7 @@ $( function () {
 
     //CÓDIGO PARA BUSCAR USUARIO EN EL MODAL DE GENERAR PDF
     $('.js-example-basic-single').select2({
-        //dropdownParent: $('.modal-body'),
-        theme: 'bootstrap4',
-        width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
-        height: '38px',
-        placeholder: 'Selecciona una opción',
-        dropdownParent: $('#addReportPOA .modal-body')
+        width: '100%',
     });
 
 
@@ -28,6 +23,7 @@ $( function () {
             { data: 'obj_operativo',       name: 'obj_operativo' },
             { data: 'act_operativa',       name: 'act_operativa' },
             { data: 'sub_actividad',       name: 'sub_actividad' },
+            { data: 'item',                name: 'item' },
             { data: 'monto',               name: 'monto' },
             { data: 'proceso',             name: 'proceso' },
             { data: 'fecha',               name: 'fecha' },
@@ -149,6 +145,21 @@ $( function () {
             [7, 'desc']
         ],
 
+        footerCallback: function (row, data, start, end, display) {
+            let api = this.api();
+    
+            // Calcula el total de la columna "Monto"
+            let total = api
+                .column(6, { page: 'current' })
+                .data()
+                .reduce(function (a, b) {
+                    return parseFloat(a) + parseFloat(b);
+                }, 0);
+    
+            // Actualiza el tfoot con el total
+            $(api.column(6).footer()).html('Total: $' + total.toFixed(2));
+        },
+
         // Otras configuraciones de DataTables aquí
         language: {
             "emptyTable": "No hay información", //no hay datos disponibles
@@ -175,6 +186,10 @@ $( function () {
 
     var table = $('#tblPlanificacionVistaUser').DataTable();
 
+    $('#filterItem').on('change', function() {
+        var itemId = $(this).val(); // Obtener el valor seleccionado del filtro Item
+        $('#tblPlanificacionVistaUser').DataTable().ajax.url('/planificacion/vistaUser?item=' + itemId).load();
+    });
 
 
 
@@ -427,7 +442,7 @@ $( function () {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             type: 'GET',
-            url: '/planificacion/obtenerPoa/' + id_Poa,
+            url: '/planificacion/obtenerpoa/' + id_Poa,
             data: {
                 _token: "{{ csrf_token() }}",
             },
@@ -448,15 +463,18 @@ $( function () {
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h4 class="modal-title" id="exampleModalLabel">Solicitud POA de ${departamento}</h4>
+                                    <h4 class="modal-title mr-2" id="exampleModalLabel">Solicitud POA </h4>
+                                    <strong>${departamento}</strong>
                                 </div>
                                 <div class="modal-body">
 
                                     <input type="hidden" value="${id_poa}" id="solicitud_id">
-                                    <h4 class="modal-title">Actividad: ${actividad}</h4>
-                                    <h4 class="modal-title">Sub Actividad: ${subactividad}</h4>
+                                    <h4 class="modal-title">Actividad: </h4>
+                                    <span>${actividad}</span>
+                                    <h4 class="modal-title mt-4">Sub Actividad: </h4>
+                                    <span>${subactividad}</span>
 
-                                    <div class="col-md-12 mt-4">
+                                    <div class="col-md-12 mt-5">
                                         <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
                                         <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
                                         <div class="valid-feedback">Looks good!</div>

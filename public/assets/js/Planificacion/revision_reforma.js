@@ -1,4 +1,12 @@
 
+$( function () {
+
+    $('.single-select').select2({
+        width: '100%',
+    });
+
+});
+
 function agregarComentarioReforma() {
 
     let id_reforma = $('#id_reforma').val();

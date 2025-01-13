@@ -11,8 +11,11 @@ $( function () {
         limpiar();
 
         var monDisp = $('#monDisp').val();
-
         var monto = $('#monto').val();
+
+        monto = parseFloat(monto);    
+        monDisp = parseFloat(monDisp);
+
         //var isValid = /^\d+$/.test(monto);
         var isValid = /^\d+(\.\d+)?$/.test(monto);
 
@@ -26,7 +29,7 @@ $( function () {
                 showConfirmButton: true,
             });
 
-        }else if(monto === '0'){
+        }else if(monto === 0 && monDisp !== 0 ){
 
             Swal.fire({
                 icon: 'warning',
@@ -106,6 +109,11 @@ $( function () {
                     var cuota = monto / 1;
 
                     $('#diciem').val(cuota.toFixed(2));
+
+                    break;
+
+                case '7':
+                    limpiar();
 
                     break;
 
@@ -256,7 +264,8 @@ $( function () {
 // Función para validar input numérico
 function validarInputNumerico(input) {
     var inputValue = input.value;
-    var isValid = /^\d+$/.test(inputValue);
+    //var isValid = /^\d+$/.test(inputValue);
+    var isValid = /^\d+(\.\d+)?$/.test(inputValue);
 
     if (!isValid) {
         input.setCustomValidity('Ingrese solo números');
@@ -299,6 +308,9 @@ function guardarPlanificacion(){
 
 
     let monto    = $('#monto').val();
+    let monDisp  = $('#monDisp').val();
+    monto   = parseFloat(monto);    
+    monDisp = parseFloat(monDisp);
     //let presupuesto_proyectado    = $('#presupuesto_proyectado').val();
     // let monDisp  = $('#monDisp').val();
     let coordina = $('#coordina').val();
@@ -397,7 +409,7 @@ function guardarPlanificacion(){
             showConfirmButton: true,
         });
 
-   }else if(monto == '0' || monto == ''){
+   }else if((monto == '0' || monto == '') && monDisp !== 0 ){
 
         Swal.fire({
             icon: 'warning',
@@ -481,16 +493,16 @@ function guardarPlanificacion(){
                     // desItem : desItem ,
                     item_presupuestario    : item_presupuestario,
                     id_item_dir:  id_item_dir,
-                    monto   : monto,
+                    monto:      monto,
                     //presupuesto_proyectado : presupuesto_proyectado,
                     unidad_ejecutora: unidad_ejecutora,
-                    programa: programa,
-                    proyecto: proyecto,
-                    actividad: actividad,
+                    programa:   programa,
+                    proyecto:   proyecto,
+                    actividad:  actividad,
                     fuente_financiamiento: fuente_financiamiento,
                     // monDisp : monDisp ,
-                    coordina: coordina,
-                    // nPOA    : nPOA    ,
+                    coordina:   coordina,
+                    // nPOA   : nPOA    ,
                     fecha     : fecha,
                     poa       : poa,
                     plurianual: plurianual ? 1 :0,
@@ -524,13 +536,18 @@ function guardarPlanificacion(){
                     }
                 },
                 error: function(error) {
+
+                    let responseObject = JSON.parse(error.responseText);
+                    let message = responseObject.message;
+
                     Swal.fire({
                         icon:  'error',
                         title: 'CoreInspi',
                         type:  'error',
-                        text:   error,
+                        text:   message,
                         showConfirmButton: true,
                     });
+
                 }
             });
 
@@ -542,61 +559,122 @@ function guardarPlanificacion(){
 
 
 function validarCalculos() {
-    var enero   = parseFloat($('#enero').val() || 0);
-    var febre   = parseFloat($('#febre').val() || 0);
-    var marzo   = parseFloat($('#marzo').val() || 0);
-    var abril   = parseFloat($('#abril').val() || 0);
-    var mayo    = parseFloat($('#mayo').val() || 0);
-    var junio   = parseFloat($('#junio').val() || 0);
-    var julio   = parseFloat($('#julio').val() || 0);
-    var agosto  = parseFloat($('#agosto').val() || 0);
-    var septiem = parseFloat($('#septiem').val() || 0);
-    var octubre = parseFloat($('#octubre').val() || 0);
-    var noviem  = parseFloat($('#noviem').val() || 0);
-    var diciem  = parseFloat($('#diciem').val() || 0);
 
-    // Redondear valores a dos decimales
-    enero   = parseFloat(enero.toFixed(2));
-    febre   = parseFloat(febre.toFixed(2));
-    marzo   = parseFloat(marzo.toFixed(2));
-    abril   = parseFloat(abril.toFixed(2));
-    mayo    = parseFloat(mayo.toFixed(2));
-    junio   = parseFloat(junio.toFixed(2));
-    julio   = parseFloat(julio.toFixed(2));
-    agosto  = parseFloat(agosto.toFixed(2));
-    septiem = parseFloat(septiem.toFixed(2));
-    octubre = parseFloat(octubre.toFixed(2));
-    noviem  = parseFloat(noviem.toFixed(2));
-    diciem  = parseFloat(diciem.toFixed(2));
+    var montoDip   = parseFloat($('#monDisp').val() || 0);
 
-    var suma = enero + febre + marzo + abril + mayo + junio + julio + agosto + septiem + octubre + noviem + diciem;
-    var monto = parseFloat($('#monto').val() || 0);
+    
+    if(montoDip === '0.00'){
 
-    // Definir una tolerancia pequeña para la comparación
-    var tolerancia = 0.01; // Aquí puedes ajustar la tolerancia según tus necesidades
+        var enero   = parseFloat($('#enero').val() || 0);
+        var febre   = parseFloat($('#febre').val() || 0);
+        var marzo   = parseFloat($('#marzo').val() || 0);
+        var abril   = parseFloat($('#abril').val() || 0);
+        var mayo    = parseFloat($('#mayo').val() || 0);
+        var junio   = parseFloat($('#junio').val() || 0);
+        var julio   = parseFloat($('#julio').val() || 0);
+        var agosto  = parseFloat($('#agosto').val() || 0);
+        var septiem = parseFloat($('#septiem').val() || 0);
+        var octubre = parseFloat($('#octubre').val() || 0);
+        var noviem  = parseFloat($('#noviem').val() || 0);
+        var diciem  = parseFloat($('#diciem').val() || 0);
+    
+        // Redondear valores a dos decimales
+        enero   = parseFloat(enero.toFixed(2));
+        febre   = parseFloat(febre.toFixed(2));
+        marzo   = parseFloat(marzo.toFixed(2));
+        abril   = parseFloat(abril.toFixed(2));
+        mayo    = parseFloat(mayo.toFixed(2));
+        junio   = parseFloat(junio.toFixed(2));
+        julio   = parseFloat(julio.toFixed(2));
+        agosto  = parseFloat(agosto.toFixed(2));
+        septiem = parseFloat(septiem.toFixed(2));
+        octubre = parseFloat(octubre.toFixed(2));
+        noviem  = parseFloat(noviem.toFixed(2));
+        diciem  = parseFloat(diciem.toFixed(2));
+    
+        var suma = enero + febre + marzo + abril + mayo + junio + julio + agosto + septiem + octubre + noviem + diciem;
 
-    if (Math.abs(suma - monto) <= tolerancia) {
-        return true;
-    } else {
-        let comentario = '';
+        if(suma === 0){
 
-        if (monto > suma) {
-            var diferencia = (monto - suma).toFixed(2);
-            comentario = 'Faltan $' + diferencia + ' para llegar al monto indicado.';
-        } else {
-            var diferencia = (suma - monto).toFixed(2);
-            comentario = 'Tiene un excedente de $' + diferencia + '.';
+            return true;
+
+        }else{
+
+            let comentario = 'Si el monto del item es 0, su monto presupuestado debe de ser 0.';
+
+            Swal.fire({
+                icon: 'error',
+                title: 'CoreInspi',
+                text: comentario,
+                showConfirmButton: true,
+            });
+    
+            return false;
+
         }
 
-        Swal.fire({
-            icon: 'error',
-            title: 'CoreInspi',
-            text: comentario,
-            showConfirmButton: true,
-        });
+        
 
-        return false;
+    }else{
+
+        var enero   = parseFloat($('#enero').val() || 0);
+        var febre   = parseFloat($('#febre').val() || 0);
+        var marzo   = parseFloat($('#marzo').val() || 0);
+        var abril   = parseFloat($('#abril').val() || 0);
+        var mayo    = parseFloat($('#mayo').val() || 0);
+        var junio   = parseFloat($('#junio').val() || 0);
+        var julio   = parseFloat($('#julio').val() || 0);
+        var agosto  = parseFloat($('#agosto').val() || 0);
+        var septiem = parseFloat($('#septiem').val() || 0);
+        var octubre = parseFloat($('#octubre').val() || 0);
+        var noviem  = parseFloat($('#noviem').val() || 0);
+        var diciem  = parseFloat($('#diciem').val() || 0);
+    
+        // Redondear valores a dos decimales
+        enero   = parseFloat(enero.toFixed(2));
+        febre   = parseFloat(febre.toFixed(2));
+        marzo   = parseFloat(marzo.toFixed(2));
+        abril   = parseFloat(abril.toFixed(2));
+        mayo    = parseFloat(mayo.toFixed(2));
+        junio   = parseFloat(junio.toFixed(2));
+        julio   = parseFloat(julio.toFixed(2));
+        agosto  = parseFloat(agosto.toFixed(2));
+        septiem = parseFloat(septiem.toFixed(2));
+        octubre = parseFloat(octubre.toFixed(2));
+        noviem  = parseFloat(noviem.toFixed(2));
+        diciem  = parseFloat(diciem.toFixed(2));
+    
+        var suma = enero + febre + marzo + abril + mayo + junio + julio + agosto + septiem + octubre + noviem + diciem;
+        var monto = parseFloat($('#monto').val() || 0);
+    
+        // Definir una tolerancia pequeña para la comparación
+        var tolerancia = 0.01; // Aquí puedes ajustar la tolerancia según tus necesidades
+    
+        if (Math.abs(suma - monto) <= tolerancia) {
+            return true;
+        } else {
+            let comentario = '';
+    
+            if (monto > suma) {
+                var diferencia = (monto - suma).toFixed(2);
+                comentario = 'Faltan $' + diferencia + ' para llegar al monto indicado.';
+            } else {
+                var diferencia = (suma - monto).toFixed(2);
+                comentario = 'Tiene un excedente de $' + diferencia + '.';
+            }
+    
+            Swal.fire({
+                icon: 'error',
+                title: 'CoreInspi',
+                text: comentario,
+                showConfirmButton: true,
+            });
+    
+            return false;
+        }
+
     }
+
 }
 
 $(document).on('change', '#monto, #frecuencia', function() {

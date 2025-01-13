@@ -29,6 +29,65 @@
                 <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE DIRECCIONES </h2>
 
                 <hr/>
+
+                <div class="row col-lg-12 mt-4">
+
+                    <div class="col">
+                        <div class="card radius-10 border border-1 border-primary position-relative">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+
+                                    <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-cash py-3 px-2 titulo-grande"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>Monto Presupuestado</span>
+                                        <h4 class="my-1 text-primary ms-auto" id="monto_total">${{$montos->total_monto_presupuestado}}</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card radius-10 border border-1 border-primary position-relative">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+
+                                    <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-graph-up-arrow py-3 px-2 titulo-grande"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>Total de Items Presupuestarios</span>
+                                        <h4 class="my-1 text-primary ms-auto" id="total_ocupado">${{$montos->total_monto}}</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card radius-10 border border-1 border-primary position-relative">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+
+                                    <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-graph-down-arrow py-3 px-2 titulo-grande"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>Total de Actividades Presupuestadas</span>
+                                        <h4 class="my-1 text-primary ms-auto" id="por_ocupar">${{$montos->total_monto_direcciones}}</h4>                                
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
                 <!--
                 <a class="col-2 mb-3 btn btn-primary d-flex align-items-center justify-content-center mr-2" type="button" data-toggle= "modal" data-target="#modalItemPres">
                     <i class="lni lni-circle-plus"></i> Crear Dirección
@@ -232,5 +291,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/ItemPresupuestario/init_monto_dir.js?v0.0.6')}}"></script>
+<script src="{{asset('assets/js/ItemPresupuestario/init_monto_dir.js?v0.0.7')}}"></script>
 @endpush

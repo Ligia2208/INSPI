@@ -72,7 +72,7 @@
 
             </div>
 
-            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> EDITAR REFORMA</h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bi bi-table'></i> EDITAR REFORMA</h2>
             <hr/>
             <?php
                 // var_dump($atributos);
@@ -113,7 +113,7 @@
                             <input type="hidden" name="id_area_soli[]" value="{{ $atributo->id_areaS }}">
 
                             <td>
-                                <i type="button" class="font-22 fadeIn animated bx bx-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
+                                <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
                                 </i>
                             </td>
                             <td>{{ $atributo->nombreActividadOperativa}}</td>
@@ -123,7 +123,7 @@
                             <td>{{ $atributo->nombreItem }}</td>
                             <td>{{ $atributo->descripcionItem }}</td>
                             <td class="width">
-                                <select class ="form-select" name="tipo[]" onchange="cambioSelect(this)">
+                                <select class ="form-control" name="tipo[]" onchange="cambioSelect(this)">
                                     @if($atributo->tipo == 'DISMINUYE')
                                         <option value="" selected disabled>Seleccionar tipo...</option>
                                         <option value="DISMINUYE" selected>Disminuye</option>
@@ -167,7 +167,9 @@
             </div>
 
 
-            <div id="formularioActividad" style="display: none;" class="mt-4">
+
+            <!-- ==========================FORMULARIO PARA CREAR ACTIVIDAD EN REFORMA=============================== -->
+            <div id="formularioActividad" style="display: none;" class="mt-4 mb-4">
                 <div class="card">
                     <div class="card-head">
                         <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
@@ -176,49 +178,20 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="card-body">
                         <div class="row p-2">
-                            <div class="col-md-12">
-                                <label for="coordina" class="form-label fs-6">Coordinación/Dirección/Proyecto</label>
-                                <input type="text" id="coordina" name="coordina" class="form-control" required="" autofocus="" value="">
-                                <div class="valid-feedback">Looks good!</div>
-                            </div>
 
-                            <div class="col-md-4 mt-2">
-                                <label for="fecha" class="form-label fs-6">Fecha</label>
-                                <input type="date" id="fecha" name="fecha" class="form-control" required="" autofocus="" value="<?php echo date('Y-m-d'); ?>">
-                                <div class="valid-feedback">Looks good!</div>
-                            </div>
+                            <input value="{{$id_fuente}}" type="hidden" id="id_fuente">
 
-                            <div class="col-md-4 mt-2">
-                                <label for="poa" class="form-label fs-6">POA</label>
-                                <select id="poa" name="poa" class="form-select single-select" required>
+                            <div class="col-md-6">
+                                <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
+                                <select id="obOpera" name="obOpera" class="form-control single-select" required>
                                     <option value="0">Seleccione Opción</option>
-                                    @foreach($tipos as $tipo)
+                                    @foreach($obj_Operativo as $tipo)
                                     <option value="{{$tipo->id}}">{{$tipo->nombre}}</option>
                                     @endforeach
                                 </select>
-                            </div>
-
-                            <div class="col-md-2 mt-5" style="margin-left: 8%;">
-                                <label for="plurianual" class="form-label fs-6">Plurianual</label>
-                                <input type="checkbox" id="plurianual" name="plurianual" class="form-check-input">
-                            </div>
-                            <div class="col-md-12 mt-2">
-                                <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
-                                <textarea id="justifi2" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
-                                <div class="valid-feedback">Looks good!</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="card mt-3">
-                    <div class="card-body">
-                        <div class="row p-2">
-                            <div class="col-md-6">
-                                <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
-                                <input type="text" id="obOpera" name="obOpera" class="form-control" required="" autofocus="" value="">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -229,17 +202,17 @@
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación</label>
+                                <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación / Convenio</label>
                                 <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="item_presupuestario" class="form-label fs-6">Item presupuestario</label>
-                                <select id="item_presupuestario" name="item_presupuestario" class="form-select" required onchange="fetchItemData(this.value)">
+                                <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)">
                                     <option value="0">Seleccione Opción</option>
                                     @foreach($item_presupuestario as $item)
-                                        <option value="{{$item->id}}">{{$item->nombre}}</option>
+                                        <option value="{{$item->id}}" data-id_item="{{$item->id_item}}" >{{$item->nombre}} - {{$item->descripcion}}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -250,46 +223,95 @@
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-                            <div class="col-md-8 mt-2">
-                                <label for="desItem" class="form-label fs-6">Descripción del Item Presupuestario</label>
-                                <input type="text" id="desItem" name="desItem" class="form-control" required="" autofocus="" value="" disabled>
-                                <div class="valid-feedback">Looks good!</div>
+                            <div class="col-md-4 mt-2">
+                                <label for="proceso" class="form-label fs-6">Tipo de Proceso</label>
+                                <select id="proceso" name="proceso" class="form-control single-select" required >
+                                    <option value="0">Seleccione Opción</option>
+                                    @foreach($proceso as $tipo)
+                                    <option value="{{$tipo->id}}"> {{$tipo->nombre}} </option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
+
                 <div class="card mt-3">
+
                     <div class="card-body">
                         <div class="row p-2">
+                            <div class="col-md-12">
+                                <label for="coordina" class="form-label fs-6">Coordinación/Dirección/Proyecto</label>
+                                <input type="text" id="coordina" name="coordina" class="form-control" required="" autofocus="" value="{{$nombre}}" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
                             <div class="col-md-4 mt-2">
-                                <label for="unidad" class="form-label fs-6">Unidad ejecutora</label>
-                                <select id="unidad_ejecutora" name="unidad_ejecutora" class="form-select" required></select>
+                                <label for="fecha" class="form-label fs-6">Fecha</label>
+                                <input type="date" id="fecha" name="fecha" class="form-control" required="" autofocus="" value="<?php echo date('Y-m-d'); ?>" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="poa" class="form-label fs-6">Tipo de Gasto</label>
+                                <select id="poa" name="poa" class="form-control single-select" required>
+                                    <option value="0">Seleccione Opción</option>
+                                    @foreach($tipos as $tipo)
+                                    <option value="{{$tipo->id}}">{{$tipo->nombre}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div class="col-md-2 mt-5" style="margin-left: 8%;">
+                                <label for="plurianual" class="form-label fs-6">Plurianual</label>
+                                <input type="checkbox" id="plurianual" name="plurianual" class="form-check">
+                            </div>
+
+                            <!-- <div class="col-md-12 mt-2">
+                                <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
+                                <textarea id="justifi2" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div> -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row p-2">
+
+                            <div class="col-md-4 mt-2">
+                                <label for="unidad_ejecutora" class="form-label fs-6">Unidad ejecutora</label>
+                                <select id="unidad_ejecutora" name="unidad_ejecutora" class="form-control single-select" required disabled></select>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="programa" class="form-label fs-6">Programa</label>
-                                <select id="programa" name="programa" class="form-select" required></select>
+                                <select id="programa" name="programa" class="form-control single-select" required disabled></select>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="proyecto" class="form-label fs-6">Proyecto</label>
-                                <select id="proyecto" name="proyecto" class="form-select" required></select>
+                                <select id="proyecto" name="proyecto" class="form-control single-select" required disabled></select>
                             </div>
 
 
                             <div class="col-md-6 mt-2">
                                 <label for="actividad" class="form-label fs-6">Actividad</label>
-                                <select id="actividad" name="actividad" class="form-select" required></select>
+                                <select id="actividad" name="actividad" class="form-control single-select" required disabled></select>
                             </div>
 
                             <div class="col-md-6 mt-2">
                                 <label for="fuente_financiamiento" class="form-label fs-6">Fuente de financiamiento</label>
-                                <select id="fuente_financiamiento" name="fuente_financiamiento" class="form-select" required></select>
+                                <select id="fuente_financiamiento" name="fuente_financiamiento" class="form-control single-select" required disabled></select>
                             </div>
                         </div>
                     </div>
                 </div>
+
 
                 <div class="col-lg-12 d-flex align-items-center mt-3">
                     <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="guardarNuevaActividad()" style="margin-right: 2%">
@@ -299,12 +321,10 @@
                     <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="cerrarFormulario()">
                         <i class="bi bi-x-circle"></i> Cerrar Actividad
                     </a>
-
-                    <!-- <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="cancelarNuevaActividad()">
-                        <i class="bi bi-x-circle"></i> Cancelar
-                    </a> -->
                 </div>
-        </div>
+            </div>
+
+        
 
         <!-- ==========================FORMULARIO PARA AGREGAR ACTIVIDAD EXISTENTE DE OTRA ÁREA=============================== -->
 
@@ -321,19 +341,8 @@
                         <div class="row p-2">
 
                             <div class="col-md-4 mt-2">
-                                <label for="czonal" class="form-label fs-6">Coordinación Zonal</label>
-                                <select data-url="planificacion/getAreas" id="czonal" name="czonal" class="form-select single-select" required>
-                                    <option value="0">Seleccione Opción</option>
-                                    @foreach($czonal as $z)
-                                        <option value="{{ $z->id}}"> {{ $z->nombre}} </option>
-                                    @endforeach
-                                </select>
-                                <div class="invalid-feedback">Por favor seleccione una Coordinación Zonal.</div>
-
-                            </div>
-                            <div class="col-md-4 mt-2">
                                 <label for="area" class="form-label fs-6">Area</label>
-                                <select id="area" name="area" class="form-select single-select" required>
+                                <select id="area" name="area" class="form-control single-select" required>
                                     <option value="0">Seleccione Opción</option>
                                 </select>
                                 <div class="invalid-feedback">Por favor seleccione un Area.</div>
@@ -393,7 +402,7 @@
 
         <div class="col-md-12 mt-2" style="margin-bottom: 20px">
                 <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
-                <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
+                <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4">{{$justificacion_area}}</textarea>
                 <div class="valid-feedback">Looks good!</div>
         </div>
 

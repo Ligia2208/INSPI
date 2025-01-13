@@ -32,11 +32,15 @@
                     <label class="form-label fs-6">&nbsp;</label>
                     <button id="btnGeneratePDF" class="btn btn-primary form-control">Generar PDF</button>
                 </div>
-                <div class="col-md-5 d-flex align-items-center justify-content-center">
+                <!-- <div class="col-md-2">
+                    <label class="form-label fs-6">&nbsp;</label>
+                    <button id="btnGeneratePDF" class="btn btn-primary form-control">Generar Excel</button>
+                </div> -->
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
                     <h2 class="text-success"> <i class="bi bi-layer-forward"></i> Total Items: </h2> <h1 class="ml-2">{{$sumaMontos}}</h1>
                 </div>
 
-                <div class="col-md-5 d-flex align-items-center justify-content-center">
+                <div class="col-md-4 d-flex align-items-center justify-content-center">
                     <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Actividades: </h2> <h1 class="ml-2"> {{$sumaActividades}} </h1>
                 </div>
             </div>
@@ -109,6 +113,7 @@
                                     <th>Oct</th>
                                     <th>Nov</th>
                                     <th>Dic</th>
+                                    <th>Total</th>
                                     <th>Acciones</th>
                                 </tr>
                             </thead>
@@ -140,6 +145,7 @@
                             </tfoot>
                         </table>
                     </div>
+
                 </div>
             </div>
 
@@ -263,5 +269,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.1')}}"></script>
 @endpush

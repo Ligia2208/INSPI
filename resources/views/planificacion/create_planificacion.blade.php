@@ -94,7 +94,7 @@
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación</label>
+                                <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación / Convenio</label>
                                 <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
@@ -250,6 +250,7 @@
                             <label for="frecuencia" class="form-label fs-6">Frecuencia</label>
                             <select id="frecuencia" name="frecuencia" class="form-select single-select" required >
                                 <option selected="" value="0">Seleccione Frecuencia</option>
+                                <option value="7"> Personalizado </option>
                                 <option value="1"> Mensual </option>
                                 <option value="2"> Bimensual </option>
                                 <option value="3"> Trimestral </option>
@@ -437,5 +438,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.6')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.8')}}"></script>
 @endpush

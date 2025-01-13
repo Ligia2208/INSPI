@@ -10,7 +10,7 @@ $( function () {
     $('#tblItemPresupuestarioIndex').DataTable({ //id de la tabla en el visual (index)
         processing: true,
         serverSide: true,
-        lengthMenu: [8, 15, 25, 50, 100],
+        lengthMenu: [15, 25, 50, 100],
         ajax: {
             url: '/montoDireccion', // La URL que devuelve los datos en JSON
         },

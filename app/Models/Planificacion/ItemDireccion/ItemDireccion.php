@@ -13,6 +13,7 @@ class ItemDireccion extends Model
             'id_direcciones',
             'id_item',
             'monto',
+            'presupuesto',
             'estado',
             'created_at',
             'updated_at'
