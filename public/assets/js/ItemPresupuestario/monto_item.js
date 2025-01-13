@@ -27,14 +27,11 @@ $( function () {
                 searchable: false ,
                 render: function (data, type, full, meta) {
                 var array = "";
-                array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
-                        <!--
-                        <a id="btnRecordItemP" data-id_item="${full.id}" title="Historial del Item" class="show-tooltip mr-1" data-title="Historial del Item" data-toggle="modal" data-target="#modalRecordItem">
-                            <i class="font-22 bi bi-bar-chart-steps text-success"></i>
-                        </a>
-                        -->
+                if(!full.proceso_estado){
+
+                    array =`
+                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
                         <a id="btnEditarMonto" data-id_editar="${full.id}" title="Editar Monto" class="show-tooltip mr-1" data-title="Editar Monto">
                             <i class="font-22 fadeIn animated bi bi-pen" ></i>
@@ -45,6 +42,14 @@ $( function () {
 
                     </div>
                     `;
+
+                }else{
+                    array =`
+                        <div class="text-center">
+                            <span class="badge badge-primary text-bg-warning">Proceso Cerrado</span>
+                        </div>
+                    `;
+                }
 
                 return array;
 
@@ -467,7 +472,7 @@ $(function(){
             },
             cache: false,
             success: function(res){
-                console.log(res);
+                //console.log(res);
 
                 let id_monto    = res.datos.id;
                 let nombre      = res.datos.nombre;
@@ -500,7 +505,8 @@ $(function(){
                                     <div class="col-md-12">
                                         <label for="montoEdit" class="form-label fs-6">Monto</label>
                                         <input type="text" id="montoEdit" name="montoEdit" class="form-control" required="" autofocus="" value="${monto}">
-                                        <div class="valid-feedback">Looks good!</div>
+                                        <div class="valid-feedback">¡Se ve bien!</div>
+                                        <div class="invalid-feedback">Ingrese solo números</div>
                                     </div>
 
 
@@ -519,6 +525,10 @@ $(function(){
 
                 // Abre el modal una vez que se ha creado
                 $(`#updateItemP`).modal('show');
+
+                $('#montoEdit').on('input', function () {
+                    validarInputNumerico(this);
+                });
 
             },
             error: function(error) {
@@ -542,6 +552,7 @@ $(function(){
 
         let id_direccion = $('#id_item_monto').val();
         let montoEdit    = $('#montoEdit').val();
+        let isValid = /^\d+(\.\d+)?$/.test(montoEdit);
 
         if(montoEdit === ''){
 
@@ -552,9 +563,23 @@ $(function(){
                 text: 'Debe de ingresar un monto',
                 showConfirmButton: true,
             });
-        }
+        }else if (!isValid) {
 
-        else{
+            Swal.fire({
+                icon: 'error',
+                title: 'SoftInspi',
+                text: 'El valor ingresado no es válido. Debe ser un número entero o decimal.',
+                showConfirmButton: true,
+            });
+        }else if (parseFloat(montoEdit) < 0) {
+            // Validación si el monto es negativo
+            Swal.fire({
+                icon: 'error',
+                title: 'SoftInspi',
+                text: 'El monto no puede ser negativo.',
+                showConfirmButton: true,
+            });
+        }else{
 
             $.ajax({
                 type: 'PUT',
@@ -567,20 +592,44 @@ $(function(){
                 },
                 success: function(response) {
 
-                    $('#updateItemP').modal('hide');
-                    table.ajax.reload();
-                    actualizarMontos();
+                    if(response.error){
 
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Éxito',
-                        type:  'success',
-                        text: response.message,
-                    });
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'CoreInspi',
+                            type:  'error',
+                            text: response.message,
+                        });
+
+                    }else{
+
+                        $('#updateItemP').modal('hide');
+                        table.ajax.reload();
+                        actualizarMontos();
+    
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Éxito',
+                            type:  'success',
+                            text: response.message,
+                        });
+
+                    }
 
                 },
                 error: function(error) {
-                    console.error('Error al actualizar el item:', error);
+
+                    let response = JSON.parse(error.responseText);
+                    if(response.error){
+
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'CoreInspi',
+                            type:  'error',
+                            text: response.message,
+                        });
+
+                    }
                 }
             });
 
@@ -590,17 +639,6 @@ $(function(){
     /* GUARDAR UPDATE */
 
     var table = $('#tblItemPresupuestarioIndex').DataTable();
-
-
-
-    /* ABRIL MODAL PARA GENERAR EL HISTORIAL */
-    $(document).on('click', '#btnRecordItemP', function(){
-
-        var itemId = $(this).data('id_item');
-        $('#id_itemPres').val(itemId);
-
-    });
-    /* ABRIL MODAL PARA GENERAR EL HISTORIAL */
 
 
 
@@ -698,6 +736,25 @@ $(function(){
 
 
 });
+
+
+
+
+// Función para validar input numérico
+function validarInputNumerico(input) {
+    var inputValue = input.value;
+    var isValid = /^\d+(\.\d+)?$/.test(inputValue);
+
+    if (!isValid) {
+        input.setCustomValidity('Ingrese solo números');
+        input.classList.add('is-invalid');
+        input.classList.remove('is-valid');
+    } else {
+        input.setCustomValidity('');
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+    }
+}
 
 
 
@@ -898,15 +955,23 @@ function guardarItemsSeleccionados() {
                 text: response.message,
                 showConfirmButton: true,
             });
+
+            $('#selected-items').text('');
+
         },
         error: function (error) {
-            console.error('Error al actualizar los ítems:', error);
-            Swal.fire({
-                icon: 'error',
-                title: 'SoftInspi',
-                text: 'Ocurrió un error al intentar guardar los ítems.',
-                showConfirmButton: true,
-            });
+
+            let response = JSON.parse(error.responseText);
+            if(response.error){
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'CoreInspi',
+                    type:  'error',
+                    text: response.message,
+                });
+            }
+
         }
     });
 }

@@ -10,16 +10,29 @@ $( function () {
 
         limpiar();
 
-        var monto = $('#monto').val();
-        var isValid = /^\d+$/.test(monto);
+        var monDisp = $('#monDisp').val();
 
-        if(monto === '0'){
+        var monto = $('#monto').val();
+        //var isValid = /^\d+$/.test(monto);
+        var isValid = /^\d+(\.\d+)?$/.test(monto);
+
+        if(monDisp === ''){
 
             Swal.fire({
                 icon: 'warning',
                 type:  'warning',
-                title: 'SoftInspi',
-                text: 'Debe de ingresar un monto',
+                title: 'CoreInspi',
+                text: 'Debe de seleccionar un Item Presupuestario.',
+                showConfirmButton: true,
+            });
+
+        }else if(monto === '0'){
+
+            Swal.fire({
+                icon: 'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text: 'Debe de ingresar un monto.',
                 showConfirmButton: true,
             });
 
@@ -28,13 +41,22 @@ $( function () {
             Swal.fire({
                 icon: 'warning',
                 type:  'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'El monto no es un número',
                 showConfirmButton: true,
             });
 
-        }else{
+        }else if(monto > monDisp){
 
+            Swal.fire({
+                icon: 'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text: 'El monto es mayor al monto disponible del Item Presupuestario.',
+                showConfirmButton: true,
+            });
+
+        }else{
 
             switch ($(this).val()) {
                 case '1':
@@ -301,7 +323,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Coordinación/Dirección/Proyecto.',
             showConfirmButton: true,
         });
@@ -311,7 +333,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Fecha.',
             showConfirmButton: true,
         });
@@ -321,7 +343,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de selecionar un tipo de POA.',
             showConfirmButton: true,
         });
@@ -331,7 +353,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de seleccionar un Tipo de Proceso.',
             showConfirmButton: true,
         });
@@ -340,7 +362,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de seleccionar un Objetivo Operativo',
             showConfirmButton: true,
         });
@@ -350,7 +372,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Actividad Operativa',
             showConfirmButton: true,
         });
@@ -360,26 +382,27 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Sub Actividad',
             showConfirmButton: true,
         });
 
     }else if(item_presupuestario == '0'){
+
        Swal.fire({
-       icon: 'warning',
-       type:  'warning',
-       title: 'SoftInspi',
-       text: 'Debe seleccionar el Item Presupuestario.',
-       showConfirmButton: true,
-    });
+            icon: 'warning',
+            type:  'warning',
+            title: 'CoreInspi',
+            text: 'Debe seleccionar el Item Presupuestario.',
+            showConfirmButton: true,
+        });
 
    }else if(monto == '0' || monto == ''){
 
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar un Monto.',
             showConfirmButton: true,
         });
@@ -388,7 +411,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una unidad ejecutora',
             showConfirmButton: true,
         });
@@ -396,7 +419,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un programa',
             showConfirmButton: true,
         });
@@ -404,7 +427,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un proyecto',
             showConfirmButton: true,
         });
@@ -412,7 +435,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una actividad',
             showConfirmButton: true,
         });
@@ -420,7 +443,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una fuente de financiamiento',
             showConfirmButton: true,
         });
@@ -429,7 +452,7 @@ function guardarPlanificacion(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de seleccionar la Frecuencia.',
             showConfirmButton: true,
         });
@@ -486,7 +509,7 @@ function guardarPlanificacion(){
                             Swal.fire({
                                 icon: 'success',
                                 type: 'success',
-                                title: 'SoftInspi',
+                                title: 'CoreInspi',
                                 text: response['message'],
                                 showConfirmButton: true,
                             }).then((result) => {
@@ -503,7 +526,7 @@ function guardarPlanificacion(){
                 error: function(error) {
                     Swal.fire({
                         icon:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         type:  'error',
                         text:   error,
                         showConfirmButton: true,
@@ -567,7 +590,7 @@ function validarCalculos() {
 
         Swal.fire({
             icon: 'error',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: comentario,
             showConfirmButton: true,
         });
@@ -580,20 +603,29 @@ $(document).on('change', '#monto, #frecuencia', function() {
     limpiar();
 
     var monto = parseFloat($('#monto').val());
-    var isValid = /^\d+$/.test(monto);
+    //var isValid = /^\d+$/.test(monto);
+    var isValid = /^\d+(\.\d+)?$/.test(monto);
 
     if (monto === 0 || isNaN(monto)) {
         Swal.fire({
             icon: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar un monto válido',
             showConfirmButton: true,
         });
     } else if (!isValid) {
         Swal.fire({
             icon: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'El monto no es válido',
+            showConfirmButton: true,
+        });
+    } else if (parseFloat(monto) < 0) {
+        // Validación si el monto es negativo
+        Swal.fire({
+            icon: 'error',
+            title: 'CoreInspi',
+            text: 'El monto no puede ser negativo.',
             showConfirmButton: true,
         });
     } else {
@@ -644,7 +676,7 @@ function asignarCuota(cuota) {
 // Función para validar input numérico
 function validarInputNumerico(input) {
     var inputValue = input.value;
-    var isValid = /^\d+$/.test(inputValue);
+    var isValid = /^\d+(\.\d+)?$/.test(inputValue);
 
     if (!isValid) {
         input.setCustomValidity('Ingrese solo números');

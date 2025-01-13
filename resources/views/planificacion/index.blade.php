@@ -52,7 +52,7 @@
                                     <th>Objetivo Operativo</th>
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
-                                    <th>Proceso</th>
+                                    <th>Tipo de Proceso</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th>Revisión</th>
@@ -68,7 +68,7 @@
                                     <th>Objetivo Operativo</th>
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
-                                    <th>Proceso</th>
+                                    <th>Tipo de Proceso</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th>Revisión</th>

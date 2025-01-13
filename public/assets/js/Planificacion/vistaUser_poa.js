@@ -45,6 +45,8 @@ $( function () {
                         array = '<div class="center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
                         array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span>';
+                    }else if(full.estado == 'S'){
+                        array = '<div class="center"><span class="badge badge-info text-bg-info">Solicitado</span>';
                     }else{
                         array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                     }
@@ -96,21 +98,41 @@ $( function () {
                     // Condición si full.estado es 'O'
                     if (full.estado == 'O') {
                         array += `
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip" data-title="Comentarios">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
                             <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
                                 <i class="font-22 bi bi-filetype-pdf"></i>
                             </a>
                         `;
+                    }else if(full.estado == 'S'){
+
+                        array += `
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
+                            </a>
+                        `;
+
                     } else {
                         array += `
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
+
+                            <a id="btnSolicitarPOA" data-id_actividad="${full.id}" data-nombre="${full.nombre}" title="Solicitar POA" class="show-tooltip mr-1" data-title="Solicitar POA">
+                                <i class="font-22 fadeIn animated bi bi-file-earmark-text  text-warning"></i>
+                            </a>
+
                             <a id="btnEditarPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
                                 <i class="font-22 fadeIn animated bi bi-pen"></i>
                             </a>
+
                             <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
                                 <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
@@ -124,7 +146,7 @@ $( function () {
             },
         ],
         order: [
-            [6, 'desc']
+            [7, 'desc']
         ],
 
         // Otras configuraciones de DataTables aquí
@@ -164,6 +186,16 @@ $( function () {
 
     });
     /* CARGAR REGISTRO */
+
+
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
+    $(document).on('click', '#btnVisualizaPOA', function(){
+        let id_planificacion = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/visualizarPlanificacion/'+ id_planificacion;
+
+    });
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
 
 
     //validar solicitud
@@ -384,6 +416,170 @@ $( function () {
     });
 
 
+     /* ==================== SOLICITAR POA ==================== */
+
+    $(document).on('click','#btnSolicitarPOA', function(){
+
+        let id_Poa = $(this).data('id_actividad');
+
+        $.ajax({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            type: 'GET',
+            url: '/planificacion/obtenerPoa/' + id_Poa,
+            data: {
+                _token: "{{ csrf_token() }}",
+            },
+            cache: false,
+            success: function(res){
+                //console.log(res);
+                let departamento   = res.poa.departamento;
+                let id_poa         = res.poa.id;
+                let actividad      = res.poa.actividad;
+                let subactividad   = res.poa.subactividad;
+
+                $('#contModalComentarios').text('');
+
+                // Construimos el contenido del modal
+
+                let html = `
+                    <div class="modal fade" id="modalComentarios" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h4 class="modal-title" id="exampleModalLabel">Solicitud POA de ${departamento}</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                    <input type="hidden" value="${id_poa}" id="solicitud_id">
+                                    <h4 class="modal-title">Actividad: ${actividad}</h4>
+                                    <h4 class="modal-title">Sub Actividad: ${subactividad}</h4>
+
+                                    <div class="col-md-12 mt-4">
+                                        <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
+                                        <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
+                                        <div class="valid-feedback">Looks good!</div>
+                                    </div>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-primary" id="btnSolicitarPoa">Solicitar</button>
+                                    <button type="button" class="btn btn-secondary" id="btnCerrarModalCat" data-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+
+
+                $('#contModalComentarios').append(html);
+                // Abre el modal una vez que se ha creado
+                $(`#modalComentarios`).modal('show');
+
+            },
+            error: function(error) {
+                console.error('Error al obtener comentarios:', error);
+            }
+
+        });
+
+    });
+    /* ==================== SOLICITAR POA ==================== */
+
+
+    /* CERRAR EL MODAL DE MANERA MANUAL */
+    $(document).on('click', '#btnCerrarModalCat, #btnCerrarModalCat2', function() {
+        $('#modalComentarios').modal('hide');
+    });
+    /* CERRAR EL MODAL DE MANERA MANUAL */
+
+
+
+    $(document).on('click', '#btnSolicitarPoa', function(){
+
+        let solicitud_id = $('#solicitud_id').val();
+        let justifi      = $('#justifi').val();
+
+        if(justifi == ''){
+
+            Swal.fire({
+                icon:  'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text:  'Debe de agregar un justificación del área.',
+                showConfirmButton: true,
+            });
+
+        }else{
+
+            Swal.fire({
+                icon:  'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text:  'Seguro que quiere realizar la solicitud de POA',
+                showConfirmButton: true,
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.value == true) {
+    
+                    $.ajax({
+    
+                        type: 'POST',
+                        url: '/planificacion/solicitadPOA',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            'solicitud_id': solicitud_id,
+                            'justifi'     : justifi,
+                        },
+                        success: function(response) {
+    
+                            if(response.data){
+
+                                document.getElementById('btnCerrarModalCat').click();         
+                                table.ajax.reload();
+                                Swal.fire({
+                                    icon: 'success',
+                                    type: 'success',
+                                    title: 'SoftInspi',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                });
+
+                            }else{
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    type:  'error',
+                                    title: 'SoftInspi',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                });
+                                
+                            }
+                        },
+                        error: function(error) {
+                            var response = error.responseJSON;                
+                            Swal.fire({
+                                icon:  'error',
+                                title: 'SoftInspi',
+                                type:  'error',
+                                text:   response.message,
+                                showConfirmButton: true,
+                            });
+                        }
+                    });
+                }
+            });
+
+        }
+
+    });
+
+
 
 });
 
@@ -474,14 +670,6 @@ $(function(){
 //------------------------------------------------------------------------------------------------
 
 
-//CÓDIGO PARA REDIRIGIR AL FORMULARIO PARA EDITAR POA
-$(function(){
-
-
-    
-
-})
-
 
 
 //CÓDIGO PARA MOSTRAR COMENTARIOS
@@ -499,19 +687,14 @@ $(function(){
             url: '/planificacion/obtenerComentarios/' + id_Poa,
             data: {
                 _token: "{{ csrf_token() }}",
-
             },
             cache: false,
             success: function(res){
-                console.log(res);
-
-                let departamento         = res.poa.departamento;
-
+                //console.log(res);
+                let departamento   = res.poa.departamento;
                 let id_poa         = res.poa.id;
-
                 let comentarios    = res.comentarios;
                 let created_at     = res.comentarios.created_at;
-
 
                 $('#contModalComentarios').text('');
 
@@ -521,8 +704,8 @@ $(function(){
                     <div class="modal fade" id="modalComentarios" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Comentarios del registro: "${departamento}"</h5>
+                                <div class="modal-header bg-success">
+                                    <h5 class="modal-title text-white" id="exampleModalLabel">Comentarios del registro: "${departamento}"</h5>
                                 </div>
                                 <div class="modal-body">
                                     <ul class="list-group">
@@ -584,7 +767,7 @@ $(function(){
         /* CERRAR EL MODAL DE MANERA MANUAL */
 
 
-})
+});
 
 //===============================================Aquí inicia PDF=======================================================
 
@@ -774,3 +957,14 @@ $(document).on('click', '#btnGenerarReportPOA', function(){
          });
      }
  });
+
+
+
+
+ function ejecutar(){
+
+    alert('funciona');
+
+    window.location.href = 'planificacion/ejecutarPla';
+
+ }

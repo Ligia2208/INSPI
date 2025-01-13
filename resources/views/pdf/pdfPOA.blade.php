@@ -39,12 +39,17 @@
     .firma {
         border-bottom: none;
     }
+
+    .letra{
+        font-size: 11px;
+    }
+
 </style>
 </head>
 
 <body>
 
-    <table style="width: 100%; border-collapse: collapse; border: 1px solid black; font-size: 12px; text-align: center; vertical-align: middle;">
+    <table style="width: 100%; border-collapse: collapse; border: 1px solid black; text-align: center; vertical-align: middle;" class="letra">
         <thead>
             <tr>
                 <th rowspan="3" style="width: 22.5%; text-align: center; vertical-align: middle;">
@@ -62,7 +67,7 @@
             </tr>
             <tr>
                 <td>Fecha de aprobación</td>
-                <td>{{$atributos->fecha_apr}}</td>
+                <td>08/01/2024</td>
             </tr>
         </thead>
     </table><br>
@@ -71,7 +76,7 @@
 
 
 
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black;" class="letra">
             <thead>
                 <tr style="background-color: #f0f0f0;">
                     <th colspan="4" style="border: 1px solid black; width: 75%;">SOLICITUD</th>
@@ -92,7 +97,7 @@
 
 
         <!-- Nueva fila con checkboxes -->
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: -1px;">
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: -1px;" class="letra">
             <tbody>
                 <tr>
                     <td style="width: 15%; text-align: center; vertical-align: middle; padding-right: 10px;">POA:</td>
@@ -107,7 +112,7 @@
             </tbody>
         </table>
 
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: -1px; font-size: 12px; white-space: normal; word-wrap: break-word;">
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: -1px; white-space: normal; word-wrap: break-word;" class="letra">
             <thead>
                 <tr style="background-color: #f0f0f0;">
                     <th colspan="3" style="border: 1px solid black;">PLANIFICACIÓN Y GESTIÓN ESTRATÉGICA</th>
@@ -195,7 +200,7 @@
             </tbody>
         </table>
 
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: -1px;">
+        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: -1px;" class="letra">
         <tbody>
             <tr>
                 <td style="border: 1px solid black; width: 20.71%; text-align: center; vertical-align: middle;">Justificación área requiriente</td>
@@ -210,7 +215,7 @@
 
 
 <!----------------------------------------------------------------------------------------------------------------------------------------------->
-    <table class="inferior">
+    <table class="inferior" class="letra">
         <tr>
             <th colspan="6">AREA REQUIRENTE</th>
             <th colspan="4">DIRECCIÓN DE PLANIFICACIÓN Y GESTIÓN ESTRATÉGICA</th>

@@ -36,6 +36,8 @@ $( function () {
                     array = '<div class="center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                 }else if(full.estado == 'C'){
                     array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span>';
+                }else if(full.estado == 'S'){
+                    array = '<div class="center"><span class="badge badge-info text-bg-info">Solicitado</span>';
                 }else{
                     array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                 }
@@ -57,6 +59,11 @@ $( function () {
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
+
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
+                            </a>
+
                             <!--
                             <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
                                 <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
@@ -105,7 +112,7 @@ $( function () {
             },
         ],
         order: [
-            [5, 'desc']
+            [6, 'desc']
         ],
 
         // Otras configuraciones de DataTables aquí
@@ -152,6 +159,17 @@ $(function(){
 
     });
     /* CARGAR REGISTRO */
+
+
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
+    $(document).on('click', '#btnVisualizaPOA', function(){
+        let id_planificacion = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/visualizarPlanificacion/'+ id_planificacion;
+
+    });
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
+
 })
 
 
@@ -167,7 +185,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Seguro quiere eliminar este registro.',
             showConfirmButton: true,
             showCancelButton: true,
@@ -194,7 +212,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'success',
                                     type: 'success',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 }).then((result) => {
@@ -207,7 +225,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'error',
                                     type:  'error',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 });
@@ -217,7 +235,7 @@ $(function(){
                     error: function(error) {
                         Swal.fire({
                             icon:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             type:  'success',
                             text:   error,
                             showConfirmButton: true,
@@ -408,42 +426,42 @@ $(document).ready(function() {
         if (elaboraSelect == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el usuario que elaboró el reporte',
                 showConfirmButton: true,
             });
         } else if (revisaSelect == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el usuario que revisó el reporte',
                 showConfirmButton: true,
             });
         } else if (apruebaSelect == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el usuario que aprobó el reporte',
                 showConfirmButton: true,
             });
         } else if (cargo_elabora == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el cargo del usuario que elaboró el reporte',
                 showConfirmButton: true,
             });
         } else if (cargo_revisa == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el cargo del usuario que revisó el reporte',
                 showConfirmButton: true,
             });
         } else if (cargo_aprueba == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el cargo del usuario que aprobó el reporte',
                 showConfirmButton: true,
             });
@@ -479,7 +497,7 @@ $(document).ready(function() {
                     Swal.fire({
                         icon: 'error',
                         type: 'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         text: 'Error al generar el PDF',
                         showConfirmButton: true,
                     });

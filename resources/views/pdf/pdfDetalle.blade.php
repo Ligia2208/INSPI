@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF EN BLANCO</title>
+<title>PLAN ANUAL DE POLITICAS PUBLICAS (PAPP)</title>
 <style>
     table {
         border-collapse: collapse;
@@ -39,12 +39,20 @@
     .firma {
         border-bottom: none;
     }
+
+    .letra{
+        font-size: 11px;
+    }
+
+    .letra2{
+        font-size: 6px;
+    }
 </style>
 </head>
 
 <body>
 
-<table style="width: 100%; border-collapse: collapse; border: 1px solid black; font-size: 12px; text-align: center; vertical-align: middle;">
+<table class="letra" style="width: 100%; border-collapse: collapse; border: 1px solid black; font-size: 12px; text-align: center; vertical-align: middle;">
         <thead>
             <tr>
                 <th rowspan="3" style="width: 22.5%; text-align: center; vertical-align: middle;">
@@ -62,22 +70,13 @@
             </tr>
             <tr>
                 <td>Fecha de aprobación</td>
-                <td><?php echo date('d-m-Y'); ?></td>
+                <td>28/08/2023</td>
             </tr>
-            <tr>
-                <td colspan="2">Objetivo institucional: </td>
-                <td colspan="3">Asesorar, impulsar, coordinar y articular con todos los niveles de gestión institucional, los procesos integrales de planificación estratégica y operativa, en función de procurar y distribuir los recursos de la institución</td>
-            </tr>
-            <tr>
-                <td>Objetivo estratégico: </td>
-                <td>Fortalecer las capacidades institucionales</td>
-                <td>Dirección/coordinación: </td>
-                <td colspan="2">Dirección de Planificación y Gestión Estratégica</td>
-            </tr>
+
         </thead>
     </table><br>
 
-    <table style="width: 100%; border-collapse: collapse; border: 1px solid black; font-size: 6px; text-align: center; vertical-align: middle;">
+    <table class="letra2" style="width: 100%; border-collapse: collapse; border: 1px solid black; text-align: center; vertical-align: middle;">
         <thead>
             <tr>
                 <td colspan="4">PLANIFICACIÓN Y SEGUIMIENTO INSTITUCIONAL</td>
@@ -192,7 +191,7 @@
     </table>
 
 <!----------------------------------------------------------------------------------------------------------------------------------------------->
-    <table class="inferior">
+    <table class="inferior letra">
         <tr>
             <th colspan="2">Elaborado</th>
             <th colspan="2">Revisado</th>
@@ -234,4 +233,5 @@
             <td colspan="2" style="text-align: left;">Fecha: <?php echo date('d-m-Y'); ?></td>
         </tr>
     </table>
+
 </body>

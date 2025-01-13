@@ -118,7 +118,7 @@ function guardarReforma() {
         if (Math.abs(totalDisminuye - totalAumenta) > 0.01) { // Utiliza un margen de error pequeño para evitar problemas de precisión
             Swal.fire({
                 icon:  'error',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 type:  'error',
                 text: 'Los totales de disminución y aumento no coinciden. Por favor, ajuste los valores.',
                 showConfirmButton: true
@@ -147,7 +147,7 @@ function guardarReforma() {
                     Swal.fire({
                         icon: 'success',
                         type: 'success',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         text: 'Reforma guardada correctamente.',
                         showConfirmButton: true
                     }).then((result) => {
@@ -159,7 +159,7 @@ function guardarReforma() {
                 error: function(error) {
                     Swal.fire({
                         icon:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         type:  'error',
                         text:   error,
                         showConfirmButton: true,
@@ -170,7 +170,7 @@ function guardarReforma() {
             // Mostrar mensaje de error si no hay datos para enviar
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 type:  'error',
                 text: 'No hay datos para guardar. Por favor, agregue al menos una actividad.',
                 showConfirmButton: true
@@ -252,7 +252,7 @@ function validarCampos() {
     if (!valido) {
         Swal.fire({
             icon: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             type:  'error',
             text: comentario,
             showConfirmButton: true
@@ -478,7 +478,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Coordinación/Dirección/Proyecto.',
             showConfirmButton: true,
         });
@@ -488,7 +488,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Fecha.',
             showConfirmButton: true,
         });
@@ -498,7 +498,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de selecionar un tipo de POA.',
             showConfirmButton: true,
         });
@@ -508,7 +508,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Justificación del área requirente.',
             showConfirmButton: true,
         });
@@ -517,7 +517,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar un Objetivo Operativo',
             showConfirmButton: true,
         });
@@ -527,7 +527,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Actividad Operativa',
             showConfirmButton: true,
         });
@@ -537,7 +537,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Sub Actividad',
             showConfirmButton: true,
         });
@@ -546,7 +546,7 @@ function crearReformaConActividades() {
        Swal.fire({
        icon: 'warning',
        type:  'warning',
-       title: 'SoftInspi',
+       title: 'CoreInspi',
        text: 'Debe seleccionar el Item Presupuestario.',
        showConfirmButton: true,
     });
@@ -555,7 +555,7 @@ function crearReformaConActividades() {
     Swal.fire({
         icon: 'warning',
         type:  'warning',
-        title: 'SoftInspi',
+        title: 'CoreInspi',
         text: 'Debe seleccionar una unidad ejecutora',
         showConfirmButton: true,
     });
@@ -563,7 +563,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un programa',
             showConfirmButton: true,
         });
@@ -571,7 +571,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un proyecto',
             showConfirmButton: true,
         });
@@ -579,7 +579,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una actividad',
             showConfirmButton: true,
         });
@@ -587,7 +587,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una fuente de financiamiento',
             showConfirmButton: true,
         });
@@ -633,7 +633,7 @@ function crearReformaConActividades() {
                 } else {
                     Swal.fire({
                         icon:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         type:  'error',
                         text: 'No se pudo guardar la actividad: ' + response.message,
                     });

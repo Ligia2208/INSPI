@@ -58,7 +58,7 @@
                                 </div>
 
                                 <div>
-                                    <span>Monto ocupado</span>
+                                    <span>Total de Items Presupuestarios</span>
                                     <h4 class="my-1 text-primary ms-auto" id="total_ocupado">00.00</h4>
                                 </div>
 
@@ -91,7 +91,7 @@
                 <i class="lni lni-circle-plus"></i> Crear Actividad
             </a>
 
-            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ITEMS </h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ITEMS - {{$nombreDir}} </h2>
 
 
             <!-- MODAL PARA CREAR ITEM PRESUPUESTARIO -->
@@ -230,9 +230,11 @@
 
                 <div class="col-lg-12 d-flex align-items-center justify-content-center mt-4">
 
+                    @if(!$proestado)
                     <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="guardarEstructura()" style="margin-right: 2%">
                         <i class="bi bi-send-check"></i> Registrar
                     </a>
+                    @endif
 
                 </div>
 
@@ -244,6 +246,7 @@
 
     </hr>
 
+    @if(!$proestado)
     <div class="container2 mt-5">
 
         <div class="card  p-4">
@@ -280,6 +283,7 @@
         </div>
 
     </div>
+    @endif
 
 </div>
 
@@ -376,5 +380,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/ItemPresupuestario/monto_item.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/ItemPresupuestario/monto_item.js?v0.0.1')}}"></script>
 @endpush

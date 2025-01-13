@@ -114,7 +114,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: '¿Seguro que quiere eliminar esta reforma?',
             showConfirmButton: true,
             showCancelButton: true,
@@ -141,7 +141,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'success',
                                     type: 'success',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 }).then((result) => {
@@ -154,7 +154,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'error',
                                     type:  'error',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 });
@@ -164,7 +164,7 @@ $(function(){
                     error: function(error) {
                         Swal.fire({
                             icon:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             type:  'success',
                             text:   error,
                             showConfirmButton: true,
@@ -340,7 +340,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que elaboró la planificación',
             showConfirmButton: true,
         });
@@ -350,7 +350,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que autorizó la planificación',
             showConfirmButton: true,
         });
@@ -360,7 +360,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que generó el reporte',
             showConfirmButton: true,
         });
@@ -370,7 +370,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que valida la planificación',
             showConfirmButton: true,
         });
@@ -380,7 +380,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que aprueba la planificación',
             showConfirmButton: true,
         });
@@ -390,7 +390,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el cargo del usuario que crea la planificación',
             showConfirmButton: true,
         });
@@ -400,7 +400,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el cargo del usuario que autorizó la planificación',
             showConfirmButton: true,
         });
@@ -410,7 +410,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el cargo del usuario que revisó la planificación',
             showConfirmButton: true,
         });
@@ -420,7 +420,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el cargo del usuario que  la planificación',
             showConfirmButton: true,
         });
@@ -430,7 +430,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que autorizó la planificación',
             showConfirmButton: true,
         });
@@ -468,7 +468,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
             error: function(error) {
                 Swal.fire({
                     icon:  'error',
-                    title: 'SoftInspi',
+                    title: 'CoreInspi',
                     type:  'error',
                     text:   error,
                     showConfirmButton: true,

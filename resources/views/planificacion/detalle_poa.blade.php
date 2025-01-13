@@ -27,20 +27,17 @@
             <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> DETALLE DE PAPP </h2>
 
             <div class="row mt-4">
-                <div class="col-md-2">
-                    <label for="nameItemPU" class="form-label fs-6">Seleccionar fecha</label>
-                    <select id="yearSelect" class="form-control js-example-basic-single" onchange="actualizarTabla()"></select>
-                </div>
+
                 <div class="col-md-2">
                     <label class="form-label fs-6">&nbsp;</label>
                     <button id="btnGeneratePDF" class="btn btn-primary form-control">Generar PDF</button>
                 </div>
-                <div class="col-md-4 d-flex align-items-center justify-content-center">
-                    <h2 class="text-success"> <i class="bi bi-layer-forward"></i> Total Items: </h2> <h1 class="ms-2">{{$sumaMontos}}</h1>
+                <div class="col-md-5 d-flex align-items-center justify-content-center">
+                    <h2 class="text-success"> <i class="bi bi-layer-forward"></i> Total Items: </h2> <h1 class="ml-2">{{$sumaMontos}}</h1>
                 </div>
 
-                <div class="col-md-4 d-flex align-items-center justify-content-center">
-                    <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Planificación: </h2> <h1 class="ms-2"> {{$sumaActividades}} </h1>
+                <div class="col-md-5 d-flex align-items-center justify-content-center">
+                    <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Actividades: </h2> <h1 class="ml-2"> {{$sumaActividades}} </h1>
                 </div>
             </div>
 
@@ -49,7 +46,48 @@
 
             <div class="card">
                 <div class="card-body">
-                    <div class="table-responsive">
+
+                    <div class="filters row">
+                        <div class="col-lg-4">
+                            <label for="filterAnio" class="form-label">Año:</label>
+                            <select id="filterAnio" class="basic-single filter">
+
+                            </select>
+                        </div>
+
+                        <div class="col-lg-8">
+                            <label for="filterDireccion" class="form-label">Dirección:</label>
+                            <select id="filterDireccion" class="basic-single filter">
+                                <option value="">Todas</option>
+                                @foreach($direcciones as $direccion)
+                                    <option value="{{ $direccion->id }}">{{ $direccion->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 mt-2">
+                            <label for="filterItem" class="form-label">Item:</label>
+                            <select id="filterItem" class="basic-single filter">
+                                <option value="">Todos</option>
+                                @foreach($items as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nombre }} - {{ $item->descripcion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 mt-2">
+                            <label for="filterSubActividad" class="form-label">Sub Actividad:</label>
+                            <select id="filterSubActividad" class="basic-single filter">
+                                <option value="">Todas</option>
+                                @foreach($sub_actividades as $sub_actividad)
+                                    <option value="{{ $sub_actividad->id }}">{{ $sub_actividad->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
+
+                    <div class="table-responsive mt-6">
                         <table id="tblPlanificacionDetalle" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
@@ -58,6 +96,7 @@
                                     <th>Obj. Operativo</th>
                                     <th>Act. Operativa</th>
                                     <th>Sub Actividad</th>
+                                    <th>Item</th>
                                     <th>Ene</th>
                                     <th>Feb</th>
                                     <th>Mar</th>
@@ -83,6 +122,7 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                     <th>Ene</th>
                                     <th>Feb</th>
                                     <th>Mar</th>
@@ -102,6 +142,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
         <a id="btnModalReportPOA" data-toggle="modal" data-target="#addReportDetalle" class="d-none"></a>
@@ -110,7 +151,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Generar Reporte de Actividad</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Generar Reporte de PAPP</h5>
                         <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -118,8 +159,6 @@
                     <div class="modal-body">
                         <div id="modalContent">
                             <div class="row">
-                                <input type="hidden" id="id_poa" name="id_poa" class="form-control" required="" autofocus="" value="">
-
                                 <div class="col-md-4 mt-1">
                                     <label for="creado" class="form-label fs-6">Usuario que elabora</label>
                                     <input type="text" id="elabora" name="elabora" class="form-control" placeholder="Ingrese nombre de usuario" required>

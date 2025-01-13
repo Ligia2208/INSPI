@@ -28,7 +28,7 @@ $( function () {
                         Swal.fire({
                             icon: 'success',
                             type:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             text: response.message,
                             showConfirmButton: true,
                         }).then((result) => {
@@ -42,7 +42,7 @@ $( function () {
                         Swal.fire({
                             icon: 'error',
                             type:  'error',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             text: response.message,
                             showConfirmButton: true,
                         });
@@ -54,7 +54,7 @@ $( function () {
                     Swal.fire({
                         icon: 'error',
                         type:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         text: 'Error al enviar la solicitud AJAX: '+ error,
                         showConfirmButton: true,
                     });
@@ -95,7 +95,7 @@ function validarDatosResultadosInput() {
             Swal.fire({
                 icon: 'warning',
                 type: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Por favor, seleccione un archivo CSV.',
                 showConfirmButton: true,
             });
@@ -105,7 +105,7 @@ function validarDatosResultadosInput() {
         Swal.fire({
             icon: 'warning',
             type: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'No se ha agregado ningún documento en el reporte de resultados.',
             showConfirmButton: true,
         });
