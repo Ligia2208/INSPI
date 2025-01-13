@@ -578,6 +578,57 @@ $(document).ready(function() {
             });
         }
     });
+    
+
+
+
+    // Generar el reporte EXCEL
+    $(document).on('click', '#btnGenerateExcel', function() {
+
+        var filterAnio         = $('#filterAnio').val();
+        var filterDireccion    = $('#filterDireccion').val();
+        var filterItem         = $('#filterItem').val();
+        var filterSubActividad = $('#filterSubActividad').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/planificacion/reportDetalleExcel',
+            data: {
+                filterAnio         : filterAnio,
+                filterDireccion    : filterDireccion,
+                filterItem         : filterItem,
+                filterSubActividad : filterSubActividad,
+            },
+            xhrFields: {
+                responseType: 'blob'  // Definir que esperamos una respuesta de tipo blob (archivo)
+            },
+            success: function(response, status, xhr) {
+                var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }); // Tipo para Excel
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_detalle_' + filterAnio + '.xlsx'; // Extensión .xlsx para el archivo Excel
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+                $('#addReportDetalle').modal('hide');
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el archivo Excel.',
+                    showConfirmButton: true,
+                });
+            }
+        });
+
+    });
+
+    
+
+
 
 
 });

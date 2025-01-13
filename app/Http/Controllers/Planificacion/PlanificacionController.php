@@ -77,6 +77,9 @@ use App\Models\CoreBase\Area;
 use App\Models\RecursosHumanos\Persona;
 use App\Imports\ActividadImport;
 
+use App\Exports\ReportDetalleExport;
+//use Maatwebsite\Excel\Facades\Excel;
+
 class PlanificacionController extends Controller
 {
 
@@ -2865,6 +2868,79 @@ class PlanificacionController extends Controller
         return $pdf->download('reporte_detalle.pdf');
     }
     /* USUARIOS */
+
+
+
+    //Excel
+    public function reportDetalleExcel(Request $request)
+    {
+        $filterAnio         = $request->input('filterAnio');
+        $filterDireccion    = $request->input('filterDireccion');
+        $filterItem         = $request->input('filterItem');
+        $filterSubActividad = $request->input('filterSubActividad');
+
+        // Construir el query base
+        $query = DB::table('db_inspi_planificacion.pla_poa1')
+            ->select(
+                'pla_poa1.id as id', 'pla_actividad_operativa.nombre as actividad_operativa', 'pla_obj_operativo.nombre as objOperativo',
+                'pla_sub_actividad.nombre as sub_actividad', 'pla_item_presupuestario.nombre as item_presupuestario', 'pla_item_presupuestario.descripcion as descripcion_item',
+                'pla_unidad_ejecutora.nombre as u_ejecutora', 'pla_programa.nombre as programa', 'pla_proyecto.nombre as proyecto', 'pla_actividad_act.nombre as actividad',
+                'pla_fuente.nombre as fuente', 'pla_calendario.enero as enero', 'pla_calendario.febrero as febrero', 'pla_calendario.marzo as marzo', 'pla_calendario.abril as abril',
+                'pla_calendario.mayo as mayo', 'pla_calendario.junio as junio', 'pla_calendario.julio as julio', 'pla_calendario.agosto as agosto', 'pla_calendario.septiembre as septiembre',
+                'pla_calendario.octubre as octubre', 'pla_calendario.noviembre as noviembre', 'pla_calendario.diciembre as diciembre', 'pla_poa1.monto as total', 'pla_tipo_monto.nombre as frecuencia',
+                'pla_tipo_poa.nombre as tipoPoa', 'pro.nombre as proceso', 'area.nombre as direccion'
+            )
+            ->join('db_inspi_planificacion.pla_tipo_poa', 'pla_poa1.id_tipo_poa', '=', 'pla_tipo_poa.id')
+            ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_poa1.id_area')
+            ->join('db_inspi_planificacion.pla_tipo_monto', 'pla_poa1.id_tipo_monto', '=', 'pla_tipo_monto.id')
+            ->join('db_inspi_planificacion.pla_unidad_ejecutora', 'pla_poa1.u_ejecutora', '=', 'pla_unidad_ejecutora.id')
+            ->join('db_inspi_planificacion.pla_programa', 'pla_poa1.programa', '=', 'pla_programa.id')
+            ->join('db_inspi_planificacion.pla_proyecto', 'pla_poa1.proyecto', '=', 'pla_proyecto.id')
+            ->join('db_inspi_planificacion.pla_actividad_act', 'pla_poa1.actividad', '=', 'pla_actividad_act.id')
+            ->join('db_inspi_planificacion.pla_fuente', 'pla_poa1.fuente', '=', 'pla_fuente.id')
+            ->join('db_inspi_planificacion.pla_actividad_operativa', 'pla_poa1.id_actividad', '=', 'pla_actividad_operativa.id')
+            ->join('db_inspi_planificacion.pla_sub_actividad', 'pla_poa1.id_sub_actividad', '=', 'pla_sub_actividad.id')
+            ->join('db_inspi_planificacion.pla_item_presupuestario', 'pla_poa1.id_item', '=', 'pla_item_presupuestario.id')
+            ->join('db_inspi_planificacion.pla_obj_operativo', 'pla_poa1.id_obj_operativo', '=', 'pla_obj_operativo.id')
+            ->join('db_inspi_planificacion.pla_calendario', 'pla_poa1.id', '=', 'pla_calendario.id_poa')
+            ->join('db_inspi_planificacion.pla_tipo_proceso as pro', 'pro.id', '=', 'pla_poa1.id_proceso')
+            
+            ->whereNotIn('pla_poa1.estado', ['E']);
+
+        // Aplicar los filtros condicionalmente
+        if (!empty($filterAnio)) {
+            $query->where('pla_poa1.año', $filterAnio);
+        }
+
+        if (!empty($filterDireccion)) {
+            $query->where('pla_poa1.id_area', $filterDireccion);
+        }
+
+        if (!empty($filterItem)) {
+            $query->where('pla_item_presupuestario.id', $filterItem);
+        }
+
+        if (!empty($filterSubActividad)) {
+            $query->where('pla_sub_actividad.id', $filterSubActividad);
+        }
+
+        // Ejecutar el query
+        $actividades = $query->get();
+
+        return Excel::download(new ReportDetalleExport($actividades), 'reporte_detalle.xlsx');
+
+       // $pdf = \PDF::loadView('pdf.pdfDetalle', ['usuarios' => $usuarios, 'actividades' => $actividades])->setPaper('A3', 'landscape');
+
+        //$pdfFileName = 'pdf_' . time() . '.pdf';
+
+        //$pdf->save(public_path("pdf/{$pdfFileName}"));
+
+        //$pdfUrl = asset("pdf/{$pdfFileName}");
+        
+
+        //return response()->json(['pdf_url' => $actividades]);
+        //return $pdf->download('reporte_detalle.pdf');
+    }
 
 
 

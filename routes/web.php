@@ -190,8 +190,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('planificacion/reportDetalleUser', 'PlanificacionController@reportDetalleUser')->name('planificacion.reportDetalleUser');
         Route::get('planificacion/import_actividad', 'PlanificacionController@import_actividad')->name('planificacion.import_actividad');
         Route::post('planificacion/import', 'PlanificacionController@import')->name('planificacion.import');
-
-        
+        Route::get('planificacion/reportDetalleExcel', 'PlanificacionController@reportDetalleExcel')->name('planificacion.reportDetalleExcel');
     
     });
     /* =========================== PLANIFICACION =========================== */

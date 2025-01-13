@@ -30,12 +30,12 @@
 
                 <div class="col-md-2">
                     <label class="form-label fs-6">&nbsp;</label>
-                    <button id="btnGeneratePDF" class="btn btn-primary form-control">Generar PDF</button>
+                    <button id="btnGeneratePDF" class="btn btn-primary form-control"><i class="bi bi-filetype-pdf mr-1"></i>Generar PDF</button>
                 </div>
-                <!-- <div class="col-md-2">
+                <div class="col-md-2">
                     <label class="form-label fs-6">&nbsp;</label>
-                    <button id="btnGeneratePDF" class="btn btn-primary form-control">Generar Excel</button>
-                </div> -->
+                    <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar Excel</button>
+                </div>
                 <div class="col-md-4 d-flex align-items-center justify-content-center">
                     <h2 class="text-success"> <i class="bi bi-layer-forward"></i> Total Items: </h2> <h1 class="ml-2">{{$sumaMontos}}</h1>
                 </div>
