@@ -415,7 +415,7 @@
                                         </div>
                                         <input
                                             wire:model.defer="Analiticas.fecha_llegada_lab"
-                                            type="date"
+                                            type="date" required
                                             class="start_date form-control form-control-solid @error('Analiticas.fecha_llegada_lab') is-invalid @enderror"
                                             placeholder="Seleccione una fecha"
                                         />

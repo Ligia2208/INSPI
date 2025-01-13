@@ -69,7 +69,7 @@
                                             data-show-subtext="true">
                                             <option value="">Selecciona una opción Sexo</option>
                                             @foreach ($sexos as $sexo)
-                                                <option data-subtext="" value="{{ $sexo->id }}">{{ $sexo->nombre }}</option>
+                                                <option data-subtext="" value="{{ $sexo->id }}">{{ $sexo->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>

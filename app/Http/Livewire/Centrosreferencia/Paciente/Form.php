@@ -4,7 +4,7 @@ namespace App\Http\Livewire\Centrosreferencia\Paciente;
 
 use App\Models\CoreBase\TipoDocumento;
 use App\Models\CoreBase\Nacionalidad;
-use App\Models\CoreBase\Sexo;
+use App\Models\CentrosReferencia\Sexo;
 use App\Models\CoreBase\TipoSangre;
 use App\Models\CoreBase\EstadoCivil;
 use App\Models\CentrosReferencia\Paciente;
