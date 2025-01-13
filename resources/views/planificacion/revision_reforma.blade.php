@@ -74,7 +74,7 @@
 
             </div>
 
-            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> REVISIÓN REFORMA</h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bi bi-table'></i> REVISIÓN REFORMA</h2>
             <hr/>
             <?php
                 // var_dump($atributos);
@@ -115,7 +115,7 @@
                             <td>{{ $atributo->nombreItem }}</td>
                             <td>{{ $atributo->descripcionItem }}</td>
                             <td class="width">
-                                <select disabled class ="form-select" name="tipo[]">
+                                <select disabled class ="form-control" name="tipo[]">
                                     @if($atributo->tipo == 'DISMINUYE')
                                         <option value="">Seleccionar tipo...</option>
                                         <option value="DISMINUYE" selected>Disminuye</option>
@@ -195,7 +195,7 @@
         <div class="" style="margin-bottom: 2%;">
             <div class="col-md-4 mt-2">
                 <label for="estadoReforma" class="form-label fs-6">Estado de comprobación de la reforma</label>
-                <select id="estadoReforma" name="estadoPeforma" class="form-select single-select" required>
+                <select id="estadoReforma" name="estadoPeforma" class="form-control single-select" required>
                     <option value="0" selected>Seleccione el estado de la reforma</option>
                     <option value="O"> Aprobado</option>
                     <option value="R"> Rechazado</option>

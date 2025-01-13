@@ -43,6 +43,88 @@
 
                     <div class="row p-2">
 
+                        <div class="col-md-6">
+                            <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
+                            <select id="obOpera" name="item_presupuestario" class="form-control single-select" required>
+                                <option value="0">Seleccione Opción</option>
+                                @foreach($objExistente as $obj)
+                                    @if($atributos->id_obj_operativo == $obj->id)
+                                    <option value="{{$obj->id}}" selected>{{$obj->nombre}}</option>
+                                    @else
+                                    <option value="{{$obj->id}}">{{$obj->nombre}}</option>
+                                    @endif
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="actOpera" class="form-label fs-6">Actividad Operativa</label>
+                            <input type="text" id="actOpera" name="actOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreActividadOperativa}}">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación / Convenio</label>
+                            <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="{{$atributos->nombreSubActividad}}">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label for="item" class="form-label fs-6">Item presupuestario</label>
+                            <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)">
+                                @foreach($item_presupuestario as $item)
+                                @if($item->id == $atributos->id_item)
+                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
+                                @else
+                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}">{{$item->nombre}} - {{$item->descripcion}}</option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label for="monDisp" class="form-label fs-6">Monto Disponible del Item</label>
+                            <input type="text" id="monDisp" name="monDisp" class="form-control" required="" autofocus="" value="{{$atributos->montoItem}}" disabled>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+                        <!-- <div class="col-md-4 mt-2">
+                            <label for="desItem" class="form-label fs-6">Descripción del Item Presupuestario</label>
+                            <input type="text" id="desItem" name="desItem" class="form-control" required="" autofocus="" value="{{$atributos->descripcionItem}}" disabled>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div> -->
+
+                        <div class="col-md-4 mt-2">
+                            <label for="monto" class="form-label fs-6">Monto</label>
+                            <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="{{intval($atributos->monto)}}">
+                            <div class="valid-feedback">¡Se ve bien!</div>
+                            <div class="invalid-feedback">Ingrese solo números</div>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label for="proceso" class="form-label fs-6">Tipo de Proceso</label>
+                            <select id="proceso" name="proceso" class="form-control single-select" required >
+                                <option value="0">Seleccione Opción</option>
+                                @foreach($proceso as $tipo)
+                                @if($atributos->id_proceso == $tipo->id)
+                                <option value="{{$tipo->id}}" selected> {{$tipo->nombre}} </option>
+                                @else
+                                <option value="{{$tipo->id}}"> {{$tipo->nombre}} </option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <hr>
+
+                <div class="card-body">
+
+                    <div class="row p-2">
+
                         <div class="col-md-4" hidden>
                             <label for="coordina" class="form-label fs-6">ID OBJETIVO OPERATIVO</label>
                             <input type="text" id="id_obj_operativo" name="id_obj_operativo" class="form-control" required="" autofocus="" value="{{$atributos_operativos->id_objetivo_operativo}}">
@@ -69,7 +151,7 @@
 
                         <div class="col-md-12">
                             <label for="coordina" class="form-label fs-6">Coordinación/Dirección/Proyecto</label>
-                            <input type="text" id="coordina" name="coordina" class="form-control" required="" autofocus="" value="{{$atributos->departamento}}">
+                            <input type="text" id="coordina" name="coordina" class="form-control" required="" autofocus="" value="{{$atributos->departamento}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
@@ -81,7 +163,7 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="fecha" class="form-label fs-6">Fecha</label>
-                            <input type="date" id="fecha" name="fecha" class="form-control" required="" autofocus="" value="{{$atributos->fecha}}">
+                            <input type="date" id="fecha" name="fecha" class="form-control" required="" autofocus="" value="{{$atributos->fecha}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
@@ -113,64 +195,6 @@
 
                     </div>
 
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
-                    <div class="row p-2">
-
-                        <div class="col-md-6">
-                            <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
-                            <input type="text" id="obOpera" name="obOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreObjOperativo}}">
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-6">
-                            <label for="actOpera" class="form-label fs-6">Actividad Operativa</label>
-                            <input type="text" id="actOpera" name="actOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreActividadOperativa}}">
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación</label>
-                            <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="{{$atributos->nombreSubActividad}}">
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="item" class="form-label fs-6">Item presupuestario</label>
-                            <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)">
-                                @foreach($item_presupuestario as $item)
-                                @if($item->id == $atributos->id_item)
-                                    <option value="{{$item->id}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
-                                @else
-                                    <option value="{{$item->id}}">{{$item->nombre}} - {{$item->descripcion}}</option>
-                                @endif
-                                @endforeach
-                            </select>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="monDisp" class="form-label fs-6">Monto Disponible del Item</label>
-                            <input type="text" id="monDisp" name="monDisp" class="form-control" required="" autofocus="" value="{{$atributos->montoItem}}" disabled>
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="desItem" class="form-label fs-6">Descripción del Item Presupuestario</label>
-                            <input type="text" id="desItem" name="desItem" class="form-control" required="" autofocus="" value="{{$atributos->descripcionItem}}" disabled>
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="monto" class="form-label fs-6">Monto</label>
-                            <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="{{intval($atributos->monto)}}">
-                            <div class="valid-feedback">¡Se ve bien!</div>
-                            <div class="invalid-feedback">Ingrese solo números</div>
-                        </div>
-
-                    </div>
                 </div>
             </div>
 
@@ -509,5 +533,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/editPlanificacion.js?v0.0.18')}}"></script>
+<script src="{{asset('assets/js/Planificacion/editPlanificacion.js?v0.0.21')}}"></script>
 @endpush

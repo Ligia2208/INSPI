@@ -116,7 +116,7 @@
 
             @endcanany
 
-            @canany(['pacientes','resultados','visorresultados','resultadosmsp','resultadoscrn','preanalitica','postanaliticas'])
+            @canany(['pacientes','resultados','visorresultados','resultadosmsp','resultadoscrn','preanalitica','postanaliticas', 'analiticas'])
                 <div class="my-5"></div>
                 <li class="menu-section">
                     <h4 class="menu-text">Resultados CRNs</h4>
@@ -234,13 +234,13 @@
                 @endcan
             @endcanany
 
-            @canany(['pladetalle', 'plaactividades', 'pladireccion'])
+            @canany(['pladetalle', 'plaactividades', 'pladireccion', 'plareforma'])
                 <li class="menu-section">
                     <h4 class="menu-text">Admin Planificación</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
                 @can('pladetalle')
-                    <li class="menu-item {{ active('persona.*') }}">
+                    <li class="menu-item {{ active('planificacion.detalle') }}">
                         <a href="{{ route('planificacion.detalle') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-list-task"></i>
                             <span class="menu-text">Detalle</span>
@@ -249,7 +249,7 @@
                 @endcan
 
                 @can('plaactividades')
-                    <li class="menu-item {{ active('persona.*') }}">
+                    <li class="menu-item {{ active('planificacion') }}">
                         <a href="{{ route('planificacion') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-clipboard-check"></i>
                             <span class="menu-text">Lista de Actividades</span>
@@ -258,7 +258,7 @@
                 @endcan
 
                 @can('pladireccion')
-                    <li class="menu-item {{ active('persona.*') }}">
+                    <li class="menu-item {{ active('montoDireccion') }}">
                         <a href="{{ route('montoDireccion') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-map"></i>
                             <span class="menu-text">Lista de Direcciones</span>
@@ -266,16 +266,25 @@
                     </li>
                 @endcan
 
+                @can('plareforma')
+                    <li class="menu-item {{ active('planificacion.reformaPrincipal') }}">
+                        <a href="{{ route('planificacion.reformaPrincipal') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-repeat"></i>
+                            <span class="menu-text">Lista de Reformas</span>
+                        </a>
+                    </li>
+                @endcan
+
             @endcanany
 
-            @canany(['plamontoitem', 'plaactividadesitems'])
+            @canany(['plamontoitem', 'plaactividadesitems', 'plareformauser', 'pladetalleuser'])
                 <li class="menu-section">
                     <h4 class="menu-text">Planificación</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
 
                 @can('pladetalleuser')
-                    <li class="menu-item {{ active('persona.*') }}">
+                    <li class="menu-item {{ active('planificacion.detalleUser') }}">
                         <a href="{{ route('planificacion.detalleUser') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-list-task"></i>
                             <span class="menu-text">Detalle Planificación</span>
@@ -284,7 +293,7 @@
                 @endcan
 
                 @can('plamontoitem')
-                    <li class="menu-item {{ active('persona.*') }}">
+                    <li class="menu-item {{ active('itemPresupuestario.monto_item') }}">
                         <a href="{{ route('itemPresupuestario.monto_item') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-plus-circle"></i>
                             <span class="menu-text">Agregar Items</span>
@@ -293,10 +302,19 @@
                 @endcan
 
                 @can('plaactividadesitems')
-                    <li class="menu-item {{ active('persona.*') }}">
+                    <li class="menu-item {{ active('planificacion.vistaUser') }}">
                         <a href="{{ route('planificacion.vistaUser') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-person-lines-fill"></i>
                             <span class="menu-text">Lista de Actividades</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('plareformauser')
+                    <li class="menu-item {{ active('planificacion.reformaIndex') }}">
+                        <a href="{{ route('planificacion.reformaIndex') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-repeat-1"></i>
+                            <span class="menu-text">Lista de Reformas</span>
                         </a>
                     </li>
                 @endcan

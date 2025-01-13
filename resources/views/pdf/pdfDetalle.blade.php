@@ -89,7 +89,7 @@
                 <td>OBJETIVO OPERATIVO</td>
                 <td>ACTIVIDADES OPERATIVAS</td>
                 <td>SUB ACTIVIDAD/OBJETO DE CONTRATACIÓN</td>
-                <td>FRECUENCIA DE AVANCE DE INDICADOR</td>
+                <td>DIRECCIÓN/COORDINACIÓN</td>
                 <td>UNIDAD EJECUTORA</td>
                 <td>PROGRAMA</td>
                 <td>PROYECTO</td>
@@ -129,7 +129,7 @@
                     <td>{{$actividad->objOperativo}}</td>
                     <td>{{$actividad->actividad_operativa }}</td>
                     <td>{{$actividad->sub_actividad }}</td>
-                    <td>{{$actividad->frecuencia}}</td>
+                    <td>{{$actividad->direccion}}</td>
                     <td>{{$actividad->u_ejecutora}}</td>
                     <td>{{$actividad->programa}}</td>
                     <td>{{$actividad->proyecto}}</td>
@@ -139,7 +139,7 @@
                     <td>{{ $actividad->descripcion_item }}</td>
                     <td>{{ $actividad->total }}</td>
                     <td>{{ $actividad->tipoPoa }}</td>
-                    <td>NUEVO</td>
+                    <td>{{ $actividad->proceso }}</td>
                     <td></td>
                     <td>{{ $actividad->enero }}</td>
                     <td>{{ $actividad->febrero }}</td>

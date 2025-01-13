@@ -52,7 +52,13 @@ function validarCampos() {
     let justificacion = $('#justificacion').val();
     if (justificacion === null || justificacion === "") {
         valido = false;
-        comentario = '¡Se requiere una justificación! Ingrese una justificación para la reforma.';
+        comentario = '¡Se requiere una justificación! Ingrese una justificación para editar la reforma.';
+    }
+
+    let justifi = $('#justifi').val();
+    if (justifi === null || justifi === "") {
+        valido = false;
+        comentario = '¡Se requiere una justificación del Área Requirente!';
     }
 
     if(!valido){
@@ -74,6 +80,10 @@ function validarCampos() {
 }
 
 $(document).ready(function() {
+
+    $('.single-select').select2({
+        width: '100%',
+    });
 
     // Función para calcular el total de los meses
     function calcularTotal($inputsMeses) {
@@ -116,7 +126,7 @@ $(document).ready(function() {
     // Llamar al evento de cambio al cargar la página para inicializar el estado de los campos
     $('select[name="tipo[]"]').trigger('change');
 
-    agregarUnidad();
+    agregarEstructura()
 
     $('#unidad_ejecutora').on('change', function() {
 
@@ -259,42 +269,42 @@ function actualizarReforma() {
 
             if ($(this).is(':visible')) {
                 let id_actividad = $(this).find('input[name="id_actividad[]"]').val();
-                let solicitud = $(this).find('input[name="solicitud[]"]').val();
-                let tipo = $(this).find('select[name="tipo[]"]').val();
-                let enero = $(this).find('input[name="enero1[]"]').val();
-                let febrero = $(this).find('input[name="febrero1[]"]').val();
-                let marzo = $(this).find('input[name="marzo1[]"]').val();
-                let abril = $(this).find('input[name="abril1[]"]').val();
-                let mayo = $(this).find('input[name="mayo1[]"]').val();
-                let junio = $(this).find('input[name="junio1[]"]').val();
-                let julio = $(this).find('input[name="julio1[]"]').val();
-                let agosto = $(this).find('input[name="agosto1[]"]').val();
-                let septiembre = $(this).find('input[name="septiembre1[]"]').val();
-                let octubre = $(this).find('input[name="octubre1[]"]').val();
-                let noviembre = $(this).find('input[name="noviembre1[]"]').val();
-                let diciembre = $(this).find('input[name="diciembre1[]"]').val();
-                let total = $(this).find('input[name="total1[]"]').val();
+                let solicitud    = $(this).find('input[name="solicitud[]"]').val();
+                let tipo         = $(this).find('select[name="tipo[]"]').val();
+                let enero        = $(this).find('input[name="enero1[]"]').val();
+                let febrero      = $(this).find('input[name="febrero1[]"]').val();
+                let marzo        = $(this).find('input[name="marzo1[]"]').val();
+                let abril        = $(this).find('input[name="abril1[]"]').val();
+                let mayo         = $(this).find('input[name="mayo1[]"]').val();
+                let junio        = $(this).find('input[name="junio1[]"]').val();
+                let julio        = $(this).find('input[name="julio1[]"]').val();
+                let agosto       = $(this).find('input[name="agosto1[]"]').val();
+                let septiembre   = $(this).find('input[name="septiembre1[]"]').val();
+                let octubre      = $(this).find('input[name="octubre1[]"]').val();
+                let noviembre    = $(this).find('input[name="noviembre1[]"]').val();
+                let diciembre    = $(this).find('input[name="diciembre1[]"]').val();
+                let total        = $(this).find('input[name="total1[]"]').val();
                 let subActividad = $(this).find('input[name="subActividad[]"]').val();
 
 
                 formData.push({
                     id_actividad: id_actividad,
-                    solicitud: solicitud,
-                    tipo: tipo,
-                    enero: enero,
-                    febrero: febrero,
-                    marzo: marzo,
-                    abril: abril,
-                    mayo: mayo,
-                    junio: junio,
-                    julio: julio,
-                    agosto: agosto,
-                    septiembre: septiembre,
-                    octubre: octubre,
-                    noviembre: noviembre,
-                    diciembre: diciembre,
-                    total: total,
-                    estado: 'A',
+                    solicitud:    solicitud,
+                    tipo:         tipo,
+                    enero:        enero,
+                    febrero:      febrero,
+                    marzo:        marzo,
+                    abril:        abril,
+                    mayo:         mayo,
+                    junio:        junio,
+                    julio:        julio,
+                    agosto:       agosto,
+                    septiembre:   septiembre,
+                    octubre:      octubre,
+                    noviembre:    noviembre,
+                    diciembre:    diciembre,
+                    total:        total,
+                    estado:       'A',
                     subActividad: subActividad,
 
                 });
@@ -308,21 +318,21 @@ function actualizarReforma() {
 
             }else{
                 let id_actividad = $(this).find('input[name="id_actividad[]"]').val();
-                let solicitud = $(this).find('input[name="solicitud[]"]').val();
-                let tipo = $(this).find('select[name="tipo[]"]').val();
-                let enero = $(this).find('input[name="enero1[]"]').val();
-                let febrero = $(this).find('input[name="febrero1[]"]').val();
-                let marzo = $(this).find('input[name="marzo1[]"]').val();
-                let abril = $(this).find('input[name="abril1[]"]').val();
-                let mayo = $(this).find('input[name="mayo1[]"]').val();
-                let junio = $(this).find('input[name="junio1[]"]').val();
-                let julio = $(this).find('input[name="julio1[]"]').val();
-                let agosto = $(this).find('input[name="agosto1[]"]').val();
-                let septiembre = $(this).find('input[name="septiembre1[]"]').val();
-                let octubre = $(this).find('input[name="octubre1[]"]').val();
-                let noviembre = $(this).find('input[name="noviembre1[]"]').val();
-                let diciembre = $(this).find('input[name="diciembre1[]"]').val();
-                let total = $(this).find('input[name="total1[]"]').val();
+                let solicitud    = $(this).find('input[name="solicitud[]"]').val();
+                let tipo         = $(this).find('select[name="tipo[]"]').val();
+                let enero        = $(this).find('input[name="enero1[]"]').val();
+                let febrero      = $(this).find('input[name="febrero1[]"]').val();
+                let marzo        = $(this).find('input[name="marzo1[]"]').val();
+                let abril        = $(this).find('input[name="abril1[]"]').val();
+                let mayo         = $(this).find('input[name="mayo1[]"]').val();
+                let junio        = $(this).find('input[name="junio1[]"]').val();
+                let julio        = $(this).find('input[name="julio1[]"]').val();
+                let agosto       = $(this).find('input[name="agosto1[]"]').val();
+                let septiembre   = $(this).find('input[name="septiembre1[]"]').val();
+                let octubre      = $(this).find('input[name="octubre1[]"]').val();
+                let noviembre    = $(this).find('input[name="noviembre1[]"]').val();
+                let diciembre    = $(this).find('input[name="diciembre1[]"]').val();
+                let total        = $(this).find('input[name="total1[]"]').val();
                 let subActividad = $(this).find('input[name="subActividad[]"]').val();
 
                 formData.push({
@@ -372,15 +382,15 @@ function actualizarReforma() {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                 },
                 data: {
-                    formData: formData,
+                    formData:      formData,
                     justificacion: justificacion,
-                    justifi : justifi
+                    justifi :      justifi
                 },
                 success: function(response) {
                     Swal.fire({
                         icon: 'success',
                         type:  'success',
-                        title: 'Éxito',
+                        title: 'CoreInspi',
                         text: 'Reforma actualizada correctamente.',
                         showConfirmButton: true
                     }).then((result) => {
@@ -434,30 +444,22 @@ function guardarNuevaActividad() {
     let obOpera = $('#obOpera').val();
     let actOpera = $('#actOpera').val();
     let subActi = $('#subActi').val();
-    let item_presupuestario = $('#item_presupuestario').val();
-    let monDisp = $('#monDisp').val();
-    let desItem = $('#desItem').val();
+
+    let id_item_dir         = $('#item_presupuestario').val();
+    let selectedOption      = $(`#item_presupuestario option[value="${id_item_dir}"]`);
+    let item_presupuestario = selectedOption.attr("data-id_item");
+
+    let monDisp    = $('#monDisp').val();
+    let desItem    = $('#desItem').val();
     let plurianual = $('#plurianual').is(':checked');
     let id_reforma = $('#id_reforma').val();
     var unidad_ejecutora = $('#unidad_ejecutora').val();
-    var programa = $('#programa').val();
-    var proyecto = $('#proyecto').val();
-    var actividad = $('#actividad').val();
+    var programa   = $('#programa').val();
+    var proyecto   = $('#proyecto').val();
+    var actividad  = $('#actividad').val();
     var fuente_financiamiento = $('#fuente_financiamiento').val();
-    let justifi2  = $('#justifi2').val();
-    // var datosActividad = {
-    //     coordina: $('#coordina').val(),
-    //     fecha: $('#fecha').val(),
-    //     poa: $('#poa').val(),
-    //     obOpera: $('#obOpera').val(),
-    //     actOpera: $('#actOpera').val(),
-    //     subActi: $('#subActi').val(),
-    //     item_presupuestario: $('#item_presupuestario').val(),
-    //     monDisp: $('#monDisp').val(),
-    //     desItem: $('#desItem').val(),
-    //     plurianual: $('#plurianual').is(':checked'),
-    //     id_reforma: $('#id_reforma').val()
-    // };
+    let justifi2   = $('#justifi2').val();
+    var proceso    = $('#proceso').val();
 
     if(coordina == ''){
 
@@ -485,10 +487,19 @@ function guardarNuevaActividad() {
             icon: 'warning',
             type:  'warning',
             title: 'CoreInspi',
-            text: 'Debe de selecionar un tipo de POA.',
+            text: 'Debe de selecionar un tipo de Gasto.',
             showConfirmButton: true,
         });
 
+    }else if( proceso == '' || proceso == 0 ){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'CoreInspi',
+            text: 'Debe de seleccionar un Tipo de Proceso.',
+            showConfirmButton: true,
+        });
     }else if( justifi2 == '' ){
 
         Swal.fire({
@@ -498,7 +509,7 @@ function guardarNuevaActividad() {
             text: 'Debe de ingresar una Justificación del área requirente.',
             showConfirmButton: true,
         });
-    }else if(obOpera == ''){
+    }else if(obOpera == '' || obOpera == 0){
 
         Swal.fire({
             icon: 'warning',
@@ -528,7 +539,7 @@ function guardarNuevaActividad() {
             showConfirmButton: true,
         });
 
-    }else if(item_presupuestario == '0'){
+    }else if(id_item_dir == '0'){
        Swal.fire({
        icon: 'warning',
        type:  'warning',
@@ -585,23 +596,25 @@ function guardarNuevaActividad() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: {
-                coordina: coordina,
-                fecha: fecha,
-                poa: poa,
-                obOpera: obOpera,
-                actOpera: actOpera,
-                subActi: subActi,
+                coordina:         coordina,
+                fecha:            fecha,
+                poa:              poa,
+                obOpera:          obOpera,
+                actOpera:         actOpera,
+                subActi:          subActi,
                 item_presupuestario: item_presupuestario,
-                monDisp: monDisp,
+                monDisp:          monDisp,
                 unidad_ejecutora: unidad_ejecutora,
-                programa: programa,
-                proyecto: proyecto,
-                actividad: actividad,
+                programa:         programa,
+                proyecto:         proyecto,
+                actividad:        actividad,
                 fuente_financiamiento: fuente_financiamiento,
-                desItem: desItem,
-                plurianual: plurianual ? 1 : 0,
-                justifi2 : justifi2,
-                id_reforma: id_reforma,
+                desItem:          desItem,
+                plurianual:       plurianual ? 1 : 0,
+                justifi2 :        justifi2,
+                id_reforma:       id_reforma,
+                proceso   :       proceso,
+                id_item_dir:      id_item_dir,
             },
             success: function(response) {
                 if (response.success) {
@@ -611,7 +624,7 @@ function guardarNuevaActividad() {
                     Swal.fire({
                         icon: 'success',
                         type: 'success',
-                        title: 'Éxito',
+                        title: 'CoreInspi',
                         text: 'Actividad guardada correctamente',
                     });
                 $('#contenedorBotonAgregarActividad').show();
@@ -641,7 +654,7 @@ function agregarFilaTabla(actividad) {
         <tr>
             <input type="hidden" name="id_actividad[]" value="${actividad.id}">
             <td>
-                <i type="button" class="font-22 fadeIn animated bx bx-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
+                <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
             </i>
             </td>
             <td>${actividad.nombreActividadOperativa}</td>
@@ -651,7 +664,7 @@ function agregarFilaTabla(actividad) {
             <td>${actividad.nombreItem}</td>
             <td>${actividad.descripcionItem}</td>
             <td class="width">
-                <select class="form-select" name="tipo[]">
+                <select class="form-control" name="tipo[]">
                     <option value="">Seleccionar tipo...</option>
                     <option value="DISMINUYE">Disminuye</option>
                     <option value="AUMENTA" selected>Aumenta</option>
@@ -749,6 +762,8 @@ function cerrarFormulario() {
 //     return valido;
 // }
 
+
+/*
 function agregarUnidad(){
     // Realiza una solicitud AJAX para obtener las opciones de la unidad ejecutora
     $.ajax({
@@ -776,7 +791,7 @@ function agregarUnidad(){
         }
     });
 }
-
+*/
 
 
 function cambioSelect(selectElement) {
@@ -977,7 +992,7 @@ function agregarActAreaFila(actividadPoa) {
             <input type="hidden" name="solicitud[]" value="false">
             <input type="hidden" name="id_area_soli[]" value="${(actividadPoa.id_areaS)}">
             <td>
-            <i type="button" class="font-22 fadeIn animated bx bx-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
+            <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
             </td>
             <td>${(actividadPoa.nombreActividadOperativa)}</td>
             <td>
@@ -1051,109 +1066,86 @@ function agregarActAreaFila(actividadPoa) {
 }
 
 
+function agregarEstructura(){
 
+    let id_fuente = $('#id_fuente').val();
 
+    if(id_fuente != 0 || id_fuente != ''){
 
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/itemPresupuestario/get_estructura/'+id_fuente, // Ruta en tu servidor para obtener las opciones
+            success: function(response) {
+    
+                if (response.success) {
+                    let data        = response.data;
+                    let programas   = response.programa;
+                    let proyectos   = response.proyecto;
+                    let actividades = response.actividadPre;
+                    let fuentes     = response.fuente;
+                    let unidad      = response.unidad;
+    
+                    //$('#unidad_ejecutora').val(data.id_unidad);
+                    $('#unidad_ejecutora').empty();
+                    unidad.forEach(programa => {
+                        $('#unidad_ejecutora').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_uni ? 'selected' : ''}>
+                                ${programa.nombre} - ${programa.descripcion}
+                            </option>`
+                        );
 
-//VERSIÓN ANTERIOR QUE AGREGABA SOLO LA FILA CON ID_POA
+                        //programa.id == data.id_unidad ? alert('Funciona') : '';
 
-// function agregarActAreaFila(element) {
-//     // Encuentra la fila de la tabla que contiene el botón que se ha clicado
-//     let fila = $(element).closest('tr');
+                    });
+    
+                    // Cargar y seleccionar el valor en Programa
+                    $('#programa').empty();
+                    programas.forEach(programa => {
+                        $('#programa').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_programa ? 'selected' : ''}>
+                                ${programa.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Proyecto
+                    $('#proyecto').empty();
+                    proyectos.forEach(proyecto => {
+                        $('#proyecto').append(
+                            `<option value="${proyecto.id}" ${proyecto.id == data.id_proyecto ? 'selected' : ''}>
+                                ${proyecto.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Actividad
+                    $('#actividad').empty();
+                    actividades.forEach(actividad => {
+                        $('#actividad').append(
+                            `<option value="${actividad.id}" ${actividad.id == data.id_actividad ? 'selected' : ''}>
+                                ${actividad.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Fuente
+                    $('#fuente_financiamiento').empty();
+                    fuentes.forEach(fuente => {
+                        $('#fuente_financiamiento').append(
+                            `<option value="${fuente.id}" ${fuente.id == data.id_fuente ? 'selected' : ''}>
+                                ${fuente.nombre}
+                            </option>`
+                        );
+                    });
+                }
+    
+    
+            },
+            error: function(error) {
+                console.error('Error al obtener opciones de la unidad ejecutora', error);
+            }
+        });
 
-//     // Obtén el ID de la actividad (POA) desde el input oculto
-//     let id_poa = fila.find('input[name="id_poa[]"]').val();
+    }
 
-//     $.ajax({
-//         type: 'GET', // O el método que estés utilizando en tu ruta
-//         url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
-//         data: { id_poa: id_poa },
-//         success: function(data) {
-
-//             console.log(data);
-
-//             var tableBody = $('#tblActividadesEditar tbody');
-//             var rows = '';
-
-//             // Agrega nuevas filas basadas en la respuesta del servidor
-//                 rows +=`
-//                 <tr>
-//                     <input type="hidden" name="id_poa[]" value="${(data.id)}">
-//                     <input type="hidden" name="solicitud[]" value="false">
-//                     <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
-//                     <td>
-//                     <i type="button" class="font-22 fadeIn animated bx bx-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
-//                     </td>
-//                     <td>${(data.nombreActividadOperativa)}</td>
-//                     <td>
-//                         <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="${(data.nombreSubActividad)}">
-//                     </td>
-//                     <td>${(data.nombreItem)}</td>
-//                     <td>${(data.descripcionItem)}</td>
-//                     <td class="width">
-//                         <select class="form-select" name="tipo[]">
-//                             <option value="" selected disabled>Seleccionar tipo...</option>
-//                             <option value="DISMINUYE">Disminuye</option>
-//                             <option value="AUMENTA">Aumenta</option>
-//                         </select>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="enero1[]" value="0">
-//                         <div class="form-text">${data.enero}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="febrero1[]" value="0">
-//                         <div class="form-text">${data.febrero}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="marzo1[]" value="0">
-//                         <div class="form-text">${data.marzo}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="abril1[]" value="0">
-//                         <div class="form-text">${data.abril}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="mayo1[]" value="0">
-//                         <div class="form-text">${data.mayo}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="junio1[]" value="0">
-//                         <div class="form-text">${data.junio}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="julio1[]" value="0">
-//                         <div class="form-text">${data.julio}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="agosto1[]" value="0">
-//                         <div class="form-text">${data.agosto}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="septiembre1[]" value="0">
-//                         <div class="form-text">${data.septiembre}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="octubre1[]" value="0">
-//                         <div class="form-text">${data.octubre}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="noviembre1[]" value="0">
-//                         <div class="form-text">${data.noviembre}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="diciembre1[]" value="0">
-//                         <div class="form-text">${data.diciembre}</div></td>
-//                     </td>
-//                     <td>
-//                         <input class ="form-control" style="width: 125px;" type="text" name="total1[]" value="0.00">
-//                         <div class="form-text">${data.total}</div></td>
-//                     </td>
-//                 </tr>`;
-//             tableBody.append(rows);
-//         },
-//         error: function(error) {
-//             console.error('Error al obtener los datos de la tabla', error);
-//         }
-//     });
-// }
+}

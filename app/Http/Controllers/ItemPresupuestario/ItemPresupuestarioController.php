@@ -208,14 +208,28 @@ class ItemPresupuestarioController extends Controller{
     public function montoDireccion(Request $request)
     {
         $id_usuario = Auth::user()->id; // Trae el ID del usuario
-    
+
+        $montos = MontoDireccion::select(
+            DB::raw('SUM(monto) AS total_monto_presupuestado'),
+            DB::raw('COALESCE((SELECT SUM(monto) FROM pla_poa1 WHERE estado = "A"), 0) AS total_monto'),
+            DB::raw('COALESCE((SELECT SUM(monto) FROM pla_items_direcciones WHERE estado = "A"), 0) AS total_monto_direcciones') 
+        )
+        ->where('estado', 'A')
+        //->groupBy('monto')
+        ->first();
+
+        $montos->total_monto_presupuestado = number_format($montos->total_monto_presupuestado, 2);
+        $montos->total_monto = number_format($montos->total_monto, 2);
+        $montos->total_monto_direcciones = number_format($montos->total_monto_direcciones, 2);
+
+        
         if(request()->ajax()) {
             return datatables()->of(MontoDireccion::select('id',
                 'id_dir', 'descripcion', 'estado', 'proceso_estado',
                 'id_dir_tec', 'nombre', 'monto', 
                 DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i:%s") as fecha'),
                 // Subconsulta para obtener el total_monto por id_area
-                DB::raw('COALESCE((SELECT SUM(monto) FROM pla_poa1 WHERE id_area = pla_direcciones.id AND estado = "A"), 0) AS total_monto'),
+                DB::raw('COALESCE((SELECT SUM(monto) FROM pla_poa1 WHERE id_area = pla_direcciones.id AND estado != "E"), 0) AS total_monto'),
                 DB::raw('COALESCE((SELECT SUM(monto) FROM pla_items_direcciones WHERE id_direcciones = pla_direcciones.id AND estado = "A"), 0) AS total_monto_direcciones')           
                 )
             ->where('estado', 'A')
@@ -226,7 +240,7 @@ class ItemPresupuestarioController extends Controller{
         }
     
         // Respuesta para la vista
-        return view('item_presupuestario.monto_dir');
+        return view('item_presupuestario.monto_dir', compact('montos'));
     }
     
 
@@ -375,6 +389,22 @@ class ItemPresupuestarioController extends Controller{
     }
 
 
+    public function list_items($id_direccion){
+
+        $items = ItemPresupuestario::where('pla_item_presupuestario.estado', 'A')->whereNotIn('pla_item_presupuestario.id', function ($query) use ($id_direccion) {
+            $query->select('id_item')
+                    ->from('pla_items_direcciones')
+                    ->where('id_direcciones', '=', $id_direccion)
+                    ->where('estado', '=', 'A');
+        })->get();
+
+        return response()->json([
+            'success' => true,
+            'data'    => $items,
+        ], 200); 
+
+    }
+
 
 
     public function actualizarItems(Request $request)
@@ -436,8 +466,11 @@ class ItemPresupuestarioController extends Controller{
         
                     ItemDireccion::updateOrCreate(
                         $data,
-                        ['monto' => $itemData['valor'],
-                        'estado' => 'A']
+                        [
+                        'monto'       => $itemData['valor'],
+                        'presupuesto' => $itemData['valor'],
+                        'estado'      => 'A'
+                        ]
                     );
                 }
         
@@ -508,11 +541,11 @@ class ItemPresupuestarioController extends Controller{
             $monto        = $direccion->monto;
         }
 
-        $montoTotal = ItemDireccion::where('id_direcciones', $id_direccion)->where('id', '!=', $id)->where('estado', 'A')->sum('monto');
         $montoNuevo = $request->input('monto');
+        $montoTotal = ItemDireccion::where('id_direcciones', $id_direccion)->where('id', '!=', $id)->where('estado', 'A')->sum('monto');
         $sumMonto = $montoTotal + $montoNuevo;
 
-        if($monto < $sumMonto){
+        if($monto < $sumMonto && $montoNuevo != 0){
 
             return response()->json([
                 'error'   => true,
@@ -526,6 +559,7 @@ class ItemPresupuestarioController extends Controller{
             //Actualiza los datos en la tabla
             $montoDireccion = ItemDireccion::find($id);
             $montoDireccion->monto = $request->input('monto');
+            $montoDireccion->presupuesto = $request->input('monto');
             $montoDireccion->save();
         
             return response()->json(['error' => false, 'message' => 'El presupuesto deL Item se ha actualizado correctamente.']);
@@ -541,7 +575,7 @@ class ItemPresupuestarioController extends Controller{
     public function deleteItemDireccion(Request $request)
     {
         $direccion = ItemDireccion::find($request->id); //Busca el registro por el ID
-
+        
         if ($direccion) {
 
             $direccion->update([

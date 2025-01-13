@@ -91,6 +91,18 @@
 
             <div class="card">
                 <div class="card-body">
+
+                    <div class="col-lg-6 mt-2 mb-5">
+                        <label for="filterItem" class="form-label">Item:</label>
+                        <select id="filterItem" class="js-example-basic-single filter">
+                            <option value="">Todos</option>
+                            @foreach($items as $item)
+                                <option value="{{ $item->id }}">{{ $item->nombre }} - {{ $item->descripcion }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+
                     <div class="">
                         <table id="tblPlanificacionVistaUser" class="table table-striped table-bordered" style="width:100%">
                             <thead>
@@ -100,6 +112,7 @@
                                     <th>Objetivo Operativo</th>
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
+                                    <th>Item</th>
                                     <th>Monto</th>
                                     <th>Proceso</th>
                                     <th>Fecha</th>
@@ -113,23 +126,16 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>Departamento</th>
-                                    <th>POA</th>
-                                    <th>Objetivo Operativo</th>
-                                    <th>Actividad Operativa</th>
-                                    <th>Sub actividad</th>
-                                    <th>Monto</th>
-                                    <th>Proceso</th>
-                                    <th>Fecha</th>
-                                    <th> <center> Estado </center></th>
-                                    <th> <center> Solicitado </center></th>
-                                    <th>Acciones</th>
+                                    <th colspan="6" style="text-align:right">Total:</th>
+                                    <th></th> <!-- Aquí se mostrará el total -->
+                                    <th colspan="5"></th>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -432,5 +438,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.12')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.15')}}"></script>
 @endpush

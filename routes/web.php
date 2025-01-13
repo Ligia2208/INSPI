@@ -148,8 +148,8 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('planificacion/reportHexa', 'PlanificacionController@reportHexa')->name('planificacion.reportHexa');
     
-        Route::get('/planificacion/reformaIndex', 'PlanificacionController@reformaIndex')->name('planificacion.reformaIndex'); //vista principal
-        Route::get('/planificacion/reformaPrincipal', 'PlanificacionController@reformaPrincipal')->name('planificacion.reformaPrincipal'); //vista principal
+        Route::get('/planificacion/reformaIndex', 'PlanificacionController@reformaIndex')->middleware('permission:plareformauser')->name('planificacion.reformaIndex'); //vista principal
+        Route::get('/planificacion/reformaPrincipal', 'PlanificacionController@reformaPrincipal')->middleware('permission:plareforma')->name('planificacion.reformaPrincipal'); //vista principal
         Route::get('/planificacion/revisionReforma/{id}', 'PlanificacionController@revisionReforma')->name('planificacion.revisionReforma'); //vista principal
         Route::post('/planificacion/agregarComentarioReforma', 'PlanificacionController@agregarComentarioReforma')->name('planificacion.agregarComentarioReforma');
         Route::get('/planificacion/obtenerComentariosReforma/{id?}', 'PlanificacionController@obtenerComentariosReforma')->name('planificacion.obtenerComentariosReforma'); //COMENTARIOS
@@ -183,7 +183,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/planificacion/get_actividades_id', 'PlanificacionController@get_actividades_id')->name('planificacion.get_actividades_id');
     
         Route::post('/planificacion/aproSolicitud', 'PlanificacionController@aproSolicitud')->name('planificacion.aproSolicitud'); //Aprobar o Rechazar solicitud
-        Route::get('/planificacion/obtenerPoa/{id}', 'PlanificacionController@obtenerPoa')->name('planificacion.obtenerPoa');
+        Route::get('/planificacion/obtenerpoa/{id}', 'PlanificacionController@obtenerPoa')->name('planificacion.obtenerPoa');
         Route::post('/planificacion/solicitadPOA', 'PlanificacionController@solicitadPOA')->name('planificacion.solicitadPOA');
     
         Route::get('planificacion/reportDetalle', 'PlanificacionController@reportDetalle')->name('planificacion.reportDetalle');
@@ -226,6 +226,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/itemPresupuestario/deleteItemDireccion', 'ItemPresupuestarioController@deleteItemDireccion')->name('itemPresupuestario.deleteItemDireccion');
         Route::get('/itemPresupuestario/get_estructura/{id?}', 'ItemPresupuestarioController@get_estructura')->name('itemPresupuestario.get_estructura');
         Route::get('/itemPresupuestario/get_montos/{id?}', 'ItemPresupuestarioController@get_montos')->name('itemPresupuestario.get_montos');
+        Route::get('/itemPresupuestario/list_items/{id?}', 'ItemPresupuestarioController@list_items')->name('itemPresupuestario.list_items');
 
     });
     /* =========================== ITEM PRESUPUESTARIO =========================== */

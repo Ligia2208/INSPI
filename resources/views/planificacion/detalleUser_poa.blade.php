@@ -5,6 +5,13 @@
 <!-- DataTables CSS -->
 @push('styles')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+<style>
+    .col-objetivo-operativo {
+        width: 400px; /* Ajusta el tamaño según lo necesario */
+    }
+</style>
+
 @endpush
 
 @section('content')
@@ -42,7 +49,7 @@
                 </div>
 
                 <div class="col-md-8 d-flex align-items-center justify-content-center">
-                    <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Planificación: </h2> <h1 class="ml-2"> {{$sumaActividades}} </h1>
+                    <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Planificación: </h2> <h1 class="ml-2"> ${{$sumaActividades}} </h1>
                 </div>
             </div>
 
@@ -57,7 +64,7 @@
                                 <tr>
                                     <th>Area</th>
                                     <th>Tipo de POA</th>
-                                    <th>Obj. Operativo</th>
+                                    <th class="col-objetivo-operativo">Obj. Operativo</th>
                                     <th>Act. Operativa</th>
                                     <th>Sub Actividad</th>
                                     <th>Ene</th>
@@ -104,6 +111,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -214,5 +222,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/detalle_user.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Planificacion/detalle_user.js?v0.0.1')}}"></script>
 @endpush

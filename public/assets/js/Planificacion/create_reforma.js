@@ -265,6 +265,12 @@ function validarCampos() {
 
 $(document).ready(function() {
 
+    $('.single-select').select2({
+        width: '100%',
+    });
+
+    agregarEstructura();
+
     // Función para calcular el total de los meses
     function calcularTotal($inputsMeses) {
         let total = 0;
@@ -304,7 +310,7 @@ $(document).ready(function() {
     // Llamar al evento de cambio al cargar la página para inicializar el estado de los campos
     $('select[name="tipo[]"]').trigger('change');
 
-    agregarUnidad();
+    //agregarUnidad();
 
     $('#unidad_ejecutora').on('change', function() {
 
@@ -457,7 +463,11 @@ function crearReformaConActividades() {
     let obOpera = $('#obOpera').val();
     let actOpera = $('#actOpera').val();
     let subActi = $('#subActi').val();
-    let item_presupuestario = $('#item_presupuestario').val();
+
+    let id_item_dir         = $('#item_presupuestario').val();
+    let selectedOption      = $(`#item_presupuestario option[value="${id_item_dir}"]`);
+    let item_presupuestario = selectedOption.attr("data-id_item");
+
     let monDisp = $('#monDisp').val();
     let desItem = $('#desItem').val();
     let plurianual = $('#plurianual').is(':checked');
@@ -466,8 +476,9 @@ function crearReformaConActividades() {
     var programa = $('#programa').val();
     var proyecto = $('#proyecto').val();
     var actividad = $('#actividad').val();
-    let justifi2  = $('#justifi2').val();
+    //let justifi2  = $('#justifi2').val();
     var fuente_financiamiento = $('#fuente_financiamiento').val();
+    var proceso    = $('#proceso').val();
 
 
     let total = $(this).find('input[name="total[]"]').val();
@@ -499,11 +510,20 @@ function crearReformaConActividades() {
             icon: 'warning',
             type:  'warning',
             title: 'CoreInspi',
-            text: 'Debe de selecionar un tipo de POA.',
+            text: 'Debe de selecionar un tipo de Gasto.',
             showConfirmButton: true,
         });
 
-    }else if( justifi2 == '' ){
+    }else if( proceso == '' || proceso == 0 ){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'CoreInspi',
+            text: 'Debe de seleccionar un Tipo de Proceso.',
+            showConfirmButton: true,
+        });
+    }/*else if( justifi2 == '' ){
 
         Swal.fire({
             icon: 'warning',
@@ -512,7 +532,7 @@ function crearReformaConActividades() {
             text: 'Debe de ingresar una Justificación del área requirente.',
             showConfirmButton: true,
         });
-    }else if(obOpera == ''){
+    }*/else if(obOpera == '' || obOpera == 0){
 
         Swal.fire({
             icon: 'warning',
@@ -542,7 +562,7 @@ function crearReformaConActividades() {
             showConfirmButton: true,
         });
 
-    }else if(item_presupuestario == '0'){
+    }else if(id_item_dir == '0'){
        Swal.fire({
        icon: 'warning',
        type:  'warning',
@@ -599,23 +619,25 @@ function crearReformaConActividades() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: {
-                coordina: coordina,
-                fecha: fecha,
-                poa: poa,
-                obOpera: obOpera,
-                actOpera: actOpera,
-                subActi: subActi,
+                coordina:         coordina,
+                fecha:            fecha,
+                poa:              poa,
+                obOpera:          obOpera,
+                actOpera:         actOpera,
+                subActi:          subActi,
                 item_presupuestario: item_presupuestario,
-                monDisp: monDisp,
+                monDisp:          monDisp,
                 unidad_ejecutora: unidad_ejecutora,
-                programa: programa,
-                proyecto: proyecto,
-                actividad: actividad,
+                programa:         programa,
+                proyecto:         proyecto,
+                actividad:        actividad,
                 fuente_financiamiento: fuente_financiamiento,
-                desItem: desItem,
-                plurianual: plurianual ? 1 : 0,
-                justifi2 : justifi2,
-                id_reforma: id_reforma,
+                desItem:          desItem,
+                plurianual:       plurianual ? 1 : 0,
+                //justifi2 :        justifi2,
+                id_reforma:       id_reforma,
+                proceso   :       proceso,
+                id_item_dir:      id_item_dir,
             },
 
             success: function(response) {
@@ -626,7 +648,7 @@ function crearReformaConActividades() {
                     Swal.fire({
                         icon: 'success',
                         type: 'success',
-                        title: 'Éxito',
+                        title: 'CoreInspi',
                         text: 'Actividad guardada correctamente',
                     });
                     $('#contenedorBotonAgregarActividad').show();
@@ -643,6 +665,10 @@ function crearReformaConActividades() {
     }
 }
 
+
+
+
+
 function agregarFilaATabla(poa) {
     // Crea una nueva fila con los datos de la actividad
     let nuevaFila = `
@@ -651,7 +677,7 @@ function agregarFilaATabla(poa) {
             <input type="hidden" name="solicitud[]" value="true">
             <input type="hidden" name="id_area_soli[]" value="${(poa.id_area)}">
             <td>
-                <i type="button" class="font-22 fadeIn animated bx bx-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
+                <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
                 </i>
             </td>
             <td>${poa.nombreActividadOperativa}</td>
@@ -661,7 +687,7 @@ function agregarFilaATabla(poa) {
             <td>${poa.nombreItem}</td>
             <td>${poa.descripcionItem}</td>
             <td class="width">
-                <select class="form-select" name="tipo[]">
+                <select class="form-control single-select" name="tipo[]">
                     <option value="" selected disabled>Seleccionar tipo...</option>
                     <option value="DISMINUYE">Disminuye</option>
                     <option value="AUMENTA">Aumenta</option>
@@ -932,7 +958,7 @@ function agregarActAreaFila(element) {
     });
 }
 
-
+/*
 function agregarUnidad(){
     // Realiza una solicitud AJAX para obtener las opciones de la unidad ejecutora
     $.ajax({
@@ -961,6 +987,7 @@ function agregarUnidad(){
         }
     });
 }
+*/
 
 
 function cambioSelect(selectElement) {
@@ -997,6 +1024,92 @@ function cambioSelect(selectElement) {
                 }
             });
         }
+    }
+
+}
+
+
+
+function agregarEstructura(){
+
+    let id_fuente = $('#id_fuente').val();
+
+    if(id_fuente != 0 || id_fuente != ''){
+
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/itemPresupuestario/get_estructura/'+id_fuente, // Ruta en tu servidor para obtener las opciones
+            success: function(response) {
+    
+                if (response.success) {
+                    let data        = response.data;
+                    let programas   = response.programa;
+                    let proyectos   = response.proyecto;
+                    let actividades = response.actividadPre;
+                    let fuentes     = response.fuente;
+                    let unidad      = response.unidad;
+    
+                    //$('#unidad_ejecutora').val(data.id_unidad);
+                    $('#unidad_ejecutora').empty();
+                    unidad.forEach(programa => {
+                        $('#unidad_ejecutora').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_uni ? 'selected' : ''}>
+                                ${programa.nombre} - ${programa.descripcion}
+                            </option>`
+                        );
+
+                        //programa.id == data.id_unidad ? alert('Funciona') : '';
+
+                    });
+    
+                    // Cargar y seleccionar el valor en Programa
+                    $('#programa').empty();
+                    programas.forEach(programa => {
+                        $('#programa').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_programa ? 'selected' : ''}>
+                                ${programa.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Proyecto
+                    $('#proyecto').empty();
+                    proyectos.forEach(proyecto => {
+                        $('#proyecto').append(
+                            `<option value="${proyecto.id}" ${proyecto.id == data.id_proyecto ? 'selected' : ''}>
+                                ${proyecto.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Actividad
+                    $('#actividad').empty();
+                    actividades.forEach(actividad => {
+                        $('#actividad').append(
+                            `<option value="${actividad.id}" ${actividad.id == data.id_actividad ? 'selected' : ''}>
+                                ${actividad.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Fuente
+                    $('#fuente_financiamiento').empty();
+                    fuentes.forEach(fuente => {
+                        $('#fuente_financiamiento').append(
+                            `<option value="${fuente.id}" ${fuente.id == data.id_fuente ? 'selected' : ''}>
+                                ${fuente.nombre}
+                            </option>`
+                        );
+                    });
+                }
+    
+    
+            },
+            error: function(error) {
+                console.error('Error al obtener opciones de la unidad ejecutora', error);
+            }
+        });
+
     }
 
 }

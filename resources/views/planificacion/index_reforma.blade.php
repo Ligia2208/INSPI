@@ -78,7 +78,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Generar Reporte Reforma</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Reporte de Reforma</h5>
                         <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -91,9 +91,11 @@
 
                                 <input type="hidden" id="id_reforma" name="id_reforma" class="form-control" required="" autofocus="" value="">
 
-                                <h1 class="form-label fs-6">Área requiriente</h1>
+                                    <div class="col-lg-12 mb-2">
+                                        <h1 class="form-label fs-6">Área requiriente</h1>
+                                    </div>
 
-                                    <div class="col-md-4 mt-1">
+                                    <div class="col-md-4 mt-2">
                                         <label for="creado" class="form-label fs-6">Usuario que solicita</label>
                                         <!-- Input para ingresar el nombre manualmente -->
                                         <input type="text" id="creado" name="creado" class="form-control" placeholder="Ingrese nombre de usuario" required>
@@ -131,8 +133,11 @@
 
                                 <hr class="mt-4">
 
-                                <h1 class="form-label fs-6">Planificación y Gestión estratégica</h1>
-                                    <div class="col-md-6 mt-1">
+                                    <div class="col-lg-12 mb-2 mt-5">
+                                        <h1 class="form-label fs-6">Planificación y Gestión estratégica</h1>
+                                    </div>
+
+                                    <div class="col-md-6 mt-2">
                                         <label for="areaReq" class="form-label fs-6">Usuario que registra</label>
                                         <!-- Input para ingresar el nombre manualmente -->
                                         <input type="text" id="areaReq" name="areaReq" class="form-control" placeholder="Ingrese nombre de usuario" required>

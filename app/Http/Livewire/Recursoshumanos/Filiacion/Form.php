@@ -34,7 +34,7 @@ class Form extends Component
     public $Personas;
     public $Cargos;
     public $Modalidades;
-    public $TiposDiscapacidad;
+    public $TiposDiscapacidad = 0;
     public $Users;
     public $Filiaciones;
     public $selectedArea = null;
@@ -48,7 +48,7 @@ class Form extends Component
             'Filiaciones.fechaingreso' => 'required|max:10',
             'Filiaciones.area_id' => 'required|numeric',
             'Filiaciones.direccion_id' => 'required|numeric',
-            'Filiaciones.direcciontecnica_id' => 'sometimes|numeric',
+            'Filiaciones.direcciontecnica_id' => 'sometimes',
             'Filiaciones.sede_id' => 'required|numeric',
             'Filiaciones.cargo_id' => 'required|numeric',
             'Filiaciones.escala_id' => 'required|numeric',

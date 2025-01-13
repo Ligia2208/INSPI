@@ -39,6 +39,7 @@ $( function () {
             { data: 'octubre', name: 'octubre' },
             { data: 'noviembre', name: 'noviembre' },
             { data: 'diciembre', name: 'diciembre' },
+            { data: 'monto', name: 'monto' },
             {
                 data: null,
                 render: function (data, type, full, meta) {
@@ -52,8 +53,32 @@ $( function () {
             },
         ],
         order: [[0, 'desc']],
+        footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+    
+            // Función para sumar valores de una columna
+            var intVal = function (i) {
+                return typeof i === 'string' ? 
+                    parseFloat(i.replace(/[\$,]/g, '')) : 
+                    typeof i === 'number' ? i : 0;
+            };
+    
+            // Sumar columnas de enero a diciembre
+            for (let col = 6; col <= 18; col++) { // Índices de columnas de enero a diciembre
+                let total = api
+                    .column(col, { page: 'current' }) // Solo suma los valores visibles en la página actual
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+    
+                // Actualizar el pie de la tabla con los totales
+                $(api.column(col).footer()).html(total.toFixed(2));
+            }
+        },
         language: { /* Opciones de idioma */ },
     });
+    
 
     // Recargar tabla al cambiar filtros
     $('.filter').on('change', function () {
@@ -546,7 +571,7 @@ $(document).ready(function() {
                         icon: 'error',
                         type: 'error',
                         title: 'CoreInspi',
-                        text: 'Error al generar el PDF',
+                        text: 'Error al generar el PDF - La información es muy grande, genere un archivo EXCEL.',
                         showConfirmButton: true,
                     });
                 }

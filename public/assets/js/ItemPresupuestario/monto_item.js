@@ -416,6 +416,7 @@ $(function(){
                                     if (result.value == true) {
                                         table.ajax.reload(); //actualiza la tabla
                                         actualizarMontos();
+                                        actualizarListaItems();
                                     }
                                 });
 
@@ -1101,6 +1102,38 @@ function actualizarMontos(){
         },
         error: function(error) {
             console.error('Error al obtener opciones de la unidad ejecutora', error);
+        }
+    });
+
+}
+
+
+function actualizarListaItems(){
+
+    let id_direccion = $('#id_direccion').val();
+
+    $.ajax({
+        type: 'GET', // O el método que estés utilizando en tu ruta
+        url: '/itemPresupuestario/list_items/'+id_direccion, // Ruta en tu servidor para obtener las opciones
+        success: function(response) {
+
+            if (response.success) {
+
+                let select = $('#item-select');
+                
+                select.empty().append('<option value="" disabled selected>Seleccione un ítem</option>');
+                response.data.forEach(function (item) {
+                    select.append(`<option value="${item.id}">${item.nombre} - ${item.descripcion}</option>`);
+                });
+
+                select.trigger('change');
+            }
+
+        },
+        error: function(error) {
+
+            console.error('Error al obtener opciones de la unidad ejecutora', error);
+
         }
     });
 
