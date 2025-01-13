@@ -17,6 +17,7 @@ use App\Http\Controllers\CentrosReferencia\Resultadocrn\ResultadocrnController;
 use App\Http\Controllers\CentrosReferencia\VisorResultados\VisorResultadosController;
 use App\Http\Controllers\CentrosReferencia\Responsable\ResponsableController;
 use App\Http\Controllers\CentrosReferencia\Paciente\PacienteController;
+use App\Http\Controllers\CentrosReferencia\Instsalud\InstsaludController;
 
 Route::middleware(['auth'])->group(function () {
 
@@ -53,6 +54,9 @@ Route::middleware(['auth'])->group(function () {
 
         //Pacientes CRNs Plataformas
         Route::resource('pacientes', PacienteController::class)->parameters(['pacientes' => 'paciente'])->names('paciente');
+
+        //Instituciones de Salud
+        Route::resource('instituciones', InstsaludController::class)->parameters(['pacientes' => 'paciente'])->names('institucion');
 
         //CRNs Plataformas Preanalitica
         Route::resource('preanaliticas', PreanaliticaController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanalitica');

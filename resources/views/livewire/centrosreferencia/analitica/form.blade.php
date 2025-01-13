@@ -35,7 +35,7 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required>
+                                            required disabled>
                                             <option value="">Selecciona una Sede</option>
                                             @foreach ($sedes as $objSed)
                                                 <option data-subtext="" value="{{ $objSed->id }}">{{ $objSed->descripcion }}</option>
@@ -58,7 +58,7 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required>
+                                            required disabled>
                                             <option value="">Selecciona un CRN</option>
                                             @if(!is_null($crns))
                                             @foreach ($crns as $objCrn)
@@ -70,7 +70,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-9">
+                                <div class="form-group col-md-6">
                                     <label>Evento<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -108,12 +108,207 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required>
+                                            required disabled>
                                             <option value="">Selecciona un Evento</option>
                                             @foreach ($muestras as $objMuestra)
                                                 <option data-subtext="" value="{{ $objMuestra->id }}">{{ $objMuestra->descripcion }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Calidad Muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select
+                                            wire:model.defer="Analiticas.estado_muestra_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.estado_muestra_id') is-invalid @enderror"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required >
+                                            <option value="">Selecciona estado muestra</option>
+                                            @foreach ($estados as $objEstados)
+                                                <option data-subtext="" value="{{ $objEstados->id }}">
+                                                    {{ $objEstados->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-2">
+                                    <label>Id-Código<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = {{ $preanalitica->paciente->id }} />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Sexo<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = {{ $preanalitica->paciente->sexo->nombre }}>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Edad<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            <?php
+                                            $tiempo = strtotime($preanalitica->paciente->fechanacimiento);
+                                            $ahora = time();
+                                            $edad = ($ahora-$tiempo)/(60*60*24*365.25);
+                                            $edad = floor($edad);
+                                            $anios = $edad.'_'.'años';?>
+                                            value = {{ $anios }} >
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Probable infección<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = {{ $preanalitica->probable_infeccion }} >
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Fecha inicio sintomas<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            class="start_date form-control form-control-solid"
+                                            value={{ $preanalitica->fecha_sintomas }} disabled
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-2">
+                                    <label>Médico Notifica<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = {{ $preanalitica->quien_notifica }} />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Embarazo<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            @if($preanalitica->embarazo=='N')
+                                            value = "No"
+                                            @else
+                                            value = "Si"
+                                            @endif>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Gestacion<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            @if($preanalitica->gestacion>0)
+                                            value = {{ $preanalitica->gestacion }}
+                                            @else
+                                            value = "0"
+                                            @endif>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Laboratorio<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            @if($preanalitica->laboratorio=='N')
+                                            value = "No"
+                                            @else
+                                            value = "Si"
+                                            @endif>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Nombre Laboratorio<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = {{ $preanalitica->nombre_laboratorio }} >
                                     </div>
                                 </div>
                             </div>
@@ -129,7 +324,7 @@
                                         <input
                                             wire:model.defer="Analiticas.anio_registro"
                                             type="text"
-                                            required
+                                            required disabled
                                             class="form-control form-control-solid @error('Analiticas.anio_registro') is-invalid @enderror"
                                             placeholder="Ej: 4A39982" />
                                     </div>
@@ -148,7 +343,7 @@
                                         <input
                                             wire:model.defer="Analiticas.codigo_muestra"
                                             type="text"
-                                            required
+                                            required disabled
                                             class="form-control form-control-solid @error('Analiticas.codigo_muestra') is-invalid @enderror"
                                             placeholder="Ej: 4A39982" />
                                     </div>
@@ -167,7 +362,7 @@
                                         <input
                                             wire:model.defer="Analiticas.codigo_secuencial"
                                             type="text"
-                                            required
+                                            required disabled
                                             class="form-control form-control-solid @error('Analiticas.codigo_secuencial') is-invalid @enderror"
                                             placeholder="Ej: 4A39982" />
                                     </div>
@@ -206,7 +401,7 @@
                                             wire:model.defer="Analiticas.fecha_toma"
                                             type="date"
                                             class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
-                                            placeholder="Seleccione una fecha"
+                                            placeholder="Seleccione una fecha" disabled
                                         />
                                     </div>
                                 </div>
@@ -253,7 +448,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label>Analiticas<span class="text-danger">*</span></label>
+                                    <label>Resultado<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">

@@ -59,7 +59,7 @@ class Index extends Component
 
 
         //$count = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->count();
-        $analiticapac = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->pluck('id')->toArray();
+        $analiticapac = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->distinct('preanalitica_id')->pluck('preanalitica_id')->toArray();
         $analiticas = Preanalitica::whereIn('id',$analiticapac);
         $count = $analiticas->count();
 

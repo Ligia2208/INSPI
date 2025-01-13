@@ -213,14 +213,6 @@
                                                 </span>
                                             </a>
                                         </i>
-                                        <i class="navi-item" data-toggle="modal" data-target="_self">
-                                            <a href="{{ route('preanalitica.edit', $preanalitica) }}" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="ace-icon fa fa-pen" style="color:lightblue"
-                                                        title="Editar"></i>
-                                                </span>
-                                            </a>
-                                        </i>
                                         <i class="navi-item"
                                             onclick="event.preventDefault(); confirmDestroy({{ $preanalitica->id }})">
                                             <a href="#" class="navi-link">
@@ -258,11 +250,11 @@
             <div class="card-body">
                 <div class="card-px text-center py-5">
                     <h2 class="fs-2x fw-bolder mb-10">Hola!</h2>
-                    <p class="text-gray-400 fs-4 fw-bold mb-10">Al parecer no tienes ningun Área/Dirección.
-                        <br> Ponga en marcha SoftInspi añadiendo su primer Área/Dirección
+                    <p class="text-gray-400 fs-4 fw-bold mb-10">Al parecer no tienes ninguna Muestra registrada.
+                        <br> Ponga en marcha CoreInspi añadiendo su primer Muestra
                     </p>
                     <a data-toggle="modal" data-target=".create" href="#" class="btn btn-primary">Agregar
-                        Área/Dirección</a>
+                        Muestras</a>
                 </div>
                 <div class="text-center px-4 ">
                     <img class="img-fluid col-6" alt=""
@@ -281,7 +273,7 @@
             function confirmDestroy(id) {
                 swal.fire({
                     title: "¿Estas seguro?",
-                    text: "No podrá recuperar este Área/Dirección y los servicios creados con este tipo se quedarán sin vinculación",
+                    text: "No podrá recuperar este registro y los servicios asociados con este se quedarán sin vinculación",
                     icon: "warning",
                     buttonsStyling: false,
                     showCancelButton: true,

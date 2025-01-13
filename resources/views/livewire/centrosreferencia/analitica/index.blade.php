@@ -171,16 +171,18 @@
                         <tbody>
                             @forelse ($analiticas as $analitica)
                                 <tr>
-                                    @if($analitica->codigo_externo=='')
-                                    <td>
-                                        <span
-                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->anio_registro }} - {{ str_pad($analitica->codigo_muestra, 5, "0", STR_PAD_LEFT) }} - {{ str_pad($analitica->codigo_secuencial, 3, "0", STR_PAD_LEFT) }}</span>
-                                    </td>
+                                    @if ($analitica->codigo_externo == '')
+                                        <td>
+                                            <span
+                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->anio_registro }}
+                                                - {{ str_pad($analitica->codigo_muestra, 5, '0', STR_PAD_LEFT) }} -
+                                                {{ str_pad($analitica->codigo_secuencial, 3, '0', STR_PAD_LEFT) }}</span>
+                                        </td>
                                     @else
-                                    <td>
-                                        <span
-                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->codigo_externo }}</span>
-                                    </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->codigo_externo }}</span>
+                                        </td>
                                     @endif
                                     <td>
                                         <span
@@ -199,19 +201,17 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->muestra->descripcion }}</span>
                                     </td>
                                     <td>
-                                        @if($analitica->tecnica_id>0)
+                                        @if ($analitica->tecnica_id > 0)
                                             <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->tecnica->descripcion }}</span>
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->tecnica->descripcion }}</span>
                                         @else
-
                                         @endif
                                     </td>
                                     <td>
-                                        @if($analitica->resultado_id>0)
+                                        @if ($analitica->resultado_id > 0)
                                             <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->resultado->descripcion }}</span>
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->resultado->descripcion }}</span>
                                         @else
-
                                         @endif
                                     </td>
                                     <td>
@@ -219,51 +219,44 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->fecha_resultado }}</span>
                                     </td>
                                     <td>
-                                        @if($analitica->usuarior_id>0)
+                                        @if ($analitica->usuarior_id > 0)
                                             <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->usuarior->name }}</span>
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->usuarior->name }}</span>
                                         @else
-
                                         @endif
                                     </td>
                                     <td align="center">
-                                        @if($analitica->usuariop_id==0)
-                                        <i class="navi-item" data-toggle="modal" data-target="_self">
-                                            <a href="{{ route('analitica.edit', $analitica) }}" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="ace-icon fa fa-pen" style="color:lightblue"
-                                                        title="Editar"></i>
-                                                </span>
-                                            </a>
-                                        </i>
-                                        <i class="navi-item"
-                                            onclick="event.preventDefault(); confirmDestroy({{ $analitica->id }})">
-                                            <a href="#" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="ace-icon fa fa-trash-alt" style="color:red"
-                                                        title="Eliminar"></i>
-                                                </span>
-                                            </a>
-                                        </i>
+                                        @if ($analitica->usuariop_id == 0)
+                                            <i class="navi-item" data-toggle="modal" data-target="_self">
+                                                <a href="{{ route('analitica.edit', $analitica) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="ace-icon fa fa-pen" style="color:lightblue"
+                                                            title="Editar"></i>
+                                                    </span>
+                                                </a>
+                                            </i>
                                         @else
-                                        <i class="navi-item">
-                                            <a href="/informefinal/informer/{{ $analitica->id }}" target="_blank" class="navi-link">
-                                            <span class="navi-icon">
-                                                <i class="fa fa-print" style="color:lightgray" alt="Editar"></i>
-                                            </span>
-                                            </a>
-                                        </i>
+                                            <i class="navi-item">
+                                                <a href="/informefinal/informer/{{ $analitica->id }}" target="_blank"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fa fa-print" style="color:lightgray"
+                                                            alt="Editar"></i>
+                                                    </span>
+                                                </a>
+                                            </i>
                                         @endif
-                                        @if($analitica->usuarior_id==0)
-                                        <i class="navi-item"
-                                            onclick="event.preventDefault(); confirmDuplicate({{ $analitica->id }})">
-                                            <a href="#" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="ace-icon fa fa-plus" style="color:rgb(139, 139, 139)"
-                                                        title="Duplicar"></i>
-                                                </span>
-                                            </a>
-                                        </i>
+                                        @if ($analitica->usuarior_id == 0 && $analitica->validado == 'N')
+                                            <i class="navi-item"
+                                                onclick="event.preventDefault(); confirmDuplicate({{ $analitica->id }})">
+                                                <a href="#" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="ace-icon fa fa-plus"
+                                                            style="color:rgb(139, 139, 139)" title="Duplicar"></i>
+                                                    </span>
+                                                </a>
+                                            </i>
                                         @endif
                                     </td>
                                 </tr>

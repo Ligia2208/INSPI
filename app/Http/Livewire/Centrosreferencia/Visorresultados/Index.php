@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Centrosreferencia\Visorresultados;
 
 use App\Models\CentrosReferencia\Resultado;
+use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
@@ -46,17 +47,22 @@ class Index extends Component
         $eventos = [];
         $data = [];
 
-        $count = Resultado::where('estado','=','A')->count();
-        $resultados = Resultado::where('estado','=','A')->orderBy('id', 'asc');
+        $count = Preanalitica::where('estado','=','A')->where('validado','=','S')->count();
+        $resultados = Preanalitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc');
 
-        $res = Resultado::where('estado','=','A')->orderBy('id', 'asc')->get()->toArray();
+        $res = Preanalitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc')->get()->toArray();
         $data = DB::table('inspi_crns.consolidado')->select('sede as grupo',DB::raw('count(evento) as total'))->groupBy('sede')->get()->toArray();
         $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->groupBy('provincia')->get()->toArray();
         $datacant = DB::table('inspi_crns.consolidado')->select('canton', DB::raw('count(evento) as eventos'))->groupBy('canton')->get()->toArray();
         $datasexo = DB::table('inspi_crns.consolidado')->select('sexo as grupo', DB::raw('count(evento) as total'))->groupBy('sexo')->get()->toArray();
         $dataedad = DB::table('inspi_crns.consolidado')->select('edad as grupo', DB::raw('count(evento) as total'))->groupBy('edad')->orderBy('edad','ASC')->get()->toArray();
 
-        $etiqueta = 'Sedes';
+        $etiqueta1 = 'Total Casos';
+        $etiqueta2 = '% Casos';
+        $etiqueta3 = '% Casos por Sexo';
+        $etiqueta4 = 'Total Casos por Edad';
+        $etiqueta5 = 'Total Casos por Provincia';
+        $etiqueta6 = 'Total Casos por Cantón';
 
         if($this->csedes>=1){
             $resultados = $resultados->where('sedes_id', '=', $this->csedes);
@@ -122,7 +128,7 @@ class Index extends Component
         $data_sexo = json_encode($datasexo);
         $data_edad = json_encode($dataedad);
 
-        return view('livewire.centrosreferencia.visorresultados.index', compact('count', 'resultados','data_res','data_prov','data_cant','data_sexo','data_edad','sedes','crns','eventos','etiqueta'));
+        return view('livewire.centrosreferencia.visorresultados.index', compact('count', 'resultados','data_res','data_prov','data_cant','data_sexo','data_edad','sedes','crns','eventos','etiqueta1','etiqueta2','etiqueta3','etiqueta4','etiqueta5','etiqueta6'));
     }
 
     public function eventosemanal(){

@@ -16,7 +16,9 @@ use App\Models\CentrosReferencia\Canton;
 use App\Models\CentrosReferencia\Reporte;
 use App\Models\CentrosReferencia\Tecnica;
 use App\Models\CentrosReferencia\Muestra;
+use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Generacioncodigos;
+use App\Models\CoreBase\Nacionalidad;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -87,14 +89,24 @@ class Form extends Component
 
             'Preanaliticas.primera_id' => 'required|numeric',
             'Preanaliticas.fecha_toma_primera' => 'required|max:10',
+            'Preanaliticas.estado_primera_id' => 'required|numeric',
+            'Preanaliticas.observacion_primera' => 'sometimes|max:200',
             'Preanaliticas.segunda_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_segunda' => 'sometimes|max:10',
+            'Preanaliticas.estado_segunda_id' => 'sometimes|numeric',
+            'Preanaliticas.observacion_segunda' => 'sometimes|max:200',
             'Preanaliticas.tercera_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_tercera' => 'sometimes|max:10',
+            'Preanaliticas.estado_tercera_id' => 'sometimes|numeric',
+            'Preanaliticas.observacion_tercera' => 'sometimes|max:200',
             'Preanaliticas.cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_cuarta' => 'sometimes|max:10',
+            'Preanaliticas.estado_cuarta_id' => 'sometimes|numeric',
+            'Preanaliticas.observacion_cuarta' => 'sometimes|max:200',
             'Preanaliticas.quinta_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_quinta' => 'sometimes|max:10',
+            'Preanaliticas.estado_quinta_id' => 'sometimes|numeric',
+            'Preanaliticas.observacion_quinta' => 'sometimes|max:200',
         ];
     }
 
@@ -106,9 +118,14 @@ class Form extends Component
         $this->Preanaliticas->laboratorio = 2;
         $this->Preanaliticas->gestacion = 0;
         $this->Preanaliticas->segunda_id = 0;
+        $this->Preanaliticas->estado_segunda_id = 0;
         $this->Preanaliticas->tercera_id = 0;
+        $this->Preanaliticas->estado_tercera_id = 0;
         $this->Preanaliticas->cuarta_id = 0;
+        $this->Preanaliticas->estado_cuarta_id = 0;
         $this->Preanaliticas->quinta_id = 0;
+        $this->Preanaliticas->estado_quinta_id = 0;
+
     }
 
     public function updatedchangedInstitucion($institucion_id){
@@ -143,6 +160,7 @@ class Form extends Component
         $existe = Paciente::where('estado','=','A')->where('identidad','=',$identidad)->count();
         if ($existe>0){
             $pacSelected = Paciente::where('estado','=','A')->where('identidad','=',$identidad)->first();
+            //dd($pacSelected); die();
             $this->Preanaliticas->paciente_id = $pacSelected->id;
             $this->Preanaliticas->paciente_sexo = $pacSelected->sexo_id;
             $this->Preanaliticas->paciente_nombres = $pacSelected->nombres;
@@ -150,8 +168,8 @@ class Form extends Component
             $this->Preanaliticas->paciente_fechanac = $pacSelected->fechanacimiento;
             $this->Preanaliticas->paciente_direccion = $pacSelected->direccion;
             $this->Preanaliticas->paciente_telefono = $pacSelected->telefono;
-            $this->Preanaliticas->paciente_ubicacion = $pacSelected->provincia->descripcion.' - '.$pacSelected->canton->descripcion;
-            $this->Preanaliticas->paciente_nacionalidad = $pacSelected->nacionalidad->nacionalidad;
+            $this->Preanaliticas->paciente_ubicacion = $pacSelected->canton_id;
+            $this->Preanaliticas->paciente_nacionalidad = $pacSelected->nacionalidad_id;
         }
         else{
             $this->Preanaliticas->paciente_id = 0;
@@ -160,19 +178,22 @@ class Form extends Component
             $this->Preanaliticas->paciente_direccion = '';
             $this->Preanaliticas->paciente_telefono = '';
             $this->Preanaliticas->paciente_ubicacion = '';
-            $this->Preanaliticas->paciente_nacionalidad = '';
+            $this->Preanaliticas->paciente_nacionalidad = 0;
         }
         $this->emit('renderJs');
     }
 
     public function render()
     {
-        $sedes = Sede::orderBy('id', 'asc')->cursor();
-        $sexos = Sexo::orderBy('id', 'asc')->cursor();
-        $muestras = Muestra::orderBy('id', 'asc')->cursor();
+        $sedes = Sede::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        $sexos = Sexo::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        $cantonprov = Canton::where('estado','=','A')->orderBy('id','asc')->cursor();
+        $muestras = Muestra::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        $estados = Estadomuestra::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $instituciones = Institucion::where('estado','=','A')->orderBy('id','asc')->cursor();
+        $nacionalidades = Nacionalidad::where('estado','=',1)->orderBy('id','asc')->cursor();
 
-        return view('livewire.centrosreferencia.preanalitica.form', compact('sedes','sexos','muestras','instituciones'));
+        return view('livewire.centrosreferencia.preanalitica.form', compact('sedes','sexos','muestras','instituciones','estados','nacionalidades','cantonprov'));
     }
 
     public function updatedselectedSede($sede_id){
@@ -192,9 +213,31 @@ class Form extends Component
         $this->validate();
         $user = auth()->user()->id;
         $fecha_anio = date("Y");
+        if($this->Preanaliticas->paciente_id == 0){
+            $newPac = new Paciente();
+            $newPac->nombres = $this->Preanaliticas->paciente_nombres;
+            $newPac->apellidos = $this->Preanaliticas->paciente_apellidos;
+            $newPac->identidad = $this->Preanaliticas->identidad;
+            $newPac->hcu = $this->Preanaliticas->identidad;
+            $newPac->fechanacimiento = $this->Preanaliticas->paciente_fechanac;
+            $newPac->sexo_id = $this->Preanaliticas->paciente_sexo;
+            $newPac->direccion = $this->Preanaliticas->paciente_direccion;
+            $newPac->telefono = $this->Preanaliticas->paciente_telefono;
+            $newPac->canton_id = $this->Preanaliticas->paciente_ubicacion;
+            $prov = Canton::findOrFail($this->Preanaliticas->paciente_ubicacion);
+            $newPac->provincia_id = $prov->provincia_id;
+            $newPac->nacionalidad_id = $this->Preanaliticas->paciente_nacionalidad;
+            $newPac->save();
+        }
         $newToma = new Preanalitica();
         $newToma->instituciones_id = $this->Preanaliticas->instituciones_id;
-        $newToma->paciente_id = $this->Preanaliticas->paciente_id;
+        if($this->Preanaliticas->paciente_id == 0){
+            $newToma->paciente_id = $newPac->id;
+        }
+        else{
+            $newToma->paciente_id = $this->Preanaliticas->paciente_id;
+        }
+
         $newToma->fecha_atencion = $this->Preanaliticas->fecha_atencion;
         $newToma->quien_notifica = $this->Preanaliticas->quien_notifica;
         $newToma->probable_infeccion = $this->Preanaliticas->probable_infeccion;
@@ -254,7 +297,7 @@ class Form extends Component
             $newToma->quinta_id = 0;
         }
         $newToma->anio_registro = $fecha_anio;
-        $newToma->usuario_id =  $user;
+        $newToma->usuariot_id =  $user;
         $newToma->save();
 
         $tipogenera = $this->tipo_generacion($this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
@@ -273,6 +316,8 @@ class Form extends Component
             $newMuestra->muestra_id = $this->Preanaliticas->primera_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_primera;
+            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_primera_id;
+            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_primera;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
                 $newMuestra->codigo_secuencial = 1;
@@ -295,6 +340,8 @@ class Form extends Component
             $newMuestra->muestra_id = $this->Preanaliticas->segunda_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_segunda;
+            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_segunda_id;
+            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_segunda;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
                 $newMuestra->codigo_secuencial = 2;
@@ -317,6 +364,8 @@ class Form extends Component
             $newMuestra->muestra_id = $this->Preanaliticas->tercera_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_tercera;
+            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_tercera_id;
+            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_tercera;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
                 $newMuestra->codigo_secuencial = 3;
@@ -339,6 +388,8 @@ class Form extends Component
             $newMuestra->muestra_id = $this->Preanaliticas->cuarta_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_cuarta;
+            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_cuarta_id;
+            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_cuarta;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
                 $newMuestra->codigo_secuencial = 4;
@@ -361,6 +412,8 @@ class Form extends Component
             $newMuestra->muestra_id = $this->Preanaliticas->quinta_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_quinta;
+            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_quinta_id;
+            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_quinta;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
                 $newMuestra->codigo_secuencial = 5;

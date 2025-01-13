@@ -52,7 +52,7 @@
                                                 @if (!is_null($eventos))
                                                     @foreach ($eventos as $objEven)
                                                         <option data-subtext="" value="{{ $objEven->id }}">
-                                                            {{ $objEven->descripcion }}</option>
+                                                            {{ $objEven->simplificado }}</option>
                                                     @endforeach
                                                 @endif
                                             </select>
@@ -191,16 +191,22 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->evento->simplificado }}</span>
                                     </td>
                                     <td>
+                                        @if($postanalitica->resultado_id>0)
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->resultado->descripcion }}</span>
+                                        @else
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($postanalitica->usuarior_id>0)
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->usuarior->name }}</span>
+                                        @else
+                                        @endif
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->fecha_resultado }}</span>
                                     </td>
                                     <td align="center">
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
@@ -219,7 +225,7 @@
                                                 </span>
                                             </a>
                                         </i>
-                                        @if($postanalitica->usuariop_id>0)
+                                        @if($postanalitica->usuarior_id>0)
                                         <i class="navi-item">
                                             <a href="/informefinal/informep/{{ $postanalitica->id }}" target="_blank" class="navi-link">
                                             <span class="navi-icon">

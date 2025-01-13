@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Centrosreferencia\Analitica;
 
 use App\Models\CentrosReferencia\Analitica;
+use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\Muestra;
 use App\Models\CentrosReferencia\Crn;
@@ -13,6 +14,7 @@ use App\Models\CentrosReferencia\Provincia;
 use App\Models\CentrosReferencia\Canton;
 use App\Models\CentrosReferencia\Reporte;
 use App\Models\CentrosReferencia\Tecnica;
+use App\Models\CentrosReferencia\Estadomuestra;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -51,6 +53,7 @@ class Form extends Component
             'Analiticas.sedes_id' => 'required|numeric',
             'Analiticas.crns_id' => 'required|numeric',
             'Analiticas.muestra_id' => 'required|numeric',
+            'Analiticas.estado_muestra_id' => 'required|numeric',
             'Analiticas.codigo_muestra' => 'required|numeric',
             'Analiticas.codigo_secuencial' => 'required|numeric',
             'Analiticas.codigo_externo' => 'sometimes|max:25',
@@ -101,7 +104,9 @@ class Form extends Component
     {
         $sedes = Sede::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $muestras = Muestra::where('estado','=','A')->orderBy('id','asc')->cursor();
-        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras'));
+        $preanalitica = Preanalitica::findOrFail($this->Analiticas->preanalitica_id);
+        $estados = Estadomuestra::orderBy('id', 'asc')->cursor();
+        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','preanalitica','estados'));
     }
 
     public function store(){

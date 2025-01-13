@@ -9,28 +9,23 @@ use Spatie\Activitylog\Traits\LogsActivity;
 use App\Models\User;
 
 
-class Canton extends Model
+class Estadomuestra extends Model
 {
     use LogsActivity;
 
     protected $guarded = [];
 
     //Logs
-    protected static $logName = 'Cantón';
+    protected static $logName = 'Estado Muestra';
     protected static $logAttributes = ['*'];
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
     protected $connection = 'crns';
-    public $table = 'cantones';
+    public $table = 'estado_muestras';
 
     public function getDescriptionForEvent(string $eventName)
     {
-        return "Un Cantón ha sido {$eventName}";
-    }
-
-    public function provincia()
-    {
-        return $this->belongsTo(Provincia::class);
+        return "Un estado de muestra ha sido {$eventName}";
     }
 
 }

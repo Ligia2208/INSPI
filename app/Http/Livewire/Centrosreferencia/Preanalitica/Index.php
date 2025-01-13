@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Centrosreferencia\Preanalitica;
 
 use App\Models\CentrosReferencia\Preanalitica;
+use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
@@ -112,12 +113,24 @@ class Index extends Component
     public function destroy($id)
     {
         try{
-            $Preanaliticas = Preanalitica::findOrFail($id);
-            if(Storage::exists($Preanaliticas->archivo)){
-                Storage::delete($Preanaliticas->archivo);
+            $analiticas = Analitica::where('preanalitica_id','=',$id)->where('usuarior_id','>',0);
+            $control = $analiticas->count();
+            if($control>0){
+                $this->alert('warning', 'Una o mas muestras ya han sido procesadas');
+
             }
-            $Preanaliticas->delete();
-            $this->alert('success', 'Eliminación con exito');
+            else{
+                $Preanaliticas = Preanalitica::findOrFail($id);
+                $Preanaliticas->estado='I';
+                $Preanaliticas->update();
+                $analiticas = Analitica::where('preanalitica_id','=',$id)->where('usuarior_id','=',0)->get();
+
+                foreach($analiticas as $objAna){
+                    $objAna->estado='I';
+                    $objAna->update();
+                }
+                $this->alert('success', 'Eliminación con exito');
+            }
         }catch(Exception $e){
             $this->alert('error',
                 'Ocurrio un error en la eliminación: '.$e->getMessage(),

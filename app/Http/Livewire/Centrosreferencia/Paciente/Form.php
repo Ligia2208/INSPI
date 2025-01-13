@@ -40,14 +40,11 @@ class Form extends Component
             'Pacientes.apellidos' => 'required|max:75',
             'Pacientes.sexo_id' => 'required|numeric',
             'Pacientes.nacionalidad_id' => 'required|numeric',
-            'Pacientes.tiposangre_id' => 'required|numeric',
-            'Pacientes.estadocivil_id' => 'required|numeric',
             'Pacientes.provincia_id' => 'required|numeric',
             'Pacientes.canton_id' => 'required|numeric',
             'Pacientes.fechanacimiento' => 'required',
             'Pacientes.direccion' => 'required|max:175',
             'Pacientes.telefono' => 'required|max:15',
-            'Pacientes.correo' => 'required|email|max:175',
         ];
     }
 

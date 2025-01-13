@@ -116,12 +116,20 @@
 
             @endcanany
 
-            @canany(['pacientes','resultados','visorresultados','resultadosmsp','resultadoscrn','preanalitica','postanaliticas'])
+            @canany(['pacientes','resultados','instituciones','visorresultados','resultadosmsp','resultadoscrn','preanalitica','postanaliticas','analiticas'])
                 <div class="my-5"></div>
                 <li class="menu-section">
                     <h4 class="menu-text">Resultados CRNs</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
+                @can('instituciones')
+                    <li class="menu-item {{ active('institucion.*') }}">
+                        <a href="{{ route('institucion.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-university"></i>
+                            <span class="menu-text">Institución de Salud</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('pacientes')
                     <li class="menu-item {{ active('paciente.*') }}">
                         <a href="{{ route('paciente.index') }}" class="menu-link">

@@ -3,7 +3,9 @@ namespace App\Http\Livewire\Centrosreferencia\Resultadomsp;
 
 use App\Models\CentrosReferencia\Resultado;
 use App\Models\CentrosReferencia\Analitica;
+use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
+use App\Models\CentrosReferencia\Paciente;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
 use App\Models\CentrosReferencia\Crn;
@@ -51,11 +53,12 @@ class Index extends Component
         //$count = Resultado::where('estado','=','A')->count();
         //$resultados = Resultado::where('estado','=','A')->orderBy('id', 'asc');
 
-        $count = Analitica::where('estado','=','A')->where('validado','=','S')->count();
-        $resultados = Analitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc');
+        $count = Preanalitica::where('estado','=','A')->where('validado','=','S')->count();
+        $resultados = Preanalitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc');
 
         if($this->search){
-            $resultados = $resultados->where('codigo_muestra', 'LIKE', "%{$this->search}%");
+            $pacientes = Paciente::where('identidad', 'LIKE', "%{$this->search}%")->pluck('id')->toArray();
+            $resultados = $resultados->whereIn('paciente_id',$pacientes);
             $count = $resultados->count();
 
         }
@@ -84,16 +87,16 @@ class Index extends Component
                         $this->fechafin='';
                     }
                     if($this->controlf==1){
-                        $resultados = $resultados->where('fecha_toma', '>=', $this->fechainicio)->where('fecha_toma','<=',$this->fechafin);
+                        $resultados = $resultados->where('fecha_atencion', '>=', $this->fechainicio)->where('fecha_toma','<=',$this->fechafin);
                         $count = $resultados->count();
 
                     }
                     if($this->controlf==2){
-                        $resultados = $resultados->where('fecha_resultado', '>=', $this->fechainicio)->where('fecha_resultado','<=',$this->fechafin);
+                        $resultados = $resultados->where('fecha_toma_primera', '>=', $this->fechainicio)->where('fecha_resultado','<=',$this->fechafin);
                         $count = $resultados->count();
                     }
                     if($this->controlf==3){
-                        $resultados = $resultados->where('fecha_publicacion', '>=', $this->fechainicio)->where('fecha_publicacion','<=',$this->fechafin);
+                        $resultados = $resultados->where('fecha_resultado', '>=', $this->fechainicio)->where('fecha_publicacion','<=',$this->fechafin);
                         $count = $resultados->count();
                     }
                 }

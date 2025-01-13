@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Centrosreferencia\Postanalitica;
 
 use App\Models\CentrosReferencia\Postanalitica;
 use App\Models\CentrosReferencia\Analitica;
+use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\Muestra;
 use App\Models\CentrosReferencia\Crn;
@@ -117,12 +118,26 @@ class Form extends Component
     }
 
     public function update(){
+
         $this->validate();
+        $analiticas = Analitica::where('preanalitica_id','=',$this->Analiticas->id)->get();
         $user = auth()->user()->id;
-        $this->Analiticas->fecha_publicacion = date("Y-m-d");
-        $this->Analiticas->usuariop_id = $user;
-        $this->Analiticas->validado = 'S';
-        $this->Analiticas->update();
+        foreach($analiticas as $ana){
+            $ana->descripcion_responsable = $this->Analiticas->descripcion_responsable;
+            $ana->usuariop_id = $user;
+            $ana->fecha_publicacion = date("Y-m-d");
+            $ana->validado = 'S';
+            $ana->update();
+        }
+
+        $preanalitica_update = Preanalitica::findOrFail($this->Analiticas->id);
+        $preanalitica_update->resultado_id=$this->Analiticas->resultado_id;
+        $preanalitica_update->descripcion=$this->Analiticas->descripcion_responsable;
+        $preanalitica_update->fecha_resultado = date("Y-m-d");
+        $preanalitica_update->usuarior_id = $user;
+        $preanalitica_update->validado = 'S';
+        $preanalitica_update->update();
+        
         $this->alert('success', 'Analitica actualizado con éxito');
         $this->emit('closeModal');
         return redirect()->route('postanalitica.index');

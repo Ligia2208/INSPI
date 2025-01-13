@@ -3,6 +3,7 @@ namespace App\Http\Livewire\Centrosreferencia\Resultado;
 
 use App\Models\CentrosReferencia\Resultado;
 use App\Models\CentrosReferencia\Analitica;
+use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
@@ -51,8 +52,8 @@ class Index extends Component
         //$count = Resultado::where('estado','=','A')->count();
         //$resultados = Resultado::where('estado','=','A')->orderBy('id', 'asc');
 
-        $count = Analitica::where('estado','=','A')->where('validado','=','S')->count();
-        $resultados = Analitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc');
+        $count = Preanalitica::where('estado','=','A')->where('validado','=','S')->count();
+        $resultados = Preanalitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc');
 
         if($this->search){
             $resultados = $resultados->where('codigo_muestra', 'LIKE', "%{$this->search}%");

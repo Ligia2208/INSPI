@@ -58,7 +58,12 @@ class Preanalitica extends Model
         return $this->belongsTo(Tecnica::class);
     }
 
-    public function usuario()
+    public function usuariot()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function usuarior()
     {
         return $this->belongsTo(User::class);
     }

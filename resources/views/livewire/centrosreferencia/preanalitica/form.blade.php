@@ -131,7 +131,8 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-1" style="display: none">
+                                <div class="form-group col-md-1" >
+                                    <label>Id<span class="text-danger"></span></label>
                                     <input wire:model.defer="Preanaliticas.paciente_id" type="text" required
                                         class="form-control form-control-solid @error('Preanaliticas.paciente_id') is-invalid @enderror"
                                         placeholder="Ej: 123" />
@@ -153,7 +154,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Apellidos Paciente<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -264,10 +265,15 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input wire:model.defer="Preanaliticas.paciente_ubicacion" type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Preanaliticas.paciente_ubicacion') is-invalid @enderror"
-                                            placeholder="Ej: Guayas - Guayaquil" />
+                                        <select wire:model.defer="Preanaliticas.paciente_ubicacion"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.paciente_ubicacion') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona Cantón</option>
+                                            @foreach ($cantonprov as $objCanton)
+                                                <option data-subtext="{{ $objCanton->provincia->descripcion }}" value="{{ $objCanton->id }}">
+                                                    {{ $objCanton->descripcion }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     @error('Preanaliticas.paciente_ubicacion')
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
@@ -281,10 +287,15 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input wire:model.defer="Preanaliticas.paciente_nacionalidad" type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Preanaliticas.paciente_nacionalidad') is-invalid @enderror"
-                                            placeholder="Ej: Ecuatoriano" />
+                                        <select wire:model.defer="Preanaliticas.paciente_nacionalidad"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.paciente_nacionalidad') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona Nacionalidad</option>
+                                            @foreach ($nacionalidades as $objNacion)
+                                                <option data-subtext="" value="{{ $objNacion->id }}">
+                                                    {{ $objNacion->nacionalidad }}</option>
+                                            @endforeach
+                                        </select>
                                     </div>
                                     @error('Preanaliticas.paciente_nacionalidad')
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
@@ -482,7 +493,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-7">
+                                <div class="form-group col-md-8">
                                     <label>Evento<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -504,6 +515,8 @@
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label>Muestra Principal<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -537,6 +550,41 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label>Estado Muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.estado_primera_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.estado_primera_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
+                                            <option value="">Selecciona estado muestra</option>
+                                            @foreach ($estados as $objEstados)
+                                                <option data-subtext="" value="{{ $objEstados->id }}">
+                                                    {{ $objEstados->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Observación Muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input wire:model.defer="Preanaliticas.observacion_primera" type="text"
+                                            class="form-control form-control-solid @error('Preanaliticas.observacion_primera') is-invalid @enderror"
+                                            placeholder="Ej: Rechazo por volumen" />
+                                    </div>
+                                    @error('Preanaliticas.observacion_primera')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
                             </div>
                             <div class="form-row">
                                 &nbsp;&nbsp;
@@ -546,7 +594,7 @@
                                 </button>
                             </div>
                             <div class="form-row" id="add_muestras" style="visibility:hidden">
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
                                     <label>Muestra 2<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -579,7 +627,43 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label>Estado Muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.estado_segunda_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.estado_segunda_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
+                                            <option value="">Selecciona estado muestra</option>
+                                            @foreach ($estados as $objEstados)
+                                                <option data-subtext="" value="{{ $objEstados->id }}">
+                                                    {{ $objEstados->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group col-md-4">
+                                    <label>Observación Muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input wire:model.defer="Preanaliticas.observacion_segunda" type="text"
+                                            class="form-control form-control-solid @error('Preanaliticas.observacion_segunda') is-invalid @enderror"
+                                            placeholder="Ej: Rechazo por volumen" />
+                                    </div>
+                                    @error('Preanaliticas.observacion_segunda')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-3">
                                     <label>Muestra 3<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -612,7 +696,43 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label>Estado Muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.estado_tercera_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.estado_tercera_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
+                                            <option value="">Selecciona estado muestra</option>
+                                            @foreach ($estados as $objEstados)
+                                                <option data-subtext="" value="{{ $objEstados->id }}">
+                                                    {{ $objEstados->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group col-md-4">
+                                    <label>Observación Muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input wire:model.defer="Preanaliticas.observacion_tercera" type="text"
+                                            class="form-control form-control-solid @error('Preanaliticas.observacion_tercera') is-invalid @enderror"
+                                            placeholder="Ej: Rechazo por volumen" />
+                                    </div>
+                                    @error('Preanaliticas.observacion_tercera')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-3">
                                     <label>Muestra 4<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -645,7 +765,43 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label>Estado Muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.estado_cuarta_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.estado_cuarta_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
+                                            <option value="">Selecciona estado muestra</option>
+                                            @foreach ($estados as $objEstados)
+                                                <option data-subtext="" value="{{ $objEstados->id }}">
+                                                    {{ $objEstados->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                                 <div class="form-group col-md-4">
+                                    <label>Observación Muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input wire:model.defer="Preanaliticas.observacion_cuarta" type="text"
+                                            class="form-control form-control-solid @error('Preanaliticas.observacion_cuarta') is-invalid @enderror"
+                                            placeholder="Ej: Rechazo por volumen" />
+                                    </div>
+                                    @error('Preanaliticas.observacion_cuarta')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-3">
                                     <label>Muestra 5<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -678,6 +834,42 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label>Estado Muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.estado_quinta_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.estado_quinta_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
+                                            <option value="">Selecciona estado muestra</option>
+                                            @foreach ($estados as $objEstados)
+                                                <option data-subtext="" value="{{ $objEstados->id }}">
+                                                    {{ $objEstados->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Observación Muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input wire:model.defer="Preanaliticas.observacion_quinta" type="text"
+                                            class="form-control form-control-solid @error('Preanaliticas.observacion_quinta') is-invalid @enderror"
+                                            placeholder="Ej: Rechazo por volumen" />
+                                    </div>
+                                    @error('Preanaliticas.observacion_quinta')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                             </div>
                         </div>
                     </div>

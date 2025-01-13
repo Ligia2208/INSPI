@@ -83,7 +83,7 @@
                                     <label class="col-3 col-form-label">Usuario Registro:</label>
                                     <div class="col-9" style="align:left">
                                         <span class="form-control-plaintext">
-                                            <span class="font-weight-bolder">{{ $preanalitica->usuario->name }}</span>
+                                            <span class="font-weight-bolder">{{ $preanalitica->usuariot->name }}</span>
                                         </span>
                                     </div>
                                 </div>
