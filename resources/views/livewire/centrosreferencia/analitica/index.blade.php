@@ -236,16 +236,6 @@
                                                     </span>
                                                 </a>
                                             </i>
-                                        @else
-                                            <i class="navi-item">
-                                                <a href="/informefinal/informer/{{ $analitica->id }}" target="_blank"
-                                                    class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="fa fa-print" style="color:lightgray"
-                                                            alt="Editar"></i>
-                                                    </span>
-                                                </a>
-                                            </i>
                                         @endif
                                         @if ($analitica->usuarior_id == 0 && $analitica->validado == 'N')
                                             <i class="navi-item"

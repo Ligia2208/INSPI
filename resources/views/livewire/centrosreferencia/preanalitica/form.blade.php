@@ -131,7 +131,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-1" >
+                                <div class="form-group col-md-1" style="display:none">
                                     <label>Id<span class="text-danger"></span></label>
                                     <input wire:model.defer="Preanaliticas.paciente_id" type="text" required
                                         class="form-control form-control-solid @error('Preanaliticas.paciente_id') is-invalid @enderror"
@@ -154,7 +154,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label>Apellidos Paciente<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
