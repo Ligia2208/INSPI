@@ -9,10 +9,10 @@ $( function () {
             url: '/planificacion/reformaIndex', // La URL que devuelve los datos en JSON
         },
         columns: [
-            { data: 'nro_solicitud',        name: 'nro_solicitud' },
-            { data: 'area',        name: 'area' },
-            { data: 'justificacion',   name: 'justificacion' },
-            { data: 'fecha',         name: 'fecha' },
+            { data: 'nro_solicitud',  name: 'nro_solicitud' },
+            { data: 'justificacion',  name: 'justificacion' },
+            { data: 'total_monto',           name: 'total_monto' },
+            { data: 'fecha',          name: 'fecha' },
             {
                 data: null,
                 searchable: false ,
@@ -22,9 +22,9 @@ $( function () {
                     if(full.estado == 'A' ){
                         array = '<div class="text-center"><span class="badge badge-primary text-bg-primary">Ingresado</span><div>';
                     }else if(full.estado == 'V'){
-                        array = '<div class="text-center"><span class="badge badge-secondary text-bg-secondary">Validado</span>';
+                        array = '<div class="text-center"><span class="badge badge-secondary text-bg-secondary">Aprobado</span>';
                     }else if(full.estado == 'O'){
-                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Aprobado</span>';
+                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Validado</span>';
                     }else if(full.estado == 'R'){
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
@@ -45,11 +45,11 @@ $( function () {
                     if(full.estado == 'O' || full.estado == 'V' ){
                         array =`
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-                            <a id="btnPDF_reforma" data-id_reforma="${full.id_reforma}" title="PDF REFORMA" class="text-secondary show-tooltip" data-title="PDF REFORMA">
-                                <i class="font-22 bi bi-filetype-pdf"></i>
+                            <a id="btnPDF_reforma" data-id_reforma="${full.id_reforma}" title="PDF REFORMA" class="show-tooltip" data-title="PDF REFORMA">
+                                <i class="font-22 bi bi-filetype-pdf text-primary"></i>
                             </a>
                         </div>
                         `;
@@ -73,7 +73,7 @@ $( function () {
             },
         ],
         order: [
-            [3, 'desc']
+            [0, 'desc']
         ],
 
         // Otras configuraciones de DataTables aquí

@@ -42,7 +42,7 @@
         }
         .width {
             width: 125px;
-            white-space: nowrap;
+            white-space: break-spaces;
         }
 
     </style>
@@ -53,13 +53,34 @@
             <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> CREAR REFORMA</h2>
             <hr/>
 
+            <div class="row">
+
+                <div class="col-lg-10 mt-2 mb-5">
+                    <label for="select_idpoa" class="form-label">Seleccione Actividad Para la Reforma:</label>
+                    <select id="select_idpoa" class="single-select filter">
+                        <option value="">Seleccione una Sub_Actividad/Objeto de Contratación</option>
+                        @foreach($atributos as $item)
+                            <option value="{{ $item->id }}">{{ $item->nombreSubActividad }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+
+                <div class="col-md-2 mt-2 mb-5">
+                    <label class="form-label fs-6">&nbsp;</label>
+                    <button onclick="agregarActividad()" id="btnAgregarActividad" class="btn btn-primary form-control"><i class="bi bi-file-plus mr-1"></i>Agregar Sub_Actividad</button>
+                </div>
+
+            </div>
+
+
 
             <div class ="scroll_horizontal">
                 <table class="table table-striped" style="background-color: white;" id="tblActividades">
                     <thead>
                         <tr>
                             <th>OPCIONES</th>
-                            <th>ACTIVIDADES OPERATIVAS</th>
+                            <th style="width: 30px;">ACTIVIDADES OPERATIVAS</th>
                             <th>SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
                             <th>ITEM PRESUPUESTARIO</th>
                             <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
@@ -80,84 +101,7 @@
                         </tr>
                     </thead>
                     <tbody class="width">
-                        @foreach($atributos as $atributo)
-                        <tr>
-                            <input type="hidden" name="id_poa[]" value="{{ $atributo->id }}">
-                            <input type="hidden" name="solicitud[]" value="true">
-                            <input type="hidden" name="id_area_soli[]" value="{{ $atributo->id_areaS }}">
 
-                            <td>
-                                <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)">
-                                </i>
-                            </td>
-                            <td>{{ $atributo->nombreActividadOperativa}}</td>
-                            <td>
-                                <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="{{ $atributo->nombreSubActividad }}">
-                            </td>
-                            <td>{{ $atributo->nombreItem }}</td>
-                            <td>{{ $atributo->descripcionItem }}</td>
-                            <td class="width">
-                                <select class ="form-control" name="tipo[]" onchange="cambioSelect(this)">
-                                    <option value="" selected disabled>Seleccionar tipo...</option>
-                                    <option value="DISMINUYE">Disminuye</option>
-                                    <option value="AUMENTA">Aumenta</option>
-                                </select>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="enero[]" value="0">
-                                <div class="form-text">{{$atributo->enero}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="febrero[]" value="0">
-                                <div class="form-text">{{$atributo->febrero}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="marzo[]" value="0">
-                                <div class="form-text">{{$atributo->marzo}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="abril[]" value="0">
-                                <div class="form-text">{{$atributo->abril}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="mayo[]" value="0">
-                                <div class="form-text">{{$atributo->mayo}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="junio[]" value="0">
-                                <div class="form-text">{{$atributo->junio}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="julio[]" value="0">
-                                <div class="form-text">{{$atributo->julio}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="agosto[]" value="0">
-                                <div class="form-text">{{$atributo->agosto}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="septiembre[]" value="0">
-                                <div class="form-text">{{$atributo->septiembre}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="octubre[]" value="0">
-                                <div class="form-text">{{$atributo->octubre}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="noviembre[]" value="0">
-                                <div class="form-text">{{$atributo->noviembre}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="diciembre[]" value="0">
-                                <div class="form-text">{{$atributo->diciembre}}</div>
-                            </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="total[]" value="0">
-                                <div class="form-text">{{$atributo->total}}</div>
-                            </td>
-
-                        </tr>
-                        @endforeach
                     </tbody>
                 </table>
             </div>
@@ -416,11 +360,12 @@
             <div class="valid-feedback">Looks good!</div>
         </div>
 
-                <!-- Campo de justificación al final de la tabla -->
-            <div style="margin-top: 20px; margin-bottom: 20px">
-                <label for="justificacion">Justificación:</label>
-                <textarea class="form-control" name="justificacion" id="justificacion" rows="3"></textarea>
-            </div>
+        <!-- Campo de justificación al final de la tabla -->
+        <!--<div style="margin-top: 20px; margin-bottom: 20px">
+            <label for="justificacion">Justificación:</label>
+            <textarea class="form-control" name="justificacion" id="justificacion" rows="3"></textarea>
+        </div>
+        -->
 
             <div class="col-lg-12 d-flex align-items-center justify-content-center">
                 <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="guardarReforma()" style="margin-right: 2%">
@@ -441,5 +386,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.6')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.8')}}"></script>
 @endpush

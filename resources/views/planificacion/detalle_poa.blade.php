@@ -269,5 +269,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.1')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.2')}}"></script>
 @endpush

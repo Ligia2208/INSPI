@@ -21,31 +21,7 @@
 
 <div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
-    <style>
 
-        table {
-            border: 1px solid black;
-            border-collapse: collapse;
-            font-size: 12px;
-            text-align: center;
-            margin-bottom: 2%;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid black;
-        }
-        .scroll_horizontal{
-            overflow-x: auto;
-        }
-        .form-select, .form-control {
-            width: 100%;
-        }
-        .width {
-            width: 125px;
-            white-space: nowrap;
-        }
-
-    </style>
 
     <div class="container2">
         <div class="page-content">
@@ -80,81 +56,69 @@
 
         <input type="hidden" id="id_reforma" value="{{ $id }}">
 
-            <div class ="scroll_horizontal">
-                <table class="table table-striped" style="background-color: white;" id="tblActividadesEditar">
-                    <thead>
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-striped table-bordered table-hover" id="tblActividadesEditar">
+                    <thead class="table-primary text-center align-middle">
                         <tr>
-                            <th>OPCIONES</th>
-                            <th>ACTIVIDADES OPERATIVAS</th>
-                            <th>SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
-                            <th>ITEM PRESUPUESTARIO</th>
-                            <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
-                            <th class="width">TIPO DE INGRESO</th>
-                            <th >ENERO</th>
-                            <th >FEBRERO</th>
-                            <th >MARZO</th>
-                            <th >ABRIL</th>
-                            <th >MAYO</th>
-                            <th >JUNIO</th>
-                            <th >JULIO</th>
-                            <th >AGOSTO</th>
-                            <th >SEPTIEMBRE</th>
-                            <th >OCTUBRE</th>
-                            <th >NOVIEMBRE</th>
-                            <th>DICIEMBRE</th>
-                            <th>TOTAL</th>
+                            <th style="min-width: 100px;">OPCIONES</th>
+                            <th style="min-width: 250px;">ACTIVIDADES OPERATIVAS</th>
+                            <th style="min-width: 300px;">SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
+                            <th style="min-width: 150px;">ITEM PRESUPUESTARIO</th>
+                            <th style="min-width: 250px;">DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
+                            <th style="min-width: 150px;">TIPO DE INGRESO</th>
+                            <th style="min-width: 100px;">ENERO</th>
+                            <th style="min-width: 100px;">FEBRERO</th>
+                            <th style="min-width: 100px;">MARZO</th>
+                            <th style="min-width: 100px;">ABRIL</th>
+                            <th style="min-width: 100px;">MAYO</th>
+                            <th style="min-width: 100px;">JUNIO</th>
+                            <th style="min-width: 100px;">JULIO</th>
+                            <th style="min-width: 100px;">AGOSTO</th>
+                            <th style="min-width: 100px;">SEPTIEMBRE</th>
+                            <th style="min-width: 100px;">OCTUBRE</th>
+                            <th style="min-width: 100px;">NOVIEMBRE</th>
+                            <th style="min-width: 100px;">DICIEMBRE</th>
+                            <th style="min-width: 120px;">TOTAL</th>
                         </tr>
                     </thead>
-                    <tbody class="width">
+                    <tbody>
                         @foreach($atributos as $atributo)
                         <tr>
-                            <input type="hidden" name="id_actividad[]" value="{{ $atributo->id_actividad }}">
-                            <input type="hidden" name="solicitud[]" value="true">
-                            <input type="hidden" name="id_area_soli[]" value="{{ $atributo->id_areaS }}">
-
                             <td>
-                                <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
-                                </i>
+                                <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
                             </td>
-                            <td>{{ $atributo->nombreActividadOperativa}}</td>
+                            <td style="text-align: justify;">{{ $atributo->nombreActividadOperativa }}</td>
                             <td>
-                                <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="{{ $atributo->nombreSubActividad }}">
+                                <input class="form-control" type="text" name="subActividad[]" value="{{ $atributo->nombreSubActividad }}">
                             </td>
                             <td>{{ $atributo->nombreItem }}</td>
                             <td>{{ $atributo->descripcionItem }}</td>
-                            <td class="width">
-                                <select class ="form-control" name="tipo[]" onchange="cambioSelect(this)">
-                                    @if($atributo->tipo == 'DISMINUYE')
-                                        <option value="" selected disabled>Seleccionar tipo...</option>
-                                        <option value="DISMINUYE" selected>Disminuye</option>
-                                        <option value="AUMENTA">Aumenta</option>
-                                    @elseif ($atributo->tipo == 'AUMENTA')
-                                        <option value="" selected disabled>Seleccionar tipo...</option>
-                                        <option value="DISMINUYE" >Disminuye</option>
-                                        <option value="AUMENTA" selected>Aumenta</option>
-                                    @endif
+                            <td>
+                                <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
+                                    <option value="" selected disabled>Seleccionar tipo...</option>
+                                    <option value="DISMINUYE" {{ $atributo->tipo == 'DISMINUYE' ? 'selected' : '' }}>Disminuye</option>
+                                    <option value="AUMENTA" {{ $atributo->tipo == 'AUMENTA' ? 'selected' : '' }}>Aumenta</option>
                                 </select>
                             </td>
-                            <td>
-                                <input class ="form-control" style="width: 125px;" type="text" name="enero1[]" value="{{ $atributo->enero}}">
-                            </td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="febrero1[]" value="{{ $atributo->febrero}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="marzo1[]" value="{{ $atributo->marzo}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="abril1[]" value="{{ $atributo->abril}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="mayo1[]" value="{{ $atributo->mayo}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="junio1[]" value="{{ $atributo->junio}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="julio1[]" value="{{ $atributo->julio}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="agosto1[]" value="{{ $atributo->agosto}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="septiembre1[]" value="{{ $atributo->septiembre}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="octubre1[]" value="{{ $atributo->octubre}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="noviembre1[]" value="{{ $atributo->noviembre}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="diciembre1[]" value="{{ $atributo->diciembre}}"></td>
-                            <td><input class ="form-control" style="width: 125px;" type="text" name="total1[]" value="{{ $atributo->total}}"></td>
+                            <td><input class="form-control" type="text" name="enero1[]" value="{{ $atributo->enero }}"></td>
+                            <td><input class="form-control" type="text" name="febrero1[]" value="{{ $atributo->febrero }}"></td>
+                            <td><input class="form-control" type="text" name="marzo1[]" value="{{ $atributo->marzo }}"></td>
+                            <td><input class="form-control" type="text" name="abril1[]" value="{{ $atributo->abril }}"></td>
+                            <td><input class="form-control" type="text" name="mayo1[]" value="{{ $atributo->mayo }}"></td>
+                            <td><input class="form-control" type="text" name="junio1[]" value="{{ $atributo->junio }}"></td>
+                            <td><input class="form-control" type="text" name="julio1[]" value="{{ $atributo->julio }}"></td>
+                            <td><input class="form-control" type="text" name="agosto1[]" value="{{ $atributo->agosto }}"></td>
+                            <td><input class="form-control" type="text" name="septiembre1[]" value="{{ $atributo->septiembre }}"></td>
+                            <td><input class="form-control" type="text" name="octubre1[]" value="{{ $atributo->octubre }}"></td>
+                            <td><input class="form-control" type="text" name="noviembre1[]" value="{{ $atributo->noviembre }}"></td>
+                            <td><input class="form-control" type="text" name="diciembre1[]" value="{{ $atributo->diciembre }}"></td>
+                            <td><input class="form-control" type="text" name="total1[]" value="{{ $atributo->total }}"></td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+
 
             <div class="row" id="contenedorBotonAgregarActividad">
             <hr type="hidden"/>

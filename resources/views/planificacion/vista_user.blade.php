@@ -205,24 +205,24 @@
                             <div class="col-md-6 mt-1">
                                 <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <input type="text" id="areaReq" name="areaReq" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
                                 <!-- Input para ingresar el cargo -->
-                                <input type="text" id="cargo_areaReq" name="cargo_areaReq" class="form-control" placeholder="Ingrese el cargo" required>
+                                <input type="text" id="cargo_areaReq" name="cargo_areaReq" class="form-control" value="ANALISTA DE PLANIFICACION Y GESTION ESTRATEGICA" placeholder="Ingrese el cargo" required>
                                 <div class="invalid-feedback">Por favor ingrese el cargo.</div>
                             </div>
 
                             <div class="col-md-6 mt-1">
                                 <label for="planificacionYG" class="form-label fs-6">Usuario que aprueba</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <input type="text" id="planificacionYG" name="planificacionYG" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <input type="text" id="planificacionYG" name="planificacionYG" class="form-control" value="ING. LADY CONCEPCION ROJAS TORRES" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_planificacionYG" class="form-label fs-6 mt-2">Cargo</label>
                                 <!-- Input para ingresar el cargo -->
-                                <input type="text" id="cargo_planificacionYG" name="cargo_planificacionYG" class="form-control" placeholder="Ingrese el cargo" required>
+                                <input type="text" id="cargo_planificacionYG" name="cargo_planificacionYG" class="form-control" value="DIRECTORA DE PLANIFICACION Y GESTION ESTRATEGICA" placeholder="Ingrese el cargo" required>
                                 <div class="invalid-feedback">Por favor ingrese el cargo.</div>
                             </div>
 
@@ -278,13 +278,13 @@
 
                             <hr class="mt-4">
 
-                            <h3 class="">Datos de la Actividad</h3>
+                            <h3 class="mt-5">Datos de la Actividad</h3>
 
                             <div class="position-static d-flex flex-column flex-lg-row align-items-stretch justify-content-start p-3 rounded-3">
                                 <nav class="col-lg-12">
                                     <ul class="list-unstyled d-flex flex-column gap-2">
                                         <li class="row">
-                                            <div class="btn text-start col-lg-9">
+                                            <div class="btn text-start col-lg-12">
                                                 <strong class="d-block">Objetivo</strong>
                                                 <small id="objetivo">  </small>
                                                 <strong class="d-block mt-1">Actividad</strong>
@@ -292,10 +292,10 @@
                                                 <strong class="d-block mt-1">Sub Actividad</strong>
                                                 <small id="subActividad">  </small>
                                             </div>
-                                            <div class="btn text-start col-lg-3">
+                                            <!-- <div class="btn text-start col-lg-3">
                                                 <strong class="d-block">Número de actividad</strong>
                                                 <small id="numero">  </small>
-                                            </div>
+                                            </div> -->
                                         </li>
 
                                         <table class="table">
@@ -345,7 +345,11 @@
 
                             <hr class="mt-0">
 
-                            <h3 class="">Datos de la Actividad Actualizados</h3>
+
+                            <div class="col-lg-12 mt-5">
+                                <h3 class="">Datos de la Actividad Actualizados</h3>
+                            </div>
+            
 
                             <div class="position-static d-flex flex-column flex-lg-row align-items-stretch justify-content-start p-3 rounded-3">
                                 <nav class="col-lg-12">
@@ -414,7 +418,7 @@
 
                         <div class="col-md-12 mt-2 text-center">
                             <label for="frecuencia" class="form-label fs-6">Quiere prestar la actividad?</label>
-                            <select id="estado" name="estado" class="form-select single-select" required="" >
+                            <select id="estado" name="estado" class="form-control js-example-basic-single" required="" >
                                 <option value="0" selected="">Seleccione el estado de la actividad</option>
                                 <option value="aprobado"> Aprobado</option>
                                 <option value="rechazado"> Rechazado</option>

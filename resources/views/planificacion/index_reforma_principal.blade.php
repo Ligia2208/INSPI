@@ -29,7 +29,7 @@
 
             </div>
 
-            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE REFORMAS</h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> SOLICITUD DE REFORMAS PAPP/PRESUPUESTARIA </h2>
             <hr/>
 
 

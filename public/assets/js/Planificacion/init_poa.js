@@ -23,29 +23,31 @@ $( function () {
             //{ data: 'estado',              name: 'estado' },
 
             {
-                data: null,
-                searchable: false ,
+                data: 'estado', // Apunta al valor original del campo en tu base de datos
+                searchable: true, // Permite buscar en este campo
                 render: function (data, type, full, meta) {
-                var array = "";
 
-                if(full.estado == 'A' ){
-                    array = '<div class="center"><span class="badge badge-primary text-bg-primary">Registrado</span><div>';
-                }else if(full.estado == 'O'){
-                    array = '<div class="center"><span class="badge badge-success text-bg-success">Aprobado</span>';
-                }else if(full.estado == 'R'){
-                    array = '<div class="center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
-                }else if(full.estado == 'C'){
-                    array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span>';
-                }else if(full.estado == 'S'){
-                    array = '<div class="center"><span class="badge badge-info text-bg-info">Solicitado</span>';
-                }else{
-                    array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
-                }
+                    console.log(full.estado);
 
-                return array;
+                    var array = "";
+            
+                    if(full.estado == 'A'){
+                        array = "<div class='center'><span class='badge badge-primary text-bg-primary'>Registrado</span></div>";
+                    }else if(full.estado == 'O'){
+                        array = '<div class="center"><span class="badge badge-success text-bg-success">Aprobado</span></div>';
+                    }else if(full.estado == 'R'){
+                        array = '<div class="center"><span class="badge badge-warning text-bg-warning">Rechazado</span></div>';
+                    }else if(full.estado == 'C'){
+                        array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span></div>';
+                    }else if(full.estado == 'S'){
+                        array = '<div class="center"><span class="badge badge-info text-bg-info">Solicitado</span></div>';
+                    }else{
+                        array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span></div>';
+                    }
+            
+                    return array;
                 }
             },
-
             {
                 data: null,
                 searchable: false ,
@@ -144,6 +146,13 @@ $( function () {
         let direccion = $(this).val(); // Capturar valor del select
         table.column(0).search(direccion).draw(); // Filtrar por la columna "coordinacion" (posición 0)
     });
+
+    $('#filterEstado').on('change', function () {
+        let estado = $(this).val(); // Capturar valor del select
+        table.ajax.url('/planificacion?estado=' + estado).load(); // Actualizar la URL de la solicitud Ajax con el filtro
+    });
+    
+    
 
 });
 

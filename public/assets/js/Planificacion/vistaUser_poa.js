@@ -85,7 +85,7 @@ $( function () {
                     // Condición para mostrar el ícono si estado_solicitud es 'pendiente'
                     if (full.estado_solicitud == 'pendiente') {
                         array += `
-                            <a id="btnPrestar" data-id_solicitud="${full.id_solicitud}" title="Prestar Actividad" class="text-secondary show-tooltip me-1" data-title="Prestar Actividad" data-toggle="modal" data-target="#apruebaSolicitud">
+                            <a id="btnPrestar" data-id_solicitud="${full.id_solicitud}" title="Prestar Actividad" class="text-secondary show-tooltip mr-1" data-title="Prestar Actividad" data-toggle="modal" data-target="#apruebaSolicitud">
                                 <i class="bi bi-check-square font-22"></i>
                             </a>
                         `;
@@ -284,7 +284,6 @@ $( function () {
                 $('#dic').text(dic);
 
                 
-
                 var ene = response.valoresSoli['enero'];
                 var feb = response.valoresSoli['febrero'];
                 var mar = response.valoresSoli['marzo'];
@@ -302,6 +301,9 @@ $( function () {
                 var tipo = response.valoresSoli['tipo'];
                 var fecha = response.solicitud['fecha'];
                 var solicitante = response.solicitud['solicitante'];
+
+                console.log(solicitante);
+                console.log(response.solicitud.solicitante);
 
                 $('#objetivoS').text(nombreObjOperativo);
                 $('#actividadS').text(nombreActividadOperativa);

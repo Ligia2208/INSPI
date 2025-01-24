@@ -36,12 +36,30 @@
             </div>
 
             <div class="card">
-                <select id="filterDireccion" class="form-control js-example-basic-single mt-2">
-                    <option value="">Todas las Direcciones</option>
-                    @foreach($direcciones as $direccion)
-                        <option value="{{ $direccion->departamento }}">{{ $direccion->departamento }}</option>
-                    @endforeach
-                </select>
+
+                <div class="row">
+                    
+                    <div class="col-lg-6">
+                        <select id="filterEstado" class="form-control js-example-basic-single mt-2">
+                            <option value="">Todos los Estados</option>
+                            <option value="A">Registrado</option>
+                            <option value="O">Aprobado</option>
+                            <option value="R">Rechazado</option>
+                            <option value="C">Corregido</option>
+                            <option value="S">Solicitado</option>
+                        </select>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <select id="filterDireccion" class="form-control js-example-basic-single mt-2">
+                            <option value="">Todas las Direcciones</option>
+                            @foreach($direcciones as $direccion)
+                                <option value="{{ $direccion->departamento }}">{{ $direccion->departamento }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+
                 <div class="card-body">
                     <div class="table-responsive">
                         <table id="tblPlanificacionIndex" class="table table-striped table-bordered" style="width:100%">

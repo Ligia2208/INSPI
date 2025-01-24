@@ -22,9 +22,9 @@ $( function () {
                     if(full.estado == 'A' ){
                         array = '<div class="text-center"><span class="badge badge-primary text-bg-primary">Ingresado</span><div>';
                     }else if(full.estado == 'O'){
-                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Aprobado</span>';
+                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Validado</span>';
                     }else if(full.estado == 'V'){
-                        array = '<div class="text-center"><span class="badge badge-secondary text-bg-secondary">Validado</span>';
+                        array = '<div class="text-center"><span class="badge badge-secondary text-bg-secondary">Aprobado</span>';
                     }else if(full.estado == 'R'){
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
@@ -96,7 +96,7 @@ $( function () {
             },
         ],
         order: [
-            [3, 'desc']
+            [0, 'desc']
         ],
 
         // Otras configuraciones de DataTables aquí

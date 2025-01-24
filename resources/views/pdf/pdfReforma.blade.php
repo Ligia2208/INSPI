@@ -189,10 +189,6 @@
                 <th style="text-align: center; vertical-align: middle;" colspan="5">Justificación del área requirente:</th>
                 <td colspan="18">{{$atributos->justificacion_area}}</td>
             </tr>
-            <tr>
-                <th style="text-align: center; vertical-align: middle;" colspan="5">Justificación:</th>
-                <td colspan="18">{{$atributos->justificacion}}</td>
-            </tr>
         </tbody>
     </table> <br>
 
@@ -293,7 +289,7 @@
             <th colspan="4">DIRECCIÓN DE PLANIFICACIÓN Y GESTIÓN ESTRATÉGICA</th>
         </tr>
         <tr>
-            <th colspan="2">Solicitado por: {{$usuarios['creado']['name']}} </th>
+            <th colspan="2">Elaborado por: {{$usuarios['creado']['name']}} </th>
             <th colspan="2">Revisado por: {{$usuarios['autorizado']['name']}} </th>
             <th colspan="2">Aprobado por: {{$usuarios['reporta']['name']}} </th>
             <th colspan="2">Registrado por: {{$usuarios['areaReq']['name']}} </th>

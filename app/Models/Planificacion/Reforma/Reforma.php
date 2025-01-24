@@ -29,4 +29,11 @@ class Reforma extends Model {
     {
     return "Una reforma ha sido {$eventName}";
     }
+
+    public function actividades()
+    {
+        return $this->hasMany(Actividad::class, 'id_reforma');
+    }
+    
+
 }

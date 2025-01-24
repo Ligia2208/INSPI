@@ -398,7 +398,7 @@
                             <label for="frecuencia" class="form-label fs-6">Estado de comprobación de la actividad</label>
                             <select id="estadoPoa" name="estadoPoa" class="form-select single-select" required>
                                 <option value="0" selected>Seleccione el estado de la actividad</option>
-                                <option value="O"> Aprobado</option>
+                                <option value="O"> Validado</option>
                                 <option value="R"> Rechazado</option>
                                 <!-- <option value="C"> Corregido</option> -->
                                 <!-- <option value="4"> Cuatrimestral </option>

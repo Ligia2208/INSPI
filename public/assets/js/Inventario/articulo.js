@@ -287,7 +287,7 @@ $( function () {
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLabel">Actualizar Categoría</h5>
+                                    <h5 class="modal-title" id="exampleModalLabel">Actualizar Artículo</h5>
                                     <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close" id="btnCerrarModalCat2">
                                         <span aria-hidden="true">&times;</span>
                                     </button>

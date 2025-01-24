@@ -182,6 +182,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         Adldap\Laravel\AdldapServiceProvider::class,
         Adldap\Laravel\AdldapAuthServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
 
     ],
 
@@ -237,6 +238,7 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
         'Adldap' => Adldap\Laravel\Facades\Adldap::class,
         'Dompdf' => Barryvdh\DomPDF\Facade::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

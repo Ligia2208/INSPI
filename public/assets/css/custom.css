@@ -328,3 +328,15 @@ input:checked + .slider:before {
 .accordion-body {
     padding: var(--bs-accordion-body-padding-y) var(--bs-accordion-body-padding-x);
 }
+
+
+.disabled-red {
+    color: red;
+    border: 1px solid red;
+  }
+
+.disabled-green {
+    color: green;
+    border: 1px solid green;
+}
+

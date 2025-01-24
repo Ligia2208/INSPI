@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Actividad extends Model {
     protected $fillable = [
         'id',
-        'id_poa',
+        'id_poa1',
         'id_reforma',
         'sub_actividad',
         'estado',
@@ -27,4 +27,10 @@ class Actividad extends Model {
     {
     return "Una actividad ha sido {$eventName}";
     }
+
+    public function actividades()
+    {
+        return $this->hasMany(Actividad::class, 'id_reforma');
+    }
+
 }

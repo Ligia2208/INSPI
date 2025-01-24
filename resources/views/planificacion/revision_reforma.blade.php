@@ -22,33 +22,6 @@
 
 <div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
-<style>
-
-    table {
-        border: 1px solid black;
-        border-collapse: collapse;
-        font-size: 12px;
-        text-align: center;
-        margin-bottom: 2%;
-        width: 100%;
-    }
-    th, td {
-        border: 1px solid black;
-    }
-    .scroll_horizontal{
-        overflow-x: auto;
-    }
-    .form-select, .form-control {
-        width: 100%;
-    }
-    .width {
-        width: 125px;
-        white-space: nowrap;
-    }
-
-</style>
-
-
     <div class="container2">
         <div class="page-content">
 
@@ -82,76 +55,73 @@
 
         <input type="hidden" id="id_reforma" value="{{ $id }}">
 
-            <div class ="scroll_horizontal">
-                <table class="table table-striped" style="background-color: white;">
-                    <thead>
-                        <tr>
-                            <th>ACTIVIDADES OPERATIVAS</th>
-                            <th>SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
-                            <th>ITEM PRESUPUESTARIO</th>
-                            <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
-                            <th class="width">TIPO DE INGRESO</th>
-                            <th >ENERO</th>
-                            <th >FEBRERO</th>
-                            <th >MARZO</th>
-                            <th >ABRIL</th>
-                            <th >MAYO</th>
-                            <th >JUNIO</th>
-                            <th >JULIO</th>
-                            <th >AGOSTO</th>
-                            <th >SEPTIEMBRE</th>
-                            <th >OCTUBRE</th>
-                            <th >NOVIEMBRE</th>
-                            <th>DICIEMBRE</th>
-                            <th>TOTAL</th>
-                        </tr>
-                    </thead>
-                    <tbody class="width">
-                        @foreach($atributos as $atributo)
-                        <tr>
-                            <input type="hidden" name="id_actividad[]" value="{{ $atributo->id_actividad }}">
-                            <td>{{ $atributo->nombreActividadOperativa}}</td>
-                            <td>{{ $atributo->nombreSubActividad }}</td>
-                            <td>{{ $atributo->nombreItem }}</td>
-                            <td>{{ $atributo->descripcionItem }}</td>
-                            <td class="width">
-                                <select disabled class ="form-control" name="tipo[]">
-                                    @if($atributo->tipo == 'DISMINUYE')
-                                        <option value="">Seleccionar tipo...</option>
-                                        <option value="DISMINUYE" selected>Disminuye</option>
-                                        <option value="AUMENTA">Aumenta</option>
-                                    @elseif ($atributo->tipo == 'AUMENTA')
-                                        <option value="">Seleccionar tipo...</option>
-                                        <option value="DISMINUYE" >Disminuye</option>
-                                        <option value="AUMENTA" selected>Aumenta</option>
-                                    @endif
-                                </select>
+        <div class="scroll_horizontal">
+            <table class="table table-striped table-bordered table-sm" style="background-color: white;">
+                <thead>
+                    <tr>
+                        <th style="min-width: 250px;">ACTIVIDADES OPERATIVAS</th>
+                        <th style="min-width: 300px;">SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
+                        <th>ITEM PRESUPUESTARIO</th>
+                        <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
+                        <th style="min-width: 120px;">TIPO DE INGRESO</th>
+                        <th>TOTAL</th>
+                        <th>ENERO</th>
+                        <th>FEBRERO</th>
+                        <th>MARZO</th>
+                        <th>ABRIL</th>
+                        <th>MAYO</th>
+                        <th>JUNIO</th>
+                        <th>JULIO</th>
+                        <th>AGOSTO</th>
+                        <th>SEPTIEMBRE</th>
+                        <th>OCTUBRE</th>
+                        <th>NOVIEMBRE</th>
+                        <th>DICIEMBRE</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($atributos as $atributo)
+                    <tr>
+                        <input type="hidden" name="id_actividad[]" value="{{ $atributo->id_actividad }}">
+                        <td>{{ $atributo->nombreActividadOperativa}}</td>
+                        <td>{{ $atributo->nombreSubActividad }}</td>
+                        <td>{{ $atributo->nombreItem }}</td>
+                        <td>{{ $atributo->descripcionItem }}</td>
+                        <td class="width">
+                            <select disabled class="form-control" name="tipo[]">
+                                @if($atributo->tipo == 'DISMINUYE')
+                                    <option value="">Seleccionar tipo...</option>
+                                    <option value="DISMINUYE" selected>Disminuye</option>
+                                    <option value="AUMENTA">Aumenta</option>
+                                @elseif ($atributo->tipo == 'AUMENTA')
+                                    <option value="">Seleccionar tipo...</option>
+                                    <option value="DISMINUYE">Disminuye</option>
+                                    <option value="AUMENTA" selected>Aumenta</option>
+                                @endif
+                            </select>
+                        </td>
+
+                        @foreach(['total','enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'] as $mes)
+                            <td>
+                                @if($atributo->tipo == 'DISMINUYE' && (float)$atributo->$mes > 0)
+                                    <input disabled class="form-control disabled-red" style="width: 125px;" type="text" name="{{ $mes }}_R[]" value="{{ $atributo->$mes }}">
+                                @elseif($atributo->tipo == 'AUMENTA' && (float)$atributo->$mes > 0)
+                                    <input disabled class="form-control disabled-green" style="width: 125px;" type="text" name="{{ $mes }}_R[]" value="{{ $atributo->$mes }}">
+                                @else
+                                    <input disabled class="form-control" style="width: 125px;" type="text" name="{{ $mes }}_R[]" value="{{ $atributo->$mes }}">
+                                @endif
                             </td>
-
-
-
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="enero_R[]" value="{{ $atributo->enero}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="febrero_R[]" value="{{ $atributo->febrero}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="marzo_R[]" value="{{ $atributo->marzo}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="abril_R[]" value="{{ $atributo->abril}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="mayo_R[]" value="{{ $atributo->mayo}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="junio_R[]" value="{{ $atributo->junio}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="julio_R[]" value="{{ $atributo->julio}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="agosto_R[]" value="{{ $atributo->agosto}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="septiembre_R[]" value="{{ $atributo->septiembre}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="octubre_R[]" value="{{ $atributo->octubre}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="noviembre_R[]" value="{{ $atributo->noviembre}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="diciembre_R[]" value="{{ $atributo->diciembre}}"></td>
-                            <td><input disabled class ="form-control" style="width: 125px;" type="text" name="total_R[]" value="{{ $atributo->total}}"></td>
-                        </tr>
                         @endforeach
-                    </tbody>
-                </table>
-            </div>
+                    </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
 
         <div class="col-md-12 mt-2" style="margin-bottom: 20px">
             <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
-            <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4" disabled>{{ $justifi->justificacion}}</textarea>
+            <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4" disabled>{{ $justifi->justificacion_area}}</textarea>
             <div class="valid-feedback">Looks good!</div>
         </div>
 
