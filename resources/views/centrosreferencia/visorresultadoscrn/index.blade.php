@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', 'Resultados CRN')
+@section('title', 'Visor Resultados')
 
 @section('content')
 
@@ -24,7 +24,7 @@
                     @include('centrosreferencia.resultadocrn.menu.index')
                 </div>
                 <div class="row">
-                    @livewire('centrosreferencia.resultadocrn.index')
+                    @livewire('centrosreferencia.visorresultadoscrn.index')
                 </div>
             </div>
         </div>
@@ -33,6 +33,6 @@
 @endsection
 
 @section('footer')
-<script src="{{ asset('assets') }}/js/pages/widgets.js"></script>
-<script src="{{ asset('assets') }}/js/pages/custom/profile/profile.js"></script>
+    <script src="{{ asset('assets') }}/js/pages/widgets.js"></script>
+    <script src="{{ asset('assets') }}/js/pages/custom/profile/profile.js"></script>
 @endsection

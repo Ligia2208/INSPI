@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Livewire\Centrosreferencia\Visorresultados;
+namespace App\Http\Livewire\Centrosreferencia\Visorresultadoscrn;
 
 use App\Models\CentrosReferencia\Resultado;
+use App\Models\CentrosReferencia\Responsable;
 use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\SedeCrn;
@@ -42,36 +43,47 @@ class Index extends Component
 
     public function render()
     {
-        $sedes = Sede::orderBy('id', 'asc')->cursor();
+        $iduser = auth()->user()->id;
+        $sedes_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('sedes_id')->pluck('sedes_id')->toArray();
+        $crns_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('crns_id')->pluck('crns_id')->toArray();
+        $sedes = Sede::whereIn('id',$sedes_users)->orderBy('id', 'asc')->cursor();
+
         $crns = [];
         $eventos = [];
         $data = [];
 
-        $count = Preanalitica::where('estado','=','A')->where('validado','=','S')->count();
-        $resultados = Preanalitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc');
+        $resultados = DB::table('inspi_crns.detalle_muestras')->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->orderBy('id', 'asc');
+        $count = $resultados->count();
 
-        //$res = Preanalitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc')->get()->toArray();
-        $data = DB::table('inspi_crns.consolidado')->select('sede as grupo',DB::raw('count(evento) as total'))->groupBy('sede')->get()->toArray();
-        $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->groupBy('provincia')->get()->toArray();
-        $datacant = DB::table('inspi_crns.consolidado')->select('canton', DB::raw('count(evento) as eventos'))->groupBy('canton')->get()->toArray();
-        $datasexo = DB::table('inspi_crns.consolidado')->select('sexo as grupo', DB::raw('count(evento) as total'))->groupBy('sexo')->get()->toArray();
-        $dataedad = DB::table('inspi_crns.consolidado')->select('edad as grupo', DB::raw('count(evento) as total'))->groupBy('edad')->orderBy('edad','ASC')->get()->toArray();
+        $data = DB::table('inspi_crns.detalle_muestras')->select('evento as grupo',DB::raw('count(paciente) as total'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('evento')->get()->toArray();
+        $dataprov = DB::table('inspi_crns.detalle_muestras')->select('provincia', DB::raw('count(paciente) as eventos'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('provincia')->get()->toArray();
+        $datacant = DB::table('inspi_crns.detalle_muestras')->select('canton', DB::raw('count(paciente) as eventos'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('canton')->get()->toArray();
+        $dataclase = DB::table('inspi_crns.detalle_muestras')->select('clase_muestra as grupo', DB::raw('count(paciente) as total'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('clase_muestra')->get()->toArray();
+        $datatipo = DB::table('inspi_crns.detalle_muestras')->select('tipo_muestra as grupo', DB::raw('count(paciente) as total'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('tipo_muestra')->get()->toArray();
+        $dataproc = DB::table('inspi_crns.detalle_muestras')->select('procesado as grupo', DB::raw('count(paciente) as total'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('procesado')->get()->toArray();
+        $datacump = DB::table('inspi_crns.detalle_muestras')->select('estado_muestra as grupo', DB::raw('count(paciente) as total'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('estado_muestra')->get()->toArray();
+        $datainsa = DB::table('inspi_crns.detalle_muestras')->select('institucion as grupo', DB::raw('count(paciente) as total'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('institucion')->get()->toArray();
+        $datatecn = DB::table('inspi_crns.detalle_muestras')->select('tecnica as grupo', DB::raw('count(paciente) as total'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('tecnica')->get()->toArray();
+        $dataresu = DB::table('inspi_crns.detalle_muestras')->select('resultado as grupo', DB::raw('count(paciente) as total'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('resultado')->get()->toArray();
 
-        $etiqueta1 = 'Total Casos';
-        $etiqueta2 = '% Casos';
-        $etiqueta3 = '% Casos por Sexo';
-        $etiqueta4 = 'Total Casos por Edad';
-        $etiqueta5 = 'Total Casos por Provincia';
-        $etiqueta6 = 'Total Casos por Cantón';
+        $etiqueta0 = 'Total por Institución de Salud';
+        $etiqueta1 = 'Total por evento';
+        $etiqueta2 = '% por evento';
+        $etiqueta3 = 'Total por Clase';
+        $etiqueta4 = 'Total por Tipo Muestra';
+        $etiqueta5 = 'Total Muestras Procesadas';
+        $etiqueta6 = 'Total Muestras Válidas';
+        $etiqueta7 = 'Total Muestras por Provincia';
+        $etiqueta8 = 'Total Muestras por Cantón';
+        $etiqueta9 = '% por Técnica Aplicada';
+        $etiqueta10 = 'Total por Resultado Encontrado';
 
         if($this->csedes>=1){
             $resultados = $resultados->where('sedes_id', '=', $this->csedes);
             $count = $resultados->count();
 
-            $config = SedeCrn::where('sedes_id','=',$this->csedes)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
-            $crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
+            $crns = Crn::whereIn('id',$crns_users)->orderBy('id', 'asc')->get();
 
-            $dsede = Sede::findOrFail($this->csedes);
             $data = DB::table('inspi_crns.consolidado')->select('crn as grupo',DB::raw('count(evento) as total'))->where('sedes_id','=',$this->csedes)->groupBy('crn')->get()->toArray();
 
             $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->where('sedes_id','=',$this->csedes)->groupBy('provincia')->get()->toArray();
@@ -119,10 +131,15 @@ class Index extends Component
         $data_res = json_encode($data);
         $data_prov = json_encode($dataprov);
         $data_cant = json_encode($datacant);
-        $data_sexo = json_encode($datasexo);
-        $data_edad = json_encode($dataedad);
+        $data_clase = json_encode($dataclase);
+        $data_tipo = json_encode($datatipo);
+        $data_procesado = json_encode($dataproc);
+        $data_cumple = json_encode($datacump);
+        $data_insa = json_encode($datainsa);
+        $data_tecn = json_encode($datatecn);
+        $data_resu = json_encode($dataresu);
 
-        return view('livewire.centrosreferencia.visorresultados.index', compact('count', 'resultados','data_res','data_prov','data_cant','data_sexo','data_edad','sedes','crns','eventos','etiqueta1','etiqueta2','etiqueta3','etiqueta4','etiqueta5','etiqueta6'));
+        return view('livewire.centrosreferencia.visorresultadoscrn.index', compact('count', 'resultados','data_res','data_prov','data_cant','data_clase','data_tipo','data_procesado','data_cumple','data_insa','data_tecn','data_resu','sedes','crns','eventos','etiqueta0','etiqueta1','etiqueta2','etiqueta3','etiqueta4','etiqueta5','etiqueta6','etiqueta7','etiqueta8','etiqueta9','etiqueta10'));
     }
 
     public function eventosemanal(){

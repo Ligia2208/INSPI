@@ -140,5 +140,292 @@ class Index extends Component
         }
     }
 
+    public function diferencial01($id)
+    {   //ELISA RUBEOLA-SARAMPION (POSITIVO O INDETERMINADO)
+        try{
+                $objPreanalitica = Preanalitica::findOrFail($id);
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 149;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newPreanalitica->save();
+
+                $Analiticas = Analitica::where('preanalitica_id','=',$id)->first();
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 149;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_secuencial = 1;
+                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->save();
+
+                $newPreanalitica->cdiferencial=$Analiticas->codigo_muestra;
+                $newPreanalitica->update();
+
+                $objPreanalitica->cdiferencial=$newPreanalitica->id;
+                $objPreanalitica->update();
+
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 150;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newPreanalitica->save();
+
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 150;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_secuencial = 1;
+                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->save();
+
+                $newPreanalitica->cdiferencial=$Analiticas->codigo_muestra;
+                $newPreanalitica->update();
+
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 151;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newPreanalitica->save();
+
+                $Analiticas = Analitica::where('preanalitica_id','=',$id)->first();
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 151;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_secuencial = 1;
+                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->save();
+
+                $newPreanalitica->cdiferencial=$Analiticas->codigo_muestra;
+                $newPreanalitica->update();
+
+            $this->alert('success', 'Solicitud de pruebas diferenciales generada con exito');
+        }catch(Exception $e){
+            $this->alert('error',
+                'Ocurrio un error en la generación: '.$e->getMessage(),
+                [
+                    'showConfirmButton' => true,
+                    'confirmButtonText' => 'Entiendo',
+                    'timer' => null,
+                ]);
+        }
+    }
+
+    public function diferencial02($id)
+    {   //ELISA VIRUELA DEL MONO (NEGATIVO)
+        try{
+                $objPreanalitica = Preanalitica::findOrFail($id);
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 146;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newPreanalitica->save();
+
+                $Analiticas = Analitica::where('preanalitica_id','=',$id)->first();
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 146;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_secuencial = 1;
+                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->save();
+
+                $newPreanalitica->cdiferencial=$Analiticas->codigo_muestra;
+                $newPreanalitica->update();
+
+                $objPreanalitica->cdiferencial=$newPreanalitica->id;
+                $objPreanalitica->update();
+
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 147;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newPreanalitica->save();
+
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 147;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_secuencial = 1;
+                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->save();
+
+                $newPreanalitica->cdiferencial=$Analiticas->codigo_muestra;
+                $newPreanalitica->update();
+
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 148;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newPreanalitica->save();
+
+                $Analiticas = Analitica::where('preanalitica_id','=',$id)->first();
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 148;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_secuencial = 1;
+                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->save();
+
+                $newPreanalitica->cdiferencial=$Analiticas->codigo_muestra;
+                $newPreanalitica->update();
+
+            $this->alert('success', 'Solicitud de pruebas diferenciales generada con exito');
+        }catch(Exception $e){
+            $this->alert('error',
+                'Ocurrio un error en la generación: '.$e->getMessage(),
+                [
+                    'showConfirmButton' => true,
+                    'confirmButtonText' => 'Entiendo',
+                    'timer' => null,
+                ]);
+        }
+    }
+
+    public function sgte_codigomuestra($anio, $sede, $crn){
+        $max = Analitica::where('estado','=','A')->where('anio_registro','=',$anio)->where('sedes_id','=',$sede)->where('crns_id','=',$crn)->max('codigo_muestra');
+        return $max+1;
+    }
+
 
 }

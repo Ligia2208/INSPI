@@ -1,4 +1,4 @@
-<div class="container" x-data="app()">
+<div class="col-xl-12" x-data="app()">
 
     @section('head')
         <link rel="stylesheet" href="{{ asset('assets/plugins/custom/bfi/bfi.css') }}">
@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="my-5">
-                            <a href="{{ route('postanalitica.index') }}" class="navi-link py-4 {{ active('user.index') }}">
+                                <a href="{{ route('postanalitica.index') }}" class="navi-link py-4 {{ active('user.index') }}">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <i aria-hidden="true" class="ki ki-bold-close icon-lg"></i>
                                 </button>
@@ -35,7 +35,7 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required>
+                                            required disabled>
                                             <option value="">Selecciona una Sede</option>
                                             @foreach ($sedes as $objSed)
                                                 <option data-subtext="" value="{{ $objSed->id }}">{{ $objSed->descripcion }}</option>
@@ -58,7 +58,7 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required>
+                                            required disabled>
                                             <option value="">Selecciona un CRN</option>
                                             @if(!is_null($crns))
                                             @foreach ($crns as $objCrn)
@@ -84,11 +84,11 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required>
+                                            required disabled>
                                             <option value="">Selecciona un Evento</option>
                                             @if(!is_null($eventos))
                                             @foreach ($eventos as $objEvento)
-                                                <option data-subtext="" value="{{ $objEvento->id }}">{{ $objEvento->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}</option>
                                             @endforeach
                                             @endif
                                         </select>
@@ -134,40 +134,8 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label>Fecha Recepción de muestra<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-calendar"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.fecha_toma"
-                                            type="date"
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
-                                            placeholder="Seleccione una fecha"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label>Fecha llegada a CRN-Laboratorio<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-calendar"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.fecha_llegada_lab"
-                                            type="date"
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_llegada_lab') is-invalid @enderror"
-                                            placeholder="Seleccione una fecha"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>Analiticas<span class="text-danger">*</span></label>
+                                <div class="form-group col-md-8">
+                                    <label class="text-black"><b>Resultado Cierre Caso</b><span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -193,7 +161,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-12">
-                                    <label>Observación Responsable de l validación</label>
+                                    <label class="text-black"><b>Observación Responsable de la validación</b></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -201,7 +169,7 @@
                                             </span>
                                         </div>
                                         <textarea
-                                            wire:model.defer="Analiticas.descripcion_responsable"
+                                            wire:model.defer="Analiticas.descripcion"
                                             id=""
                                             cols="30"
                                             rows="3"
@@ -218,6 +186,31 @@
                 <button class="d-none" type="submit"></button>
             </form>
             <!--end::Form-->
+            @if ($Analiticas->resultado_id==67 && ($Analiticas->evento_id==116 || $Analiticas->evento_id==117 || $Analiticas->evento_id==118 || $Analiticas->evento_id==119 || $Analiticas->evento_id==120 || $Analiticas->evento_id==125))
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="text-black"><b>Generación Eventos para investigación ampliada</b><span class="text-danger">*</span></label>
+                        <div class="input-group input-group-solid">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-list"></i>
+                            </span>
+                        </div>
+                        <select
+                            wire:model.defer="Analiticas.eventosav_id"
+                            class="form-control selectpicker form-control-solid @error('Analiticas.eventosav_id') is-invalid @enderror"
+                            data-size="7"
+                            data-live-search="true"
+                            data-show-subtext="true"
+                            required multiple>
+                            <option value="">Selecciona un Evento</option>
+                            @foreach ($eventos as $objEvento)
+                                <option data-subtext="" value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            @endif
         </div>
         <div class="card-header" >
             <div class="card-toolbar">

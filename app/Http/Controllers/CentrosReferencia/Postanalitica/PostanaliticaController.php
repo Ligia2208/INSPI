@@ -205,4 +205,10 @@ class PostanaliticaController extends Controller
         exit;
     }
 
+    public function generar_ampliada(Request $request){
+        dd($request);
+        $c = $request->eventosav_id;
+        dd($c); die();
+    }
+
 }

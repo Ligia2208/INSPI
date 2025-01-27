@@ -175,8 +175,8 @@
                                         <td>
                                             <span
                                                 class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->anio_registro }}
-                                                - {{ str_pad($analitica->codigo_muestra, 5, '0', STR_PAD_LEFT) }} -
-                                                {{ str_pad($analitica->codigo_secuencial, 3, '0', STR_PAD_LEFT) }}</span>
+                                                - {{ str_pad($analitica->codigo_muestra, 6, '0', STR_PAD_LEFT) }} -
+                                                {{ str_pad($analitica->codigo_secuencial, 2, '0', STR_PAD_LEFT) }}</span>
                                         </td>
                                     @else
                                         <td>

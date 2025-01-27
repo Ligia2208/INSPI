@@ -8,11 +8,284 @@
                     <span class="text-muted mt-3 font-weight-bold font-size-sm">@yield('title')<span
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span></span>
                 </h3>
-                @if($sedes_up>0)
-                <a href="{{ route('resultadocrn.create') }}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i class="fa fa-sticky-note"></i> Agregar</a>
-                @endif
             </div>
             <!--end::Header-->
+            @if($rol == 'Administrador')
+            <div class="card-body pt-0 pb-3">
+                <div class="mb-5 ">
+                    <div class="row align-items-center">
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/micobacterias.png" class="center"><br>
+                                                {{ __("CRN-Micobacterias") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cmicobacterias }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/influenza.png" class="center"><br>
+                                               {{ __("CRN-Influenza") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cinfluenza }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/bacteriologia.png" class="center"><br>
+                                                {{ __("CRN-Bacteriología") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cbacteriologia }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/vectores.png" class="center"><br>
+                                                {{ __("CRN-Vectores") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cvectores }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/parasitologia.png" class="center"><br>
+                                                {{ __("CRN-Parasitología") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cparasitologia }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/micologia.png" class="center"><br>
+                                                {{ __("CRN-Micología") }}</div>
+
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cmicologia }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body pt-0 pb-3">
+                <div class="mb-5 ">
+                    <div class="row align-items-center">
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/toxicologia.png" class="center"><br>
+                                                {{ __("CRN-Toxicología") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $ctoxicologia }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/exantematicos.png" class="center"><br>
+                                               {{ __("CRN-Exantemáticos") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cexantematicos }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/genomica.png" class="center"><br>
+                                                {{ __("CRN-Genómica") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cgenomica }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/ram.png" class="center"><br>
+                                                {{ __("CRN-RAM") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cram }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/zoonosis.png" class="center"><br>
+                                                {{ __("CRN-Zoonosis") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $czoonosis }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/inmunohematologia.png" class="center"><br>
+                                                {{ __("Inmunohematología") }}</div>
+
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $cinmunohematologia }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @else
+            <div class="card-body pt-0 pb-3">
+                <div class="mb-5 ">
+                    <div class="row align-items-center">
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/total.png" class="center"><br>
+                                                {{ __("Total Muestras") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $countlab }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/cumple.png" class="center"><br>
+                                               {{ __("Válidas") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $countlabcum }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/rechazadas.png" class="center"><br>
+                                                {{ __("Rechazadas") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $countlabrec }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/procesadas.png" class="center"><br>
+                                               {{ __("Validadas") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $countlabpro }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/validado.png" class="center"><br>
+                                                {{ __("Sin validar") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $countlabana }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xl-2 col-md-4 mb-4">
+                            <div class="card border-left-primary shadow h-100 py-2">
+                                <div class="card-body">
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col mr-2" align="center">
+                                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                                <img alt="Logo" src="/assets/media/png_64/entramite.png" class="center"><br>
+                                                {{ __("Sin Procesar") }}</div>
+                                            <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $countlabpen }}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            @endif
             <!--begin::Body-->
             <div class="card-body pt-0 pb-3">
                 <div class="card card-body">
@@ -66,7 +339,7 @@
                                             <option value="">{{ __("Seleccione un Evento") }}</option>
                                             @if(!is_null($eventos))
                                             @foreach ($eventos as $objEven)
-                                                <option data-subtext="" value="{{ $objEven->id }}">{{ $objEven->descripcion }}</option>
+                                                <option data-subtext="" value="{{ $objEven->id }}">{{ $objEven->simplificado }}</option>
                                             @endforeach
                                             @endif
                                             </select>
@@ -85,8 +358,9 @@
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
                                                 <option data-subtext="" value="1">Fecha toma de muestra</option>
-                                                <option data-subtext="" value="2">Fecha llegada al CRN</option>
-                                                <option data-subtext="" value="3">Fecha reporte</option>
+                                                <option data-subtext="" value="2">Fecha llegada al CRN/LAB</option>
+                                                <option data-subtext="" value="3">Fecha procesamiento</option>
+                                                <option data-subtext="" value="4">Fecha reporte</option>
                                             </select>
                                         </div>
                                     </div>
@@ -168,25 +442,29 @@
                                 <tr class="text-uppercase">
                                     <th>Código Muestra</th>
                                     <th>Fecha Toma muestra</th>
-                                    <th>Fecha Recepción muestra</th>
+                                    <th>Fecha Llegada_CRN</th>
+                                    <th>Fecha Procesamiento</th>
+                                    <th>Fecha Validación</th>
                                     <th>CRN - Laboratorio</th>
                                     <th>Evento</th>
                                     <th>Técnica</th>
                                     <th>Resultado</th>
-                                    <th>Fecha Reporte</th>
-                                    <th>Acciones</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @forelse ($resultados as $objRes)
+                                    @if($objRes->estado_muestra_id==2)
+                                    <tr bgcolor="lightgray">
+                                    @else
                                     <tr>
+                                    @endif
                                         <td>
                                             <span
-                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $objRes->codigo_muestra }}</span>
+                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $objRes->anio_registro }}-{{ str_pad($objRes->codigo_muestra, 6, "0", STR_PAD_LEFT) }}</span>
                                         </td>
                                         <td>
                                             <span
-                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_toma_muestra }}</span>
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->preanalitica->fecha_toma_primera }}</span>
                                         </td>
                                         <td>
                                             <span
@@ -194,42 +472,38 @@
                                         </td>
                                         <td>
                                             <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_resultado }}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_publicacion }}</span>
+                                        </td>
+                                        <td>
+                                            <span
                                                 class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->crns->descripcion }}</span>
                                         </td>
                                         <td>
                                             <span
-                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->evento->descripcion }}</span>
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->evento->simplificado }}</span>
                                         </td>
+                                        @if($objRes->tecnica_id>0)
                                         <td>
                                             <span
                                                 class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->tecnica->descripcion }}</span>
                                         </td>
+                                        @else
+                                        <td>
+                                        </td>
+                                        @endif
+                                        @if($objRes->resultado_id>0)
                                         <td>
                                             <span
                                                 class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->resultado->descripcion }}</span>
                                         </td>
+                                        @else
                                         <td>
-                                            <span
-                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->created_at }}</span>
                                         </td>
-                                        <td align="center">
-                                            <i class="navi-item" data-toggle="modal" data-target="_self">
-                                                <a href="{{ route('resultadocrn.edit', $objRes) }}" class="navi-link">
-                                                    <span class="navi-icon">
-                                                    <i class="ace-icon fa fa-pen" style="color:lightblue" title="Editar"></i>
-                                                    </span>
-                                                </a>
-                                            </i>
-                                            <i class="navi-item"
-                                                onclick="event.preventDefault(); confirmDestroy({{ $objRes->id }})">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="ace-icon fa fa-trash-alt" style="color:red"
-                                                            title="Eliminar"></i>
-                                                    </span>
-                                                </a>
-                                            </i>
-                                        </td>
+                                        @endif
                                     </tr>
                                 @empty
                                     <!--begin::Col-->

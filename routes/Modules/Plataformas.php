@@ -15,11 +15,14 @@ use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
 use App\Http\Controllers\CentrosReferencia\Resultadocrn\ResultadocrnController;
 use App\Http\Controllers\CentrosReferencia\VisorResultados\VisorResultadosController;
+use App\Http\Controllers\CentrosReferencia\VisorResultadoscrn\VisorResultadoscrnController;
 use App\Http\Controllers\CentrosReferencia\Responsable\ResponsableController;
 use App\Http\Controllers\CentrosReferencia\Paciente\PacienteController;
 use App\Http\Controllers\CentrosReferencia\Instsalud\InstsaludController;
 
 Route::middleware(['auth'])->group(function () {
+
+        Route::post('/generar_ampliada', [PostanaliticaController::class, 'generar_ampliada'])->name('generar_ampliada');
 
         //Especimen Plataformas Bioterio
         Route::resource('especimenes', EspecimenController::class)->parameters(['especimenes' => 'especimen'])->names('especimen');
@@ -75,6 +78,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');
+
+        //CRNs Plataformas Resultados
+        Route::resource('visorresultadoscrn', VisorResultadoscrnController::class)->parameters(['resultados' => 'resultado'])->names('visorresultadocrn');
 
         //CRNs Plataformas Resultados
         Route::resource('visorresultados', VisorResultadosController::class)->parameters(['resultados' => 'resultado'])->names('visorresultado');

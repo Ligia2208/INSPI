@@ -158,6 +158,7 @@
                             <tr class="text-uppercase">
                                 <th>Intitución Salud</th>
                                 <th>Fecha Atención</th>
+                                <th>Identidad</th>
                                 <th>Paciente</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
@@ -181,6 +182,10 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->paciente->identidad }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->paciente->apellidos }} {{ $postanalitica->paciente->nombres }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -209,19 +214,21 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->fecha_resultado }}</span>
                                     </td>
                                     <td align="center">
+                                        @if($postanalitica->usuarior_id==0)
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
                                             <a href="{{ route('postanalitica.edit', $postanalitica) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="ace-icon fa fa-tag" style="color:lightblue"
-                                                        title="Editar"></i>
+                                                        title="Validar"></i>
                                                 </span>
                                             </a>
                                         </i>
+                                        @endif
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
                                             <a href="{{ route('postanalitica.show', $postanalitica) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="ace-icon fa fa-eye" style="color:rgb(122, 122, 122)"
-                                                        title="Mostrar"></i>
+                                                        title="Mostrar_Detalles"></i>
                                                 </span>
                                             </a>
                                         </i>
@@ -229,10 +236,72 @@
                                         <i class="navi-item">
                                             <a href="/informefinal/informep/{{ $postanalitica->id }}" target="_blank" class="navi-link">
                                             <span class="navi-icon">
-                                                <i class="fa fa-print" style="color:lightgray" alt="Editar"></i>
+                                                <i class="fa fa-print" style="color:lightgray" title="Imprimir_Reporte"></i>
                                             </span>
                                             </a>
                                         </i>
+                                        @endif
+                                        @if($postanalitica->crns_id==8 && $postanalitica->evento_id==104)
+                                            @if ($postanalitica->resultado_id==66 || $postanalitica->resultado_id==68)
+                                                @if($postanalitica->cdiferencial==0)
+                                                    <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial02({{ $postanalitica->id }})">
+                                                        <a href="" target="_blank" class="navi-link">
+                                                        <span class="navi-icon">
+                                                            <i class="fa fa-toggle-on" style="color:rgb(216, 20, 20)" Title="Generar_Diferencial"></i>
+                                                        </span>
+                                                        </a>
+                                                    </i>
+                                                @else
+                                                    <i class="navi-item" onclick="event.preventDefault(); confirmGeneradodif({{ $postanalitica->id }})">
+                                                        <a href="" target="_blank" class="navi-link">
+                                                        <span class="navi-icon">
+                                                            <i class="fa fa-toggle-off" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
+                                                        </span>
+                                                        </a>
+                                                    </i>
+                                                @endif
+                                            @endif
+                                        @endif
+                                        @if($postanalitica->crns_id==8 && $postanalitica->evento_id==106 && $postanalitica->resultado_id==67)
+                                            @if($postanalitica->cdiferencial==0)
+                                                <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial01({{ $postanalitica->id }})">
+                                                    <a href="" target="_blank" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fa fa-toggle-on" style="color:rgb(216, 20, 20)" Title="Generar_Diferencial"></i>
+                                                    </span>
+                                                    </a>
+                                                </i>
+                                            @else
+                                                <i class="navi-item" onclick="event.preventDefault(); confirmGeneradodif({{ $postanalitica->id }})">
+                                                    <a href="" target="_blank" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fa fa-toggle-off" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
+                                                    </span>
+                                                    </a>
+                                                </i>
+                                            @endif
+                                        @endif
+                                        @if($postanalitica->crns_id==8 && $postanalitica->resultado_id==67)
+                                            @if ($postanalitica->evento_id==116 || $postanalitica->evento_id==117 || $postanalitica->evento_id==118 || $postanalitica->evento_id==119 || $postanalitica->evento_id==120 || $postanalitica->evento_id==125)
+                                                @if($postanalitica->campliada==0)
+                                                <i class="navi-item" data-toggle="modal" data-target="_self">
+                                                    <a href="{{ route('postanalitica.edit', $postanalitica) }}" class="navi-link">
+                                                        <span class="navi-icon">
+                                                            <i class="ace-icon fa fa-bookmark" style="color:rgb(216, 20, 20)"
+                                                                title="Generar_Ampliada"></i>
+                                                        </span>
+                                                    </a>
+                                                </i>
+                                                @else
+                                                    <i class="navi-item" onclick="event.preventDefault(); confirmGeneradoamp({{ $postanalitica->id }})">
+                                                        <a href="" target="_blank" class="navi-link">
+                                                        <span class="navi-icon">
+                                                            <i class="fa fa-bookmark" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
+                                                        </span>
+                                                        </a>
+                                                    </i>
+                                                @endif
+                                            @endif
                                         @endif
                                     </td>
                                 </tr>
@@ -299,6 +368,98 @@
                     if (result.isConfirmed) {
                         @this.call('destroy', id);
                     }
+                });
+            }
+
+            function confirmAmpliada01(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas ampliadas de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('ampliada01', id);
+                    }
+                });
+            }
+
+            function confirmDiferencial01(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas diferenciales de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('diferencial01', id);
+                    }
+                });
+            }
+
+            function confirmDiferencial02(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas diferenciales de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('diferencial02', id);
+                    }
+                });
+            }
+
+            function confirmGeneradodif(id) {
+                swal.fire({
+                    title: "Pruebas Diferenciales",
+                    text: "Las pruebas diferenciales fueron generadas y remitidas al CRN correspondiente",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: false,
+                    confirmButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-white'>Ok, Cerrar</span>",
+                    reverseButtons: true,
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function() {
+
+                });
+            }
+
+            function confirmGeneradoamp(id) {
+                swal.fire({
+                    title: "Pruebas Ampliadas",
+                    text: "Las pruebas ampliadas fueron generadas y remitidas al CRN correspondiente",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: false,
+                    confirmButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-white'>Ok, Cerrar</span>",
+                    reverseButtons: true,
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function() {
+
                 });
             }
 

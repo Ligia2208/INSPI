@@ -16,6 +16,7 @@ use App\Models\CentrosReferencia\Canton;
 use App\Models\CentrosReferencia\Reporte;
 use App\Models\CentrosReferencia\Tecnica;
 use App\Models\CentrosReferencia\Muestra;
+use App\Models\CentrosReferencia\Clase;
 use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Generacioncodigos;
 use App\Models\CoreBase\Nacionalidad;
@@ -88,22 +89,27 @@ class Form extends Component
             'Preanaliticas.evento_id' => 'required|numeric',
 
             'Preanaliticas.primera_id' => 'required|numeric',
+            'Preanaliticas.clase_primera_id' => 'required|numeric',
             'Preanaliticas.fecha_toma_primera' => 'required|max:10',
             'Preanaliticas.estado_primera_id' => 'required|numeric',
             'Preanaliticas.observacion_primera' => 'sometimes|max:200',
             'Preanaliticas.segunda_id' => 'sometimes|numeric',
+            'Preanaliticas.clase_segunda_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_segunda' => 'sometimes|max:10',
             'Preanaliticas.estado_segunda_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_segunda' => 'sometimes|max:200',
             'Preanaliticas.tercera_id' => 'sometimes|numeric',
+            'Preanaliticas.clase_tercera_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_tercera' => 'sometimes|max:10',
             'Preanaliticas.estado_tercera_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_tercera' => 'sometimes|max:200',
             'Preanaliticas.cuarta_id' => 'sometimes|numeric',
+            'Preanaliticas.clase_cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_cuarta' => 'sometimes|max:10',
             'Preanaliticas.estado_cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_cuarta' => 'sometimes|max:200',
             'Preanaliticas.quinta_id' => 'sometimes|numeric',
+            'Preanaliticas.clase_quinta_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_quinta' => 'sometimes|max:10',
             'Preanaliticas.estado_quinta_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_quinta' => 'sometimes|max:200',
@@ -117,12 +123,16 @@ class Form extends Component
         $this->Preanaliticas->evolucion = 0;
         $this->Preanaliticas->laboratorio = 2;
         $this->Preanaliticas->gestacion = 0;
+        $this->Preanaliticas->clase_segunda_id = 0;
         $this->Preanaliticas->segunda_id = 0;
         $this->Preanaliticas->estado_segunda_id = 0;
+        $this->Preanaliticas->clase_tercera_id = 0;
         $this->Preanaliticas->tercera_id = 0;
         $this->Preanaliticas->estado_tercera_id = 0;
+        $this->Preanaliticas->clase_cuarta_id = 0;
         $this->Preanaliticas->cuarta_id = 0;
         $this->Preanaliticas->estado_cuarta_id = 0;
+        $this->Preanaliticas->clase_quinta_id = 0;
         $this->Preanaliticas->quinta_id = 0;
         $this->Preanaliticas->estado_quinta_id = 0;
 
@@ -193,8 +203,9 @@ class Form extends Component
         $estados = Estadomuestra::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $instituciones = Institucion::where('estado','=','A')->orderBy('id','asc')->cursor();
         $nacionalidades = Nacionalidad::where('estado','=',1)->orderBy('id','asc')->cursor();
+        $clases = Clase::where('estado','=','A')->orderBy('id','asc')->cursor();
 
-        return view('livewire.centrosreferencia.preanalitica.form', compact('sedes','sexos','muestras','instituciones','estados','nacionalidades','cantonprov'));
+        return view('livewire.centrosreferencia.preanalitica.form', compact('sedes','sexos','muestras','instituciones','estados','nacionalidades','cantonprov','clases'));
     }
 
     public function updatedselectedSede($sede_id){
@@ -263,6 +274,7 @@ class Form extends Component
         $newToma->crns_id = $this->Preanaliticas->crns_id;
         $newToma->evento_id = $this->Preanaliticas->evento_id;
         if($this->Preanaliticas->primera_id>0){
+            $newToma->clase_primera_id = $this->Preanaliticas->clase_primera_id;
             $newToma->primera_id = $this->Preanaliticas->primera_id;
             $newToma->fecha_toma_primera = $this->Preanaliticas->fecha_toma_primera;
         }
@@ -270,6 +282,7 @@ class Form extends Component
             $newToma->primera_id = 0;
         }
         if($this->Preanaliticas->segunda_id>0){
+            $newToma->clase_segunda_id = $this->Preanaliticas->clase_segunda_id;
             $newToma->segunda_id = $this->Preanaliticas->segunda_id;
             $newToma->fecha_toma_segunda = $this->Preanaliticas->fecha_toma_segunda;
         }
@@ -277,6 +290,7 @@ class Form extends Component
             $newToma->segunda_id = 0;
         }
         if($this->Preanaliticas->tercera_id>0){
+            $newToma->clase_tercera_id = $this->Preanaliticas->clase_tercera_id;
             $newToma->tercera_id = $this->Preanaliticas->tercera_id;
             $newToma->fecha_toma_tercera = $this->Preanaliticas->fecha_toma_tercera;
         }
@@ -284,6 +298,7 @@ class Form extends Component
             $newToma->tercera_id = 0;
         }
         if($this->Preanaliticas->cuarta_id>0){
+            $newToma->clase_cuarta_id = $this->Preanaliticas->clase_cuarta_id;
             $newToma->cuarta_id = $this->Preanaliticas->cuarta_id;
             $newToma->fecha_toma_cuarta = $this->Preanaliticas->fecha_toma_cuarta;
         }
@@ -291,6 +306,7 @@ class Form extends Component
             $newToma->cuarta_id = 0;
         }
         if($this->Preanaliticas->quinta_id>0){
+            $newToma->clase_quinta_id = $this->Preanaliticas->clase_quinta_id;
             $newToma->quinta_id = $this->Preanaliticas->quinta_id;
             $newToma->fecha_toma_quinta = $this->Preanaliticas->fecha_toma_quinta;
         }
@@ -315,6 +331,7 @@ class Form extends Component
             $newMuestra->crns_id = $this->Preanaliticas->crns_id;
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->primera_id;
+            $newMuestra->clase_id = $this->Preanaliticas->clase_primera_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_primera;
             $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_primera_id;
@@ -339,6 +356,7 @@ class Form extends Component
             $newMuestra->crns_id = $this->Preanaliticas->crns_id;
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->segunda_id;
+            $newMuestra->clase_id = $this->Preanaliticas->clase_segunda_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_segunda;
             $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_segunda_id;
@@ -363,6 +381,7 @@ class Form extends Component
             $newMuestra->crns_id = $this->Preanaliticas->crns_id;
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->tercera_id;
+            $newMuestra->clase_id = $this->Preanaliticas->clase_tercera_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_tercera;
             $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_tercera_id;
@@ -387,6 +406,7 @@ class Form extends Component
             $newMuestra->crns_id = $this->Preanaliticas->crns_id;
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->cuarta_id;
+            $newMuestra->clase_id = $this->Preanaliticas->clase_cuarta_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_cuarta;
             $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_cuarta_id;
@@ -411,6 +431,7 @@ class Form extends Component
             $newMuestra->crns_id = $this->Preanaliticas->crns_id;
             $newMuestra->evento_id = $this->Preanaliticas->evento_id;
             $newMuestra->muestra_id = $this->Preanaliticas->quinta_id;
+            $newMuestra->clase_id = $this->Preanaliticas->clase_quinta_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_quinta;
             $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_quinta_id;

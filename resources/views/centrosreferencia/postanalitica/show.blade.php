@@ -124,7 +124,11 @@
                                     <label class="col-1 col-form-label">Resultado obtenido:</label>
                                     <div class="col-2" style="align:left">
                                         @if($objAn->resultado_id>0)
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->resultado->descripcion }}</span>
+                                            @if($objAn->carga_viral > 0)
+                                                <span class="form-control-plaintext font-weight-bolder">{{ $objAn->resultado->descripcion }} <br> ({{ $objAn->carga_viral }} {{ $objAn->unidades->descripcion }})</span>
+                                            @else
+                                            <span class="form-control-plaintext font-weight-bolder">{{ $objAn->resultado->descripcion }}</span>
+                                            @endif
                                         @else
                                         <span class="form-control-plaintext font-weight-bolder"></span>
                                         @endif

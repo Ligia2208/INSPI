@@ -77,4 +77,14 @@ class Analitica extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function unidades()
+    {
+        return $this->belongsTo(Unidades::class);
+    }
+
+    public function clase()
+    {
+        return $this->belongsTo(Clase::class);
+    }
+
 }

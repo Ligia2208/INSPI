@@ -517,7 +517,26 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
+                                    <label>Clase Muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.clase_primera_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.primera_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona una clase muestra</option>
+                                            @foreach ($clases as $objClase)
+                                                <option data-subtext="" value="{{ $objClase->id }}">
+                                                    {{ $objClase->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
                                     <label>Muestra Principal<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -550,7 +569,7 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Estado Muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -594,8 +613,27 @@
                                 </button>
                             </div>
                             <div class="form-row" id="add_muestras" style="visibility:hidden">
-                                <div class="form-group col-md-3">
-                                    <label>Muestra 2<span class="text-danger"></span></label>
+                                <div class="form-group col-md-2">
+                                    <label>Clase Muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.clase_segunda_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.clase_segunda_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
+                                            <option value="0">Selecciona una clase muestra</option>
+                                            @foreach ($clases as $objClase)
+                                                <option data-subtext="" value="{{ $objClase->id }}">
+                                                    {{ $objClase->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Tipo Muestra<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -627,7 +665,7 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Estado Muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -663,8 +701,27 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group col-md-3">
-                                    <label>Muestra 3<span class="text-danger"></span></label>
+                                <div class="form-group col-md-2">
+                                    <label>Clase Muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.clase_tercera_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.clase_tercera_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
+                                            <option value="0">Selecciona una clase muestra</option>
+                                            @foreach ($clases as $objClase)
+                                                <option data-subtext="" value="{{ $objClase->id }}">
+                                                    {{ $objClase->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Tipo Muestra<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -696,7 +753,7 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Estado Muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -732,8 +789,27 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group col-md-3">
-                                    <label>Muestra 4<span class="text-danger"></span></label>
+                                <div class="form-group col-md-2">
+                                    <label>Clase Muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.clase_cuarta_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.clase_cuarta_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
+                                            <option value="0">Selecciona una clase muestra</option>
+                                            @foreach ($clases as $objClase)
+                                                <option data-subtext="" value="{{ $objClase->id }}">
+                                                    {{ $objClase->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Tipo Muestra<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -765,7 +841,7 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Estado Muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -801,8 +877,27 @@
                                     @enderror
                                 </div>
 
-                                <div class="form-group col-md-3">
-                                    <label>Muestra 5<span class="text-danger"></span></label>
+                                <div class="form-group col-md-2">
+                                    <label>Clase Muestra<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticas.clase_quinta_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticas.clase_quinta_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true">
+                                            <option value="0">Selecciona una clase muestra</option>
+                                            @foreach ($clases as $objClase)
+                                                <option data-subtext="" value="{{ $objClase->id }}">
+                                                    {{ $objClase->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Tipo Muestra<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -834,7 +929,7 @@
                                             placeholder="Seleccione la fecha de inicio sintomas" />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Estado Muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">

@@ -167,7 +167,7 @@
                     <li class="menu-item {{ active('resultadocrn.*') }}">
                         <a href="{{ route('resultadocrn.index') }}" class="menu-link">
                             <i class="menu-icon text-dark fa fa-object-group"></i>
-                            <span class="menu-text">Registro Resultados CRN</span>
+                            <span class="menu-text">Estadisticas CRN</span>
                         </a>
                     </li>
                 @endcan

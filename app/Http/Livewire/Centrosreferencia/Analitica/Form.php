@@ -6,6 +6,7 @@ use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\Muestra;
+use App\Models\CentrosReferencia\Clase;
 use App\Models\CentrosReferencia\Crn;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
@@ -15,6 +16,7 @@ use App\Models\CentrosReferencia\Canton;
 use App\Models\CentrosReferencia\Reporte;
 use App\Models\CentrosReferencia\Tecnica;
 use App\Models\CentrosReferencia\Estadomuestra;
+use App\Models\CentrosReferencia\Unidades;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -53,6 +55,7 @@ class Form extends Component
             'Analiticas.sedes_id' => 'required|numeric',
             'Analiticas.crns_id' => 'required|numeric',
             'Analiticas.muestra_id' => 'required|numeric',
+            'Analiticas.clase_id' => 'required|numeric',
             'Analiticas.estado_muestra_id' => 'required|numeric',
             'Analiticas.codigo_muestra' => 'required|numeric',
             'Analiticas.codigo_secuencial' => 'required|numeric',
@@ -60,10 +63,16 @@ class Form extends Component
             'Analiticas.fecha_toma' => 'required|max:10',
             'Analiticas.anio_registro' => 'required|max:10',
             'Analiticas.fecha_llegada_lab' => 'required|max:10',
+            'Analiticas.fecha_procesamiento' => 'required|max:10',
             'Analiticas.evento_id' => 'required|numeric',
             'Analiticas.tecnica_id' => 'required|numeric',
             'Analiticas.resultado_id' => 'required|numeric',
             'Analiticas.descripcion' => 'sometimes|max:2000',
+            'Analiticas.identificado' => 'sometimes|max:200',
+            'Analiticas.recomendacion_bacterio' => 'sometimes|max:200',
+            'Analiticas.carga_viral' => 'sometimes|numeric',
+            'Analiticas.unidades_id' => 'sometimes|numeric',
+            'Analiticas.recomendacion_inmuno' => 'sometimes|max:200',
 
         ];
     }
@@ -106,7 +115,9 @@ class Form extends Component
         $muestras = Muestra::where('estado','=','A')->orderBy('id','asc')->cursor();
         $preanalitica = Preanalitica::findOrFail($this->Analiticas->preanalitica_id);
         $estados = Estadomuestra::orderBy('id', 'asc')->cursor();
-        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','preanalitica','estados'));
+        $unidades = Unidades::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        $clases = Clase::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','preanalitica','estados','unidades','clases'));
     }
 
     public function store(){
