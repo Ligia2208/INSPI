@@ -1230,3 +1230,33 @@ function agregarEstructura(){
     }
 
 }
+
+
+
+function formatOption(option) {
+    if (!option.id) {
+        return option.text; // Muestra el texto por defecto si no hay datos
+    }
+
+    // Recupera los datos del atributo `data-*` del `option`
+    const nombreItem = $(option.element).data('nombre-item');
+    const descripcionItem = $(option.element).data('descripcion-item');
+
+    // Construye el HTML personalizado para las opciones
+    const template = `
+        <div>
+            <strong>${option.text}</strong> <br>
+            <small style="color: #6c757d;">${nombreItem || ''} - ${descripcionItem || ''}</small>
+        </div>
+    `;
+    return $(template);
+}
+
+$(document).ready(function () {
+    // Inicializar Select2 con la plantilla personalizada
+    $('#select_idpoa').select2({
+        templateResult: formatOption, // Para las opciones del dropdown
+        templateSelection: formatOption // Para la opción seleccionada
+    });
+});
+

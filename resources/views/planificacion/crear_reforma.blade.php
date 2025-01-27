@@ -55,15 +55,20 @@
 
             <div class="row">
 
-                <div class="col-lg-10 mt-2 mb-5">
-                    <label for="select_idpoa" class="form-label">Seleccione Actividad Para la Reforma:</label>
-                    <select id="select_idpoa" class="single-select filter">
-                        <option value="">Seleccione una Sub_Actividad/Objeto de Contratación</option>
-                        @foreach($atributos as $item)
-                            <option value="{{ $item->id }}">{{ $item->nombreSubActividad }}</option>
-                        @endforeach
-                    </select>
-                </div>
+            <div class="col-lg-10 mt-2 mb-5">
+                <label for="select_idpoa" class="form-label">Seleccione Actividad Para la Reforma:</label>
+                <select id="select_idpoa" class="single-select filter js-example-templating col-lg-12">
+                    <option value="">Seleccione una Sub_Actividad/Objeto de Contratación</option>
+                    @foreach($atributos as $item)
+                        <option value="{{ $item->id }}" 
+                            data-nombre-item="{{ $item->nombreItem }}"
+                            data-descripcion-item="{{ $item->descripcionItem }}">
+                            {{ $item->nombreSubActividad }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
 
 
                 <div class="col-md-2 mt-2 mb-5">
