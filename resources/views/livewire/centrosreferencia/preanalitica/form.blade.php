@@ -50,7 +50,10 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input wire:model.defer="Preanaliticas.institucion_tipologia" type="text"
+                                        <input
+                                            wire:model.defer="Preanaliticas.institucion_tipologia"
+                                            wire:ignore
+                                            type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_tipologia') is-invalid @enderror"
                                             placeholder="Ej: MSP - IESS - SOLCA" />
@@ -69,7 +72,10 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input wire:model.defer="Preanaliticas.institucion_nombre" type="text"
+                                        <input
+                                            wire:model.defer="Preanaliticas.institucion_nombre"
+                                            wire:ignore
+                                            type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_nombre') is-invalid @enderror"
                                             placeholder="Ej: Teodoro Maldonado C." />
@@ -86,7 +92,10 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input wire:model.defer="Preanaliticas.institucion_tipologia" type="text"
+                                        <input
+                                            wire:model.defer="Preanaliticas.institucion_tipologia"
+                                            wire:ignore
+                                            type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_tipologia') is-invalid @enderror"
                                             placeholder="Ej: Centro de Salud Tipo A" />
@@ -103,7 +112,9 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input wire:model.defer="Preanaliticas.institucion_nivel" type="text"
+                                        <input wire:model.defer="Preanaliticas.institucion_nivel"
+                                            wire:ignore
+                                            type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_nivel') is-invalid @enderror"
                                             placeholder="Ej: Nivel 1" />
@@ -120,7 +131,9 @@
                                                 <i class="fas fa-edit"></i>
                                             </span>
                                         </div>
-                                        <input wire:model.defer="Preanaliticas.institucion_ubicacion" type="text"
+                                        <input wire:model.defer="Preanaliticas.institucion_ubicacion"
+                                            wire:ignore
+                                            type="text"
                                             required readonly
                                             class="form-control form-control-solid @error('Preanaliticas.institucion_ubicacion') is-invalid @enderror"
                                             placeholder="Ej: Guayas - Guayaquil" />
@@ -394,8 +407,8 @@
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.embarazo') is-invalid @enderror"
                                             data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona opción</option>
-                                            <option data-subtext="" value="1">Si</option>
-                                            <option data-subtext="" value="2">No</option>
+                                            <option data-subtext="" value="S">Si</option>
+                                            <option data-subtext="" value="N">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -427,8 +440,8 @@
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.laboratorio') is-invalid @enderror"
                                             data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona opción</option>
-                                            <option data-subtext="" value="1">Si</option>
-                                            <option data-subtext="" value="2">No</option>
+                                            <option data-subtext="" value="S">Si</option>
+                                            <option data-subtext="" value="N">No</option>
                                         </select>
                                     </div>
                                 </div>
@@ -477,10 +490,11 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select wire:model.defer="Preanaliticas.crns_id"
+                                        <select
+                                            wire:model.defer="Preanaliticas.crns_id"
                                             wire:model.live="selectedCrnp"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.crns_id') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required value=3>
                                             <option value="">Selecciona un CRN</option>
                                             @if (!is_null($crns))
                                                 @foreach ($crns as $objCrn)

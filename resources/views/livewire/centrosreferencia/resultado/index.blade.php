@@ -191,8 +191,11 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->evento->simplificado }}</span>
                                     </td>
                                     <td>
+                                        @if($objRes->resultado_id>0)
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->resultado->descripcion }}</span>
+                                        @else
+                                        @endif
                                     </td>
                                     <td>
                                         <span

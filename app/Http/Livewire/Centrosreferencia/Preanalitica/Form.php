@@ -26,8 +26,8 @@ use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\CssSelector\Node\FunctionNode;
-
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use Datetime;
 
 class Form extends Component
 {
@@ -78,10 +78,10 @@ class Form extends Component
             'Preanaliticas.probable_infeccion' => 'sometimes|max:200',
             'Preanaliticas.fecha_sintomas' => 'required|max:10',
 
-            'Preanaliticas.embarazo' => 'sometimes|numeric',
+            'Preanaliticas.embarazo' => 'sometimes|max:1',
             'Preanaliticas.gestacion' => 'sometimes|numeric',
             'Preanaliticas.evolucion' => 'sometimes',
-            'Preanaliticas.laboratorio' => 'sometimes|numeric',
+            'Preanaliticas.laboratorio' => 'sometimes|max:1',
             'Preanaliticas.nombre_laboratorio' => 'sometimes|max:100',
 
             'Preanaliticas.sedes_id' => 'required|numeric',
@@ -119,24 +119,36 @@ class Form extends Component
     public function mount(Preanalitica $Preanalitica, $method){
         $this->Preanaliticas = $Preanalitica;
         $this->method = $method;
-        $this->Preanaliticas->embarazo = 2;
-        $this->Preanaliticas->evolucion = 0;
-        $this->Preanaliticas->laboratorio = 2;
-        $this->Preanaliticas->gestacion = 0;
-        $this->Preanaliticas->clase_segunda_id = 0;
-        $this->Preanaliticas->segunda_id = 0;
-        $this->Preanaliticas->estado_segunda_id = 0;
-        $this->Preanaliticas->clase_tercera_id = 0;
-        $this->Preanaliticas->tercera_id = 0;
-        $this->Preanaliticas->estado_tercera_id = 0;
-        $this->Preanaliticas->clase_cuarta_id = 0;
-        $this->Preanaliticas->cuarta_id = 0;
-        $this->Preanaliticas->estado_cuarta_id = 0;
-        $this->Preanaliticas->clase_quinta_id = 0;
-        $this->Preanaliticas->quinta_id = 0;
-        $this->Preanaliticas->estado_quinta_id = 0;
+        if($this->Preanaliticas->segunda_id == 0){
+            $this->Preanaliticas->clase_segunda_id = 0;
+            $this->Preanaliticas->segunda_id = 0;
+            $this->Preanaliticas->estado_segunda_id = 0;
+        }
+        if($this->Preanaliticas->tercera_id == 0){
+            $this->Preanaliticas->clase_tercera_id = 0;
+            $this->Preanaliticas->tercera_id = 0;
+            $this->Preanaliticas->estado_tercera_id = 0;
+        }
+        if($this->Preanaliticas->cuarta_id == 0){
+            $this->Preanaliticas->clase_cuarta_id = 0;
+            $this->Preanaliticas->cuarta_id = 0;
+            $this->Preanaliticas->estado_cuarta_id = 0;
+        }
+        if($this->Preanaliticas->quinta_id == 0){
+            $this->Preanaliticas->clase_quinta_id = 0;
+            $this->Preanaliticas->quinta_id = 0;
+            $this->Preanaliticas->estado_quinta_id = 0;
+        }
+        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->created_at);
 
-        $this->Preanaliticas->evolucion = 0;
+        if($method=="update"){
+            $this->Preanaliticas->identidad=$this->Preanaliticas->paciente->identidad;
+            $this->updatedchangedInstitucion($this->Preanaliticas->instituciones_id);
+            $this->updatedchangedIdentidad($this->Preanaliticas->paciente->identidad);
+            $this->updatedselectedSedep($this->Preanaliticas->sedes_id);
+            $this->updatedselectedCrnp($this->Preanaliticas->crns_id);
+        }
+
     }
 
     public function updatedchangedInstitucion($institucion_id){
@@ -204,8 +216,9 @@ class Form extends Component
         $instituciones = Institucion::where('estado','=','A')->orderBy('id','asc')->cursor();
         $nacionalidades = Nacionalidad::where('estado','=',1)->orderBy('id','asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id','asc')->cursor();
+        $pacientes = Paciente::where('estado','=','A')->orderBy('id','asc')->cursor();
 
-        return view('livewire.centrosreferencia.preanalitica.form', compact('sedes','sexos','muestras','instituciones','estados','nacionalidades','cantonprov','clases'));
+        return view('livewire.centrosreferencia.preanalitica.form', compact('sedes','sexos','pacientes','muestras','instituciones','estados','nacionalidades','cantonprov','clases'));
     }
 
     public function updatedselectedSede($sede_id){
@@ -254,20 +267,10 @@ class Form extends Component
         $newToma->quien_notifica = $this->Preanaliticas->quien_notifica;
         $newToma->probable_infeccion = $this->Preanaliticas->probable_infeccion;
         $newToma->fecha_sintomas = $this->Preanaliticas->fecha_sintomas;
-        if ($this->Preanaliticas->embarazo==1){
-            $newToma->embarazo = 'S';
-        }
-        else{
-            $newToma->embarazo = 'N';
-        }
+        $newToma->embarazo = $this->Preanaliticas->embarazo;
 
         $newToma->gestacion = $this->Preanaliticas->gestacion;
-        if ($this->Preanaliticas->laboratorio==1){
-            $newToma->laboratorio = 'S';
-        }
-        else{
-            $newToma->laboratorio = 'N';
-        }
+        $newToma->laboratorio = $this->Preanaliticas->laboratorio;
 
         $newToma->nombre_laboratorio = $this->Preanaliticas->nombre_laboratorio;
         $newToma->sedes_id = $this->Preanaliticas->sedes_id;
@@ -452,6 +455,13 @@ class Form extends Component
 
     }
 
+    public function diferencia($fsintomas, $fregistro){
+        $datetime1 = new Datetime($fsintomas);
+        $datetime2 = new Datetime($fregistro);
+        $diff = $datetime1->diff($datetime2);
+        return $diff->days;
+    }
+
     public function sgte_codigomuestra($anio, $sede, $crn){
         $max = Analitica::where('estado','=','A')->where('anio_registro','=',$anio)->where('sedes_id','=',$sede)->where('crns_id','=',$crn)->max('codigo_muestra');
         return $max+1;
@@ -464,10 +474,289 @@ class Form extends Component
 
     public function update(){
         $this->validate();
-        $this->Preanaliticas->update();
+        $updatePre = Preanalitica::findOrFail($this->Preanaliticas->id);
+        $updatePre->instituciones_id=$this->Preanaliticas->instituciones_id;
+        $updatePre->fecha_atencion=$this->Preanaliticas->fecha_atencion;
+        $updatePre->quien_notifica=$this->Preanaliticas->quien_notifica;
+        $updatePre->paciente_id=$this->Preanaliticas->paciente_id;
+        $updatePre->probable_infeccion=$this->Preanaliticas->probable_infeccion;
+        $updatePre->fecha_sintomas=$this->Preanaliticas->fecha_sintomas;
+        $updatePre->embarazo=$this->Preanaliticas->embarazo;
+        $updatePre->gestacion=$this->Preanaliticas->gestacion;
+        $updatePre->laboratorio=$this->Preanaliticas->laboratorio;
+        $updatePre->nombre_laboratorio=$this->Preanaliticas->nombre_laboratorio;
+
+        $updatePre->sedes_id=$this->Preanaliticas->sedes_id;
+        $updatePre->crns_id=$this->Preanaliticas->crns_id;
+        $updatePre->evento_id=$this->Preanaliticas->evento_id;
+        $updatePre->anio_registro=$this->Preanaliticas->anio_registro;
+
+        $updatePre->primera_id = $this->Preanaliticas->primera_id;
+        $updatePre->clase_primera_id = $this->Preanaliticas->clase_primera_id;
+        $updatePre->primera_id = $this->Preanaliticas->primera_id;
+        $updatePre->fecha_toma_primera = $this->Preanaliticas->fecha_toma_primera;
+        $updatePre->observacion_primera = $this->Preanaliticas->observacion_primera;
+
+        $updatePre->segunda_id = $this->Preanaliticas->segunda_id;
+        $updatePre->clase_segunda_id = $this->Preanaliticas->clase_segunda_id;
+        $updatePre->segunda_id = $this->Preanaliticas->segunda_id;
+        $updatePre->fecha_toma_segunda = $this->Preanaliticas->fecha_toma_segunda;
+        $updatePre->observacion_segunda = $this->Preanaliticas->observacion_segunda;
+
+        $updatePre->tercera_id = $this->Preanaliticas->tercera_id;
+        $updatePre->clase_tercera_id = $this->Preanaliticas->clase_tercera_id;
+        $updatePre->tercera_id = $this->Preanaliticas->tercera_id;
+        $updatePre->fecha_toma_tercera = $this->Preanaliticas->fecha_toma_tercera;
+        $updatePre->observacion_tercera = $this->Preanaliticas->observacion_tercera;
+
+        $updatePre->cuarta_id = $this->Preanaliticas->cuarta_id;
+        $updatePre->clase_cuarta_id = $this->Preanaliticas->clase_cuarta_id;
+        $updatePre->cuarta_id = $this->Preanaliticas->cuarta_id;
+        $updatePre->fecha_toma_cuarta = $this->Preanaliticas->fecha_toma_cuarta;
+        $updatePre->observacion_cuarta = $this->Preanaliticas->observacion_cuarta;
+
+        $updatePre->quinta_id = $this->Preanaliticas->quinta_id;
+        $updatePre->clase_quinta_id = $this->Preanaliticas->clase_quinta_id;
+        $updatePre->quinta_id = $this->Preanaliticas->quinta_id;
+        $updatePre->fecha_toma_quinta = $this->Preanaliticas->fecha_toma_quinta;
+        $updatePre->observacion_quinta = $this->Preanaliticas->observacion_quinta;
+
+        $updatePre->update();
+
+        $tipogenera = $this->tipo_generacion($this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+        if($tipogenera==1){
+            $codigo = $this->sgte_codigomuestra($this->Preanaliticas->anio_registro,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+        }
+
+        $muestra = 0;
+        if($this->Preanaliticas->primera_id>0){
+            $control = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',1)->count();
+            if($control==0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $this->Preanaliticas->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->primera_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_primera_id;
+                $newMuestra->anio_registro = $this->Preanaliticas->anio_registro;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_primera;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_primera_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_primera;
+                $newMuestra->codigo_muestra = $codigo;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 1;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $newMuestra->usuariot_id = $this->Preanaliticas->usuariot_id;
+                $newMuestra->save();
+            }
+            else{
+                $updateAnalitica = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',1)->first();
+
+                $updateAnalitica->sedes_id = $this->Preanaliticas->sedes_id;
+                $updateAnalitica->crns_id = $this->Preanaliticas->crns_id;
+                $updateAnalitica->evento_id = $this->Preanaliticas->evento_id;
+                $updateAnalitica->muestra_id = $this->Preanaliticas->primera_id;
+                $updateAnalitica->clase_id = $this->Preanaliticas->clase_primera_id;
+                $updateAnalitica->anio_registro = $this->Preanaliticas->anio_registro;
+                $updateAnalitica->fecha_toma = $this->Preanaliticas->fecha_toma_primera;
+                $updateAnalitica->estado_muestra_id = $this->Preanaliticas->estado_primera_id;
+                $updateAnalitica->observacion_muestra = $this->Preanaliticas->observacion_primera;
+                $muestra = $updateAnalitica->codigo_muestra;
+                $updateAnalitica->codigo_secuencial = 1;
+                $updateAnalitica->update();
+            }
+        }
+
+        if($this->Preanaliticas->segunda_id>0){
+            $control = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',2)->count();
+            if($control==0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $this->Preanaliticas->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->segunda_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_segunda_id;
+                $newMuestra->anio_registro = $this->Preanaliticas->anio_registro;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_segunda;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_segunda_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_segunda;
+                $newMuestra->codigo_muestra = $muestra;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 2;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $newMuestra->usuariot_id = $this->Preanaliticas->usuariot_id;
+                $newMuestra->save();
+            }
+            else{
+                $updateAnalitica = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',2)->first();
+
+                $updateAnalitica->sedes_id = $this->Preanaliticas->sedes_id;
+                $updateAnalitica->crns_id = $this->Preanaliticas->crns_id;
+                $updateAnalitica->evento_id = $this->Preanaliticas->evento_id;
+                $updateAnalitica->muestra_id = $this->Preanaliticas->segunda_id;
+                $updateAnalitica->clase_id = $this->Preanaliticas->clase_segunda_id;
+                $updateAnalitica->anio_registro = $this->Preanaliticas->anio_registro;
+                $updateAnalitica->fecha_toma = $this->Preanaliticas->fecha_toma_segunda;
+                $updateAnalitica->estado_muestra_id = $this->Preanaliticas->estado_segunda_id;
+                $updateAnalitica->observacion_muestra = $this->Preanaliticas->observacion_segunda;
+                $updateAnalitica->codigo_muestra = $muestra;
+                $updateAnalitica->codigo_secuencial = 2;
+                $updateAnalitica->update();
+            }
+        }
+
+        if($this->Preanaliticas->tercera_id>0){
+            $control = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',3)->count();
+            if($control==0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $this->Preanaliticas->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->tercera_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_tercera_id;
+                $newMuestra->anio_registro = $this->Preanaliticas->anio_registro;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_tercera;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_tercera_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_tercera;
+                $newMuestra->codigo_muestra = $muestra;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 3;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $newMuestra->usuariot_id = $this->Preanaliticas->usuariot_id;
+                $newMuestra->save();
+            }
+            else{
+                $updateAnalitica = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',3)->first();
+
+                $updateAnalitica->sedes_id = $this->Preanaliticas->sedes_id;
+                $updateAnalitica->crns_id = $this->Preanaliticas->crns_id;
+                $updateAnalitica->evento_id = $this->Preanaliticas->evento_id;
+                $updateAnalitica->muestra_id = $this->Preanaliticas->tercera_id;
+                $updateAnalitica->clase_id = $this->Preanaliticas->clase_tercera_id;
+                $updateAnalitica->anio_registro = $this->Preanaliticas->anio_registro;
+                $updateAnalitica->fecha_toma = $this->Preanaliticas->fecha_toma_tercera;
+                $updateAnalitica->estado_muestra_id = $this->Preanaliticas->estado_tercera_id;
+                $updateAnalitica->observacion_muestra = $this->Preanaliticas->observacion_tercera;
+                $updateAnalitica->codigo_muestra = $muestra;
+                $updateAnalitica->codigo_secuencial = 3;
+                $updateAnalitica->update();
+            }
+        }
+
+        if($this->Preanaliticas->cuarta_id>0){
+            $control = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',4)->count();
+            if($control==0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $this->Preanaliticas->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->cuarta_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_cuarta_id;
+                $newMuestra->anio_registro = $this->Preanaliticas->anio_registro;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_cuarta;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_cuarta_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_cuarta;
+                $newMuestra->codigo_muestra = $muestra;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 4;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $newMuestra->usuariot_id = $this->Preanaliticas->usuariot_id;
+                $newMuestra->save();
+            }
+            else{
+                $updateAnalitica = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',4)->first();
+
+                $updateAnalitica->sedes_id = $this->Preanaliticas->sedes_id;
+                $updateAnalitica->crns_id = $this->Preanaliticas->crns_id;
+                $updateAnalitica->evento_id = $this->Preanaliticas->evento_id;
+                $updateAnalitica->muestra_id = $this->Preanaliticas->cuarta_id;
+                $updateAnalitica->clase_id = $this->Preanaliticas->clase_cuarta_id;
+                $updateAnalitica->anio_registro = $this->Preanaliticas->anio_registro;
+                $updateAnalitica->fecha_toma = $this->Preanaliticas->fecha_toma_cuarta;
+                $updateAnalitica->estado_muestra_id = $this->Preanaliticas->estado_cuarta_id;
+                $updateAnalitica->observacion_muestra = $this->Preanaliticas->observacion_cuarta;
+                $updateAnalitica->codigo_muestra = $muestra;
+                $updateAnalitica->codigo_secuencial = 4;
+                $updateAnalitica->update();
+            }
+        }
+
+        if($this->Preanaliticas->quinta_id>0){
+            $control = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',5)->count();
+            if($control==0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $this->Preanaliticas->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->quinta_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_quinta_id;
+                $newMuestra->anio_registro = $this->Preanaliticas->anio_registro;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_quinta;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_quinta_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_quinta;
+                $newMuestra->codigo_muestra = $muestra;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 5;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $newMuestra->usuariot_id = $this->Preanaliticas->usuariot_id;
+                $newMuestra->save();
+            }
+            else{
+                $updateAnalitica = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Preanaliticas->id)->where('anio_registro','=',$this->Preanaliticas->anio_registro)->where('codigo_secuencial','=',4)->first();
+
+                $updateAnalitica->sedes_id = $this->Preanaliticas->sedes_id;
+                $updateAnalitica->crns_id = $this->Preanaliticas->crns_id;
+                $updateAnalitica->evento_id = $this->Preanaliticas->evento_id;
+                $updateAnalitica->muestra_id = $this->Preanaliticas->quinta_id;
+                $updateAnalitica->clase_id = $this->Preanaliticas->clase_quinta_id;
+                $updateAnalitica->anio_registro = $this->Preanaliticas->anio_registro;
+                $updateAnalitica->fecha_toma = $this->Preanaliticas->fecha_toma_quinta;
+                $updateAnalitica->estado_muestra_id = $this->Preanaliticas->estado_quinta_id;
+                $updateAnalitica->observacion_muestra = $this->Preanaliticas->observacion_quinta;
+                $updateAnalitica->codigo_muestra = $muestra;
+                $updateAnalitica->codigo_secuencial = 5;
+                $updateAnalitica->update();
+            }
+        }
+
         $this->alert('success', 'Preanalitica actualizado con éxito');
         $this->emit('closeModal');
         return redirect()->route('preanalitica.index');
-    }
 
+    }
 }

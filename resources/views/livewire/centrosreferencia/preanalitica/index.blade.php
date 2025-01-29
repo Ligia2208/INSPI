@@ -72,9 +72,9 @@
                                             <select wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha toma de muestra</option>
-                                                <option data-subtext="" value="2">Fecha llegada al CRN</option>
-                                                <option data-subtext="" value="3">Fecha reporte</option>
+                                                <option data-subtext="" value="1">Fecha atención</option>
+                                                <option data-subtext="" value="2">Fecha inicio sintomas</option>
+                                                <option data-subtext="" value="3">Fecha de registro</option>
                                             </select>
                                         </div>
                                     </div>
@@ -140,7 +140,7 @@
                                     <div class="col-md-2 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <button class="btn btn-success font-weight-bold mr-2"
-                                                onclick="exportToExcel('data', 'resultados-data')"><i
+                                                onclick="generarExcel(1,2,3,4,5,6)"><i
                                                     class="fa fa-file-excel" aria-hidden="true"></i>
                                                 {{ __('Exportar a Excel') }}</button>
                                         </div>
@@ -206,6 +206,14 @@
                                     </td>
                                     <td align="center">
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
+                                            <a href="{{ route('preanalitica.edit', $preanalitica) }}" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-pen" style="color:lightblue"
+                                                        title="Validar"></i>
+                                                </span>
+                                            </a>
+                                        </i>
+                                        <i class="navi-item" data-toggle="modal" data-target="_self">
                                             <a href="{{ route('preanalitica.show', $preanalitica) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="ace-icon fa fa-eye" style="color:rgb(122, 122, 122)"
@@ -270,6 +278,25 @@
                 $('.modal').modal('hide');
             });
 
+            function generarExcel(sid,cid,eid,tf,f1,f2) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se generará un archivo con formato excel con los parámetros selecionados",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-check'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('descargarExcel', sid,cid,eid,tf,f1,f2);
+                    }
+                });
+            }
             function confirmDestroy(id) {
                 swal.fire({
                     title: "¿Estas seguro?",
