@@ -17,16 +17,18 @@ $( function () {
         columns: [
             { data: 'nombre',        name: 'nombre' },
             { data: 'descripcion',   name: 'descripcion' },
-            { data: 'monto',         name: 'monto' },
+            { data: 'monto',         className: 'text-right', name: 'monto' },
 
             {
                 data: null,
                 searchable: false ,
                 render: function (data, type, full, meta) {
                 var array = "";
-                let monto = parseFloat(full.monto);
 
-                    if(full.monto === full.total_monto_direcciones && monto !== 0){
+                let total_monto_direcciones = parseFloat(full.total_monto_direcciones);
+                let monto = parseFloat(full.monto.replace(/,/g, ''));
+
+                    if(monto === total_monto_direcciones && monto !== 0){
 
                         array =`
                             <div class="center"><span class="badge badge-success text-bg-success">Cuadrado</span></div>
@@ -47,9 +49,10 @@ $( function () {
                 searchable: false ,
                 render: function (data, type, full, meta) {
                 var array = "";
-                let monto = parseFloat(full.monto);
+                let total_monto = parseFloat(full.total_monto);
+                let monto = parseFloat(full.monto.replace(/,/g, ''));
 
-                    if(full.monto === full.total_monto && monto !== 0){
+                    if(monto === total_monto && monto !== 0){
 
                         array =`
                             <div class="center"><span class="badge badge-success text-bg-success">Cuadrado</span></div>
@@ -72,9 +75,12 @@ $( function () {
                 render: function (data, type, full, meta) {
                 var array = "";
                 var icoAprobar = "";
-                let monto = parseFloat(full.monto);
 
-                if(full.monto === full.total_monto && full.monto === full.total_monto_direcciones && monto !== 0){
+                let total_monto = parseFloat(full.total_monto);
+                let total_monto_direcciones = parseFloat(full.total_monto_direcciones);
+                let monto = parseFloat(full.monto.replace(/,/g, ''));
+
+                if(monto === total_monto && monto === total_monto_direcciones && monto !== 0 && full.proceso_estado == false){
                     icoAprobar = `
                         <a id="btnCerrarProceso" data-id_direccion="${full.id}" title="Cerrar Planificación" class="show-tooltip mr-1" data-title="Cerrar Planificación">
                             <i class="font-22 bi bi-box-arrow-in-up text-success"></i>

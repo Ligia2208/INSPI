@@ -27,6 +27,7 @@ $( function () {
             { data: 'act_operativa', name: 'act_operativa' },
             { data: 'sub_actividad', name: 'sub_actividad' },
             { data: 'item', name: 'item' },
+            { data: 'monto', name: 'monto' },
             { data: 'enero', name: 'enero' },
             { data: 'febrero', name: 'febrero' },
             { data: 'marzo', name: 'marzo' },
@@ -39,7 +40,7 @@ $( function () {
             { data: 'octubre', name: 'octubre' },
             { data: 'noviembre', name: 'noviembre' },
             { data: 'diciembre', name: 'diciembre' },
-            { data: 'monto', name: 'monto' },
+            
             {
                 data: null,
                 render: function (data, type, full, meta) {

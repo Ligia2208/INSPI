@@ -215,7 +215,7 @@
 
 
 <!----------------------------------------------------------------------------------------------------------------------------------------------->
-    <table class="inferior" class="letra">
+    <table class="inferior letra">
         <tr>
             <th colspan="6">AREA REQUIRENTE</th>
             <th colspan="4">DIRECCIÓN DE PLANIFICACIÓN Y GESTIÓN ESTRATÉGICA</th>

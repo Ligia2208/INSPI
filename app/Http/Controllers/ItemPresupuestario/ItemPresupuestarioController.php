@@ -223,21 +223,32 @@ class ItemPresupuestarioController extends Controller{
         $montos->total_monto_direcciones = number_format($montos->total_monto_direcciones, 2);
 
         
-        if(request()->ajax()) {
-            return datatables()->of(MontoDireccion::select('id',
-                'id_dir', 'descripcion', 'estado', 'proceso_estado',
-                'id_dir_tec', 'nombre', 'monto', 
+        if (request()->ajax()) {
+            return datatables()->of(MontoDireccion::select(
+                'id',
+                'id_dir',
+                'descripcion',
+                'estado',
+                'proceso_estado',
+                'id_dir_tec',
+                'nombre',
+                'monto',
                 DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i:%s") as fecha'),
                 // Subconsulta para obtener el total_monto por id_area
                 DB::raw('COALESCE((SELECT SUM(monto) FROM pla_poa1 WHERE id_area = pla_direcciones.id AND estado != "E"), 0) AS total_monto'),
-                DB::raw('COALESCE((SELECT SUM(monto) FROM pla_items_direcciones WHERE id_direcciones = pla_direcciones.id AND estado = "A"), 0) AS total_monto_direcciones')           
+                DB::raw('COALESCE((SELECT SUM(monto) FROM pla_items_direcciones WHERE id_direcciones = pla_direcciones.id AND estado != "E"), 0) AS total_monto_direcciones')           
                 )
             ->where('estado', 'A')
             ->orderBy('nombre', 'asc')
             ->get())
             ->addIndexColumn()
+            ->editColumn('monto', function($row) {
+                // Formatear el monto con comas y 2 decimales
+                return number_format($row->monto, 2, '.', ',');
+            })
             ->make(true);
         }
+        
     
         // Respuesta para la vista
         return view('item_presupuestario.monto_dir', compact('montos'));

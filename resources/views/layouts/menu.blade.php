@@ -305,7 +305,7 @@
                     <li class="menu-item {{ active('itemPresupuestario.monto_item') }}">
                         <a href="{{ route('itemPresupuestario.monto_item') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-plus-circle"></i>
-                            <span class="menu-text">Agregar Items</span>
+                            <span class="menu-text">Lista Items</span>
                         </a>
                     </li>
                 @endcan

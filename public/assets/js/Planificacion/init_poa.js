@@ -4,154 +4,124 @@ $( function () {
         width: '100%',
     });
 
-    //CÓDIGO PARA MOSTRAR LA TABLA EN EL INDEX
-    $('#tblPlanificacionIndex').DataTable({ //id de la tabla en el visual (index)
+    var table = $('#tblPlanificacionIndex').DataTable({
         processing: false,
         serverSide: false,
         lengthMenu: [8, 15, 25, 50, 100],
         ajax: {
-            url: '/planificacion', // La URL que devuelve los datos en JSON
+            url: '/planificacion',
+            data: function (d) {
+                d.estado = $('#filterEstado').val();
+                d.direccion = $('#filterDireccion').val();
+                d.item = $('#filterItem').val();
+            }
         },
         columns: [
-            { data: 'coordinacion',        name: 'coordinacion' },
-            { data: 'POA',                 name: 'POA' },
-            { data: 'obj_operativo',       name: 'obj_operativo' },
-            { data: 'act_operativa',       name: 'act_operativa' },
-            { data: 'sub_actividad',       name: 'sub_actividad' },
-            { data: 'proceso',             name: 'proceso' },
-            { data: 'fecha',               name: 'fecha' },
-            //{ data: 'estado',              name: 'estado' },
-
+            { data: 'coordinacion', name: 'coordinacion' },
+            { data: 'item', name: 'item' },
+            { data: 'obj_operativo', name: 'obj_operativo' },
+            { data: 'act_operativa', name: 'act_operativa' },
+            { data: 'sub_actividad', name: 'sub_actividad' },
+            { data: 'proceso', name: 'proceso' },
+            { data: 'monto', name: 'monto', render: $.fn.dataTable.render.number(',', '.', 2, '$') }, // Formato con separadores
+            { data: 'fecha', name: 'fecha' },
             {
-                data: 'estado', // Apunta al valor original del campo en tu base de datos
-                searchable: true, // Permite buscar en este campo
+                data: 'estado',
                 render: function (data, type, full, meta) {
-
-                    console.log(full.estado);
-
-                    var array = "";
-            
-                    if(full.estado == 'A'){
-                        array = "<div class='center'><span class='badge badge-primary text-bg-primary'>Registrado</span></div>";
-                    }else if(full.estado == 'O'){
-                        array = '<div class="center"><span class="badge badge-success text-bg-success">Aprobado</span></div>';
-                    }else if(full.estado == 'R'){
-                        array = '<div class="center"><span class="badge badge-warning text-bg-warning">Rechazado</span></div>';
-                    }else if(full.estado == 'C'){
-                        array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span></div>';
-                    }else if(full.estado == 'S'){
-                        array = '<div class="center"><span class="badge badge-info text-bg-info">Solicitado</span></div>';
-                    }else{
-                        array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span></div>';
-                    }
-            
-                    return array;
+                    let badgeClass = {
+                        'A': 'badge-primary text-bg-primary',
+                        'O': 'badge-success text-bg-success',
+                        'R': 'badge-warning text-bg-warning',
+                        'C': 'badge-info text-bg-info',
+                        'S': 'badge-info text-bg-info'
+                    }[data] || 'badge-secondary';
+    
+                    let estadoBadge = {
+                        'A': 'Registrado',
+                        'O': 'Aprobado',
+                        'R': 'Rechazado',
+                        'C': 'Corregido',
+                        'S': 'Solicitado'
+                    }[data] || 'badge-secondary';
+    
+                    return `<div class='center'><span class='badge ${badgeClass}'>${estadoBadge}</span></div>`;
                 }
             },
             {
                 data: null,
-                searchable: false ,
+                searchable: false,
                 render: function (data, type, full, meta) {
-                var array = "";
-
-                if(full.estado == 'O' ){
-                    array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                    var array = "";
+                    if (full.estado == 'O') {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-
-                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" title="Editar registro" class="show-tooltip mr-1">
                                 <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
-
-                            <!--
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
-                            </a>
-                            -->
-                        </div>
-                    `;
-                }else if(full.estado == 'R'){
-                    array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                        </div>`;
+                    } else if (full.estado == 'R') {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-                            <!--
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
-                            </a>
-                            -->
-                        </div>
-                    `;
-                } else{
-                    array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                        </div>`;
+                    } else {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-
-                            <a id="btnEditarPlan" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Revisión" class="show-tooltip" data-title="Revisión">
-                                <i class="font-22 fadeIn animated bi bi-pen" ></i>
+                            <a id="btnEditarPlan" data-id_editar="${full.id}" title="Revisión" class="show-tooltip">
+                                <i class="font-22 fadeIn animated bi bi-pen"></i>
                             </a>
-                            <!--
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
-                            </a>
-                            -->
-                        </div>
-                    `;
-
-                }
-
-
-                return array;
-
+                        </div>`;
+                    }
+                    return array;
                 }
             },
         ],
-        order: [
-            [6, 'desc']
-        ],
-
-        // Otras configuraciones de DataTables aquí
+        order: [[6, 'desc']],
         language: {
-            "emptyTable": "No hay información", //no hay datos disponibles
+            "emptyTable": "No hay información",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoEmpty": "Mostrando 0 a 0 de 0 Entradas",
             "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-            "infoPostFix": "",
-            "thousands": ",",
             "lengthMenu": "Mostrar _MENU_ Entradas",
             "loadingRecords": "Cargando...",
             "processing": "Procesando...",
             "search": "Buscar:",
             "zeroRecords": "Sin resultados encontrados",
-                        "paginate": {
-                            "first": "Primero",
-                            "last": "Ultimo",
-                            "next": "Siguiente",
-                            "previous": "Anterior",
-                            "showing": "Mostrando"
-                        }
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
         },
-    });
-
-    var table = $('#tblPlanificacionIndex').DataTable();
-
-    $('#filterDireccion').on('change', function () {
-        let direccion = $(this).val(); // Capturar valor del select
-        table.column(0).search(direccion).draw(); // Filtrar por la columna "coordinacion" (posición 0)
-    });
-
-    $('#filterEstado').on('change', function () {
-        let estado = $(this).val(); // Capturar valor del select
-        table.ajax.url('/planificacion?estado=' + estado).load(); // Actualizar la URL de la solicitud Ajax con el filtro
+    
+        // Función para sumar los montos en el footer
+        footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+            var total = api
+                .column(6, { page: 'current' }) // Seleccionar la columna de montos
+                .data()
+                .reduce(function (a, b) {
+                    return parseFloat(a) + parseFloat(b);
+                }, 0);
+    
+            // Actualizar el pie de tabla
+            $(api.column(6).footer()).html('$' + total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        }
     });
     
+    // **Actualizar la tabla cuando cambien los filtros**
+    $('#filterEstado, #filterDireccion, #filterItem').on('change', function () {
+        table.ajax.reload();
+    });
     
 
 });
@@ -160,14 +130,14 @@ $( function () {
 
 //CÓDIGO PARA REDIRIGIR AL FORMULARIO PARA ACEPTAR/RECHAZAR POA
 $(function(){
-    /* CARGAR REGISTRO */
+    /* VALIDAR CERTIFICACION */
     $(document).on('click', '#btnEditarPlan', function(){
         let id_planificacion = $(this).data('id_editar');
 
         window.location.href = '/planificacion/editarEstadoPlanificacion/'+ id_planificacion;
 
     });
-    /* CARGAR REGISTRO */
+    /* VALIDAR CERTIFICACION */
 
 
     /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */

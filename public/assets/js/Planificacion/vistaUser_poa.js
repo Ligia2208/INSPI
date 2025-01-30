@@ -115,6 +115,16 @@ $( function () {
                             </a>
                         `;
 
+                        if(full.id_area == 17 || full.id_area == 18 ){
+
+                            array += `
+                                <a id="btnEditarPlan" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Revisión" class="show-tooltip" data-title="Revisión">
+                                    <i class="font-22 fadeIn animated bi bi-pen" ></i>
+                                </a>
+                            `;
+
+                        }
+
                     } else {
                         array += `
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
@@ -191,6 +201,15 @@ $( function () {
         $('#tblPlanificacionVistaUser').DataTable().ajax.url('/planificacion/vistaUser?item=' + itemId).load();
     });
 
+
+    /* VALIDAR CERTIFICACION */
+    $(document).on('click', '#btnEditarPlan', function(){
+        let id_planificacion = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/edit_estado_planificacion_zonal/'+ id_planificacion;
+
+    });
+    /* VALIDAR CERTIFICACION */
 
 
     /* CARGAR REGISTRO */

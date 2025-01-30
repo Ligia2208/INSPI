@@ -395,6 +395,85 @@ function agregarComentarioEstado(){
 
 
 
+function agregarComentarioEstadoZonal(){
+    var formData = new FormData();
+
+    let id_poa      = $('#id_poa').val();
+    let estadoPoa      = $('#estadoPoa').val();
+    let justificacionPoa  = $('#justificacionPoa').val();
+
+    if(estadoPoa == '0'){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'CoreInspi',
+            text: 'Debe seleccionar el estado de la actividad',
+            showConfirmButton: true,
+        });
+
+    }else if(justificacionPoa == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'CoreInspi',
+            text: 'Debe justificar su selección con un comentario',
+            showConfirmButton: true,
+        });
+
+    }else{
+        $.ajax({
+
+            type: 'POST',
+            url: '/planificacion/agregarComentarioEstado',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                id_poa : id_poa,
+                justificacionPoa: justificacionPoa,
+                estadoPoa: estadoPoa,
+            },
+            success: function(response) {
+
+                if(response.data){
+
+                    if(response['data'] == true){
+                        Swal.fire({
+                            icon: 'success',
+                            type: 'success',
+                            title: 'CoreInspi',
+                            text: response['message'],
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            if (result.value == true) {
+
+                                window.location.href = '/planificacion/vistaUser';
+
+                            }
+                        });
+
+                    }
+                }
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon:  'error',
+                    title: 'CoreInspi',
+                    type:  'error',
+                    text:   error,
+                    showConfirmButton: true,
+                });
+            }
+        });
+    }
+    var table = $('#tblPlanificacionIndex').DataTable();
+
+}
+
+
+
 
 //------------------------------------------------------------------------------------------------
 
@@ -634,8 +713,7 @@ function actualizarPlanificacion(){
                     poa     : poa     ,
                     justifi : justifi ,
                     comentario : comentario,
-                    plurianual: plurianual,
-
+                    plurianual : plurianual,
 
                     frecuencia: frecuencia,
                     meses: meses,
@@ -678,6 +756,8 @@ function actualizarPlanificacion(){
         }
     }
 }
+
+
 
 function validarCalculos() {
 

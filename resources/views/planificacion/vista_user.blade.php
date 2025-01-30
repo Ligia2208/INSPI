@@ -63,6 +63,24 @@
                     </div>
                 </div>
 
+                <div class="col">
+                    <div class="card radius-10 border border-1 border-primary position-relative">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+
+                                <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-patch-check py-3 px-2 titulo-grande"></i>
+                                </div>
+
+                                <div>
+                                    <span>Total de Certificaciones POA</span>
+                                    <h4 class="my-1 text-primary ms-auto" id="">{{$totalCertificado}}</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
 
@@ -240,7 +258,7 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnGenerarReportPOA">Guardar</button>
+                    <button type="button" class="btn btn-primary" id="btnGenerarReportPOA"><i class="bi bi-file-earmark-arrow-down"></i>Descargar</button>
                     <button type="button" class="btn btn-secondary" id="btnCerrarModalPOA" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
@@ -442,5 +460,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.15')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.16')}}"></script>
 @endpush

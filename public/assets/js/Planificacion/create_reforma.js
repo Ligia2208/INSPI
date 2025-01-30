@@ -988,7 +988,7 @@ function agregarActividad() {
                     rows +=`
                     <tr>
                         <input type="hidden" name="id_poa[]" value="${(data.id)}">
-                        <input type="hidden" name="solicitud[]" value="false">
+                        <input type="hidden" name="solicitud[]" value="true">
                         <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
                         <td>
                         <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)">

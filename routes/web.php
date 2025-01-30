@@ -141,6 +141,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('planificacion/visualizarPlanificacion/{id?}','PlanificacionController@visualizarPlanificacion')->name('planificacion.visualizarPlanificacion');
         Route::put('planificacion/actualizarPlanificacion/{id?}','PlanificacionController@actualizarPlanificacion')->name('planificacion.actualizarPlanificacion');
         Route::get('planificacion/editarEstadoPlanificacion/{id?}','PlanificacionController@editarEstadoPlanificacion')->name('planificacion.editarEstadoPlanificacion');
+        Route::get('planificacion/edit_estado_planificacion_zonal/{id?}','PlanificacionController@edit_estado_planificacion_zonal')->name('planificacion.edit_estado_planificacion_zonal');
         Route::post('/planificacion/agregarComentario', 'PlanificacionController@agregarComentario')->name('planificacion.agregarComentario');
         Route::post('/planificacion/agregarComentarioEstado', 'PlanificacionController@agregarComentarioEstado')->name('planificacion.agregarComentarioEstado');
     

@@ -29,7 +29,7 @@
     <div class="container2">
         <div class="page-content">
 
-            <div class="row">
+            <div class="row mb-5">
 
                 <div class="col">
                     <div class="card radius-10 border border-1 border-primary position-relative">
@@ -87,9 +87,9 @@
 
             </div>
 
-            <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mt-4" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
+            <!-- <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mt-4" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
                 <i class="lni lni-circle-plus"></i> Crear Actividad
-            </a>
+            </a> -->
 
             <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ITEMS - {{$nombreDir}} </h2>
 
