@@ -529,6 +529,58 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-4">
+                                    <label>Ficha Digitalizada </label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-file"></i>
+                                            </span>
+                                        </div>
+                                        <div class="d-flex jutify-content-start mb-1" >
+                                            @if ($PreanaliticaTmp || $Preanaliticas->archivo)
+                                                <img
+                                                    width="65"
+                                                    src="{{ asset('assets') }}/media/svg/files/pdf.svg" alt=""
+                                                    >
+                                                <span
+                                                    x-on:click="removeFile('removePreanalitica', 'PreanaliticaTmp')"
+                                                    class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow image-remove"
+                                                    style="position: inherit;"
+                                                    title="Remover Ficha">
+                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                    <span
+                                                        wire:loading.class="spinner spinner-primary spinner-sm"
+                                                        wire:target="removePreanalitica"
+                                                        style="position: absolute; left: 81px;">
+                                                    </span>
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div
+                                            x-data="{ isUploading: false, progress: 0 }"
+                                            x-on:livewire-upload-start="isUploading = true"
+                                            x-on:livewire-upload-finish="isUploading = false"
+                                            x-on:livewire-upload-error="isUploading = false"
+                                            x-on:livewire-upload-progress="progress = $event.detail.progress"
+                                            >
+                                            <div wire:ignore wire:key="Preanaliticafile">
+                                                <input
+                                                    wire:model.defer="PreanaliticaTmp"
+                                                    class="bfi form-control form-control-solid @error('AnaliticaTmp') is-invalid @enderror"
+                                                    type="file"
+                                                    accept=".pdf"
+                                                    id="PreanaliticaTmp"
+                                                />
+                                            </div>
+                                            <!-- Progress Bar -->
+                                            <div x-show="isUploading">
+                                                <progress max="100" x-bind:value="progress"></progress>
+                                            </div>
+                                        </div>
+                                        @error('PreanaliticaTmp') <div><span class="text-danger">{{ $message }}</span></div> @enderror
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-2">

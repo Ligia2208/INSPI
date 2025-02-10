@@ -1,7 +1,7 @@
 <html lang="es">
 	<!--begin::Head-->
 	<head>
-    
+
 		<meta charset="utf-8" />
 		<title>@yield('title')</title>
 		<meta name="description" content="Login page example" />
@@ -42,6 +42,7 @@
 		<script src="{{asset('assets')}}/plugins/global/plugins.bundle.js"></script>
 		<script src="{{asset('assets')}}/plugins/custom/prismjs/prismjs.bundle.js"></script>
 		<script src="{{asset('assets')}}/js/scripts.bundle.js"></script>
+        <script src="{{asset('assets')}}/js/tinymce/tinymce.min.js" referrerpolicy="origin"></script>
 		<!--end::Global Theme Bundle-->
 		<!--begin::Page Scripts(used by this page)-->
 		<script src="{{asset('assets')}}/js/pages/custom/login/login.js"></script>

@@ -40,6 +40,7 @@
                                         </a>
                                     </i>
                                     &nbsp;
+                                    @if(auth()->user()->roles()->first()->name=="Transferencia")
                                     <i class="navi-item" data-toggle="modal" data-target="_self">
                                         <a href="{{ route('convenio.edit', $convenio) }}" class="navi-link">
                                             <span class="navi-icon">
@@ -47,6 +48,7 @@
                                             </span>
                                         </a>
                                     </i>
+                                    @endif
                                 </div>
                             </div>
 
@@ -140,7 +142,7 @@
                             </div>
                             <div class="card-body">
                                 @if ($convenio->archivo)
-                                    <embed width="100%" height="1000px" src="{{ Storage::url($convenio->archivo) }}#toolbar=0&navpanes=0&scrollbar=0" type="">
+                                    <embed width="100%" height="1000px" src="{{ Storage::url($convenio->archivo) }}#toolbar=1&navpanes=0&scrollbar=0" type="">
                                 @else
                                     <span class="d-block badge badge-secondary text-muted pt-2 font-size-sm">Ninguno</span>
                                 @endif
