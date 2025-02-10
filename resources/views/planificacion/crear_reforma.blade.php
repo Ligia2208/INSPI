@@ -395,5 +395,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.14')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.15')}}"></script>
 @endpush

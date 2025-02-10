@@ -112,12 +112,9 @@ class Form extends Component
             $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
             $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
             $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
-<<<<<<< HEAD
-=======
 
         }
         else{
->>>>>>> 9e20bfd1067017c79e01515435076f51a52016ac
 
         }
 

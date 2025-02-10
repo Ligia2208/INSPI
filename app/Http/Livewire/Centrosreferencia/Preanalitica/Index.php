@@ -213,7 +213,7 @@ class Index extends Component
                 }
                 else{
                     if($tf==3){
-                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('fecha_registro','>=',$f1)->where('fecha_registro','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->whereDate('fecha_registro','>=',$f1)->whereDate('fecha_registro','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                     }
                     else{
                         $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();

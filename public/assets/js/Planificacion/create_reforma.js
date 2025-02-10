@@ -315,20 +315,6 @@ $(document).ready(function() {
     function actualizarTotal($inputsMeses, $inputTotal) {
         let total = calcularTotal($inputsMeses);
         $inputTotal.val(total.toFixed(2));
-
-        if(tipoObjeto == 'DISMINUYE'){
-            let totaldis = $('#disTotal').val();
-            let valordis = parseFloat(totaldis) || 0;
-            valordis += total;
-            $('#disTotal').val(valordis);
-        }else if(tipoObjeto == 'AUMENTA'){
-            let totalaum = $('#aumTotal').val();
-            let valoraum = parseFloat(totalaum) || 0;
-            valoraum += total;
-            $('#disTotal').val(valoraum);
-        }
-
-
     }
 
     // Evento de cambio para el select de tipo de inversión
@@ -338,22 +324,24 @@ $(document).ready(function() {
         // Obtener la fila actual
         let $fila = $(this).closest('tr');
 
-        let inputsMeses = $fila.find('select[name^="tipo[]"]');
-        let tipoObjeto =  inputsMeses.val();
-
         // Obtener los campos de meses y total de la fila actual
         let $inputsMeses = $fila.find('input[name^="enero"], input[name^="febrero"], input[name^="marzo"], input[name^="abril"], input[name^="mayo"], input[name^="junio"], input[name^="julio"], input[name^="agosto"], input[name^="septiembre"], input[name^="octubre"], input[name^="noviembre"], input[name^="diciembre"]');
         let $inputTotal = $fila.find('input[name="total[]"]').prop('disabled', true);
 
         // Actualizar el total al cambiar cualquier campo de meses
         $inputsMeses.off('input').on('input', function() {
-            actualizarTotal($inputsMeses, $inputTotal, tipoObjeto);
+            actualizarTotal($inputsMeses, $inputTotal);
+            actualizarTotales();
         });
 
         // Inicializar el total al cargar la página
-        actualizarTotal($inputsMeses, $inputTotal, tipoObjeto);
+        actualizarTotal($inputsMeses, $inputTotal);
+        actualizarTotales();
 
     });
+
+
+
 
 
 
@@ -489,11 +477,47 @@ $(document).ready(function() {
 });
 
 
+
+// calcula los totales y los muestra en los inputs
+function actualizarTotales() {
+    let totalAumenta = 0;
+    let totalDisminuye = 0;
+
+    // Seleccionar solo las filas visibles
+    $('#tblActividades tbody tr:visible').each(function() {
+        let $fila = $(this);
+        let tipo = $fila.find('select[name="tipo[]"]').val();
+        let totalFila = 0;
+
+        // Sumar valores de los meses
+        $fila.find('input[name^="enero"], input[name^="febrero"], input[name^="marzo"], input[name^="abril"], input[name^="mayo"], input[name^="junio"], input[name^="julio"], input[name^="agosto"], input[name^="septiembre"], input[name^="octubre"], input[name^="noviembre"], input[name^="diciembre"]').each(function() {
+            let valor = parseFloat($(this).val()) || 0;
+            totalFila += valor;
+        });
+
+        // Sumar al total correspondiente solo si la fila está visible
+        if (tipo === 'AUMENTA') {
+            totalAumenta += totalFila;
+        } else if (tipo === 'DISMINUYE') {
+            totalDisminuye += totalFila;
+        }
+    });
+
+    // Actualizar los totales en los inputs
+    $('#aumTotal').val(totalAumenta);
+    $('#disTotal').val(totalDisminuye);
+}
+
+
+
 function eliminarFila(button) {
     // Obtener la fila a la que pertenece el botón
     var fila = button.closest('tr');
     // Ocultar la fila (no eliminarla del DOM para mantener el índice de atributos)
     fila.style.display = 'none';
+
+    actualizarTotales();
+
 }
 
 // ================================FORMULARIO PARA CREAR ACTIVIDAD======================================
