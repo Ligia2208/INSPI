@@ -142,20 +142,25 @@ class Index extends Component
         $hoja->setCellValue('B1','Periodo');
         $hoja->setCellValue('C1','Id. Paciente');
         $hoja->setCellValue('D1','Identidad');
-        $hoja->setCellValue('E1','F.Nacimiento');
-        $hoja->setCellValue('F1','Edad');
-        $hoja->setCellValue('G1','Sexo');
-        $hoja->setCellValue('H1','Cantón');
-        $hoja->setCellValue('I1','Provincia');
-        $hoja->setCellValue('J1','Sede');
-        $hoja->setCellValue('K1','CRN');
-        $hoja->setCellValue('L1','Evento');
-        $hoja->setCellValue('M1','Clase');
-        $hoja->setCellValue('N1','Tipo');
-        $hoja->setCellValue('O1','No. Muestra');
-        $hoja->setCellValue('P1','Secuencia');
-        $hoja->setCellValue('Q1','Estado');
-        $hoja->setCellValue('R1','F. Registro');
+        $hoja->setCellValue('E1','Nombres');
+        $hoja->setCellValue('F1','Apellidos');
+        $hoja->setCellValue('G1','F.Nacimiento');
+        $hoja->setCellValue('H1','Anios');
+        $hoja->setCellValue('I1','Meses');
+        $hoja->setCellValue('J1','Dias');
+        $hoja->setCellValue('K1','Sexo');
+        $hoja->setCellValue('L1','Cantón');
+        $hoja->setCellValue('M1','Provincia');
+        $hoja->setCellValue('N1','Sede');
+        $hoja->setCellValue('O1','CRN');
+        $hoja->setCellValue('P1','Evento');
+        $hoja->setCellValue('Q1','Clase');
+        $hoja->setCellValue('R1','Tipo');
+        $hoja->setCellValue('S1','No. Muestra');
+        $hoja->setCellValue('T1','Observación');
+        $hoja->setCellValue('U1','Secuencia');
+        $hoja->setCellValue('V1','Estado');
+        $hoja->setCellValue('W1','F. Registro');
 
 
         $fila = 2;
@@ -202,21 +207,20 @@ class Index extends Component
             $f2 = null;
         }
 
-        //dd($sid,$cid,$eid,$tf,$f1,$f2);
         if($sid==0){
             if($tf==1){
-                $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('fecha_atencion','>=',$f1)->where('fecha_atencion','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->whereDate('fecha_atencion','>=',$f1)->whereDate('fecha_atencion','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
             }
             else{
                 if($tf==2){
-                    $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('fecha_sintomas','>=',$f1)->where('fecha_sintomas','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                    $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->whereDate('fecha_sintomas','>=',$f1)->whereDate('fecha_sintomas','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                 }
                 else{
                     if($tf==3){
-                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->whereDate('fecha_registro','>=',$f1)->whereDate('fecha_registro','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->whereDate('fecha_registro','>=',$f1)->whereDate('fecha_registro','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                     }
                     else{
-                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                     }
                 }
             }
@@ -224,18 +228,18 @@ class Index extends Component
         else{
             if($cid==0){
                 if($tf==1){
-                    $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('sedes_id','=',$sid)->where('fecha_atencion','>=',$f1)->where('fecha_atencion','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                    $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->where('sedes_id','=',$sid)->whereDate('fecha_atencion','>=',$f1)->whereDate('fecha_atencion','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                 }
                 else{
                     if($tf==2){
-                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('sedes_id','=',$sid)->where('fecha_sintomas','>=',$f1)->where('fecha_sintomas','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->where('sedes_id','=',$sid)->whereDate('fecha_sintomas','>=',$f1)->whereDate('fecha_sintomas','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                     }
                     else{
                         if($tf==3){
-                            $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('sedes_id','=',$sid)->where('fecha_registro','>=',$f1)->where('fecha_registro','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                            $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->where('sedes_id','=',$sid)->whereDate('fecha_registro','>=',$f1)->whereDate('fecha_registro','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                         }
                         else{
-                            $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('sedes_id','=',$sid)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                            $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->where('sedes_id','=',$sid)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                         }
                     }
                 }
@@ -243,24 +247,24 @@ class Index extends Component
             else{
                 if($eid==0){
                     if($tf==1){
-                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->where('fecha_atencion','>=',$f1)->where('fecha_atencion','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                        $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->whereDate('fecha_atencion','>=',$f1)->whereDate('fecha_atencion','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                     }
                     else{
                         if($tf==2){
-                            $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->where('fecha_sintomas','>=',$f1)->where('fecha_sintomas','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                            $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->whereDate('fecha_sintomas','>=',$f1)->whereDate('fecha_sintomas','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                         }
                         else{
                             if($tf==3){
-                                $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->where('fecha_registro','>=',$f1)->where('fecha_registro','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                                $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->whereDate('fecha_registro','>=',$f1)->whereDate('fecha_registro','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                             }
                             else{
-                                $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                                $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                             }
                         }
                     }
                 }
                 else{
-                    $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','fechanacimiento','edad','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->where('evento_id','=',$eid)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
+                    $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','anio','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->where('evento_id','=',$eid)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                 }
             }
         }
@@ -272,20 +276,25 @@ class Index extends Component
             $hoja->setCellValue('B'.$fila,$data[$i]->anio);
             $hoja->setCellValue('C'.$fila,$data[$i]->paciente);
             $hoja->setCellValue('D'.$fila,$data[$i]->identidad);
-            $hoja->setCellValue('E'.$fila,$data[$i]->fechanacimiento);
-            $hoja->setCellValue('F'.$fila,$data[$i]->edad);
-            $hoja->setCellValue('G'.$fila,$data[$i]->sexo);
-            $hoja->setCellValue('H'.$fila,$data[$i]->canton);
-            $hoja->setCellValue('I'.$fila,$data[$i]->provincia);
-            $hoja->setCellValue('J'.$fila,$data[$i]->sede);
-            $hoja->setCellValue('K'.$fila,$data[$i]->crn);
-            $hoja->setCellValue('L'.$fila,$data[$i]->evento);
-            $hoja->setCellValue('M'.$fila,$data[$i]->clase_muestra);
-            $hoja->setCellValue('N'.$fila,$data[$i]->tipo_muestra);
-            $hoja->setCellValue('O'.$fila,$data[$i]->muestra);
-            $hoja->setCellValue('P'.$fila,$data[$i]->codigo_secuencial);
-            $hoja->setCellValue('Q'.$fila,$data[$i]->estado_muestra);
-            $hoja->setCellValue('R'.$fila,$data[$i]->fecha_registro);
+            $hoja->setCellValue('E'.$fila,$data[$i]->nombres);
+            $hoja->setCellValue('F'.$fila,$data[$i]->apellidos);
+            $hoja->setCellValue('G'.$fila,$data[$i]->fechanacimiento);
+            $hoja->setCellValue('H'.$fila,$data[$i]->anios);
+            $hoja->setCellValue('I'.$fila,$data[$i]->meses);
+            $hoja->setCellValue('J'.$fila,$data[$i]->dias);
+            $hoja->setCellValue('K'.$fila,$data[$i]->sexo);
+            $hoja->setCellValue('L'.$fila,$data[$i]->canton);
+            $hoja->setCellValue('M'.$fila,$data[$i]->provincia);
+            $hoja->setCellValue('N'.$fila,$data[$i]->sede);
+            $hoja->setCellValue('O'.$fila,$data[$i]->crn);
+            $hoja->setCellValue('P'.$fila,$data[$i]->evento);
+            $hoja->setCellValue('Q'.$fila,$data[$i]->clase_muestra);
+            $hoja->setCellValue('R'.$fila,$data[$i]->tipo_muestra);
+            $hoja->setCellValue('S'.$fila,$data[$i]->muestra);
+            $hoja->setCellValue('T'.$fila,$data[$i]->observacion);
+            $hoja->setCellValue('U'.$fila,$data[$i]->codigo_secuencial);
+            $hoja->setCellValue('V'.$fila,$data[$i]->estado_muestra);
+            $hoja->setCellValue('W'.$fila,$data[$i]->fecha_registro);
             $fila = $fila + 1;
             $i = $i + 1;
         }
