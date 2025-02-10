@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Ticketusertramite;
+namespace App\Http\Livewire\Soporte\Ticketusertramite;
 
 use App\Models\Soporte\Ticketsupport;
 use App\Models\RecursosHumanos\Filiacion;

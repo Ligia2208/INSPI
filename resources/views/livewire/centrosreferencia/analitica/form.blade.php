@@ -12,15 +12,17 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="my-5">
+                            @include('component.error-list')
                             <a href="{{ route('analitica.index') }}" class="navi-link py-4 {{ active('user.index') }}">
+
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <i aria-hidden="true" class="ki ki-bold-close icon-lg"></i>
                                 </button>
                             </a>
                             <h3 class="text-dark font-weight-bold mb-10">Información general</h3>
-                            @include('component.error-list')
+
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>Sede<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -43,7 +45,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-5">
                                     <label>Centro de Referencia - Laboratorio<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -68,6 +70,14 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label>Código Calidad: <span class="text-danger">{{ $Analiticas->codigo_calidad }}</span></label>
+                                    @if ($preanalitica->archivo != null)
+                                    <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url($preanalitica->archivo) }}"><i class="fas fa-download mr-2"></i> Descargar Ficha</a>
+                                    @else
+                                    <a target="_blank" class="btn btn-info font-weight-bold mr-2 dropdown-item" href=""><i class="fas fa-download mr-2"></i> No existe ficha digital</a>
+                                    @endif
+                                </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-5">
@@ -84,7 +94,12 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required disabled>
+                                            required
+                                            @if($Analiticas->codigo_externo != '' && $Analiticas->adicional == 2)
+                                                enabled
+                                            @else
+                                                disabled
+                                            @endif>
                                             <option value="">Selecciona un Evento</option>
                                             @if(!is_null($eventos))
                                             @foreach ($eventos as $objEvento)
@@ -163,8 +178,8 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-1">
-                                    <label>Id-Código<span class="text-danger">*</span></label>
+                                <div class="form-group col-md-2">
+                                    <label>Cédula<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -175,10 +190,25 @@
                                             type="text"
                                             required disabled
                                             class="form-control form-control-solid"
-                                            value = {{ $preanalitica->paciente->id }} />
+                                            value = {{ $preanalitica->paciente->identidad }} />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-6">
+                                    <label>Nombres Paciente<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = "{{ $preanalitica->paciente->apellidos }} {{ $preanalitica->paciente->nombres }}">
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
                                     <label>Sexo<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -190,10 +220,10 @@
                                             type="text"
                                             required disabled
                                             class="form-control form-control-solid"
-                                            value = {{ $preanalitica->paciente->sexo->nombre }}>
+                                            value = {{ $preanalitica->paciente->sexo->descripcion }}>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-1">
+                                <div class="form-group col-md-2">
                                     <label>Edad<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -210,10 +240,12 @@
                                             $ahora = time();
                                             $edad = ($ahora-$tiempo)/(60*60*24*365.25);
                                             $edad = floor($edad);
-                                            $anios = $edad.'_'.'años';?>
-                                            value = {{ $anios }} >
+                                            ?>
+                                            value = "{{ $edad }} años" >
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-md-2">
                                     <label>Embarazo<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -282,9 +314,7 @@
                                         />
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label>Médico Notifica<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -299,6 +329,8 @@
                                             value = "{{ $preanalitica->quien_notifica }}" />
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-md-1">
                                     <label>Laboratorio<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -390,9 +422,41 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
+                                <div class="form-group col-md-2">
+                                    <label>Recepción de muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticas.fecha_toma"
+                                            type="date"
+                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
+                                    <label>Fecha atención<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            value="{{ $preanalitica->fecha_atencion }}"
+                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
                                     <label class="text-black"><b>Código Externo</b><span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -411,39 +475,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-2">
-                                    <label>Fecha atención<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-calendar"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="date"
-                                            value="{{ $preanalitica->fecha_atencion }}"
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
-                                            placeholder="Seleccione una fecha" disabled
-                                        />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label>Recepción de muestra<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-calendar"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.fecha_toma"
-                                            type="date"
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
-                                            placeholder="Seleccione una fecha" disabled
-                                        />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label class="text-black"><b>Llegada a CRN-Lab.</b><span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -459,7 +491,7 @@
                                         />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label class="text-black"><b>Fecha Procesamiento</b><span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -524,6 +556,7 @@
                                             @endif
                                         </select>
                                     </div>
+                                    @error('Analiticas.resultado_id') <div><span class="text-danger">{{ $message }}</span></div> @enderror
                                 </div>
                             </div>
                             @if($Analiticas->crns_id==3)
@@ -641,6 +674,218 @@
                                     </div>
                                 </div>
                             </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label class="text-black"><b>Informe Digitalizado </b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fa fa-file"></i>
+                                            </span>
+                                        </div>
+                                        <div class="d-flex jutify-content-start mb-1" >
+                                            @if ($AnaliticaTmp || $Analiticas->archivo)
+                                                <img
+                                                    width="65"
+                                                    src="{{ asset('assets') }}/media/svg/files/pdf.svg" alt=""
+                                                    >
+                                                <span
+                                                    x-on:click="removeFile('removeAnalitica', 'AnaliticaTmp')"
+                                                    class="btn btn-xs btn-icon btn-circle btn-white btn-hover-text-primary btn-shadow image-remove"
+                                                    style="position: inherit;"
+                                                    title="Remover Informe">
+                                                    <i class="ki ki-bold-close icon-xs text-muted"></i>
+                                                    <span
+                                                        wire:loading.class="spinner spinner-primary spinner-sm"
+                                                        wire:target="removeAnalitica"
+                                                        style="position: absolute; left: 81px;">
+                                                    </span>
+                                                </span>
+                                            @endif
+                                        </div>
+                                        <div
+                                            x-data="{ isUploading: false, progress: 0 }"
+                                            x-on:livewire-upload-start="isUploading = true"
+                                            x-on:livewire-upload-finish="isUploading = false"
+                                            x-on:livewire-upload-error="isUploading = false"
+                                            x-on:livewire-upload-progress="progress = $event.detail.progress"
+                                            >
+                                            <div wire:ignore wire:key="Analiticafile">
+                                                <input
+                                                    wire:model.defer="AnaliticaTmp"
+                                                    class="bfi form-control form-control-solid @error('AnaliticaTmp') is-invalid @enderror"
+                                                    type="file"
+                                                    accept=".pdf"
+                                                    id="AnaliticaTmp"
+                                                />
+                                            </div>
+                                            <!-- Progress Bar -->
+                                            <div x-show="isUploading">
+                                                <progress max="100" x-bind:value="progress"></progress>
+                                            </div>
+                                        </div>
+                                        @error('AnaliticaTmp') <div><span class="text-danger">{{ $message }}</span></div> @enderror
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <br><br>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <i aria-hidden="true" class="fa fa-plus icon-lg" onclick="ver_ocultar()"
+                                            title="Agregar mas técnicas"></i>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="form-row" id="add_muestras" style="visibility:hidden">
+                                <div class="form-group col-md-8">
+                                    <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select
+                                            wire:model.defer="Analiticas.tecnica_segunda_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.tecnica_segunda_id') is-invalid @enderror"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">Selecciona una Técnica</option>
+                                            @if(!is_null($tecnicas))
+                                            @foreach ($tecnicas as $objTecn)
+                                                <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="text-black"><b>Resultado</b><span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select
+                                            wire:model.defer="Analiticas.resultado_segunda_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.resultado_segunda_id') is-invalid @enderror"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">Selecciona un Resultado</option>
+                                            @if(!is_null($reportes))
+                                            @foreach ($reportes as $objRep)
+                                                <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-md-8">
+                                    <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select
+                                            wire:model.defer="Analiticas.tecnica_tercera_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.tecnica_tercera_id') is-invalid @enderror"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">Selecciona una Técnica</option>
+                                            @if(!is_null($tecnicas))
+                                            @foreach ($tecnicas as $objTecn)
+                                                <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="text-black"><b>Resultado</b><span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select
+                                            wire:model.defer="Analiticas.resultado_tercera_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.resultado_tercera_id') is-invalid @enderror"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">Selecciona un Resultado</option>
+                                            @if(!is_null($reportes))
+                                            @foreach ($reportes as $objRep)
+                                                <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-8">
+                                    <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select
+                                            wire:model.defer="Analiticas.tecnica_cuarta_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.tecnica_cuarta_id') is-invalid @enderror"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">Selecciona una Técnica</option>
+                                            @if(!is_null($tecnicas))
+                                            @foreach ($tecnicas as $objTecn)
+                                                <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label class="text-black"><b>Resultado</b><span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select
+                                            wire:model.defer="Analiticas.resultado_cuarta_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.resultado_cuarta_id') is-invalid @enderror"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">Selecciona un Resultado</option>
+                                            @if(!is_null($reportes))
+                                            @foreach ($reportes as $objRep)
+                                                <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -666,6 +911,11 @@
     @section('footer')
         <script src="{{ asset('assets/plugins/custom/bfi/bfi.js') }}"></script>
         <script src="{{ asset('assets') }}/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+        <script language="javascript">
+            function veroficio(nombre){
+            window.open('/storage/'+nombre);
+            }
+        </script>
         <script>
             function app() {
                 return {
@@ -678,9 +928,19 @@
 
             Livewire.on('renderJs', function(){
                 $('.selectpicker').selectpicker({
-                    liveSearch: true
+                    liveSearch: true,
+                    showSubtext: true
                 });
             });
+
+            function ver_ocultar() {
+                var x = document.getElementById("add_muestras");
+                if (x.style.visibility === "visible") {
+                    x.style.visibility = "hidden";
+                } else {
+                    x.style.visibility = "visible";
+                }
+            }
         </script>
     @endsection
 

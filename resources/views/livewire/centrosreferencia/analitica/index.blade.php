@@ -6,8 +6,14 @@
             <div class="card-header border-0 py-5">
                 <h3 class="card-title align-items-start flex-column">
                     <span class="text-muted mt-3 font-weight-bold font-size-sm">@yield('title')<span
-                            class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span></span>
+                            class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span>
+                        </span>
                 </h3>
+                <button class="btn btn-success font-weight-bold mr-2"
+                                onclick="exportToExcel('data', 'analiticas-data')"><i
+                                class="fa fa-file-excel" aria-hidden="true"></i>
+                                {{ __('Exportar a Excel') }}
+                            </button>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -72,7 +78,7 @@
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
                                                 <option data-subtext="" value="1">Fecha toma de muestra</option>
                                                 <option data-subtext="" value="2">Fecha llegada al CRN</option>
-                                                <option data-subtext="" value="3">Fecha reporte</option>
+                                                <option data-subtext="" value="3">Fecha procesamiento</option>
                                             </select>
                                         </div>
                                     </div>
@@ -113,16 +119,34 @@
                             </div>
                             <div class="col-lg-12 col-xl-12">
                                 <div class="row align-items-center">
-                                    <div class="col-md-5 my-2 my-md-0">
+                                    <div class="col-md-2 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <input wire:model="search" type="search" class="form-control"
+                                            <input wire:model="searchm" type="search" class="form-control"
                                                 placeholder="Muestra...">
                                             <span>
                                                 <i class="flaticon2-search-1 text-muted"></i>
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-5 my-2 my-md-0">
+                                    <div class="col-md-2 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input wire:model="searchc" type="search" class="form-control"
+                                                placeholder="Cédula...">
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input wire:model="searchp" type="search" class="form-control"
+                                                placeholder="Apellidos o Nombres...">
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">Mostrar:</label>
                                             <select class="form-control" wire:model="perPage">
@@ -133,14 +157,6 @@
                                                 <option value="500">500 Entradas</option>
                                                 <option value="1000">1000 Entradas</option>
                                             </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <button class="btn btn-success font-weight-bold mr-2"
-                                                onclick="exportToExcel('data', 'analiticas-data')"><i
-                                                    class="fa fa-file-excel" aria-hidden="true"></i>
-                                                {{ __('Exportar a Excel') }}</button>
                                         </div>
                                     </div>
                                 </div>
@@ -157,9 +173,11 @@
                         <thead>
                             <tr class="text-uppercase">
                                 <th>Código Muestra</th>
-                                <th>Fecha Recepción</th>
+                                <th>Fecha Toma</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
+                                <th>Paciente</th>
+                                <th>Calidad</th>
                                 <th>Muestra</th>
                                 <th>Técnica</th>
                                 <th>Resultado</th>
@@ -174,9 +192,7 @@
                                     @if ($analitica->codigo_externo == '')
                                         <td>
                                             <span
-                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->anio_registro }}
-                                                - {{ str_pad($analitica->codigo_muestra, 6, '0', STR_PAD_LEFT) }} -
-                                                {{ str_pad($analitica->codigo_secuencial, 2, '0', STR_PAD_LEFT) }}</span>
+                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ str_pad($analitica->codigo_muestra, 5, '0', STR_PAD_LEFT) }}-{{ str_pad($analitica->codigo_secuencial, 2, '0', STR_PAD_LEFT) }}</span>
                                         </td>
                                     @else
                                         <td>
@@ -195,6 +211,14 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->evento->simplificado }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">({{ $analitica->preanalitica->paciente->identidad }}) {{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->codigo_calidad }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -248,6 +272,23 @@
                                                 </a>
                                             </i>
                                         @endif
+                                        @if ($analitica->archivo != null)
+                                        <i class="navi-item" data-toggle="modal" data-target="#">
+                                            <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="ace-icon fa fa-file-pdf" style="color:rgb(238, 51, 51)" onclick="veroficio('{{$analitica->archivo}}')" title="Descargar Informe"></i>
+                                            </span>
+                                            </a>
+                                        </i>
+                                        @else
+                                        <i class="navi-item" data-toggle="modal" data-target="#">
+                                            <a href="#" class="navi-link">
+                                            <span class="navi-icon">
+                                                <i class="ace-icon fa fa-ban" style="color:gray" title="Sin Informe"></i>
+                                            </span>
+                                            </a>
+                                        </i>
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
@@ -291,6 +332,11 @@
     @endif
 
     @section('footer')
+        <script language="javascript">
+            function veroficio(nombre){
+            window.open('/storage/'+nombre);
+            }
+        </script>
         <script>
             Livewire.on('closeModal', function() {
                 $('.modal').modal('hide');

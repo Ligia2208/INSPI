@@ -13,7 +13,6 @@ class Index extends Component
 {
     use WithPagination;
     use LivewireAlert;
-    //use LivewireAlert;
 
     //Tools
     public $perPage = 20;
@@ -52,9 +51,9 @@ class Index extends Component
         try{
             $responsables->vigente_hasta=now();
             $responsables->update();
-            $this->alert('success', 'Área eliminada con éxito');
+            $this->alert('success', 'Técnico/Responsable deshabilitado con éxito');
         }catch(Exception $e){
-            $this->alert('error', 'Ocurrio un error en la eliminación');
+            $this->alert('error', 'Ocurrio un error en la deshabilitación');
         }
     }
 }

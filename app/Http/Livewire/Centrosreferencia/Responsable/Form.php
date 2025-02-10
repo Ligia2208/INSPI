@@ -15,7 +15,7 @@ use Jantinnerezo\LivewireAlert\LivewireAlert;
 class Form extends Component
 {
     use LivewireAlert;
-    
+
     public $method;
     public $Responsables;
     public $selectedSede = null;
@@ -43,8 +43,8 @@ class Form extends Component
         $usuarios = User::where('status','=','A')->orderBy('id','ASC')->cursor();
         $tipos = Tiporesponsable::where('estado','=','A')->orderBy('id','ASC')->cursor();
         $crns = Crn::orderBy('id', 'asc')->cursor();
-        $this->emit('render');
         $this->emit('renderJs');
+        
         return view('livewire.centrosreferencia.responsable.form',compact('usuarios','sedes','crns','tipos'));
     }
 
@@ -53,9 +53,9 @@ class Form extends Component
         $this->Responsables->save();
         $this->Responsables = new Responsable();
         $this->alert('success', 'Responsable agregado con exito');
-        $this->emit('closeModal');
-        $this->emit('renderJs');
         $this->emit('render');
+        $this->emit('closeModal');
+
     }
 
     public function storeCustom(){
@@ -63,9 +63,8 @@ class Form extends Component
         $this->Responsables->save();
         $this->Responsables = new Responsable();
         $this->alert('success', 'Responsable agregado con exito');
-        $this->emit('closeModal');
-        $this->emit('renderJs');
         $this->emit('render');
+        $this->emit('closeModal');
 
     }
 
@@ -73,8 +72,8 @@ class Form extends Component
         $this->validate();
         $this->Responsables->update();
         $this->alert('success', 'Responsable modificado con exito');
-        $this->emit('closeModal');
-        $this->emit('renderJs');
         $this->emit('render');
+        $this->emit('closeModal');
+
     }
 }

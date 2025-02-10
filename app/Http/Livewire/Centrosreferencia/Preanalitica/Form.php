@@ -28,6 +28,7 @@ use Spatie\Permission\Models\Permission;
 use Symfony\Component\CssSelector\Node\FunctionNode;
 use Jantinnerezo\LivewireAlert\LivewireAlert;
 use Datetime;
+use DB;
 
 class Form extends Component
 {
@@ -49,13 +50,12 @@ class Form extends Component
     public $selectedProvincia = null;
     public $changedInstitucion = null;
     public $changedIdentidad = null;
+    public $PreanaliticaTmp;
 
 
     protected $listeners = ['render'];
 
-    protected function rules()
-    {
-
+    protected function rules(){
         return [
             'Preanaliticas.instituciones_id' => 'required|numeric',
             'Preanaliticas.institucion_nombre' => 'sometimes|max:525',
@@ -148,11 +148,16 @@ class Form extends Component
             $this->updatedselectedSedep($this->Preanaliticas->sedes_id);
             $this->updatedselectedCrnp($this->Preanaliticas->crns_id);
         }
+        else{
+            $this->Preanaliticas->embarazo='N';
+            $this->Preanaliticas->laboratorio='N';
+            $this->Preanaliticas->gestacion=0;
+        }
 
     }
 
     public function updatedchangedInstitucion($institucion_id){
-        $instSelected = Institucion::findorFail($institucion_id);
+        $instSelected = Institucion::findOrFail($institucion_id);
         $this->Preanaliticas->institucion_nombre = $instSelected->descripcion;
         $this->Preanaliticas->institucion_clasificacion = $instSelected->clasificacion->descripcion;
         $this->Preanaliticas->institucion_nivel = $instSelected->nivel->descripcion;
@@ -206,8 +211,8 @@ class Form extends Component
         $this->emit('renderJs');
     }
 
-    public function render()
-    {
+    public function render(){
+
         $sedes = Sede::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $sexos = Sexo::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $cantonprov = Canton::where('estado','=','A')->orderBy('id','asc')->cursor();
@@ -217,7 +222,7 @@ class Form extends Component
         $nacionalidades = Nacionalidad::where('estado','=',1)->orderBy('id','asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id','asc')->cursor();
         $pacientes = Paciente::where('estado','=','A')->orderBy('id','asc')->cursor();
-
+        $this->emit('renderJs');
         return view('livewire.centrosreferencia.preanalitica.form', compact('sedes','sexos','pacientes','muestras','instituciones','estados','nacionalidades','cantonprov','clases'));
     }
 
@@ -236,222 +241,256 @@ class Form extends Component
 
     public function store(){
         $this->validate();
-        $user = auth()->user()->id;
-        $fecha_anio = date("Y");
-        if($this->Preanaliticas->paciente_id == 0){
-            $newPac = new Paciente();
-            $newPac->nombres = $this->Preanaliticas->paciente_nombres;
-            $newPac->apellidos = $this->Preanaliticas->paciente_apellidos;
-            $newPac->identidad = $this->Preanaliticas->identidad;
-            $newPac->hcu = $this->Preanaliticas->identidad;
-            $newPac->fechanacimiento = $this->Preanaliticas->paciente_fechanac;
-            $newPac->sexo_id = $this->Preanaliticas->paciente_sexo;
-            $newPac->direccion = $this->Preanaliticas->paciente_direccion;
-            $newPac->telefono = $this->Preanaliticas->paciente_telefono;
-            $newPac->canton_id = $this->Preanaliticas->paciente_ubicacion;
-            $prov = Canton::findOrFail($this->Preanaliticas->paciente_ubicacion);
-            $newPac->provincia_id = $prov->provincia_id;
-            $newPac->nacionalidad_id = $this->Preanaliticas->paciente_nacionalidad;
-            $newPac->save();
-        }
-        $newToma = new Preanalitica();
-        $newToma->instituciones_id = $this->Preanaliticas->instituciones_id;
-        if($this->Preanaliticas->paciente_id == 0){
-            $newToma->paciente_id = $newPac->id;
-        }
-        else{
-            $newToma->paciente_id = $this->Preanaliticas->paciente_id;
-        }
+        DB::beginTransaction();
+        try{
+            $user = auth()->user()->id;
+            $fecha_anio = date("Y");
+            $absede = Sede::findOrFail($this->Preanaliticas->sedes_id);
+            $abcrn = Crn::findOrFail($this->Preanaliticas->crns_id);
+            if($this->Preanaliticas->paciente_id == 0){
+                $newPac = new Paciente();
+                $newPac->nombres = $this->Preanaliticas->paciente_nombres;
+                $newPac->apellidos = $this->Preanaliticas->paciente_apellidos;
+                $newPac->identidad = $this->Preanaliticas->identidad;
+                $newPac->hcu = $this->Preanaliticas->identidad;
+                $newPac->fechanacimiento = $this->Preanaliticas->paciente_fechanac;
+                $newPac->sexo_id = $this->Preanaliticas->paciente_sexo;
+                $newPac->direccion = $this->Preanaliticas->paciente_direccion;
+                $newPac->telefono = $this->Preanaliticas->paciente_telefono;
+                $newPac->canton_id = $this->Preanaliticas->paciente_ubicacion;
+                $prov = Canton::findOrFail($this->Preanaliticas->paciente_ubicacion);
+                $newPac->provincia_id = $prov->provincia_id;
+                $newPac->nacionalidad_id = $this->Preanaliticas->paciente_nacionalidad;
+                $newPac->save();
+            }
+            $newToma = new Preanalitica();
+            $newToma->instituciones_id = $this->Preanaliticas->instituciones_id;
+            if($this->Preanaliticas->paciente_id == 0){
+                $newToma->paciente_id = $newPac->id;
+            }
+            else{
+                $newToma->paciente_id = $this->Preanaliticas->paciente_id;
+            }
 
-        $newToma->fecha_atencion = $this->Preanaliticas->fecha_atencion;
-        $newToma->quien_notifica = $this->Preanaliticas->quien_notifica;
-        $newToma->probable_infeccion = $this->Preanaliticas->probable_infeccion;
-        $newToma->fecha_sintomas = $this->Preanaliticas->fecha_sintomas;
-        $newToma->embarazo = $this->Preanaliticas->embarazo;
+            $newToma->fecha_atencion = $this->Preanaliticas->fecha_atencion;
+            $newToma->quien_notifica = $this->Preanaliticas->quien_notifica;
+            $newToma->probable_infeccion = $this->Preanaliticas->probable_infeccion;
+            $newToma->fecha_sintomas = $this->Preanaliticas->fecha_sintomas;
+            $newToma->embarazo = $this->Preanaliticas->embarazo;
 
-        $newToma->gestacion = $this->Preanaliticas->gestacion;
-        $newToma->laboratorio = $this->Preanaliticas->laboratorio;
+            $newToma->gestacion = $this->Preanaliticas->gestacion;
+            $newToma->laboratorio = $this->Preanaliticas->laboratorio;
 
-        $newToma->nombre_laboratorio = $this->Preanaliticas->nombre_laboratorio;
-        $newToma->sedes_id = $this->Preanaliticas->sedes_id;
-        $newToma->crns_id = $this->Preanaliticas->crns_id;
-        $newToma->evento_id = $this->Preanaliticas->evento_id;
-        if($this->Preanaliticas->primera_id>0){
-            $newToma->clase_primera_id = $this->Preanaliticas->clase_primera_id;
-            $newToma->primera_id = $this->Preanaliticas->primera_id;
-            $newToma->fecha_toma_primera = $this->Preanaliticas->fecha_toma_primera;
-        }
-        else{
-            $newToma->primera_id = 0;
-        }
-        if($this->Preanaliticas->segunda_id>0){
-            $newToma->clase_segunda_id = $this->Preanaliticas->clase_segunda_id;
-            $newToma->segunda_id = $this->Preanaliticas->segunda_id;
-            $newToma->fecha_toma_segunda = $this->Preanaliticas->fecha_toma_segunda;
-        }
-        else{
-            $newToma->segunda_id = 0;
-        }
-        if($this->Preanaliticas->tercera_id>0){
-            $newToma->clase_tercera_id = $this->Preanaliticas->clase_tercera_id;
-            $newToma->tercera_id = $this->Preanaliticas->tercera_id;
-            $newToma->fecha_toma_tercera = $this->Preanaliticas->fecha_toma_tercera;
-        }
-        else{
-            $newToma->tercera_id = 0;
-        }
-        if($this->Preanaliticas->cuarta_id>0){
-            $newToma->clase_cuarta_id = $this->Preanaliticas->clase_cuarta_id;
-            $newToma->cuarta_id = $this->Preanaliticas->cuarta_id;
-            $newToma->fecha_toma_cuarta = $this->Preanaliticas->fecha_toma_cuarta;
-        }
-        else{
-            $newToma->cuarta_id = 0;
-        }
-        if($this->Preanaliticas->quinta_id>0){
-            $newToma->clase_quinta_id = $this->Preanaliticas->clase_quinta_id;
-            $newToma->quinta_id = $this->Preanaliticas->quinta_id;
-            $newToma->fecha_toma_quinta = $this->Preanaliticas->fecha_toma_quinta;
-        }
-        else{
-            $newToma->quinta_id = 0;
-        }
-        $newToma->anio_registro = $fecha_anio;
-        $newToma->usuariot_id =  $user;
-        $newToma->save();
+            $newToma->nombre_laboratorio = $this->Preanaliticas->nombre_laboratorio;
+            $newToma->sedes_id = $this->Preanaliticas->sedes_id;
+            $newToma->crns_id = $this->Preanaliticas->crns_id;
+            $newToma->evento_id = $this->Preanaliticas->evento_id;
+            if($this->Preanaliticas->primera_id>0){
+                $newToma->clase_primera_id = $this->Preanaliticas->clase_primera_id;
+                $newToma->primera_id = $this->Preanaliticas->primera_id;
+                $newToma->fecha_toma_primera = $this->Preanaliticas->fecha_toma_primera;
+            }
+            else{
+                $newToma->primera_id = 0;
+            }
+            if($this->Preanaliticas->segunda_id>0){
+                $newToma->clase_segunda_id = $this->Preanaliticas->clase_segunda_id;
+                $newToma->segunda_id = $this->Preanaliticas->segunda_id;
+                $newToma->fecha_toma_segunda = $this->Preanaliticas->fecha_toma_segunda;
+            }
+            else{
+                $newToma->segunda_id = 0;
+            }
+            if($this->Preanaliticas->tercera_id>0){
+                $newToma->clase_tercera_id = $this->Preanaliticas->clase_tercera_id;
+                $newToma->tercera_id = $this->Preanaliticas->tercera_id;
+                $newToma->fecha_toma_tercera = $this->Preanaliticas->fecha_toma_tercera;
+            }
+            else{
+                $newToma->tercera_id = 0;
+            }
+            if($this->Preanaliticas->cuarta_id>0){
+                $newToma->clase_cuarta_id = $this->Preanaliticas->clase_cuarta_id;
+                $newToma->cuarta_id = $this->Preanaliticas->cuarta_id;
+                $newToma->fecha_toma_cuarta = $this->Preanaliticas->fecha_toma_cuarta;
+            }
+            else{
+                $newToma->cuarta_id = 0;
+            }
+            if($this->Preanaliticas->quinta_id>0){
+                $newToma->clase_quinta_id = $this->Preanaliticas->clase_quinta_id;
+                $newToma->quinta_id = $this->Preanaliticas->quinta_id;
+                $newToma->fecha_toma_quinta = $this->Preanaliticas->fecha_toma_quinta;
+            }
+            else{
+                $newToma->quinta_id = 0;
+            }
+            $newToma->anio_registro = $fecha_anio;
+            $newToma->usuariot_id =  $user;
+            $this->savePreanalitica();
+            $newToma->archivo = $this->Preanaliticas->archivo;
+            $newToma->save();
 
-        $tipogenera = $this->tipo_generacion($this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
-        if($tipogenera==1){
-            $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
-        }
-        if($this->Preanaliticas->primera_id>0){
-            if($tipogenera==2){
+            $tipogenera = $this->tipo_generacion($this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+            if($tipogenera==1){
                 $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
             }
-            $newMuestra = new Analitica();
-            $newMuestra->preanalitica_id = $newToma->id;
-            $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
-            $newMuestra->crns_id = $this->Preanaliticas->crns_id;
-            $newMuestra->evento_id = $this->Preanaliticas->evento_id;
-            $newMuestra->muestra_id = $this->Preanaliticas->primera_id;
-            $newMuestra->clase_id = $this->Preanaliticas->clase_primera_id;
-            $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_primera;
-            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_primera_id;
-            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_primera;
-            $newMuestra->codigo_muestra = $codigo;
-            if($tipogenera==1){
-                $newMuestra->codigo_secuencial = 1;
+            if($this->Preanaliticas->primera_id>0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $newToma->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->primera_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_primera_id;
+                $newMuestra->anio_registro = $fecha_anio;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_primera;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_primera_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_primera;
+                $newMuestra->codigo_muestra = $codigo;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 1;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $fechacomoentero = strtotime($this->Preanaliticas->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->save();
             }
-            else{
-                $newMuestra->codigo_secuencial = $codigo;
+            if($this->Preanaliticas->segunda_id>0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $newToma->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->segunda_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_segunda_id;
+                $newMuestra->anio_registro = $fecha_anio;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_segunda;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_segunda_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_segunda;
+                $newMuestra->codigo_muestra = $codigo;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 2;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $fechacomoentero = strtotime($this->Preanaliticas->fecha_toma_segunda);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->save();
             }
-            $newMuestra->usuariot_id = $user;
-            $newMuestra->save();
+            if($this->Preanaliticas->tercera_id>0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $newToma->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->tercera_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_tercera_id;
+                $newMuestra->anio_registro = $fecha_anio;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_tercera;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_tercera_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_tercera;
+                $newMuestra->codigo_muestra = $codigo;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 3;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $fechacomoentero = strtotime($this->Preanaliticas->fecha_toma_tercera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->save();
+            }
+            if($this->Preanaliticas->cuarta_id>0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $newToma->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->cuarta_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_cuarta_id;
+                $newMuestra->anio_registro = $fecha_anio;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_cuarta;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_cuarta_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_cuarta;
+                $newMuestra->codigo_muestra = $codigo;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 4;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $fechacomoentero = strtotime($this->Preanaliticas->fecha_toma_cuarta);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->save();
+            }
+            if($this->Preanaliticas->quinta_id>0){
+                if($tipogenera==2){
+                    $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
+                }
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $newToma->id;
+                $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
+                $newMuestra->crns_id = $this->Preanaliticas->crns_id;
+                $newMuestra->evento_id = $this->Preanaliticas->evento_id;
+                $newMuestra->muestra_id = $this->Preanaliticas->quinta_id;
+                $newMuestra->clase_id = $this->Preanaliticas->clase_quinta_id;
+                $newMuestra->anio_registro = $fecha_anio;
+                $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_quinta;
+                $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_quinta_id;
+                $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_quinta;
+                $newMuestra->codigo_muestra = $codigo;
+                if($tipogenera==1){
+                    $newMuestra->codigo_secuencial = 5;
+                }
+                else{
+                    $newMuestra->codigo_secuencial = $codigo;
+                }
+                $fechacomoentero = strtotime($this->Preanaliticas->fecha_toma_quinta);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->save();
+            }
+            DB::commit();
+            $this->alert('success', 'Preanalitica agregado con éxito');
+            $this->emit('renderJs');
+            return redirect()->route('preanalitica.index');
         }
-        if($this->Preanaliticas->segunda_id>0){
-            if($tipogenera==2){
-                $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
-            }
-            $newMuestra = new Analitica();
-            $newMuestra->preanalitica_id = $newToma->id;
-            $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
-            $newMuestra->crns_id = $this->Preanaliticas->crns_id;
-            $newMuestra->evento_id = $this->Preanaliticas->evento_id;
-            $newMuestra->muestra_id = $this->Preanaliticas->segunda_id;
-            $newMuestra->clase_id = $this->Preanaliticas->clase_segunda_id;
-            $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_segunda;
-            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_segunda_id;
-            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_segunda;
-            $newMuestra->codigo_muestra = $codigo;
-            if($tipogenera==1){
-                $newMuestra->codigo_secuencial = 2;
-            }
-            else{
-                $newMuestra->codigo_secuencial = $codigo;
-            }
-            $newMuestra->usuariot_id = $user;
-            $newMuestra->save();
+        catch (\Exception $e) {
+            DB::rollback();
+            $this->alert('warning', 'Ocurrió un error al agregar la Preanalitica');
+            $this->emit('renderJs');
+            return $e->getMessage();
         }
-        if($this->Preanaliticas->tercera_id>0){
-            if($tipogenera==2){
-                $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
-            }
-            $newMuestra = new Analitica();
-            $newMuestra->preanalitica_id = $newToma->id;
-            $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
-            $newMuestra->crns_id = $this->Preanaliticas->crns_id;
-            $newMuestra->evento_id = $this->Preanaliticas->evento_id;
-            $newMuestra->muestra_id = $this->Preanaliticas->tercera_id;
-            $newMuestra->clase_id = $this->Preanaliticas->clase_tercera_id;
-            $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_tercera;
-            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_tercera_id;
-            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_tercera;
-            $newMuestra->codigo_muestra = $codigo;
-            if($tipogenera==1){
-                $newMuestra->codigo_secuencial = 3;
-            }
-            else{
-                $newMuestra->codigo_secuencial = $codigo;
-            }
-            $newMuestra->usuariot_id = $user;
-            $newMuestra->save();
-        }
-        if($this->Preanaliticas->cuarta_id>0){
-            if($tipogenera==2){
-                $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
-            }
-            $newMuestra = new Analitica();
-            $newMuestra->preanalitica_id = $newToma->id;
-            $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
-            $newMuestra->crns_id = $this->Preanaliticas->crns_id;
-            $newMuestra->evento_id = $this->Preanaliticas->evento_id;
-            $newMuestra->muestra_id = $this->Preanaliticas->cuarta_id;
-            $newMuestra->clase_id = $this->Preanaliticas->clase_cuarta_id;
-            $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_cuarta;
-            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_cuarta_id;
-            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_cuarta;
-            $newMuestra->codigo_muestra = $codigo;
-            if($tipogenera==1){
-                $newMuestra->codigo_secuencial = 4;
-            }
-            else{
-                $newMuestra->codigo_secuencial = $codigo;
-            }
-            $newMuestra->usuariot_id = $user;
-            $newMuestra->save();
-        }
-        if($this->Preanaliticas->quinta_id>0){
-            if($tipogenera==2){
-                $codigo = $this->sgte_codigomuestra($fecha_anio,$this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
-            }
-            $newMuestra = new Analitica();
-            $newMuestra->preanalitica_id = $newToma->id;
-            $newMuestra->sedes_id = $this->Preanaliticas->sedes_id;
-            $newMuestra->crns_id = $this->Preanaliticas->crns_id;
-            $newMuestra->evento_id = $this->Preanaliticas->evento_id;
-            $newMuestra->muestra_id = $this->Preanaliticas->quinta_id;
-            $newMuestra->clase_id = $this->Preanaliticas->clase_quinta_id;
-            $newMuestra->anio_registro = $fecha_anio;
-            $newMuestra->fecha_toma = $this->Preanaliticas->fecha_toma_quinta;
-            $newMuestra->estado_muestra_id = $this->Preanaliticas->estado_quinta_id;
-            $newMuestra->observacion_muestra = $this->Preanaliticas->observacion_quinta;
-            $newMuestra->codigo_muestra = $codigo;
-            if($tipogenera==1){
-                $newMuestra->codigo_secuencial = 5;
-            }
-            else{
-                $newMuestra->codigo_secuencial = $codigo;
-            }
-            $newMuestra->usuariot_id = $user;
-            $newMuestra->save();
-        }
-        $this->alert('success', 'Preanalitica agregado con éxito');
-        $this->emit('closeModal');
-        return redirect()->route('preanalitica.index');
 
     }
 
@@ -474,6 +513,7 @@ class Form extends Component
 
     public function update(){
         $this->validate();
+        $this->savePreanalitica();
         $updatePre = Preanalitica::findOrFail($this->Preanaliticas->id);
         $updatePre->instituciones_id=$this->Preanaliticas->instituciones_id;
         $updatePre->fecha_atencion=$this->Preanaliticas->fecha_atencion;
@@ -520,7 +560,8 @@ class Form extends Component
         $updatePre->quinta_id = $this->Preanaliticas->quinta_id;
         $updatePre->fecha_toma_quinta = $this->Preanaliticas->fecha_toma_quinta;
         $updatePre->observacion_quinta = $this->Preanaliticas->observacion_quinta;
-
+        $this->savePreanalitica();
+        $updatePre->archivo = $this->Preanaliticas->archivo;
         $updatePre->update();
 
         $tipogenera = $this->tipo_generacion($this->Preanaliticas->sedes_id,$this->Preanaliticas->crns_id);
@@ -758,5 +799,31 @@ class Form extends Component
         $this->emit('closeModal');
         return redirect()->route('preanalitica.index');
 
+    }
+
+    public function savePreanalitica(){
+        if($this->PreanaliticaTmp){
+            if(Storage::exists($this->Preanaliticas->archivo)){
+                Storage::delete($this->Preanaliticas->archivo);
+            }
+
+            $path = $this->PreanaliticaTmp->store('public/fichas/crns');
+            $path = substr($path, 7);
+            $this->Preanaliticas->archivo = $path;
+
+        }
+    }
+
+    public function removePreanalitica(){
+        if($this->Preanaliticas->archivo){
+            if(Storage::exists($this->Preanaliticas->archivo)){
+                Storage::delete($this->Preanaliticas->archivo);
+            }
+
+            $this->Preanaliticas->archivo = null;
+            $this->Preanaliticass->update();
+        }
+        $this->reset('PreanaliticaTmp');
+        $this->alert('success', 'Ficha digitalizada eliminada con exito');
     }
 }

@@ -15,14 +15,6 @@
                                 <span class="navi-text font-size-xl">Muestras Asignadas</span>
                             </a>
                         </div>
-                        <div class="col-md-3 navi-item" align="center">
-                            <a href="" class="navi-link py-4 {{ active('visorresultado.index') }}">
-                                <span class="navi-icon mr-2">
-                                    <i class="fa fa-signal fa-3x"></i>
-                                </span>
-                                <span class="navi-text font-size-xl">Estadisticas</span>
-                            </a>
-                        </div>
                     </div>
                 </div>
                 <!--end::Nav-->
