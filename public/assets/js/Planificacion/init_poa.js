@@ -7,7 +7,7 @@ $( function () {
     var table = $('#tblPlanificacionIndex').DataTable({
         processing: false,
         serverSide: false,
-        lengthMenu: [8, 15, 25, 50, 100],
+        lengthMenu: [15, 25, 50, 100],
         ajax: {
             url: '/planificacion',
             data: function (d) {
@@ -52,6 +52,7 @@ $( function () {
                 searchable: false,
                 render: function (data, type, full, meta) {
                     var array = "";
+
                     if (full.estado == 'O') {
                         array = `
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
@@ -60,6 +61,9 @@ $( function () {
                             </a>
                             <a id="btnVisualizaPOA" data-id_editar="${full.id}" title="Editar registro" class="show-tooltip mr-1">
                                 <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
+                            </a>
+                            <a id="btnEliminarCerti" data-id_borrar="${full.id}" title="Eliminar certificación" class="red show-tooltip ml-1" data-title="Eliminar certificación">
+                                <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
                             </a>
                         </div>`;
                     } else if (full.estado == 'R') {
@@ -484,4 +488,77 @@ $(document).ready(function() {
             });
         }
     });
+
+
+    $(document).on('click', '#btnEliminarCerti', function(){
+        //alert('funciona');
+
+        let id_POA = $(this).data('id_borrar');
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Seguro quiere anular esta Certificación.',
+            showConfirmButton: true,
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.value == true) {
+
+                $.ajax({
+
+                    type: 'POST',
+                    //url: '{{ route("encuesta.saveEncuesta") }}',
+                    url: '/planificacion/deleteCertificacion',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        'id': id_POA,
+                    },
+                    success: function(response) {
+
+                        //console.log(response.data['id_chat'])
+                        if(response.data){
+
+                            if(response['data'] == true){
+                                Swal.fire({
+                                    icon: 'success',
+                                    type: 'success',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                }).then((result) => {
+                                    if (result.value == true) {
+                                        $('#tblPlanificacionIndex').DataTable().ajax.reload();
+                                    }
+                                });
+
+                            }else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    type:  'error',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                });
+                            }
+                        }
+                    },
+                    error: function(error) {
+                        Swal.fire({
+                            icon:  'success',
+                            title: 'SoftInspi',
+                            type:  'success',
+                            text:   error,
+                            showConfirmButton: true,
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+
+
 });

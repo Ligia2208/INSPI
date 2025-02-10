@@ -9,7 +9,7 @@
     <table>
         <thead>
             <tr>
-                <th>Dirección</th>
+                <th style="width:200px;">Dirección</th>
                 <th>Actividad Operativa</th>
                 <th>Objetivo Operativo</th>
                 <th>Sub Actividad</th>

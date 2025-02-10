@@ -4,7 +4,8 @@ function guardarReforma() {
         // Obtener los datos de cada fila y prepararlos para enviar al servidor
         var formData = [];
         //var justificacion = $('#justificacion').val(); // Obtener el valor del textarea de justificación
-        var justifi  = $('#justifi').val(); //Obtener el valore del textarea de justificación del área requirente
+        var justifi    = $('#justifi').val(); //Obtener el valore del textarea de justificación del área requirente
+        let tipo_refor = $('#select_tipo').val();
 
 
         // Variables para los totales
@@ -32,7 +33,7 @@ function guardarReforma() {
                 let diciembre = $(this).find('input[name="diciembre[]"]').val();
                 let total = $(this).find('input[name="total[]"]').val();
 
-                let subActividad = $(this).find('input[name="subActividad[]"]').val();
+                let subActividad = $(this).find('textarea[name="subActividad[]"]').val();
                 let id_area_soli = $(this).find('input[name="id_area_soli[]"]').val();
 
                 // Agregar datos de la fila actual al formData
@@ -141,7 +142,8 @@ function guardarReforma() {
                 data: {
                     formData: formData,
                     //justificacion: justificacion,
-                    justifi : justifi
+                    justifi :   justifi,
+                    tipo_refor: tipo_refor,
                 },
                 success: function(response) {
                     // Manejar la respuesta del servidor (éxito)
@@ -203,35 +205,52 @@ function validarCampos() {
             let noviembre = $(this).find('input[name="noviembre[]"]').val();
             let diciembre = $(this).find('input[name="diciembre[]"]').val();
 
-            let subActividad = $(this).find('input[name="subActividad[]"]').val();
+            let subActividad = $(this).find('textarea[name="subActividad[]"]').val();
 
-            // Validar si algún campo está vacío
-            if (tipo === null || tipo === "" ||
-                total === null || total === "" ||
-                enero === null || enero === "" ||
-                febrero === null || febrero === "" ||
-                marzo === null || marzo === "" ||
-                abril === null || abril === "" ||
-                mayo === null || mayo === "" ||
-                junio === null || junio === "" ||
-                julio === null || julio === "" ||
-                agosto === null || agosto === "" ||
-                septiembre === null || septiembre === "" ||
-                octubre === null || octubre === "" ||
-                noviembre === null || noviembre === "" ||
-                diciembre === null || diciembre === "" ||
-                subActividad === "") {
+            
 
-                valido = false;
-                comentario = 'Debe ingresar todos los campos en la fila ' + (index + 1);
-                return false; // Salir del bucle each() si encuentra algún campo vacío
+            if(tipo === 'IGUAL'){
+
+                // Validar si algún campo está vacío
+                if (tipo === null || tipo === "" ||subActividad === "") {
+                    valido = false;
+                    comentario = 'Debe ingresar todos los campos en la fila ' + (index + 1);
+                    return false; // Salir del bucle each() si encuentra algún campo vacío
+                }
+
+            }else{
+
+                // Validar si algún campo está vacío
+                if (tipo === null || tipo === "" ||
+                    total === null || total === "" ||
+                    enero === null || enero === "" ||
+                    febrero === null || febrero === "" ||
+                    marzo === null || marzo === "" ||
+                    abril === null || abril === "" ||
+                    mayo === null || mayo === "" ||
+                    junio === null || junio === "" ||
+                    julio === null || julio === "" ||
+                    agosto === null || agosto === "" ||
+                    septiembre === null || septiembre === "" ||
+                    octubre === null || octubre === "" ||
+                    noviembre === null || noviembre === "" ||
+                    diciembre === null || diciembre === "" ||
+                    subActividad === "") {
+
+                    valido = false;
+                    comentario = 'Debe ingresar todos los campos en la fila ' + (index + 1);
+                    return false; // Salir del bucle each() si encuentra algún campo vacío
+                }
+
+                if (parseFloat(total) === 0){
+                    valido = false;
+                    comentario = 'Debe ingresar valores en los meses de la actividad ' + (index + 1);
+                    return false;
+                }
+
             }
 
-            if (parseFloat(total) === 0){
-                valido = false;
-                comentario = 'Debe ingresar valores en los meses de la actividad ' + (index + 1);
-                return false;
-            }
+
 
         }
     });
@@ -248,8 +267,16 @@ function validarCampos() {
     let justifi = $('#justifi').val();
     if (justifi === null || justifi.trim() === "") {
         valido = false;
-        comentario = 'Ingrese una justificación por la cual se requiere la reforma';
+        comentario = 'Ingrese una justificación por la cual se requiere la reforma.';
     }
+
+
+    let tipo = $('#select_tipo').val();
+    if (tipo === null || tipo.trim() === "") {
+        valido = false;
+        comentario = 'Seleccione el tipo Reforma que quiere realizar.';
+    }
+
 
     // Mostrar mensaje de error si es necesario
     if (!valido) {
@@ -288,6 +315,20 @@ $(document).ready(function() {
     function actualizarTotal($inputsMeses, $inputTotal) {
         let total = calcularTotal($inputsMeses);
         $inputTotal.val(total.toFixed(2));
+
+        if(tipoObjeto == 'DISMINUYE'){
+            let totaldis = $('#disTotal').val();
+            let valordis = parseFloat(totaldis) || 0;
+            valordis += total;
+            $('#disTotal').val(valordis);
+        }else if(tipoObjeto == 'AUMENTA'){
+            let totalaum = $('#aumTotal').val();
+            let valoraum = parseFloat(totalaum) || 0;
+            valoraum += total;
+            $('#disTotal').val(valoraum);
+        }
+
+
     }
 
     // Evento de cambio para el select de tipo de inversión
@@ -297,24 +338,30 @@ $(document).ready(function() {
         // Obtener la fila actual
         let $fila = $(this).closest('tr');
 
+        let inputsMeses = $fila.find('select[name^="tipo[]"]');
+        let tipoObjeto =  inputsMeses.val();
+
         // Obtener los campos de meses y total de la fila actual
         let $inputsMeses = $fila.find('input[name^="enero"], input[name^="febrero"], input[name^="marzo"], input[name^="abril"], input[name^="mayo"], input[name^="junio"], input[name^="julio"], input[name^="agosto"], input[name^="septiembre"], input[name^="octubre"], input[name^="noviembre"], input[name^="diciembre"]');
         let $inputTotal = $fila.find('input[name="total[]"]').prop('disabled', true);
 
         // Actualizar el total al cambiar cualquier campo de meses
         $inputsMeses.off('input').on('input', function() {
-            actualizarTotal($inputsMeses, $inputTotal);
+            actualizarTotal($inputsMeses, $inputTotal, tipoObjeto);
         });
 
         // Inicializar el total al cargar la página
-        actualizarTotal($inputsMeses, $inputTotal);
+        actualizarTotal($inputsMeses, $inputTotal, tipoObjeto);
+
     });
+
+
 
     // Llamar al evento de cambio al cargar la página para inicializar el estado de los campos
     $('select[name="tipo[]"]').trigger('change');
 
-    //agregarUnidad();
-
+    
+    // ================================ CARGAR LA ESTRUCTURA PRESUPUESTARIA ================================
     $('#unidad_ejecutora').on('change', function() {
 
         var id_unidad = $('#unidad_ejecutora').val();
@@ -438,6 +485,7 @@ $(document).ready(function() {
             }
         });
     });
+
 });
 
 
@@ -673,27 +721,31 @@ function crearReformaConActividades() {
 
 
 function agregarFilaATabla(poa) {
+
+    let id_direccion = $('#id_direccion').val();
+
     // Crea una nueva fila con los datos de la actividad
     let nuevaFila = `
         <tr style="">
-            <input type="hidden" name="id_poa[]" value="${poa.id}">
-            <input type="hidden" name="solicitud[]" value="true">
-            <input type="hidden" name="id_area_soli[]" value="${(poa.id_area)}">
-            <td>
-                <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
-                </i>
+            <td class="text-center align-middle">
+                <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
+                <input type="hidden" name="id_poa[]" value="${poa.id}">
+                <input type="hidden" name="solicitud[]" value="${( poa.id_area == id_direccion ? 'true' : 'false')}">
+                <input type="hidden" name="id_area_soli[]" value="${(poa.id_area)}">
             </td>
             <td>${poa.nombreActividadOperativa}</td>
             <td>
-                <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="${poa.nombreSubActividad}">
+                <textarea class="form-control" style="width: 350px;" rows="3" name="subActividad[]">${poa.nombreSubActividad}</textarea>
             </td>
             <td>${poa.nombreItem}</td>
             <td>${poa.descripcionItem}</td>
             <td class="width">
-                <select class="form-control single-select" name="tipo[]">
+                <select class="form-control single-select" name="tipo[]" onchange="cambioSelect(this)">
                     <option value="" selected disabled>Seleccionar tipo...</option>
                     <option value="DISMINUYE">Disminuye</option>
                     <option value="AUMENTA">Aumenta</option>
+                    <option value="IGUAL">Igual</option>
+                    <option value="AJUSTE">Ajuste</option>
                 </select>
             </td>
             <td><input class="form-control" style="width: 125px;" type="text" name="enero[]" value="0"></td>
@@ -716,8 +768,8 @@ function agregarFilaATabla(poa) {
 }
 
 function limpiarFormulario() {
-    $('#coordina').val('');
-    $('#fecha').val('');
+    //$('#coordina').val('');
+    //$('#fecha').val('');
     $('#poa').val('');
     $('#obOpera').val('');
     $('#actOpera').val('');
@@ -726,12 +778,12 @@ function limpiarFormulario() {
     $('#monDisp').val('');
     $('#desItem').val('');
     $('#plurianual').prop('checked', false);
-    $('#unidad_ejecutora').val('');
-    $('#programa').val('');
-    $('#proyecto').val('');
-    $('#actividad').val('');
-    $('#fuente').val('');
-    $('#justifi').val('');
+    //$('#unidad_ejecutora').val('');
+    //$('#programa').val('');
+    //$('#proyecto').val('');
+    //$('#actividad').val('');
+    //$('#fuente').val('');
+    //$('#justifi').val('');
 }
 
 function fetchItemData(itemId) {
@@ -780,6 +832,7 @@ function limpiarTblAct() {
     $('#tblActArea').hide();
 
 }
+
 
 //Función para filtrar por área dependiendo de la coordinación zonal
 $(document).on('change', '#czonal', function(){
@@ -863,6 +916,7 @@ $( function () {
 function agregarActAreaFila(element) {
     // Encuentra la fila de la tabla que contiene el botón que se ha clicado
     let fila = $(element).closest('tr');
+    let id_direccion = $('#id_direccion').val();
 
     // Obtén el ID de la actividad (POA) desde el input oculto
     let id_poa = fila.find('input[name="id_poa[]"]').val();
@@ -881,23 +935,25 @@ function agregarActAreaFila(element) {
             // Agrega nuevas filas basadas en la respuesta del servidor
                 rows +=`
                 <tr>
-                    <input type="hidden" name="id_poa[]" value="${(data.id)}">
-                    <input type="hidden" name="solicitud[]" value="false">
-                    <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
-                    <td>
-                    <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)">
+                    <td class="text-center align-middle">
+                        <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
+                        <input type="hidden" name="id_poa[]" value="${(data.id)}">
+                        <input type="hidden" name="solicitud[]" value="${( data.id_areaS == id_direccion ? 'true' : 'false')}">
+                        <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
                     </td>
                     <td>${(data.nombreActividadOperativa)}</td>
                     <td>
-                        <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="${(data.nombreSubActividad)}">
+                        <textarea class="form-control" style="width: 350px;" rows="3" name="subActividad[]">${data.nombreSubActividad}</textarea>
                     </td>
                     <td>${(data.nombreItem)}</td>
                     <td>${(data.descripcionItem)}</td>
                     <td class="width">
-                        <select class="form-control" name="tipo[]">
+                        <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
                             <option value="" selected disabled>Seleccionar tipo...</option>
                             <option value="DISMINUYE">Disminuye</option>
                             <option value="AUMENTA">Aumenta</option>
+                            <option value="IGUAL">Igual</option>
+                            <option value="AJUSTE">Ajuste</option>
                         </select>
                     </td>
                     <td>
@@ -967,6 +1023,7 @@ function agregarActAreaFila(element) {
 function agregarActividad() {
 
     let id_poa = $('#select_idpoa').val();
+    let id_direccion = $('#id_direccion').val();
 
     if(id_poa != ''){
 
@@ -987,23 +1044,25 @@ function agregarActividad() {
                 // Agrega nuevas filas basadas en la respuesta del servidor
                     rows +=`
                     <tr>
-                        <input type="hidden" name="id_poa[]" value="${(data.id)}">
-                        <input type="hidden" name="solicitud[]" value="true">
-                        <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
-                        <td>
-                        <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)">
+                        <td class="text-center align-middle">
+                            <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
+                            <input type="hidden" name="id_poa[]" value="${(data.id)}">
+                            <input type="hidden" name="solicitud[]" value="${( data.id_areaS == id_direccion ? 'true' : 'false')}">
+                            <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
                         </td>
                         <td>${(data.nombreActividadOperativa)}</td>
                         <td>
-                            <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="${(subActividad)}">
+                            <textarea class="form-control" style="width: 350px;" rows="3" name="subActividad[]">${subActividad}</textarea>
                         </td>
                         <td>${(data.nombreItem)}</td>
                         <td>${(data.descripcionItem)}</td>
                         <td class="width">
-                            <select class="form-control" name="tipo[]">
+                            <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
                                 <option value="" selected disabled>Seleccionar tipo...</option>
                                 <option value="DISMINUYE">Disminuye</option>
                                 <option value="AUMENTA">Aumenta</option>
+                                <option value="IGUAL">Igual</option>
+                                <option value="AJUSTE">Ajuste</option>
                             </select>
                         </td>
                         <td>
@@ -1132,7 +1191,16 @@ function cambioSelect(selectElement) {
                     }
                 }
             });
-        } else {
+        }if(selectElement.value === 'IGUAL'){
+
+            inputs.forEach(function(input, index) {
+
+                input.value = '0.00';
+                input.setAttribute('disabled', 'disabled');
+
+            });
+
+        }else {
             // Si no es "DISMINUYE", deshabilitar todos los inputs en la fila excepto el último
             inputs.forEach(function(input, index) {
                 if (index < inputs.length - 1) {
@@ -1170,7 +1238,7 @@ function agregarEstructura(){
                     $('#unidad_ejecutora').empty();
                     unidad.forEach(programa => {
                         $('#unidad_ejecutora').append(
-                            `<option value="${programa.id}" ${programa.id == data.id_uni ? 'selected' : ''}>
+                            `<option value="${programa.id}" ${programa.id == data.id_unidad ? 'selected' : ''}>
                                 ${programa.nombre} - ${programa.descripcion}
                             </option>`
                         );

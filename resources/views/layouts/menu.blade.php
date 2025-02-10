@@ -323,7 +323,7 @@
                     <li class="menu-item {{ active('planificacion.reformaIndex') }}">
                         <a href="{{ route('planificacion.reformaIndex') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-repeat-1"></i>
-                            <span class="menu-text">Lista de Reformas</span>
+                            <span class="menu-text">Solicitud de Reformas</span>
                         </a>
                     </li>
                 @endcan

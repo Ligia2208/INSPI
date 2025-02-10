@@ -12,10 +12,14 @@ $( function () {
 
         processing: true,
         serverSide: true,
-        lengthMenu: [8, 15, 25, 50, 100],
+        lengthMenu: [50, 100],
 
         ajax: {
             url: '/planificacion/vistaUser', // La URL que devuelve los datos en JSON
+            data: function (d) {
+                d.estado = $('#filterEstado').val();
+                d.item = $('#filterItem').val();
+            }
         },
         columns: [
             { data: 'coordinacion',        name: 'coordinacion' },
@@ -78,6 +82,60 @@ $( function () {
                 searchable: false ,
                 render: function (data, type, full, meta) {
 
+                    let btnCancelarPoa = '';
+                    if( full.estado == 'O'){
+
+                        btnCancelarPoa = `
+                            <a id="btnEliminarCerti" data-id_borrar="${full.id}" title="Eliminar certificación" class="red show-tooltip ml-1" data-title="Eliminar certificación">
+                                <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
+                            </a>
+                        `;
+                        
+                    }
+
+                    let btnEditar = '';
+                    if(!full.estado_pro){
+                        btnEditar = `
+                            <a id="btnEditarPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                                <i class="font-22 fadeIn animated bi bi-pen"></i>
+                            </a>
+
+                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
+                            </a>
+                        `;
+                    }
+
+                    if(!full.descargado){
+
+                        if(full.id_area == 17 || full.id_area == 18){
+
+                            btnDescarga = `
+                            <a id="btnPDF_POAZonal" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
+                                <i class="font-22 bi bi-filetype-pdf"></i>
+                            </a>
+                            `;
+
+                        }else{
+
+                            btnDescarga = `
+                            <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
+                                <i class="font-22 bi bi-filetype-pdf"></i>
+                            </a>
+                            `;
+
+                        }
+
+                    }else{
+                        btnDescarga = `
+                            <a id="btnPDF_descargado" data-id_POA="${full.id}" title="PDF Descargado" class="show-tooltip" data-title="PDF Descargado">
+                                <i class="font-22 bi bi-check2-circle text-success"></i>
+                            </a>
+                            `;
+                        
+                        
+                    }
+
                     var array = `
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
                     `;
@@ -97,12 +155,11 @@ $( function () {
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Visualizar" class="show-tooltip mr-1" data-title="Visualizar">
                                 <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
-                            <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
-                                <i class="font-22 bi bi-filetype-pdf"></i>
-                            </a>
+                            ${btnDescarga}
+                            ${btnCancelarPoa}
                         `;
                     }else if(full.estado == 'S'){
 
@@ -125,7 +182,21 @@ $( function () {
 
                         }
 
-                    } else {
+                    }else if(full.estado == 'R'){
+
+                        array += `
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+
+                            <a id="btnEditarPOARechazo" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
+                                <i class="font-22 fadeIn animated bi bi-pen"></i>
+                            </a>
+
+                        `;
+
+
+                    }else {
                         array += `
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
@@ -135,13 +206,8 @@ $( function () {
                                 <i class="font-22 fadeIn animated bi bi-file-earmark-text  text-warning"></i>
                             </a>
 
-                            <a id="btnEditarPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
-                                <i class="font-22 fadeIn animated bi bi-pen"></i>
-                            </a>
+                            ${btnEditar}
 
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
-                            </a>
                         `;
                     }
             
@@ -196,9 +262,16 @@ $( function () {
 
     var table = $('#tblPlanificacionVistaUser').DataTable();
 
+    /*
     $('#filterItem').on('change', function() {
         var itemId = $(this).val(); // Obtener el valor seleccionado del filtro Item
         $('#tblPlanificacionVistaUser').DataTable().ajax.url('/planificacion/vistaUser?item=' + itemId).load();
+    });
+    */
+
+    // **Actualizar la tabla cuando cambien los filtros**
+    $('#filterEstado, #filterItem').on('change', function () {
+        table.ajax.reload();
     });
 
 
@@ -212,14 +285,26 @@ $( function () {
     /* VALIDAR CERTIFICACION */
 
 
-    /* CARGAR REGISTRO */
+    /* CARGAR REGISTRO PARA EDITAR */
     $(document).on('click', '#btnEditarPOA', function(){
         let id_planificacion = $(this).data('id_editar');
 
         window.location.href = '/planificacion/editarPlanificacion/'+ id_planificacion;
 
     });
-    /* CARGAR REGISTRO */
+    /* CARGAR REGISTRO PARA EDITAR */
+
+
+
+    /* CARGAR REGISTRO PARA EDITAR EL RECHAZO */
+    $(document).on('click', '#btnEditarPOARechazo', function(){
+        let id_planificacion = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/editarPlanificacionRechazo/'+ id_planificacion;
+
+    });
+    /* CARGAR REGISTRO PARA EDITAR EL RECHAZO */
+
 
 
     /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
@@ -631,6 +716,7 @@ $( function () {
 
 //CÓDIGO PARA BOTÓN DE BORRAR
 $(function(){
+
     $(document).on('click', '#btnEliminarPOA', function(){
         //alert('funciona');
 
@@ -651,6 +737,76 @@ $(function(){
                     type: 'POST',
                     //url: '{{ route("encuesta.saveEncuesta") }}',
                     url: '/planificacion/deletePoa',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        'id': id_POA,
+                    },
+                    success: function(response) {
+
+                        //console.log(response.data['id_chat'])
+                        if(response.data){
+
+                            if(response['data'] == true){
+                                Swal.fire({
+                                    icon: 'success',
+                                    type: 'success',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                }).then((result) => {
+                                    if (result.value == true) {
+                                        table.ajax.reload(); //actualiza la tabla
+                                    }
+                                });
+
+                            }else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    type:  'error',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                });
+                            }
+                        }
+                    },
+                    error: function(error) {
+                        Swal.fire({
+                            icon:  'success',
+                            title: 'SoftInspi',
+                            type:  'success',
+                            text:   error,
+                            showConfirmButton: true,
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+
+    $(document).on('click', '#btnEliminarCerti', function(){
+        //alert('funciona');
+
+        let id_POA = $(this).data('id_borrar');
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Seguro quiere anular esta Certificación.',
+            showConfirmButton: true,
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.value == true) {
+
+                $.ajax({
+
+                    type: 'POST',
+                    //url: '{{ route("encuesta.saveEncuesta") }}',
+                    url: '/planificacion/deleteCertificacion',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -820,6 +976,33 @@ $(document).on('click', '#btnPDF_POA', function(){
 
 });
 
+//  Para los zonales 
+$(document).on('click', '#btnPDF_POAZonal', function(){
+
+    let id_POA = $(this).data('id_poa');
+
+    $('#id_poa2').val(id_POA);
+
+    document.getElementById('btnModalReportPOAZonal').click();
+
+});
+//  Para los zonales 
+
+
+
+$(document).on('click', '#btnPDF_descargado', function(){
+
+    Swal.fire({
+        icon: 'warning',
+        type:  'warning',
+        title: 'SoftInspi',
+        text: 'Esta Certificación POA ya fue descargada!',
+        showConfirmButton: true,
+    });
+
+});
+
+
 
 /* CERRAR EL MODAL Y LIMPIAR LOS CAMPOSL */
 $(document).on('click', '#btnCerrarModalPOA', function() {
@@ -978,11 +1161,15 @@ $(document).on('click', '#btnGenerarReportPOA', function(){
                  var url = window.URL.createObjectURL(blob);
                  var a = document.createElement('a');
                  a.href = url;
-                 a.download = 'reporte_planificacion.pdf';
+                 a.download = 'Certificacion_POA.pdf';
                  document.body.appendChild(a);
                  a.click();
                  window.URL.revokeObjectURL(url);
                  a.remove();
+
+                 //si todo esta bien, entonces actualizamos el estado de descarga
+                 descarga(id_poa);
+
              },
              error: function(error) {
                  Swal.fire({
@@ -999,11 +1186,205 @@ $(document).on('click', '#btnGenerarReportPOA', function(){
 
 
 
+ $(document).on('click', '#btnGenerarReportPOA2', function(){
+
+    var creadoSelect          = $('#creado2').val();
+    var autorizadoSelect      = $('#autorizado2').val();
+    var reportaSelect         = $('#reporta2').val();
+    var areaReqSelect         = $('#areaReq2').val();
+    var planificacionYGSelect = $('#planificacionYG2').val();
+    var id_poa                = $('#id_poa2').val();
+
+    var cargo_creado          = $('#cargo_creado2').val();
+    var cargo_autorizado      = $('#cargo_autorizado2').val();
+    var cargo_reporta         = $('#cargo_reporta2').val();
+    var cargo_areaReq         = $('#cargo_areaReq2').val();
+    var cargo_planificacionYG = $('#cargo_planificacionYG2').val();
+
+    if(creadoSelect == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el usuario que elaboró la planificación',
+            showConfirmButton: true,
+        });
+
+    }else if(autorizadoSelect == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el usuario que autorizó la planificación',
+            showConfirmButton: true,
+        });
+
+    }else if(reportaSelect == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el usuario que generó el reporte',
+            showConfirmButton: true,
+        });
+
+    }else if(areaReqSelect == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el usuario que valida la planificación',
+            showConfirmButton: true,
+        });
+
+    }else if(planificacionYGSelect == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el usuario que aprueba la planificación',
+            showConfirmButton: true,
+        });
+
+    }else if(cargo_creado == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el cargo del usuario que crea la planificación',
+            showConfirmButton: true,
+        });
+
+    }else if(cargo_autorizado == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el cargo del usuario que autorizó la planificación',
+            showConfirmButton: true,
+        });
+
+    }else if(cargo_reporta == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el cargo del usuario que revisó la planificación',
+            showConfirmButton: true,
+        });
+
+    }else if(cargo_areaReq == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el cargo del usuario que  la planificación',
+            showConfirmButton: true,
+        });
+
+    }else if(cargo_planificacionYG == ''){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Debe ingresar el usuario que autorizó la planificación',
+            showConfirmButton: true,
+        });
+
+    }else{
+        $.ajax({
+            type: 'GET',
+            url: '/planificacion/reportHexa?id_creado=' + creadoSelect +
+                '&id_autorizado=' + autorizadoSelect +
+                '&id_reporta=' + reportaSelect +
+                '&id_areaReq=' + areaReqSelect +
+                '&id_planificacionYG=' + planificacionYGSelect +
+                '&id_poa=' + id_poa,
+            data:{
+                cargo_creado: cargo_creado,
+                cargo_autorizado: cargo_autorizado,
+                cargo_reporta: cargo_reporta,
+                cargo_areaReq: cargo_areaReq,
+                cargo_planificacionYG: cargo_planificacionYG,
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, status, xhr) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'Certificacion_POA.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+
+                //si todo esta bien, entonces actualizamos el estado de descarga
+                descarga(id_poa);
+
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon:  'error',
+                    title: 'SoftInspi',
+                    type:  'error',
+                    text:   error,
+                    showConfirmButton: true,
+                });
+            }
+        });
+    }
+});
+
+
+
 
  function ejecutar(){
 
     alert('funciona');
 
     window.location.href = 'planificacion/ejecutarPla';
+
+ }
+
+
+
+
+ function descarga(id_poa){
+
+    $.ajax({
+        type: 'GET',
+        url: '/planificacion/actualizaDescarga?id_poa=' + id_poa,
+        success: function(response, status, xhr) {
+
+            if(response.success){
+                //si todo esta bien, entonces actualizamos el estado de descarga
+                var table = $('#tblPlanificacionVistaUser').DataTable();
+                table.ajax.reload();
+            }
+
+        },
+        error: function(error) {
+            Swal.fire({
+                icon:  'error',
+                title: 'SoftInspi',
+                type:  'error',
+                text:   error,
+                showConfirmButton: true,
+            });
+        }
+    });
 
  }

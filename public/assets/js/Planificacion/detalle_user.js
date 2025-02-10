@@ -1,10 +1,10 @@
 $(function(){
     //populateYearSelect(2020);
-    $('.js-example-basic-single').select2({
+    $('.basic-single').select2({
         width: '100%',
     });
 
-    populateYearSelect(2020);
+    populateYearSelect(2023);
 
 
 
@@ -35,7 +35,10 @@ $(function(){
         var cargo_revisa  = $('#cargo_revisa').val();
         var cargo_aprueba = $('#cargo_aprueba').val();
 
-        var yearSelect    = $('#yearSelect').val();
+        var filterAnio         = $('#filterAnio').val();
+        var filterItem         = $('#filterItem').val();
+        var filterSubActividad = $('#filterSubActividad').val();
+
         var id_direccion  = $('#id_direccion').val();
 
         if (elaboraSelect == '') {
@@ -91,8 +94,11 @@ $(function(){
                     cargo_elabora: cargo_elabora,
                     cargo_revisa:  cargo_revisa,
                     cargo_aprueba: cargo_aprueba,
-                    filterAnio:    yearSelect,
                     id_direccion:  id_direccion,
+
+                    filterAnio:    filterAnio,        
+                    filterItem:    filterItem,        
+                    filterSubActividad, filterSubActividad,
                 },
                 xhrFields: {
                     responseType: 'blob'
@@ -102,7 +108,7 @@ $(function(){
                     var url = window.URL.createObjectURL(blob);
                     var a = document.createElement('a');
                     a.href = url;
-                    a.download = 'reporte_anual_' + yearSelect + '.pdf';
+                    a.download = 'reporte_anual_' + filterAnio + '.pdf';
                     document.body.appendChild(a);
                     a.click();
                     window.URL.revokeObjectURL(url);
@@ -141,6 +147,11 @@ $( function () {
         lengthMenu: [8, 15, 25, 50, 100],
         ajax: {
             url: '/planificacion/detalleUser', // La URL que devuelve los datos en JSON
+            data: function (d) {
+                d.anio = $('#filterAnio').val();
+                d.item = $('#filterItem').val();
+                d.sub_actividad = $('#filterSubActividad').val();
+            }
         },
         columnDefs: [
             { width: '400px', targets: 2 } // Ajusta el índice según la posición de "Obj. Operativo"
@@ -238,17 +249,72 @@ $( function () {
         },
         createdRow: function (row, data, dataIndex) {
             // Aquí aplicas el colspan a la celda deseada (por ejemplo, la celda de la columna "enero")
+            /*
             if (data.POA) {
                 // Buscas la celda correspondiente y le aplicas colspan
                 $(row).find('td:eq(5)').attr('colspan', 3);  // Aplica colspan a la columna 5 (enero) para que ocupe 3 columnas
             }
+            */
         },
         
 
     });
 
 
+    $('.filter').on('change', function () {
+        $('#tblPlanificacionDetalleUser').DataTable().ajax.reload();
+    });
+
     var table = $('#tblPlanificacionDetalleUser').DataTable();
+
+
+
+
+    // Generar el reporte EXCEL
+    $(document).on('click', '#btnGenerateExcel', function() {
+
+        var id_direccion       = $('#id_direccion').val();
+        var filterAnio         = $('#filterAnio').val();
+        var filterItem         = $('#filterItem').val();
+        var filterSubActividad = $('#filterSubActividad').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/planificacion/reportDetalleExcelUser',
+            data: {
+                filterAnio         : filterAnio,
+                filterItem         : filterItem,
+                filterSubActividad : filterSubActividad,
+                id_direccion       : id_direccion,
+            },
+            xhrFields: {
+                responseType: 'blob'  // Definir que esperamos una respuesta de tipo blob (archivo)
+            },
+            success: function(response, status, xhr) {
+                var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }); // Tipo para Excel
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_detalle_' + filterAnio + '.xlsx'; // Extensión .xlsx para el archivo Excel
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+                $('#addReportDetalle').modal('hide');
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el archivo Excel.',
+                    showConfirmButton: true,
+                });
+            }
+        });
+
+    });
+
+
 
 });
 
@@ -282,7 +348,7 @@ function actualizarTabla() {
 
 function populateYearSelect(startYear) {
     var currentYear = new Date().getFullYear();
-    var select = document.getElementById('yearSelect');
+    var select = document.getElementById('filterAnio');
 
      for (var year = startYear; year <= currentYear; year++) {
          var option = document.createElement('option');

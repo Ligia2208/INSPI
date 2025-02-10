@@ -45,6 +45,8 @@
                                     <th>Nro de solicitud</th>
                                     <th>Solicitante</th>
                                     <th>Justificacion</th>
+                                    <th>Monto</th>
+                                    <th>Tipo</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th>Acciones</th>
@@ -58,6 +60,8 @@
                                     <th>Nro de solicitud</th>
                                     <th>Solicitante</th>
                                     <th>Justificacion</th>
+                                    <th>Monto</th>
+                                    <th>Tipo</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th>Acciones</th>
@@ -111,5 +115,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_reforma.js?v0.0.6')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_reforma.js?v0.0.9')}}"></script>
 @endpush

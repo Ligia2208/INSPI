@@ -32,7 +32,9 @@ class Poa extends Model
                             'fecha',
                             'nro_poa',
                             'año',
+                            'monto_item',
                             'estado',
+                            'descargado',
                             'created_at',
                             'updated_at'
                           ];

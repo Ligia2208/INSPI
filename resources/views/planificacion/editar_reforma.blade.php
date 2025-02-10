@@ -55,8 +55,20 @@
             ?>
 
         <input type="hidden" id="id_reforma" value="{{ $id }}">
+        <input type="hidden" id="id_direccion" value="{{ $id_direccion }}">
 
             <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+
+                <div class="row mb-5" id="contenedorBotonAgregarActividad">
+                    <hr type="hidden"/>
+                    <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormularioActividad()" type="button">
+                        <i class="lni lni-circle-plus" id="btnActividad"></i> Crear Actividad
+                    </a>
+                    <a class="col-2 btn btn-success px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormActArea()" type="button">
+                        <i class="lni lni-circle-plus" id="btnActividadArea"></i> Actividad Externa
+                    </a>
+                </div>
+
                 <table class="table table-striped table-bordered table-hover" id="tblActividadesEditar">
                     <thead class="table-primary text-center align-middle">
                         <tr>
@@ -84,8 +96,12 @@
                     <tbody>
                         @foreach($atributos as $atributo)
                         <tr>
-                            <td>
-                                <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
+                            <td class="d-flex justify-content-center align-items-center">
+                                <input type="hidden" name="id_actividad[]" value="{{ $atributo->id_actividad }}">
+                                <input type="hidden" name="solicitud[]" value="{{ $id_direccion == $atributo->id_areaS ? 'true' : 'false' }}">
+                                <input type="hidden" name="id_area_soli[]" value="{{$atributo->id_areaS}}">
+                                <input type="hidden" name="id_poa[]" value="{{$atributo->id_poa}}">
+                                <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
                             </td>
                             <td style="text-align: justify;">{{ $atributo->nombreActividadOperativa }}</td>
                             <td>
@@ -98,6 +114,8 @@
                                     <option value="" selected disabled>Seleccionar tipo...</option>
                                     <option value="DISMINUYE" {{ $atributo->tipo == 'DISMINUYE' ? 'selected' : '' }}>Disminuye</option>
                                     <option value="AUMENTA" {{ $atributo->tipo == 'AUMENTA' ? 'selected' : '' }}>Aumenta</option>
+                                    <option value="IGUAL" {{ $atributo->tipo == 'IGUAL' ? 'selected' : '' }}>Igual</option>
+                                    <option value="AJUSTE" {{ $atributo->tipo == 'AJUSTE' ? 'selected' : '' }}>Ajuste</option>
                                 </select>
                             </td>
                             <td><input class="form-control" type="text" name="enero1[]" value="{{ $atributo->enero }}"></td>
@@ -118,18 +136,6 @@
                     </tbody>
                 </table>
             </div>
-
-
-            <div class="row" id="contenedorBotonAgregarActividad">
-            <hr type="hidden"/>
-                <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormularioActividad()" type="button">
-                    <i class="lni lni-circle-plus" id="btnActividad"></i> Crear Actividad
-                </a>
-                <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormActArea()" type="button">
-                    <i class="lni lni-circle-plus" id="btnActividadArea"></i> Agregar Actividad
-                </a>
-            </div>
-
 
 
             <!-- ==========================FORMULARIO PARA CREAR ACTIVIDAD EN REFORMA=============================== -->
@@ -290,85 +296,90 @@
 
         
 
-        <!-- ==========================FORMULARIO PARA AGREGAR ACTIVIDAD EXISTENTE DE OTRA ÁREA=============================== -->
+            <!-- ==========================FORMULARIO PARA AGREGAR ACTIVIDAD EXISTENTE DE OTRA ÁREA=============================== -->
 
-        <div id="formularioActArea" style="display: none;" class="mt-4">
-                <div class="card">
-                    <div class="card-head">
-                        <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
-                            <div class="lh-1">
-                                <h1 class="h3 mb-0 text-white lh-1">Añadir actividad por Dirección</h1>
+                <div id="formularioActArea" style="display: none;" class="mt-4">
+                    <div class="card">
+                        <div class="card-head">
+                            <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
+                                <div class="lh-1">
+                                    <h1 class="h3 mb-0 text-white lh-1">Selecciona Actividad Externa</h1>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="row p-2">
+
+                                <div class="col-md-4 mt-2">
+                                    <label for="area" class="form-label fs-6">Direcciones</label>
+                                    <select id="area" name="area" class="form-select single-select" required>
+                                        <option value="0">Seleccione Opción</option>
+                                        @foreach($direcciones as $direccion)
+                                        <option value="{{$direccion->id}}">{{$direccion->nombre}}</option>
+                                        @endforeach
+                                    </select>
+                                    <div class="invalid-feedback">Por favor seleccione un Area.</div>
+                                </div>
+                            </div>
+
+                            <div id="tblActArea" style="display: none;" class="mt-3">
+                                <table class="table table-striped" style="background-color: white; padding">
+                                    <thead>
+                                        <tr>
+                                            <th>OPCIONES</th>
+                                            <th>DEPARTAMENTO</th>
+                                            <th>ACTIVIDADES OPERATIVAS</th>
+                                            <th>SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
+                                            <th>ITEM PRESUPUESTARIO</th>
+                                            <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody class="width">
+                                        @foreach($atributos as $atributo)
+                                        <tr>
+                                            <input type="hidden" name="id_poa[]" value="{{ $atributo->id_poa }}">
+                                            <td>
+                                                <i type="button" class="font-22 fadeIn animated bi bi-plus-square" title="Agregar actividad" onclick="CrearActArea(this)">
+                                                </i>
+                                            </td>
+                                            <td>{{ $atributo->departamento}}</td>
+                                            <td>{{ $atributo->nombreActividadOperativa}}</td>
+                                            <td>{{ $atributo->nombreSubActividad }}</td>
+                                            <td>{{ $atributo->nombreItem }}</td>
+                                            <td>{{ $atributo->descripcionItem }}</td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
-                    <div class="card-body">
-                        <div class="row p-2">
 
-                            <div class="col-md-4 mt-2">
-                                <label for="area" class="form-label fs-6">Area</label>
-                                <select id="area" name="area" class="form-control single-select" required>
-                                    <option value="0">Seleccione Opción</option>
-                                </select>
-                                <div class="invalid-feedback">Por favor seleccione un Area.</div>
-                            </div>
-                        </div>
-
-                        <div id="tblActArea" style="display: none;" class="mt-3">
-                            <table class="table table-striped" style="background-color: white; padding">
-                                <thead>
-                                    <tr>
-                                        <th>OPCIONES</th>
-                                        <th>DEPARTAMENTO</th>
-                                        <th>ACTIVIDADES OPERATIVAS</th>
-                                        <th>SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
-                                        <th>ITEM PRESUPUESTARIO</th>
-                                        <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="width">
-                                    @foreach($atributos as $atributo)
-                                    <tr>
-                                        <input type="hidden" name="id_poa[]" value="{{ $atributo->id_poa }}">
-                                        <td>
-                                            <i type="button" class="font-22 fadeIn animated bi bi-plus-square" title="Agregar actividad" onclick="CrearActArea(this)">
-                                            </i>
-                                        </td>
-                                        <td>{{ $atributo->departamento}}</td>
-                                        <td>{{ $atributo->nombreActividadOperativa}}</td>
-                                        <td>{{ $atributo->nombreSubActividad }}</td>
-                                        <td>{{ $atributo->nombreItem }}</td>
-                                        <td>{{ $atributo->descripcionItem }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="col-lg-12 d-flex align-items-center mt-3">
+                        <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="cerrarFormularioAct()">
+                            <i class="bi bi-x-circle"></i> Cerrar
+                        </a>
                     </div>
                 </div>
 
+           
+                <div class="row mt-5">
+                    <div class="col-md-8 mt-2" style="margin-bottom: 20px">
+                        <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
+                        <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4">{{$justificacion_area}}</textarea>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
 
-
-                <div class="col-lg-12 d-flex align-items-center mt-3">
-
-                    <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="cerrarFormularioAct()">
-                        <i class="bi bi-x-circle"></i> Cerrar
-                    </a>
-
-                    <!-- <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="cancelarNuevaActividad()">
-                        <i class="bi bi-x-circle"></i> Cancelar
-                    </a> -->
+                    <div class="col-lg-4 mt-2 mb-5">
+                        <label for="select_tipo" class="form-label">Seleccione el tipo de Reforma:</label>
+                        <select id="select_tipo" class="single-select filter js-example-templating col-lg-12">
+                            <option value="">Elija una Opción</option>
+                            <option value="M" {{ $tipo_refor == 'M' ? 'selected' : '' }}>Modificación PAPP</option>
+                            <option value="R" {{ $tipo_refor == 'R' ? 'selected' : '' }}>Reforma PAPP/Presupuestaria</option>
+                        </select>
+                    </div>
                 </div>
 
-            </div>
-
-
-
-
-        <div class="col-md-12 mt-2" style="margin-bottom: 20px">
-                <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
-                <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4">{{$justificacion_area}}</textarea>
-                <div class="valid-feedback">Looks good!</div>
-        </div>
 
         @if(count($comentarios) > 0)
             <div class="card mb-5 mt-5">
@@ -432,5 +443,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.6')}}"></script>
+<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.10')}}"></script>
 @endpush

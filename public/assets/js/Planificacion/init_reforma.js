@@ -9,9 +9,23 @@ $( function () {
             url: '/planificacion/reformaPrincipal', // La URL que devuelve los datos en JSON
         },
         columns: [
-            { data: 'nro_solicitud',        name: 'nro_solicitud' },
-            { data: 'area',        name: 'area' },
+            { data: 'nro_solicitud',   name: 'nro_solicitud' },
+            { data: 'area',            name: 'area' },
             { data: 'justificacion',   name: 'justificacion' },
+            { data: 'total_monto',     name: 'total_monto' },
+            {   
+                data: null,
+                searchable: false ,
+                render: function (data, type, full, meta) {
+                    var array = "";
+                    if(full.tipo == 'M' ){
+                        array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Modificación PAPP</span><div>';
+                    }else if(full.tipo == 'R'){
+                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Reforma PAPP</span>';
+                    }
+                    return array;
+                }
+            },
             { data: 'fecha',         name: 'fecha' },
             {
                 data: null,
@@ -50,9 +64,14 @@ $( function () {
                                 <i class="font-22 bi bi-layer-backward text-warning"></i>
                             </a>
 
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" data-title="Comentarios">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
+
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
+                            </a>
+
                         </div>
                         `;
                     }else if(full.estado == 'V' ){
@@ -66,6 +85,11 @@ $( function () {
                             <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
                                 <i class="font-22 bi bi-filetype-pdf"></i>
                             </a>
+
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
+                            </a>
+
                         </div>
                         `;
                     }else if(full.estado == 'R'){
@@ -288,6 +312,20 @@ $(function(){
     });
     /* CARGAR REGISTRO */
 })
+
+
+
+//CÓDIGO PARA REDIRIGIR AL FORMULARIO PARA VISUALIZAR LA REFORMA
+$(function(){
+    $(document).on('click', '#btnVerReforma', function(){
+        let id_reforma = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/verReforma/'+ id_reforma;
+
+    });
+})
+
+
 
 
 //========================================================================================================

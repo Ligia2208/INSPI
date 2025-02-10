@@ -220,13 +220,28 @@ $( function () {
 document.addEventListener('DOMContentLoaded', function () {
     const select = document.getElementById('item-select');
     const selectedItemsContainer = document.getElementById('selected-items');
-    const addItemButton = document.getElementById('add-item');
 
-    addItemButton.addEventListener('click', function () {
+    // Verifica qué botón está disponible en la página
+    const addItemButton = document.getElementById('add-item'); // Para valores editables
+    const addItemButton0 = document.getElementById('add-item_0'); // Para valores bloqueados en 0
+
+    if (addItemButton) {
+        addItemButton.addEventListener('click', function () {
+            addItem(false);
+        });
+    }
+
+    if (addItemButton0) {
+        addItemButton0.addEventListener('click', function () {
+            addItem(true);
+        });
+    }
+
+    function addItem(isBlocked) {
         const selectedOptions = Array.from(select.selectedOptions);
 
         selectedOptions.forEach(option => {
-            const itemId = option.value?.trim(); // Asegúrate de que no sea nulo o espacios en blanco
+            const itemId = option.value?.trim(); // Asegurar que no sea nulo o espacios en blanco
             const itemName = option.text?.trim();
 
             if (itemId) { // Validar que el ID no sea nulo, vacío o inválido
@@ -238,7 +253,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 <div class="input-group">
                     <span class="input-group-text">${itemName}</span>
                     <input type="hidden" name="items[${itemId}][id]" value="${itemId}">
-                    <input type="text" name="items[${itemId}][valor]" class="form-control" placeholder="Ingrese un valor">
+                    <input type="text" name="items[${itemId}][valor]" class="form-control" 
+                        value="${isBlocked ? '0' : ''}" ${isBlocked ? 'readonly' : ''} placeholder="${isBlocked ? 'Valor bloqueado' : 'Ingrese un valor'}">
                     <button type="button" class="btn btn-danger remove-item">X</button>
                 </div>
                 `;
@@ -258,8 +274,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
             }
         });
-    });
+    }
 });
+
 
 
 

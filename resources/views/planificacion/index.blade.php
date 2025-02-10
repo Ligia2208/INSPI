@@ -49,7 +49,7 @@
                                 <option value="A">Registrado</option>
                                 <option value="O">Aprobado</option>
                                 <option value="R">Rechazado</option>
-                                <option value="C">Corregido</option>
+                                <!-- <option value="C">Corregido</option> -->
                                 <option value="S">Solicitado</option>
                             </select>
                         </div>
@@ -202,6 +202,6 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.7')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.9')}}"></script>
 <script src="{{asset('assets/js/Planificacion/calculadora.js?v0.0.0')}}"></script>
 @endpush

@@ -14,7 +14,7 @@
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <div class="d-flex align-items-center flex-wrap mr-1">
             <div class="d-flex align-items-baseline mr-5">
-                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Revisión de Reforma</h5></a>
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Visualización de Reforma</h5></a>
             </div>
         </div>
     </div>
@@ -47,7 +47,7 @@
 
             </div>
 
-            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bi bi-table'></i> REVISIÓN REFORMA</h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bi bi-table'></i> VISUALIZACIÓN REFORMA</h2>
             <hr/>
             <?php
                 // var_dump($atributos);
@@ -171,34 +171,9 @@
             </div>
         @endif
 
-        <div class="" style="margin-bottom: 2%;">
-            <div class="col-md-4 mt-2">
-                <label for="estadoReforma" class="form-label fs-6">Estado de comprobación de la reforma</label>
-                <select id="estadoReforma" name="estadoPeforma" class="form-control single-select" required>
-                    <option value="0" selected>Seleccione el estado de la reforma</option>
-                    <option value="O"> Aprobado</option>
-                    <option value="R"> Rechazado</option>
-                    <!-- <option value="C"> Corregido</option> -->
-                    <!-- <option value="4"> Cuatrimestral </option>
-                    <option value="5"> Semestral </option>
-                    <option value="6"> Anual </option>  -->
-                </select>
-            </div>
-        </div>
-
-            <!-- Campo de justificación al final de la tabla -->
-        <div style="margin-top: 20px; margin-bottom: 20px">
-            <label for="justificacion_Reforma">Justificación de la selección:</label>
-            <textarea class="form-control" name="justificacion_Reforma" id="justificacion_Reforma" rows="3"></textarea>
-        </div>
-
         <div class="col-lg-12 d-flex align-items-center justify-content-center">
-            <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="agregarComentarioReforma()" style="margin-right: 2%">
-                <i class="bi bi-send-check"></i> Enviar
-            </a>
-
             <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/planificacion/reformaPrincipal'">
-            <i class="bi bi-caret-left"></i> Regresar
+                <i class="bi bi-caret-left"></i> Regresar
             </a>
         </div>
 

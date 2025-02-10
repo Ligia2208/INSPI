@@ -88,7 +88,7 @@
                     <td style="border: 1px solid black; text-align: center; vertical-align: middle; width: 15%;">Coordinación/ Directiva Técnica o administrativa/ Proyecto</td>
                     <td style="border: 1px solid black; text-align: center; vertical-align: middle; width: 40%;">{{$atributos->departamento}}</td>
                     <td style="border: 1px solid black; text-align: center; vertical-align: middle; width: 10%;">Fecha de solicitud</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">{{$atributos->fecha_sol}}</td>
+                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">{{$atributos->fecha}}</td>
                     <td style="border: 1px solid black; text-align: center; vertical-align: middle; width: 10%; background-color: #f0f0f0;">Nro de Certificación POA:</td>
                     <td style="border: 1px solid black; text-align: center; vertical-align: middle; background-color: #f0f0f0; ">{{$atributos->numero}}</td>
                 </tr>
@@ -194,7 +194,7 @@
                         @endif
                     </td>
                     <td style="border: 1px solid black; text-align: center; vertical-align: middle;">SI</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">{{$atributos->consumoItem}}</td>
+                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">{{$atributos->monto_item}}</td>
                 </tr>
                 <!-- Repite estas filas según la cantidad de datos que se vayan a llenar -->
             </tbody>

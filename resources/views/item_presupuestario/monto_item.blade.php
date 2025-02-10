@@ -248,8 +248,7 @@
 
     @if(!$proestado)
     <div class="container2 mt-5">
-
-        <div class="card  p-4">
+        <div class="card p-4">
 
             <h2>Seleccionar y Editar Ítems Presupuestarios</h2>
 
@@ -281,7 +280,41 @@
             </div>
 
         </div>
+    </div>
+    @else
+    <div class="container2 mt-5">
+        <div class="card p-4">
 
+            <h2>Seleccionar y Editar Ítems Presupuestarios</h2>
+
+            <div class="row mt-5">
+                <!-- Sección de selección -->
+                <div class="col-md-6">
+                    <h4>Seleccionar Ítems</h4>
+                    <select id="item-select" class="form-control js-example-basic-single" multiple placeorder="Seleccione un Item">
+                            <option value="" disabled selected>Seleccione un ítem</option>
+                        @foreach($items as $item)
+                            <option value="{{ $item->id }}">{{ $item->nombre }} - {{ $item->descripcion }}</option>
+                        @endforeach
+                    </select>
+                    <button id="add-item_0" class="btn btn-primary mt-3">Agregar Ítems</button>
+                </div>
+
+                <!-- Sección de edición -->
+                <div class="col-md-6">
+                    <h4>Editar Ítems Seleccionados</h4>
+                    <form id="edit-items-form">
+                        @csrf
+                        <input id='id_dir' value='{{$id_direccion}}' type='hidden'>
+                        <div id="selected-items">
+                            <!-- Los ítems seleccionados aparecerán aquí -->
+                        </div>
+                        <button type="button" class="btn btn-success mt-3" onclick="guardarItemsSeleccionados()">Guardar Cambios</button>                    
+                    </form>
+                </div>
+            </div>
+
+        </div>
     </div>
     @endif
 
@@ -380,5 +413,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/ItemPresupuestario/monto_item.js?v0.0.1')}}"></script>
+<script src="{{asset('assets/js/ItemPresupuestario/monto_item.js?v0.0.2')}}"></script>
 @endpush

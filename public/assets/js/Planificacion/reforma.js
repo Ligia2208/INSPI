@@ -11,7 +11,21 @@ $( function () {
         columns: [
             { data: 'nro_solicitud',  name: 'nro_solicitud' },
             { data: 'justificacion',  name: 'justificacion' },
-            { data: 'total_monto',           name: 'total_monto' },
+            { data: 'total_monto',    name: 'total_monto' },
+            {   
+                data: null,
+                searchable: false ,
+                render: function (data, type, full, meta) {
+                    var array = "";
+                    if(full.tipo == 'M' ){
+                        array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Modificación PAPP</span><div>';
+                    }else if(full.tipo == 'R'){
+                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Reforma PAPP</span>';
+                    }
+                    return array;
+                }
+            },
+
             { data: 'fecha',          name: 'fecha' },
             {
                 data: null,
@@ -459,7 +473,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
                 a.href = url;
-                a.download = 'reporte_planificacion.pdf';
+                a.download = 'Reforma_PAPP-Presupuestaria.pdf';
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);

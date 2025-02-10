@@ -83,9 +83,9 @@ class Form extends Component
         if($method=='update'){
             $config = SedeCrn::where('sedes_id','=',$this->Analiticas->sedes_id)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $this->crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
-            $this->tecnicas = Tecnica::where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
-            $this->reportes = Reporte::where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
-            $this->eventos = Evento::where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
+            $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
+            $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
+            $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
 
         }
 
@@ -98,9 +98,9 @@ class Form extends Component
     }
 
     public function updatedselectedCrn($crns_id){
-        $this->eventos = Evento::where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
-        $this->tecnicas = Tecnica::where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
-        $this->reportes = Reporte::where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->emit('renderJs');
     }
 

@@ -38,19 +38,21 @@
             </a> -->
 
             <div class="row mt-4">
-                <div class="col-md-2">
-                    <label for="nameItemPU" class="form-label fs-6">Seleccionar fecha</label>
-                    <select id="yearSelect" class="form-control js-example-basic-single" onchange="actualizarTabla()"></select>
-                </div>
 
                 <div class="col-md-2">
                     <label class="form-label fs-6">&nbsp;</label>
                     <button id="btnGeneratePDF" class="btn btn-primary form-control">Generar PDF</button>
                 </div>
 
+                <div class="col-md-2">
+                    <label class="form-label fs-6">&nbsp;</label>
+                    <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar Excel</button>
+                </div>
+
                 <div class="col-md-8 d-flex align-items-center justify-content-center">
                     <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Planificación: </h2> <h1 class="ml-2"> ${{$sumaActividades}} </h1>
                 </div>
+
             </div>
 
             <input id="id_direccion" name="id_direccion" value="{{$id_direccion}}" type="hidden">
@@ -58,6 +60,36 @@
 
             <div class="card">
                 <div class="card-body">
+
+                    <div class="filters row">
+                        <div class="col-lg-4">
+                            <label for="filterAnio" class="form-label">Año:</label>
+                            <select id="filterAnio" class="basic-single filter">
+
+                            </select>
+                        </div>
+
+                        <div class="col-lg-8">
+                            <label for="filterItem" class="form-label">Item:</label>
+                            <select id="filterItem" class="basic-single filter">
+                                <option value="">Todos</option>
+                                @foreach($items as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nombre }} - {{ $item->descripcion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-lg-10 mt-2 mb-5">
+                            <label for="filterSubActividad" class="form-label">Sub Actividad:</label>
+                            <select id="filterSubActividad" class="basic-single filter">
+                                <option value="">Todas</option>
+                                @foreach($sub_actividades as $sub_actividad)
+                                    <option value="{{ $sub_actividad->id }}">{{ $sub_actividad->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table id="tblPlanificacionDetalleUser" class="table table-striped table-bordered" style="width:100%">
                             <thead>
@@ -222,5 +254,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/detalle_user.js?v0.0.1')}}"></script>
+<script src="{{asset('assets/js/Planificacion/detalle_user.js?v0.0.3')}}"></script>
 @endpush

@@ -439,13 +439,15 @@ class ItemPresupuestarioController extends Controller{
         $direccion_id = $filiacion->direccion_id;
 
         if($id_area == 7){
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir_tec', $direccion_id)->first();
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'proceso_estado')->where('id_dir_tec', $direccion_id)->first();
             $id_direccion = $direccion->id;
             $monto        = $direccion->monto;
+            $proceso      = $direccion->proceso_estado;
         }else{
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir', $id_area)->first();
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'proceso_estado')->where('id_dir', $id_area)->first();
             $id_direccion = $direccion->id;
             $monto        = $direccion->monto;
+            $proceso      = $direccion->proceso_estado;
         }
 
         $montoTotal = ItemDireccion::where('id_direcciones', $id_direccion)->where('estado', 'A')->sum('monto');
@@ -469,6 +471,7 @@ class ItemPresupuestarioController extends Controller{
             DB::beginTransaction();
     
             try {
+                
                 foreach ($items as $itemData) {
                     $data = [
                         'id_direcciones' => $id_dir,
@@ -611,11 +614,11 @@ class ItemPresupuestarioController extends Controller{
 
         $estrutura = Fuente::select('pla_fuente.id as id_fuente', 'act.id as id_actividad', 'pro.id as id_proyecto',
             'proy.id as id_programa', 'uni.id as id_unidad')
-        ->join('pla_actividad_act as act', 'act.id', '=', 'pla_fuente.id_actividad')
-        ->join('pla_proyecto as pro', 'pro.id', '=', 'act.id_proyecto')
-        ->join('pla_programa as proy', 'proy.id', '=', 'pro.id_programa')
-        ->join('pla_unidad_ejecutora as uni', 'uni.id', '=', 'proy.id_unidad')
-        ->where('pla_fuente.id', $id)->first();
+            ->join('pla_actividad_act as act', 'act.id', '=', 'pla_fuente.id_actividad')
+            ->join('pla_proyecto as pro', 'pro.id', '=', 'act.id_proyecto')
+            ->join('pla_programa as proy', 'proy.id', '=', 'pro.id_programa')
+            ->join('pla_unidad_ejecutora as uni', 'uni.id', '=', 'proy.id_unidad')
+            ->where('pla_fuente.id', $id)->first();
 
         
         $unidad = UnidadEjecutora::where('estado', 'A')->get();
@@ -639,9 +642,9 @@ class ItemPresupuestarioController extends Controller{
         $monto     = $direccion->monto;
 
         $totalItems = ItemDireccion::selectRaw('SUM(monto) as total_monto')
-        ->where('id_direcciones', $id)
-        ->where('estado', 'A')
-        ->first();
+            ->where('id_direcciones', $id)
+            ->where('estado', 'A')
+            ->first();
 
         $totalOcupado = $totalItems->total_monto ?? 0;
 

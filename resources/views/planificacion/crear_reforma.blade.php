@@ -21,32 +21,6 @@
 
 <div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
-    <style>
-
-        table {
-            border: 1px solid black;
-            border-collapse: collapse;
-            font-size: 12px;
-            text-align: center;
-            margin-bottom: 2%;
-            width: 100%;
-        }
-        th, td {
-            border: 1px solid black;
-        }
-        .scroll_horizontal{
-            overflow-x: auto;
-        }
-        .form-select, .form-control {
-            width: 100%;
-        }
-        .width {
-            width: 125px;
-            white-space: break-spaces;
-        }
-
-    </style>
-
     <div class="container2">
         <div class="page-content">
 
@@ -55,41 +29,52 @@
 
             <div class="row">
 
-            <div class="col-lg-10 mt-2 mb-5">
-                <label for="select_idpoa" class="form-label">Seleccione Actividad Para la Reforma:</label>
-                <select id="select_idpoa" class="single-select filter js-example-templating col-lg-12">
-                    <option value="">Seleccione una Sub_Actividad/Objeto de Contratación</option>
-                    @foreach($atributos as $item)
-                        <option value="{{ $item->id }}" 
-                            data-nombre-item="{{ $item->nombreItem }}"
-                            data-descripcion-item="{{ $item->descripcionItem }}">
-                            {{ $item->nombreSubActividad }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-
-
+                <div class="col-lg-10 mt-2 mb-5">
+                    <label for="select_idpoa" class="form-label">Seleccione Sub_Actividad/Objeto de contratación:</label>
+                    <select id="select_idpoa" class="single-select filter js-example-templating col-lg-12">
+                        <option value="">Seleccione una Sub_Actividad/Objeto de Contratación</option>
+                        @foreach($atributos as $item)
+                            <option value="{{ $item->id }}" 
+                                data-nombre-item="{{ $item->nombreItem }}"
+                                data-descripcion-item="{{ $item->descripcionItem }}">
+                                {{ $item->nombreSubActividad }}
+                            </option>
+                        @endforeach
+                    </select>
+                </div>
 
                 <div class="col-md-2 mt-2 mb-5">
                     <label class="form-label fs-6">&nbsp;</label>
-                    <button onclick="agregarActividad()" id="btnAgregarActividad" class="btn btn-primary form-control"><i class="bi bi-file-plus mr-1"></i>Agregar Sub_Actividad</button>
+                    <button onclick="agregarActividad()" id="btnAgregarActividad" class="btn btn-primary form-control"><i class="bi bi-file-plus mr-1"></i>Agregar</button>
                 </div>
+
+
+                <div class="row col-lg-12 mb-5" id="contenedorBotonAgregarActividad">
+                    <hr type="hidden"/>
+                    <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormularioActividad()" type="button">
+                        <i class="lni lni-circle-plus" id="btnActividad"></i> Crear Actividad
+                    </a>
+                    <a class="col-2 btn btn-success px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormActArea()" type="button">
+                        <i class="lni lni-circle-plus" id="btnActividadArea"></i> Actividad Externa
+                    </a>
+                </div>
+
+
 
             </div>
 
+            <input type="hidden" id="id_direccion" name="id_direccion" value="{{$id_direccion}}">
 
-
-            <div class ="scroll_horizontal">
-                <table class="table table-striped" style="background-color: white;" id="tblActividades">
-                    <thead>
+            <div class="table-responsive" style="max-height: 400px; overflow-y: auto;">
+                <table class="table table-striped table-bordered table-hover" id="tblActividades">
+                    <thead class="table-primary text-center align-middle">
                         <tr>
                             <th>OPCIONES</th>
-                            <th style="width: 30px;">ACTIVIDADES OPERATIVAS</th>
+                            <th style="min-width: 200px;">ACTIVIDADES OPERATIVAS</th>
                             <th>SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
                             <th>ITEM PRESUPUESTARIO</th>
                             <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
-                            <th class="width">TIPO DE INGRESO</th>
+                            <th style="min-width: 125px;">TIPO DE INGRESO</th>
                             <th >ENERO</th>
                             <th >FEBRERO</th>
                             <th >MARZO</th>
@@ -109,16 +94,6 @@
 
                     </tbody>
                 </table>
-            </div>
-
-            <div class="row" id="contenedorBotonAgregarActividad">
-            <hr type="hidden"/>
-                <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormularioActividad()" type="button">
-                    <i class="lni lni-circle-plus" id="btnActividad"></i> Crear Actividad
-                </a>
-                <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormActArea()" type="button">
-                    <i class="lni lni-circle-plus" id="btnActividadArea"></i> Agregar Actividad
-                </a>
             </div>
 
 
@@ -155,7 +130,7 @@
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-12 mt-2">
                                 <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación</label>
                                 <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="">
                                 <div class="valid-feedback">Looks good!</div>
@@ -287,7 +262,7 @@
                     <div class="card-head">
                         <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
                             <div class="lh-1">
-                                <h1 class="h3 mb-0 text-white lh-1">Añadir actividad por Dirección</h1>
+                                <h1 class="h3 mb-0 text-white lh-1">Selecciona Actividad Externa</h1>
                             </div>
                         </div>
                     </div>
@@ -358,12 +333,41 @@
 
 
 
+        <div class="row mt-5">
 
-        <div class="col-md-12 mt-2" style="margin-bottom: 20px">
-            <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
-            <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
-            <div class="valid-feedback">Looks good!</div>
+            <div class="col-md-8 mt-2" style="margin-bottom: 20px">
+                <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
+                <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="col-lg-4 row">
+
+                <div class="col-md-6">
+                    <label for="disTotal" class="form-label fs-6">Total Disminuye</label>
+                    <input type="text" id="disTotal" name="disTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="aumTotal" class="form-label fs-6">Total Aumenta</label>
+                    <input type="text" id="aumTotal" name="aumTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="col-lg-12 mt-2 mb-5">
+                    <label for="select_tipo" class="form-label">Seleccione el tipo de Reforma:</label>
+                    <select id="select_tipo" class="single-select filter js-example-templating col-lg-12">
+                        <option value="">Elija una Opción</option>
+                        <option value="M">Modificación PAPP</option>
+                        <option value="R">Reforma PAPP/Presupuestaria</option>
+                    </select>
+                </div>
+
+            </div>
+
         </div>
+
 
         <!-- Campo de justificación al final de la tabla -->
         <!--<div style="margin-top: 20px; margin-bottom: 20px">
@@ -391,5 +395,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.8')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.14')}}"></script>
 @endpush

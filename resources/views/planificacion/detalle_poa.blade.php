@@ -88,6 +88,17 @@
                                 @endforeach
                             </select>
                         </div>
+
+                        <div class="col-lg-6 mt-2">
+                            <label for="filterUnidad" class="form-label">Unidad Ejecutora:</label>
+                            <select id="filterUnidad" class="basic-single filter">
+                                <option value="">Todas</option>
+                                @foreach($unidades as $unidad)
+                                    <option value="{{ $unidad->id }}">{{ $unidad->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
                     </div>
 
 
@@ -96,11 +107,19 @@
                             <thead>
                                 <tr>
                                     <th>Area</th>
+
+                                    <th>Unidad</th>
+                                    <th>Programa</th>
+                                    <th>Proyecto</th>
+                                    <th>Actividad</th>
+                                    <th>Unidad</th>
+
                                     <th>Tipo de POA</th>
                                     <th>Obj. Operativo</th>
                                     <th>Act. Operativa</th>
                                     <th>Sub Actividad</th>
                                     <th>Item</th>
+                                    <th>Total/Item</th>
                                     <th>Total</th>
                                     <th>Ene</th>
                                     <th>Feb</th>
@@ -123,6 +142,12 @@
                             <tfoot>
                                 <tr>
                                     <th>Total</th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -330,5 +355,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.3')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.4')}}"></script>
 @endpush

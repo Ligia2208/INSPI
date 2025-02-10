@@ -11,6 +11,7 @@ class Reforma extends Model {
         'area_id',
         'justificacion',
         'justificacion_area',
+        'tipo',
         'fecha',
         'estado',
         'created_at',
@@ -34,6 +35,6 @@ class Reforma extends Model {
     {
         return $this->hasMany(Actividad::class, 'id_reforma');
     }
-    
+
 
 }

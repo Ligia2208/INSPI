@@ -2,49 +2,50 @@ function validarCampos() {
     let valido = true;
     let comentario = '';
 
-
     $('table tbody tr').each(function(index) {
-        let tipo = $(this).find('select[name="tipo[]"]').val();
-        let total = $(this).find('input[name="total[]"]').val();
-        let justificacion = $(this).find('input[name="justificacion[]"]').val();
-        let enero = $(this).find('input[name="enero1[]"]').val();
-        let febrero = $(this).find('input[name="febrero1[]"]').val();
-        let marzo = $(this).find('input[name="marzo1[]"]').val();
-        let abril = $(this).find('input[name="abril1[]"]').val();
-        let mayo = $(this).find('input[name="mayo1[]"]').val();
-        let junio = $(this).find('input[name="junio1[]"]').val();
-        let julio = $(this).find('input[name="julio1[]"]').val();
-        let agosto = $(this).find('input[name="agosto1[]"]').val();
-        let septiembre = $(this).find('input[name="septiembre1[]"]').val();
-        let octubre = $(this).find('input[name="octubre1[]"]').val();
-        let noviembre = $(this).find('input[name="noviembre1[]"]').val();
-        let diciembre = $(this).find('input[name="diciembre1[]"]').val();
 
-        //sumar y comparar con el total
+        if ($(this).is(':visible')) {
 
-        if (tipo === null || tipo === "" ||
-            total === null || total === "" ||
-            justificacion === null || justificacion === "" ||
-            enero === null || enero === "" ||
-            febrero === null || febrero === "" ||
-            marzo === null || marzo === "" ||
-            abril === null || abril === "" ||
-            mayo === null || mayo === "" ||
-            junio === null || junio === "" ||
-            julio === null || julio === "" ||
-            agosto === null || agosto === "" ||
-            septiembre === null || septiembre === "" ||
-            octubre === null || octubre === "" ||
-            noviembre === null || noviembre === "" ||
-            diciembre === null || diciembre === "") {
+            let tipo       = $(this).find('select[name="tipo[]"]').val();
+            let total      = $(this).find('input[name="total[]"]').val();
+            let justificacion = $(this).find('input[name="justificacion[]"]').val();
+            let enero      = $(this).find('input[name="enero1[]"]').val();
+            let febrero    = $(this).find('input[name="febrero1[]"]').val();
+            let marzo      = $(this).find('input[name="marzo1[]"]').val();
+            let abril      = $(this).find('input[name="abril1[]"]').val();
+            let mayo       = $(this).find('input[name="mayo1[]"]').val();
+            let junio      = $(this).find('input[name="junio1[]"]').val();
+            let julio      = $(this).find('input[name="julio1[]"]').val();
+            let agosto     = $(this).find('input[name="agosto1[]"]').val();
+            let septiembre = $(this).find('input[name="septiembre1[]"]').val();
+            let octubre    = $(this).find('input[name="octubre1[]"]').val();
+            let noviembre  = $(this).find('input[name="noviembre1[]"]').val();
+            let diciembre  = $(this).find('input[name="diciembre1[]"]').val();
+    
+            //sumar y comparar con el total
+            if (tipo === null || tipo === "" ||
+                total === null || total === "" ||
+                justificacion === null || justificacion === "" ||
+                enero === null || enero === "" ||
+                febrero === null || febrero === "" ||
+                marzo === null || marzo === "" ||
+                abril === null || abril === "" ||
+                mayo === null || mayo === "" ||
+                junio === null || junio === "" ||
+                julio === null || julio === "" ||
+                agosto === null || agosto === "" ||
+                septiembre === null || septiembre === "" ||
+                octubre === null || octubre === "" ||
+                noviembre === null || noviembre === "" ||
+                diciembre === null || diciembre === "") {
+    
+                valido = false;
+                comentario = 'Se cayó en la fila '+(index+1);
+    
+                return false; // Sale del bucle each() si encuentra algún campo vacío
+            }
 
-            valido = false;
-            comentario = 'Se cayó en la fila '+(index+1);
-
-            return false; // Sale del bucle each() si encuentra algún campo vacío
         }
-
-
 
     });
 
@@ -53,6 +54,12 @@ function validarCampos() {
     if (justificacion === null || justificacion === "") {
         valido = false;
         comentario = '¡Se requiere una justificación! Ingrese una justificación para editar la reforma.';
+    }
+
+    let tipo = $('#select_tipo').val();
+    if (tipo === null || tipo.trim() === "") {
+        valido = false;
+        comentario = 'Seleccione el tipo Reforma que quiere realizar.';
     }
 
     let justifi = $('#justifi').val();
@@ -258,8 +265,10 @@ function actualizarReforma() {
     if (validarCampos()) {
         var formData = [];
         var justificacion = $('#justificacion').val();
-        var id_reforma = $('#id_reforma').val();
-        var justifi  = $('#justifi').val(); //Obtener el valore del textarea de justificación del área requirente
+        var id_reforma    = $('#id_reforma').val();
+        var justifi       = $('#justifi').val(); //Obtener el valore del textarea de justificación del área requirente
+        var id_direccion  = $('#id_direccion').val();
+        let tipo_refor    = $('#select_tipo').val();
 
         // Variables para los totales
         let totalDisminuye = 0;
@@ -270,6 +279,8 @@ function actualizarReforma() {
             if ($(this).is(':visible')) {
                 let id_actividad = $(this).find('input[name="id_actividad[]"]').val();
                 let solicitud    = $(this).find('input[name="solicitud[]"]').val();
+                let id_area_soli = $(this).find('input[name="id_area_soli[]"]').val();
+                let id_poa       = $(this).find('input[name="id_poa[]"]').val();
                 let tipo         = $(this).find('select[name="tipo[]"]').val();
                 let enero        = $(this).find('input[name="enero1[]"]').val();
                 let febrero      = $(this).find('input[name="febrero1[]"]').val();
@@ -306,6 +317,8 @@ function actualizarReforma() {
                     total:        total,
                     estado:       'A',
                     subActividad: subActividad,
+                    id_area_soli: id_area_soli,
+                    id_poa:       id_poa,
 
                 });
 
@@ -319,6 +332,8 @@ function actualizarReforma() {
             }else{
                 let id_actividad = $(this).find('input[name="id_actividad[]"]').val();
                 let solicitud    = $(this).find('input[name="solicitud[]"]').val();
+                let id_area_soli = $(this).find('input[name="id_area_soli[]"]').val();
+                let id_poa       = $(this).find('input[name="id_poa[]"]').val();
                 let tipo         = $(this).find('select[name="tipo[]"]').val();
                 let enero        = $(this).find('input[name="enero1[]"]').val();
                 let febrero      = $(this).find('input[name="febrero1[]"]').val();
@@ -337,23 +352,25 @@ function actualizarReforma() {
 
                 formData.push({
                     id_actividad: id_actividad,
-                    solicitud: solicitud,
-                    tipo: tipo,
-                    enero: enero,
-                    febrero: febrero,
-                    marzo: marzo,
-                    abril: abril,
-                    mayo: mayo,
-                    junio: junio,
-                    julio: julio,
-                    agosto: agosto,
-                    septiembre: septiembre,
-                    octubre: octubre,
-                    noviembre: noviembre,
-                    diciembre: diciembre,
-                    total: total,
-                    estado: 'E',
+                    solicitud:    solicitud,
+                    tipo:         tipo,
+                    enero:        enero,
+                    febrero:      febrero,
+                    marzo:        marzo,
+                    abril:        abril,
+                    mayo:         mayo,
+                    junio:        junio,
+                    julio:        julio,
+                    agosto:       agosto,
+                    septiembre:   septiembre,
+                    octubre:      octubre,
+                    noviembre:    noviembre,
+                    diciembre:    diciembre,
+                    total:        total,
+                    estado:       'E',
                     subActividad: subActividad,
+                    id_area_soli: id_area_soli,
+                    id_poa:       id_poa,
 
                 });
             }
@@ -384,7 +401,9 @@ function actualizarReforma() {
                 data: {
                     formData:      formData,
                     justificacion: justificacion,
-                    justifi :      justifi
+                    justifi:       justifi,
+                    id_direccion:  id_direccion,
+                    tipo_refor:    tipo_refor,
                 },
                 success: function(response) {
                     Swal.fire({
@@ -650,11 +669,17 @@ function guardarNuevaActividad() {
 }
 
 function agregarFilaTabla(actividad) {
+
+    let id_direccion = $('#id_direccion').val();
+
     var nuevaFila = `
         <tr>
             <input type="hidden" name="id_actividad[]" value="${actividad.id}">
-            <td>
-                <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
+            <input type="hidden" name="solicitud[]" value="${( actividad.id_area_soli == id_direccion ? 'true' : 'false')}">
+            <input type="hidden" name="id_area_soli[]" value="${actividad.id_area_soli}">
+            <input type="hidden" name="id_poa[]" value="${actividad.id_poa}">
+            <td class="d-flex justify-content-center align-items-center">
+                <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)">
             </i>
             </td>
             <td>${actividad.nombreActividadOperativa}</td>
@@ -664,10 +689,12 @@ function agregarFilaTabla(actividad) {
             <td>${actividad.nombreItem}</td>
             <td>${actividad.descripcionItem}</td>
             <td class="width">
-                <select class="form-control" name="tipo[]">
+                <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
                     <option value="">Seleccionar tipo...</option>
                     <option value="DISMINUYE">Disminuye</option>
                     <option value="AUMENTA" selected>Aumenta</option>
+                    <option value="IGUAL">Igual</option>
+                    <option value="AJUSTE">Ajuste</option>
                 </select>
             </td>
             <td><input class="form-control" style="width: 125px;" type="text" name="enero1[]" value="0"></td>
@@ -689,8 +716,8 @@ function agregarFilaTabla(actividad) {
 }
 
 function limpiarFormulario() {
-    $('#coordina').val('');
-    $('#fecha').val('');
+    //$('#coordina').val('');
+    //$('#fecha').val('');
     $('#poa').val('');
     $('#obOpera').val('');
     $('#actOpera').val('');
@@ -699,12 +726,12 @@ function limpiarFormulario() {
     $('#monDisp').val('');
     $('#desItem').val('');
     $('#plurianual').prop('checked', false);
-    $('#unidad_ejecutora').val('');
-    $('#programa').val('');
-    $('#proyecto').val('');
-    $('#actividad').val('');
-    $('#fuente').val('');
-    $('#justifi').val('');
+    //$('#unidad_ejecutora').val('');
+    //$('#programa').val('');
+    //$('#proyecto').val('');
+    //$('#actividad').val('');
+    //$('#fuente').val('');
+    //$('#justifi').val('');
 }
 
 function fetchItemData(itemId) {
@@ -819,6 +846,15 @@ function cambioSelect(selectElement) {
                     }
                 }
             });
+        }if(selectElement.value === 'IGUAL'){
+
+            inputs.forEach(function(input, index) {
+                if(index !== 0){
+                    input.value = '0.00';
+                    input.setAttribute('disabled', 'disabled');
+                }
+            });
+
         } else {
             // Si no es "DISMINUYE", deshabilitar todos los inputs en la fila excepto el último
             inputs.forEach(function(input, index) {
@@ -857,6 +893,8 @@ function limpiarTblAct() {
 
 }
 
+
+/*
 //Función para filtrar por área dependiendo de la coordinación zonal
 $(document).on('change', '#czonal', function(){
     var czonal_id = $(this).val();
@@ -888,6 +926,8 @@ $(document).on('change', '#czonal', function(){
     });
 
 });
+*/
+
 
 //Función para filtrar actividades por área
 $( function () {
@@ -986,13 +1026,16 @@ function CrearActArea(element){
 
 function agregarActAreaFila(actividadPoa) {
 
+    let id_direccion = $('#id_direccion').val();
+
     var nuevaFila =`
         <tr>
             <input type="hidden" name="id_actividad[]" value="${(actividadPoa.id)}">
-            <input type="hidden" name="solicitud[]" value="false">
+            <input type="hidden" name="solicitud[]" value="${( actividadPoa.id_areaS == id_direccion ? 'true' : 'false')}">
             <input type="hidden" name="id_area_soli[]" value="${(actividadPoa.id_areaS)}">
-            <td>
-            <i type="button" class="font-22 fadeIn animated bi bi-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
+            <input type="hidden" name="id_poa[]" value="${(actividadPoa.id_poa)}">
+            <td class="d-flex justify-content-center align-items-center">
+                <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)">
             </td>
             <td>${(actividadPoa.nombreActividadOperativa)}</td>
             <td>
@@ -1001,10 +1044,12 @@ function agregarActAreaFila(actividadPoa) {
             <td>${(actividadPoa.nombreItem)}</td>
             <td>${(actividadPoa.descripcionItem)}</td>
             <td class="width">
-                <select class="form-select" name="tipo[]">
+                <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
                     <option value="" selected disabled>Seleccionar tipo...</option>
                     <option value="DISMINUYE">Disminuye</option>
                     <option value="AUMENTA">Aumenta</option>
+                    <option value="IGUAL">Igual</option>
+                    <option value="AJUSTE">Ajuste</option>
                 </select>
             </td>
             <td>

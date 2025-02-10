@@ -108,19 +108,19 @@
                 <div class="card-body">
                     <div class="row p-2">
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
                             <input type="text" id="obOpera" name="obOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreObjOperativo}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-12 mt-3">
                             <label for="actOpera" class="form-label fs-6">Actividad Operativa</label>
                             <input type="text" id="actOpera" name="actOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreActividadOperativa}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
-                        <div class="col-md-4 mt-2">
+                        <div class="col-md-12 mt-3">
                             <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación / Convenio</label>
                             <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="{{$atributos->nombreSubActividad}}" disabled>
                             <div class="valid-feedback">Looks good!</div>
@@ -128,12 +128,12 @@
 
                         <div class="col-md-4 mt-2">
                             <label for="item" class="form-label fs-6">Item presupuestario</label>
-                            <select id="item_presupuestario" name="item_presupuestario" class="form-control" required onchange="fetchItemData(this.value)" disabled>
+                            <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)" disabled>
                                 @foreach($item_presupuestario as $item)
                                 @if($item->id == $atributos->id_item)
-                                    <option value="{{$item->id}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
+                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
                                 @else
-                                    <option value="{{$item->id}}">{{$item->nombre}} - {{$item->descripcion}}</option>
+                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}">{{$item->nombre}} - {{$item->descripcion}}</option>
                                 @endif
                                 @endforeach
                             </select>
@@ -146,21 +146,8 @@
                         </div>
 
                         <div class="col-md-4 mt-2">
-                            <label for="desItem" class="form-label fs-6">Descripción del Item Presupuestario</label>
-                            <input type="text" id="desItem" name="desItem" class="form-control" required="" autofocus="" value="{{$atributos->descripcionItem}}" disabled>
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
                             <label for="monto" class="form-label fs-6">Monto</label>
                             <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="{{intval($atributos->monto)}}" disabled>
-                            <div class="valid-feedback">¡Se ve bien!</div>
-                            <div class="invalid-feedback">Ingrese solo números</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
-                            <label for="presupuesto_proyectado" class="form-label fs-6">Presupuesto proyectado</label>
-                            <input type="number" id="presupuesto_proyectado" name="presupuesto_proyectado" class="form-control" required="" autofocus="" disabled value="{{intval($atributos->presupuesto_proyectado)}}">
                             <div class="valid-feedback">¡Se ve bien!</div>
                             <div class="invalid-feedback">Ingrese solo números</div>
                         </div>
@@ -393,32 +380,42 @@
                 <div class="card-body">
 
                     <!-- <div class="row p-2"> -->
-                    <div class="" style="margin-bottom: 2%;">
+                    <div class="row">
+
                         <div class="col-md-4 mt-2">
                             <label for="frecuencia" class="form-label fs-6">Estado de comprobación de la actividad</label>
                             <select id="estadoPoa" name="estadoPoa" class="form-select single-select" required>
                                 <option value="0" selected>Seleccione el estado de la actividad</option>
                                 <option value="O"> Validado</option>
                                 <option value="R"> Rechazado</option>
-                                <!-- <option value="C"> Corregido</option> -->
-                                <!-- <option value="4"> Cuatrimestral </option>
-                                <option value="5"> Semestral </option>
-                                <option value="6"> Anual </option>  -->
                             </select>
                         </div>
-                    </div>
 
-                    <!--Código de php para crear la lista de todos los comentarios que haya escrito ese usuario. Solo deberá mostrarse si-->
-                    <!--es que se encuentra que el usuario tiene al menos un comentario. Si no existe ningún comentario, entonces esta lista-->
-                    <!--de comentarios no debería ni mostrarse. Aquí debe hacerse un if (creo) y un for para recorrer los campos de cada comentario-->
-                    <!--En el for debe estar el campo del usuario (id_usuario) del comentario en sí y de la fecha de creación, esto con la finalidad-->
-                    <!--de mostrar en cada for dichos datos, para cada comentario encontrado-->
+                        <div class="col-md-4 mt-2">
+                            <label for="montoDisSis" class="form-label fs-6">Monto Disponibe del Item / Sistema</label>
+                            <input type="text" id="montoDisSis" name="montoDisSis" class="form-control" required="" autofocus="" value="{{$item_suma}}" disabled>
+                        </div>
 
-                    <div class="col-md-12 mt-2">
-                        <label for="justifi" class="form-label fs-6">Justificación de la selección</label>
-                        <textarea id="justificacionPoa" name="justificacionPoa" class="form-control" required="" autofocus="" rows="4"></textarea>
-                        <div class="valid-feedback">Looks good!</div>
-                    </div>
+                        <div class="col-md-4 mt-2">
+                            <label for="montoDis" class="form-label fs-6">Monto Disponibe del Item</label>
+                            <input type="text" id="montoDis" name="montoDis" class="form-control" required="" autofocus="" value="">
+                        </div>
+
+
+                        <!--Código de php para crear la lista de todos los comentarios que haya escrito ese usuario. Solo deberá mostrarse si-->
+                        <!--es que se encuentra que el usuario tiene al menos un comentario. Si no existe ningún comentario, entonces esta lista-->
+                        <!--de comentarios no debería ni mostrarse. Aquí debe hacerse un if (creo) y un for para recorrer los campos de cada comentario-->
+                        <!--En el for debe estar el campo del usuario (id_usuario) del comentario en sí y de la fecha de creación, esto con la finalidad-->
+                        <!--de mostrar en cada for dichos datos, para cada comentario encontrado-->
+
+                        <div class="col-md-12 mt-2">
+                            <label for="justifi" class="form-label fs-6">Justificación de la selección</label>
+                            <textarea id="justificacionPoa" name="justificacionPoa" class="form-control" required="" autofocus="" rows="4"></textarea>
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+
+                    </div>                        
 
                 </div>
             </div>
