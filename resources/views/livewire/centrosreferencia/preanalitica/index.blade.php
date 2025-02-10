@@ -156,7 +156,7 @@
                                     </div>
                                     <div class="col-md-2 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
-                                            <a target="_self" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url('descargas/descarga_muestras.xlsx') }}"><i class="fas fa-download mr-2"></i> Descarga archivo xlsx</a>
+                                            <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url('descargas/descarga_muestras.xlsx') }}"><i class="fas fa-download mr-2"></i> Descarga archivo xlsx</a>
                                         </div>
                                     </div>
                                 </div>
