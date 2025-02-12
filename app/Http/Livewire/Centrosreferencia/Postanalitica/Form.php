@@ -78,7 +78,7 @@ class Form extends Component
             $this->crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
             $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
             $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
-            $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
+            $this->eventos = Evento::whereIn('estado',['A','M'])->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
 
         }
 
@@ -91,7 +91,7 @@ class Form extends Component
     }
 
     public function updatedselectedCrn($crns_id){
-        $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->eventos = Evento::whereIn('estado',['A','M'])->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->emit('renderJs');
@@ -165,9 +165,13 @@ class Form extends Component
                             $newAnalitica->evento_id = $this->Analiticas->eventosav_id[$i];
                             $newAnalitica->muestra_id = $objPreanalitica->primera_id;
                             $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
-                            $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                            $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,8);
                             $newAnalitica->codigo_secuencial = 1;
-                            $newAnalitica->codigo_externo = 'EXAN-AMPLIADA';
+                            $fechacomoentero = strtotime($objPreanalitica-->fecha_toma_primera);
+                            $anio = date("Y", $fechacomoentero)-2000;
+                            $mes = date("m", $fechacomoentero);
+                            $newAnalitica->codigo_calidad = str_pad($newAnalitica->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($$newAnalitica->codigo_secuencial, 2, '0', STR_PAD_LEFT);
+                            $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
                             $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                             $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                             $newAnalitica->save();
