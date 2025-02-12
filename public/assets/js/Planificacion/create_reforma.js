@@ -482,6 +482,7 @@ $(document).ready(function() {
 function actualizarTotales() {
     let totalAumenta = 0;
     let totalDisminuye = 0;
+    let totalAjuste  = 0;
 
     // Seleccionar solo las filas visibles
     $('#tblActividades tbody tr:visible').each(function() {
@@ -500,12 +501,16 @@ function actualizarTotales() {
             totalAumenta += totalFila;
         } else if (tipo === 'DISMINUYE') {
             totalDisminuye += totalFila;
+        } else if (tipo === 'AJUSTE') {
+            totalAjuste += totalFila;
         }
+
     });
 
     // Actualizar los totales en los inputs
     $('#aumTotal').val(totalAumenta);
     $('#disTotal').val(totalDisminuye);
+    $('#ajuTotal').val(totalAjuste);
 }
 
 
@@ -915,13 +920,14 @@ $( function () {
                 $.each(data, function(index, actividadArea) {
                     tableBody.append(
                         '<tr>' +
-                        '<input type="hidden" name="id_poa[]" value="' + actividadArea.id + '">' +
-                        '<td><i type="button" class="font-22 fadeIn animated bi bi-plus-square" title="Agregar actividad" onclick="agregarActAreaFila(this)"></i></td>' +
-                        '<td>' + actividadArea.departamento + '</td>' +
-                        '<td>' + actividadArea.nombreActividadOperativa + '</td>' +
-                        '<td>' + actividadArea.nombreSubActividad + '</td>' +
-                        '<td>' + actividadArea.nombreItem + '</td>' +
-                        '<td>' + actividadArea.descripcionItem + '</td>' +
+                            '<input type="hidden" name="id_poa[]" value="' + actividadArea.id + '">' +
+                            '<td><i type="button" class="font-22 fadeIn animated bi bi-plus-square" title="Agregar actividad" onclick="agregarActAreaFila(this)"></i></td>' +
+                            '<td>' + actividadArea.departamento + '</td>' +
+                            '<td>' + actividadArea.nombreActividadOperativa + '</td>' +
+                            '<td>' + actividadArea.nombreSubActividad + '</td>' +
+                            '<td>' + actividadArea.nombreItem + '</td>' +
+                            '<td>' + actividadArea.descripcionItem + '</td>' +
+                            '<td>' + actividadArea.monto + '</td>' +
                         '</tr>'
                     );
                 });

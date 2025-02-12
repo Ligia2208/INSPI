@@ -144,6 +144,8 @@ class Index extends Component
     {   //ELISA RUBEOLA-SARAMPION (POSITIVO O INDETERMINADO)
         try{
                 $objPreanalitica = Preanalitica::findOrFail($id);
+                $absede = Sede::findOrFail($objPreanalitica->sedes_id);
+                $abcrn = Crn::findOrFail($objPreanalitica->crns_id);
                 $newPreanalitica = new Preanalitica();
                 $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
                 $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
@@ -175,9 +177,14 @@ class Index extends Component
                 $newAnalitica->evento_id = 149;
                 $newAnalitica->muestra_id = $objPreanalitica->primera_id;
                 $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
-                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
                 $newAnalitica->codigo_secuencial = 1;
-                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -218,9 +225,14 @@ class Index extends Component
                 $newAnalitica->evento_id = 150;
                 $newAnalitica->muestra_id = $objPreanalitica->primera_id;
                 $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
-                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
                 $newAnalitica->codigo_secuencial = 1;
-                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -261,7 +273,11 @@ class Index extends Component
                 $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
                 $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
                 $newAnalitica->codigo_secuencial = 1;
-                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($newAnalitica->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($$newAnalitica->codigo_secuencial, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -285,6 +301,8 @@ class Index extends Component
     {   //ELISA VIRUELA DEL MONO (NEGATIVO)
         try{
                 $objPreanalitica = Preanalitica::findOrFail($id);
+                $absede = Sede::findOrFail($objPreanalitica->sedes_id);
+                $abcrn = Crn::findOrFail($objPreanalitica->crns_id);
                 $newPreanalitica = new Preanalitica();
                 $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
                 $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
@@ -316,9 +334,14 @@ class Index extends Component
                 $newAnalitica->evento_id = 146;
                 $newAnalitica->muestra_id = $objPreanalitica->primera_id;
                 $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
-                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
                 $newAnalitica->codigo_secuencial = 1;
-                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -359,9 +382,14 @@ class Index extends Component
                 $newAnalitica->evento_id = 147;
                 $newAnalitica->muestra_id = $objPreanalitica->primera_id;
                 $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
-                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
                 $newAnalitica->codigo_secuencial = 1;
-                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -400,9 +428,14 @@ class Index extends Component
                 $newAnalitica->evento_id = 148;
                 $newAnalitica->muestra_id = $objPreanalitica->primera_id;
                 $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
-                $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
                 $newAnalitica->codigo_secuencial = 1;
-                $newAnalitica->codigo_externo = 'EXAN-INMUNO-DIF';
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();

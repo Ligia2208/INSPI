@@ -333,11 +333,19 @@ input:checked + .slider:before {
 .disabled-red {
     color: red;
     border: 1px solid red;
-  }
+}
 
 .disabled-green {
     color: green;
     border: 1px solid green;
+}
+
+.text-red {
+    color: red;
+}
+
+.text-green {
+    color: green;
 }
 
 

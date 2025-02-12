@@ -292,6 +292,7 @@
                                         <th>SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
                                         <th>ITEM PRESUPUESTARIO</th>
                                         <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
+                                        <th>MONTO</th>
                                     </tr>
                                 </thead>
                                 <tbody class="width">
@@ -306,6 +307,7 @@
                                         <td>{{ $atributo->nombreActividadOperativa}}</td>
                                         <td>{{ $atributo->nombreSubActividad }}</td>
                                         <td>{{ $atributo->nombreItem }}</td>
+                                        <td>{{ $atributo->descripcionItem }}</td>
                                         <td>{{ $atributo->descripcionItem }}</td>
                                     </tr>
                                     @endforeach
@@ -335,6 +337,15 @@
 
         <div class="row mt-5">
 
+            <div class="col-lg-12 mt-2 mb-5">
+                <label for="select_tipo" class="form-label">Seleccione el tipo de Reforma:</label>
+                <select id="select_tipo" class="single-select filter js-example-templating col-lg-12">
+                    <option value="">Elija una Opción</option>
+                    <option value="M">Modificación PAPP</option>
+                    <option value="R">Reforma PAPP/Presupuestaria</option>
+                </select>
+            </div>
+
             <div class="col-md-8 mt-2" style="margin-bottom: 20px">
                 <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
                 <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
@@ -344,24 +355,21 @@
             <div class="col-lg-4 row">
 
                 <div class="col-md-6">
-                    <label for="disTotal" class="form-label fs-6">Total Disminuye</label>
-                    <input type="text" id="disTotal" name="disTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                    <label for="disTotal" class="form-label fs-6 text-red">Total Disminuye</label>
+                    <input type="text" id="disTotal" name="disTotal" class="form-control disabled-red" required="" autofocus="" value="" disabled="">
                     <div class="valid-feedback">Looks good!</div>
                 </div>
 
                 <div class="col-md-6">
-                    <label for="aumTotal" class="form-label fs-6">Total Aumenta</label>
-                    <input type="text" id="aumTotal" name="aumTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                    <label for="aumTotal" class="form-label fs-6 text-green">Total Aumenta</label>
+                    <input type="text" id="aumTotal" name="aumTotal" class="form-control disabled-green" required="" autofocus="" value="" disabled="">
                     <div class="valid-feedback">Looks good!</div>
                 </div>
 
-                <div class="col-lg-12 mt-2 mb-5">
-                    <label for="select_tipo" class="form-label">Seleccione el tipo de Reforma:</label>
-                    <select id="select_tipo" class="single-select filter js-example-templating col-lg-12">
-                        <option value="">Elija una Opción</option>
-                        <option value="M">Modificación PAPP</option>
-                        <option value="R">Reforma PAPP/Presupuestaria</option>
-                    </select>
+                <div class="col-md-12">
+                    <label for="ajuTotal" class="form-label fs-6">Total Ajuste</label>
+                    <input type="text" id="ajuTotal" name="ajuTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                    <div class="valid-feedback">Looks good!</div>
                 </div>
 
             </div>
@@ -395,5 +403,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.15')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.16')}}"></script>
 @endpush

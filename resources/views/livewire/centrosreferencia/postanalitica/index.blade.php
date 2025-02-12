@@ -241,48 +241,54 @@
                                             </a>
                                         </i>
                                         @endif
-                                        @if($postanalitica->crns_id==8 && $postanalitica->evento_id==104)
-                                            @if ($postanalitica->resultado_id==66 || $postanalitica->resultado_id==68)
-                                                @if($postanalitica->cdiferencial==0)
-                                                    <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial02({{ $postanalitica->id }})">
-                                                        <a href="" target="_blank" class="navi-link">
-                                                        <span class="navi-icon">
-                                                            <i class="fa fa-toggle-on" style="color:rgb(216, 20, 20)" Title="Generar_Diferencial"></i>
-                                                        </span>
-                                                        </a>
-                                                    </i>
-                                                @else
-                                                    <i class="navi-item" onclick="event.preventDefault(); confirmGeneradodif({{ $postanalitica->id }})">
-                                                        <a href="" target="_blank" class="navi-link">
-                                                        <span class="navi-icon">
-                                                            <i class="fa fa-toggle-off" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
-                                                        </span>
-                                                        </a>
-                                                    </i>
+                                        @if($postanalitica->crns_id==8)
+                                            @if($postanalitica->evento_id==154 || $postanalitica->evento_id==155)
+                                                @if ($postanalitica->resultado_id==66 || $postanalitica->resultado_id==68)
+                                                    @if($postanalitica->cdiferencial==0)
+                                                        <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial02({{ $postanalitica->id }})">
+                                                            <a href="" target="_blank" class="navi-link">
+                                                            <span class="navi-icon">
+                                                                <i class="fa fa-toggle-on" style="color:rgb(216, 20, 20)" Title="Generar_Diferencial"></i>
+                                                            </span>
+                                                            </a>
+                                                        </i>
+                                                    @else
+                                                        <i class="navi-item" onclick="event.preventDefault(); confirmGeneradodif({{ $postanalitica->id }})">
+                                                            <a href="" target="_blank" class="navi-link">
+                                                            <span class="navi-icon">
+                                                                <i class="fa fa-toggle-off" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
+                                                            </span>
+                                                            </a>
+                                                        </i>
+                                                    @endif
                                                 @endif
                                             @endif
                                         @endif
-                                        @if($postanalitica->crns_id==8 && $postanalitica->evento_id==106 && $postanalitica->resultado_id==67)
-                                            @if($postanalitica->cdiferencial==0)
-                                                <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial01({{ $postanalitica->id }})">
-                                                    <a href="" target="_blank" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="fa fa-toggle-on" style="color:rgb(216, 20, 20)" Title="Generar_Diferencial"></i>
-                                                    </span>
-                                                    </a>
-                                                </i>
-                                            @else
-                                                <i class="navi-item" onclick="event.preventDefault(); confirmGeneradodif({{ $postanalitica->id }})">
-                                                    <a href="" target="_blank" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="fa fa-toggle-off" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
-                                                    </span>
-                                                    </a>
-                                                </i>
+                                        @if($postanalitica->crns_id==8)
+                                            @if($postanalitica->evento_id==159 || $postanalitica->evento_id==160)
+                                                @if($postanalitica->resultado_id==67)
+                                                    @if($postanalitica->cdiferencial==0)
+                                                        <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial01({{ $postanalitica->id }})">
+                                                            <a href="" target="_blank" class="navi-link">
+                                                            <span class="navi-icon">
+                                                                <i class="fa fa-toggle-on" style="color:rgb(216, 20, 20)" Title="Generar_Diferencial"></i>
+                                                            </span>
+                                                            </a>
+                                                        </i>
+                                                    @else
+                                                        <i class="navi-item" onclick="event.preventDefault(); confirmGeneradodif({{ $postanalitica->id }})">
+                                                            <a href="" target="_blank" class="navi-link">
+                                                            <span class="navi-icon">
+                                                                <i class="fa fa-toggle-off" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
+                                                            </span>
+                                                            </a>
+                                                        </i>
+                                                    @endif
+                                                @endif
                                             @endif
                                         @endif
                                         @if($postanalitica->crns_id==8 && $postanalitica->resultado_id==67)
-                                            @if ($postanalitica->evento_id==116 || $postanalitica->evento_id==117 || $postanalitica->evento_id==118 || $postanalitica->evento_id==119 || $postanalitica->evento_id==120 || $postanalitica->evento_id==125)
+                                            @if ($postanalitica->evento_id==116 || $postanalitica->evento_id==117 || $postanalitica->evento_id==118 || $postanalitica->evento_id==119 || $postanalitica->evento_id==120 || $postanalitica->evento_id==125 || $postanalitica->evento_id==165 || $postanalitica->evento_id==166)
                                                 @if($postanalitica->campliada==0)
                                                 <i class="navi-item" data-toggle="modal" data-target="_self">
                                                     <a href="{{ route('postanalitica.edit', $postanalitica) }}" class="navi-link">
