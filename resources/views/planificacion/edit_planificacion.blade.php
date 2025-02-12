@@ -533,5 +533,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/editPlanificacion.js?v0.0.21')}}"></script>
+<script src="{{asset('assets/js/Planificacion/editPlanificacion.js?v0.0.22')}}"></script>
 @endpush

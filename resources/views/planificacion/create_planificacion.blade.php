@@ -251,6 +251,7 @@
                             <select id="frecuencia" name="frecuencia" class="form-select single-select" required >
                                 <option selected="" value="0">Seleccione Frecuencia</option>
                                 <option value="7"> Personalizado </option>
+                                <option value="8"> En 0 </option>
                                 <option value="1"> Mensual </option>
                                 <option value="2"> Bimensual </option>
                                 <option value="3"> Trimestral </option>
@@ -438,5 +439,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.8')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.9')}}"></script>
 @endpush

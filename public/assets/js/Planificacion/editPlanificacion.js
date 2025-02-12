@@ -16,6 +16,7 @@ $( function () {
 
         var monDisp = $('#monDisp').val();
         var monto = $('#monto').val();
+        var frecuencia = $('#frecuencia').val();
 
         monto = parseFloat(monto);    
         monDisp = parseFloat(monDisp);
@@ -23,7 +24,7 @@ $( function () {
         //var isValid = /^\d+$/.test(monto);
         var isValid = /^\d+(\.\d+)?$/.test(monto);
 
-        if(monto === 0 && monDisp !== 0 ){
+        if(monto === 0 && monDisp !== 0 && frecuencia !== '8' ){
 
             Swal.fire({
                 icon: 'warning',
@@ -629,7 +630,7 @@ function actualizarPlanificacion(){
        showConfirmButton: true,
     });
 
-   }else if((monto == '0' || monto == '') && monDisp !== 0 ){
+   }else if((monto == '0' || monto == '') && monDisp !== 0 && frecuencia !== '8' ){
 
         Swal.fire({
             icon: 'warning',

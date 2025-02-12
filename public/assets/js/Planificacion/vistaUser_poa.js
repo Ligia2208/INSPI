@@ -218,7 +218,7 @@ $( function () {
             },
         ],
         order: [
-            [7, 'desc']
+            [8, 'desc']
         ],
 
         footerCallback: function (row, data, start, end, display) {

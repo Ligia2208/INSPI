@@ -5,6 +5,8 @@ $( function () {
         width: '100%',
     });
 
+    actualizarTotales();
+
 });
 
 function agregarComentarioReforma() {
@@ -72,4 +74,36 @@ function agregarComentarioReforma() {
             }
         });
     }
+}
+
+
+
+
+function actualizarTotales() {
+    let totalAumenta = 0;
+    let totalDisminuye = 0;
+
+    // Seleccionar solo las filas visibles
+    $('#tblActividades tbody tr:visible').each(function() {
+        let $fila = $(this);
+        let tipo = $fila.find('select[name="tipo[]"]').val();
+        let totalFila = 0;
+
+        // Sumar valores de los meses
+        $fila.find('input[name^="total_R"]').each(function() {
+            let valor = parseFloat($(this).val()) || 0;
+            totalFila += valor;
+        });
+
+        // Sumar al total correspondiente solo si la fila está visible
+        if (tipo === 'AUMENTA') {
+            totalAumenta += totalFila;
+        } else if (tipo === 'DISMINUYE') {
+            totalDisminuye += totalFila;
+        }
+    });
+
+    // Actualizar los totales en los inputs
+    $('#aumTotal').val(totalAumenta);
+    $('#disTotal').val(totalDisminuye);
 }

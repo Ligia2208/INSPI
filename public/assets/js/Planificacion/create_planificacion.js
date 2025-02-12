@@ -11,7 +11,8 @@ $( function () {
         limpiar();
 
         var monDisp = $('#monDisp').val();
-        var monto = $('#monto').val();
+        var monto   = $('#monto').val();
+        var frecuencia = $('#frecuencia').val();
 
         monto = parseFloat(monto);    
         monDisp = parseFloat(monDisp);
@@ -29,7 +30,7 @@ $( function () {
                 showConfirmButton: true,
             });
 
-        }else if(monto === 0 && monDisp !== 0 ){
+        }else if(monto === 0 && monDisp !== 0 && frecuencia !== '8' ){
 
             Swal.fire({
                 icon: 'warning',
@@ -113,6 +114,11 @@ $( function () {
                     break;
 
                 case '7':
+                    limpiar();
+
+                    break;
+                
+                case '8':
                     limpiar();
 
                     break;
@@ -409,7 +415,7 @@ function guardarPlanificacion(){
             showConfirmButton: true,
         });
 
-   }else if((monto == '0' || monto == '') && monDisp !== 0 ){
+   }else if((monto == '0' || monto == '') && monDisp !== 0 && frecuencia !== '8'){
 
         Swal.fire({
             icon: 'warning',

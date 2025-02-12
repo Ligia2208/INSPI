@@ -1,12 +1,21 @@
 $( function () {
 
+    $('.js-example-basic-single').select2({
+        width: '100%',
+    });
+
     //CÓDIGO PARA MOSTRAR LA TABLA EN EL INDEX
     $('#tblReformaIndex').DataTable({ //id de la tabla en el visual (index)
         processing: true,
         serverSide: true,
-        lengthMenu: [8, 15, 25, 50, 100],
+        lengthMenu: [25, 50, 100],
         ajax: {
             url: '/planificacion/reformaPrincipal', // La URL que devuelve los datos en JSON
+            data: function (d) {
+                d.estado    = $('#filterEstado').val();
+                d.tipo      = $('#filterTipo').val();
+                d.direccion = $('#filterDireccion').val();
+            }
         },
         columns: [
             { data: 'nro_solicitud',   name: 'nro_solicitud' },
@@ -21,7 +30,7 @@ $( function () {
                     if(full.tipo == 'M' ){
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Modificación PAPP</span><div>';
                     }else if(full.tipo == 'R'){
-                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Reforma PAPP</span>';
+                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Reforma PAPP/Presupuestaria</span>';
                     }
                     return array;
                 }
@@ -146,8 +155,11 @@ $( function () {
         },
     });
 
-
     var table = $('#tblReformaIndex').DataTable();
+
+    $('#filterEstado, #filterTipo, #filterDireccion').on('change', function () {
+        table.ajax.reload();
+    });
 
 
     /* VALIDAR LOS CAMBIOS EN LA REFORMA */

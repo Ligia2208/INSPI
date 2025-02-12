@@ -37,7 +37,44 @@
             </div>
 
             <div class="card">
+
                 <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-lg-3 mt-2 mb-5">
+                            <label for="filterEstado" class="form-label">Filtrar por Estados:</label>
+                            <select id="filterEstado" class="form-control js-example-basic-single">
+                                <option value="">Todos los Estados</option>
+                                <option value="A">Ingresado</option>
+                                <option value="O">Validado</option>
+                                <option value="V">Aprobado</option>
+                                <option value="R">Rechazado</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-3 mt-2 mb-5">
+                            <label for="filterTipo" class="form-label">Seleccione el tipo de Reforma:</label>
+                            <select id="filterTipo" class="form-control js-example-basic-single">
+                                <option value="">Todos los Tipos</option>
+                                <option value="M">Modificación PAPP</option>
+                                <option value="R">Reforma PAPP/Presupuestaria</option>
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 mt-2 mb-5">
+                            <label for="filterDireccion" class="form-label">Seleccione la dirección:</label>
+                            <select id="filterDireccion" class="form-control js-example-basic-single">
+                                <option value="">Todas las Direcciones</option>
+                                @foreach($direcciones as $direccion)
+                                    <option value="{{ $direccion->id }}">{{ $direccion->nombre }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+
+                    </div>
+
                     <div class="table-responsive">
                         <table id="tblReformaIndex" class="table table-striped table-bordered" style="width:100%">
                             <thead>
@@ -71,6 +108,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
 
@@ -115,5 +153,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_reforma.js?v0.0.9')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_reforma.js?v0.0.11')}}"></script>
 @endpush

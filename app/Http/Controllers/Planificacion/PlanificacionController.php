@@ -1585,34 +1585,48 @@ class PlanificacionController extends Controller
         $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
         $id_area   = $filiacion->area_id;
 
-        if(request()->ajax()) {
+        $direcciones   = MontoDireccion::select('*')->whereIn('estado', ['A'])->get();
 
-            return datatables()->of(
-                
-                /*
-                Reforma::select('pla_reforma.nro_solicitud as nro_solicitud', 'area.nombre as area', 'pla_reforma.justificacion_area as justificacion',
-                    DB::raw('DATE_FORMAT(pla_reforma.created_at, "%Y-%m-%d") as fecha'),
-                    'pla_reforma.id as id_reforma', 'pla_reforma.estado as estado', 'pla_reforma.tipo')
-                    ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_reforma.area_id')
-                    // ->where('pla_poa1.id_area', '=', $id_area)
-                    ->whereNotIn('pla_reforma.estado', ['E'])
-                */
-                
-                Reforma::with(['actividades.calendarioReformas'])
-                    ->select('pla_reforma.id as id_reforma', 'pla_reforma.nro_solicitud', 'pla_reforma.area_id', 'pla_reforma.justificacion_area as justificacion', 
-                        DB::raw('DATE_FORMAT(pla_reforma.created_at, "%Y-%m-%d") as fecha'), 'pla_reforma.estado', 'pla_reforma.tipo', 'area.nombre as area',
-                        'pla_reforma.total as total_monto')
-                    ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_reforma.area_id')
-                    ->whereNotIn('pla_reforma.estado', ['E'])
-                    ->get()
+        if (request()->ajax()) {
 
-
+            $estado = request()->get('estado');
+            $tipo   = request()->get('tipo');
+            $direccion = request()->get('direccion');
+        
+            $query = Reforma::with(['actividades.calendarioReformas'])
+                ->select(
+                    'pla_reforma.id as id_reforma', 
+                    'pla_reforma.nro_solicitud', 
+                    'pla_reforma.area_id', 
+                    'pla_reforma.justificacion_area as justificacion', 
+                    DB::raw('DATE_FORMAT(pla_reforma.created_at, "%Y-%m-%d") as fecha'), 
+                    'pla_reforma.estado', 
+                    'pla_reforma.tipo', 
+                    'area.nombre as area',
+                    'pla_reforma.total as total_monto'
                 )
+                ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_reforma.area_id')
+                ->whereNotIn('pla_reforma.estado', ['E']);
+        
+            // Aplicar filtros si existen
+            if (!empty($estado)) {
+                $query->where('pla_reforma.estado', $estado);
+            }
+        
+            if (!empty($tipo)) {
+                $query->where('pla_reforma.tipo', $tipo); // Corregido alias de tabla
+            }
+
+            if (!empty($direccion)) {
+                $query->where('pla_reforma.area_id', $direccion); // Corregido alias de tabla
+            }
+        
+            return datatables()->of($query->get())
                 ->addIndexColumn()
                 ->make(true);
         }
 
-        return view('planificacion.index_reforma_principal');
+        return view('planificacion.index_reforma_principal', compact('direcciones'));
     }
 
     //===============================================================================================

@@ -332,6 +332,7 @@
                                             <th>SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
                                             <th>ITEM PRESUPUESTARIO</th>
                                             <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
+                                            <th>MONTO</th>
                                         </tr>
                                     </thead>
                                     <tbody class="width">
@@ -346,6 +347,7 @@
                                             <td>{{ $atributo->nombreActividadOperativa}}</td>
                                             <td>{{ $atributo->nombreSubActividad }}</td>
                                             <td>{{ $atributo->nombreItem }}</td>
+                                            <td>{{ $atributo->descripcionItem }}</td>
                                             <td>{{ $atributo->descripcionItem }}</td>
                                         </tr>
                                         @endforeach
@@ -443,5 +445,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.10')}}"></script>
+<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.11')}}"></script>
 @endpush

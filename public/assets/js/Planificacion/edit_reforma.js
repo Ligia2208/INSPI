@@ -455,6 +455,11 @@ function mostrarFormularioActividad() {
     $('#contenedorBotonAgregarActividad').hide(); // Oculta el contenedor del botón
 }
 
+function cerrarFormularioActividad() {
+    $('#formularioActividad').hide();
+    $('#contenedorBotonAgregarActividad').show(); 
+}
+
 function guardarNuevaActividad() {
 
     let coordina = $('#coordina').val();
@@ -961,11 +966,15 @@ $( function () {
                         '<td>' + actividadArea.nombreSubActividad + '</td>' +
                         '<td>' + actividadArea.nombreItem + '</td>' +
                         '<td>' + actividadArea.descripcionItem + '</td>' +
+                        '<td>' + actividadArea.monto + '</td>' +
                         '</tr>'
                     );
                 });
                 // Mostrar la tabla
                 $('#tblActArea').show();
+                //$('#contenedorBotonAgregarActividad').show();
+                
+                
             },
             error: function(error) {
                 console.error('Error al obtener los datos de la tabla', error);
@@ -1001,7 +1010,7 @@ function CrearActArea(element){
 
                 console.log(response.poa); // Muestra el objeto Poa en la consola
                 agregarActAreaFila(response.actividadPoa);
-                $('#formularioActArea').hide();
+                //$('#formularioActArea').hide();
                 // limpiarFormulario();
                 Swal.fire({
                     icon: 'success',
@@ -1107,6 +1116,8 @@ function agregarActAreaFila(actividadPoa) {
         </tr>`
     ;
     $('#tblActividadesEditar tbody').append(nuevaFila);
+
+    cerrarFormularioActividad();
 
 }
 

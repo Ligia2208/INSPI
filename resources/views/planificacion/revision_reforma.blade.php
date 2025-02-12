@@ -66,7 +66,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-striped table-bordered table-sm" style="background-color: white;">
+                <table class="table table-striped table-bordered table-sm" style="background-color: white;" id="tblActividades">
                     <thead>
                         <tr>
                             <th>UNIDAD</th>
@@ -124,6 +124,22 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+        </div>
+
+        <div class="col-lg-12 row">
+
+            <div class="col-md-6">
+                <label for="disTotal" class="form-label fs-6">Total Disminuye</label>
+                <input type="text" id="disTotal" name="disTotal" class="form-control disabled-red" required="" autofocus="" value="" disabled="">
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="col-md-6">
+                <label for="aumTotal" class="form-label fs-6">Total Aumenta</label>
+                <input type="text" id="aumTotal" name="aumTotal" class="form-control disabled-green" required="" autofocus="" value="" disabled="">
+                <div class="valid-feedback">Looks good!</div>
             </div>
 
         </div>
@@ -186,7 +202,8 @@
             </div>
         </div>
 
-            <!-- Campo de justificación al final de la tabla -->
+
+        <!-- Campo de justificación al final de la tabla -->
         <div style="margin-top: 20px; margin-bottom: 20px">
             <label for="justificacion_Reforma">Justificación de la selección:</label>
             <textarea class="form-control" name="justificacion_Reforma" id="justificacion_Reforma" rows="3"></textarea>
@@ -211,5 +228,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/revision_reforma.js?v0.0.8')}}"></script>
+<script src="{{asset('assets/js/Planificacion/revision_reforma.js?v0.0.9')}}"></script>
 @endpush
