@@ -60,7 +60,7 @@ class Index extends Component
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
 
         $count = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->count();
-        $analiticas = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->orderBy('codigo_muestra', 'desc');
+        $analiticas = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->orderBy('codigo_calidad', 'desc');
 
         if($this->searchm){
             $analiticas = $analiticas->where('codigo_muestra', 'LIKE', "%{$this->searchm}%");

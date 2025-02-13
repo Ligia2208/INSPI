@@ -113,34 +113,48 @@
                             </div>
                             <div class="col-lg-12 col-xl-12">
                                 <div class="row align-items-center">
-                                    <div class="col-md-5 my-2 my-md-0">
-                                        <div class="input-icon">
-                                            <input wire:model="search" type="search" class="form-control"
-                                                placeholder="Muestra...">
-                                            <span>
-                                                <i class="flaticon2-search-1 text-muted"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-5 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <label class="mr-3 mb-0 d-none d-md-block">Mostrar:</label>
-                                            <select class="form-control" wire:model="perPage">
-                                                <option value="25">25 Entradas</option>
-                                                <option value="50">50 Entradas</option>
-                                                <option value="100">100 Entradas</option>
-                                                <option value="250">250 Entradas</option>
-                                                <option value="500">500 Entradas</option>
-                                                <option value="1000">1000 Entradas</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 my-2 my-md-0">
-                                        <div class="d-flex align-items-center">
-                                            <button class="btn btn-success font-weight-bold mr-2"
-                                                onclick="exportToExcel('data', 'analiticas-data')"><i
-                                                    class="fa fa-file-excel" aria-hidden="true"></i>
-                                                {{ __('Exportar a Excel') }}</button>
+                                    <div class="col-lg-12 col-xl-12">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-2 my-2 my-md-0">
+                                                <div class="input-icon">
+                                                    <input wire:model="searchm" type="search" class="form-control"
+                                                        placeholder="Muestra...">
+                                                    <span>
+                                                        <i class="flaticon2-search-1 text-muted"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 my-2 my-md-0">
+                                                <div class="input-icon">
+                                                    <input wire:model="searchc" type="search" class="form-control"
+                                                        placeholder="Cédula...">
+                                                    <span>
+                                                        <i class="flaticon2-search-1 text-muted"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 my-2 my-md-0">
+                                                <div class="input-icon">
+                                                    <input wire:model="searchp" type="search" class="form-control"
+                                                        placeholder="Apellidos o Nombres...">
+                                                    <span>
+                                                        <i class="flaticon2-search-1 text-muted"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4 my-2 my-md-0">
+                                                <div class="d-flex align-items-center">
+                                                    <label class="mr-3 mb-0 d-none d-md-block">Mostrar:</label>
+                                                    <select class="form-control" wire:model="perPage">
+                                                        <option value="25">25 Entradas</option>
+                                                        <option value="50">50 Entradas</option>
+                                                        <option value="100">100 Entradas</option>
+                                                        <option value="250">250 Entradas</option>
+                                                        <option value="500">500 Entradas</option>
+                                                        <option value="1000">1000 Entradas</option>
+                                                    </select>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -319,7 +333,7 @@
                                         <div class="alert-icon">
                                             <i class="flaticon-questions-circular-button"></i>
                                         </div>
-                                        <div class="alert-text">Sin resultados "{{ $search }}"</div>
+                                        <div class="alert-text">Sin resultados "{{ $searchm }}"</div>
                                     </div>
                                 </div>
                             @endforelse

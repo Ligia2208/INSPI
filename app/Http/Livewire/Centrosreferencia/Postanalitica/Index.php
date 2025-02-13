@@ -5,6 +5,7 @@ namespace App\Http\Livewire\Centrosreferencia\Postanalitica;
 use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
+use App\Models\CentrosReferencia\Paciente;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
 use App\Models\CentrosReferencia\Responsable;
@@ -27,7 +28,9 @@ class Index extends Component
 
     //Tools
     public $perPage = 25;
-    public $search;
+    public $searchm;
+    public $searchc;
+    public $searchp;
     public $csedes;
     public $claboratorios;
     public $ceventos;
@@ -35,7 +38,7 @@ class Index extends Component
     public $fechafin;
     public $controlf;
 
-    protected $queryString = ['search' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ceventos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
+    protected $queryString = ['searchm' => ['except' => ''], 'searchc' => ['except' => ''], 'searchp' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ceventos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
 
     //Theme
     protected $paginationTheme = 'bootstrap';
@@ -63,8 +66,30 @@ class Index extends Component
         $analiticas = Preanalitica::whereIn('id',$analiticapac);
         $count = $analiticas->count();
 
-        if($this->search){
-            $analiticas = $analiticas->where('codigo_muestra', 'LIKE', "%{$this->search}%");
+        if($this->searchm){
+            $analiticapac = Analitica::where('estado','=','A')->where('codigo_muestra','LIKE',"%{$this->searchm}%")->distinct('preanalitica_id')->pluck('preanalitica_id')->toArray();
+            $analiticas = $analiticas->whereIn('id', $analiticapac);
+            $count = $analiticas->count();
+
+        }
+        if($this->searchc){
+            $pacientes = Paciente::where(function ($query){
+                $query->where('identidad', 'LIKE', "%{$this->searchc}%");
+            })->orderBy('id', 'asc')->pluck('id')->toArray();
+
+            $preanaliticas = Preanalitica::whereIn('paciente_id',$pacientes)->pluck('id')->toArray();
+            $analiticas = $analiticas->whereIn('id',$preanaliticas);
+            $count = $analiticas->count();
+
+        }
+        if($this->searchp){
+            $pacientes = Paciente::where(function ($query){
+                $query->where('apellidos', 'LIKE', "%{$this->searchp}%")
+                  ->orWhere('nombres', 'LIKE', "%{$this->searchp}%");
+            })->orderBy('id', 'asc')->pluck('id')->toArray();
+
+            $preanaliticas = Preanalitica::whereIn('paciente_id',$pacientes)->pluck('id')->toArray();
+            $analiticas = $analiticas->whereIn('id',$preanaliticas);
             $count = $analiticas->count();
 
         }
@@ -145,7 +170,7 @@ class Index extends Component
         try{
                 $objPreanalitica = Preanalitica::findOrFail($id);
                 $absede = Sede::findOrFail($objPreanalitica->sedes_id);
-                $abcrn = Crn::findOrFail($objPreanalitica->crns_id);
+                $abcrn = Crn::findOrFail(12);
                 $newPreanalitica = new Preanalitica();
                 $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
                 $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
@@ -184,7 +209,7 @@ class Index extends Component
                 $anio = date("Y", $fechacomoentero)-2000;
                 $mes = date("m", $fechacomoentero);
                 $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
-                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.str_pad($Analiticas->codigo_muestra, 5, '0', STR_PAD_LEFT);
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -232,7 +257,7 @@ class Index extends Component
                 $anio = date("Y", $fechacomoentero)-2000;
                 $mes = date("m", $fechacomoentero);
                 $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
-                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.str_pad($Analiticas->codigo_muestra, 5, '0', STR_PAD_LEFT);
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -277,7 +302,7 @@ class Index extends Component
                 $anio = date("Y", $fechacomoentero)-2000;
                 $mes = date("m", $fechacomoentero);
                 $newAnalitica->codigo_calidad = str_pad($newAnalitica->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($$newAnalitica->codigo_secuencial, 2, '0', STR_PAD_LEFT);
-                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.str_pad($Analiticas->codigo_muestra, 5, '0', STR_PAD_LEFT);
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -302,7 +327,7 @@ class Index extends Component
         try{
                 $objPreanalitica = Preanalitica::findOrFail($id);
                 $absede = Sede::findOrFail($objPreanalitica->sedes_id);
-                $abcrn = Crn::findOrFail($objPreanalitica->crns_id);
+                $abcrn = Crn::findOrFail(12);
                 $newPreanalitica = new Preanalitica();
                 $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
                 $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
@@ -341,7 +366,7 @@ class Index extends Component
                 $anio = date("Y", $fechacomoentero)-2000;
                 $mes = date("m", $fechacomoentero);
                 $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
-                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.str_pad($Analiticas->codigo_muestra, 5, '0', STR_PAD_LEFT);
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -389,7 +414,7 @@ class Index extends Component
                 $anio = date("Y", $fechacomoentero)-2000;
                 $mes = date("m", $fechacomoentero);
                 $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
-                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.str_pad($Analiticas->codigo_muestra, 5, '0', STR_PAD_LEFT);
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -435,7 +460,7 @@ class Index extends Component
                 $anio = date("Y", $fechacomoentero)-2000;
                 $mes = date("m", $fechacomoentero);
                 $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
-                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.str_pad($Analiticas->codigo_muestra, 5, '0', STR_PAD_LEFT);
                 $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                 $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                 $newAnalitica->save();
@@ -462,3 +487,4 @@ class Index extends Component
 
 
 }
+
