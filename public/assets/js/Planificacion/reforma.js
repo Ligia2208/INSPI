@@ -10,6 +10,7 @@ $( function () {
         },
         columns: [
             { data: 'nro_solicitud',  name: 'nro_solicitud' },
+            { data: 'nro_reforma',    name: 'nro_reforma' },
             { data: 'justificacion',  name: 'justificacion' },
             { data: 'total_monto',    name: 'total_monto' },
             {   

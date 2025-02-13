@@ -27,7 +27,7 @@
 
 
 		<!-- Custom -->
-		<link href="{{ asset('assets') }}/css/custom.css?v.0.0.1" rel="stylesheet" type="text/css" />
+		<link href="{{ asset('assets') }}/css/custom.css?v.0.0.2" rel="stylesheet" type="text/css" />
 
 		<!--end::Layout Themes-->
 		<link rel="shortcut icon" href="{{ config('app.logo_ico') }}" />

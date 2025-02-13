@@ -66,7 +66,7 @@
             </div>
 
             <div class="table-responsive">
-                <table class="table table-striped table-bordered table-sm" style="background-color: white;">
+                <table class="table table-striped table-bordered table-sm" style="background-color: white;" id="tblActividades">
                     <thead>
                         <tr>
                             <th>UNIDAD</th>
@@ -124,6 +124,28 @@
                         @endforeach
                     </tbody>
                 </table>
+            </div>
+
+        </div>
+
+        <div class="col-lg-12 row mt-5">
+
+            <div class="col-md-4">
+                <label for="disTotal" class="form-label fs-6">Total Disminuye</label>
+                <input type="text" id="disTotal" name="disTotal" class="form-control disabled-red" required="" autofocus="" value="" disabled="">
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="col-md-4">
+                <label for="aumTotal" class="form-label fs-6">Total Aumenta</label>
+                <input type="text" id="aumTotal" name="aumTotal" class="form-control disabled-green" required="" autofocus="" value="" disabled="">
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="col-md-4">
+                <label for="ajuTotal" class="form-label fs-6">Total Ajuste</label>
+                <input type="text" id="ajuTotal" name="ajuTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                <div class="valid-feedback">Looks good!</div>
             </div>
 
         </div>
@@ -186,5 +208,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/revision_reforma.js?v0.0.8')}}"></script>
+<script src="{{asset('assets/js/Planificacion/revision_reforma.js?v0.0.9')}}"></script>
 @endpush

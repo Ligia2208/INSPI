@@ -280,6 +280,13 @@
                                 </select>
                                 <div class="invalid-feedback">Por favor seleccione una Dirección.</div>
                             </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="selectActivi" class="form-label fs-6">Filtrar Por Actividades</label>
+                                <select id="selectActivi" name="selectActivi" class="form-select single-select" required>
+                                </select>
+                            </div>
+
                         </div>
 
                         <div id="tblActArea" style="display: none;" class="mt-3">
@@ -403,5 +410,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.16')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.17')}}"></script>
 @endpush

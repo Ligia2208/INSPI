@@ -82,6 +82,7 @@ function agregarComentarioReforma() {
 function actualizarTotales() {
     let totalAumenta = 0;
     let totalDisminuye = 0;
+    let totalAjuste  = 0;
 
     // Seleccionar solo las filas visibles
     $('#tblActividades tbody tr:visible').each(function() {
@@ -100,10 +101,13 @@ function actualizarTotales() {
             totalAumenta += totalFila;
         } else if (tipo === 'DISMINUYE') {
             totalDisminuye += totalFila;
+        } else if (tipo === 'AJUSTE') {
+            totalAjuste += totalFila;
         }
     });
 
     // Actualizar los totales en los inputs
     $('#aumTotal').val(totalAumenta);
     $('#disTotal').val(totalDisminuye);
+    $('#ajuTotal').val(totalAjuste);
 }

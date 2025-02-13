@@ -8,6 +8,7 @@ class Reforma extends Model {
     protected $fillable = [
         'id',
         'nro_solicitud',
+        'nro_reforma',
         'area_id',
         'justificacion',
         'justificacion_area',

@@ -364,3 +364,8 @@ input:checked + .slider:before {
     justify-content: center;
 }
 
+
+.fila-seleccionada {
+    background-color: #d4edda !important; /* Verde claro */
+}
+

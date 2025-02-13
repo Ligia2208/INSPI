@@ -92,6 +92,8 @@ $(document).ready(function() {
         width: '100%',
     });
 
+    actualizarTotales();
+
     // Función para calcular el total de los meses
     function calcularTotal($inputsMeses) {
         let total = 0;
@@ -124,10 +126,12 @@ $(document).ready(function() {
         // Actualizar el total al cambiar cualquier campo de meses
         $inputsMeses.off('input').on('input', function() {
             actualizarTotal($inputsMeses, $inputTotal);
+            actualizarTotales();
         });
 
         // Inicializar el total al cargar la página
         actualizarTotal($inputsMeses, $inputTotal);
+        actualizarTotales();
     });
 
     // Llamar al evento de cambio al cargar la página para inicializar el estado de los campos
@@ -446,6 +450,7 @@ function eliminarFila(button) {
     var fila = button.closest('tr');
     // Ocultar la fila (no eliminarla del DOM para mantener el índice de atributos)
     fila.style.display = 'none';
+    actualizarTotales();
 }
 
 let formularioVisible = false;
@@ -871,6 +876,7 @@ function cambioSelect(selectElement) {
         }
     }
 
+
 }
 
 
@@ -951,7 +957,11 @@ $( function () {
             type: 'GET', // O el método que estés utilizando en tu ruta
             url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
             data: { id: area_id },
-            success: function(data) {
+            success: function(datos) {
+
+                var data = datos.data;
+                var actividades = datos.actividades;
+
                 var tableBody = $('#tblActArea tbody');
                 tableBody.empty(); // Limpia las filas actuales
 
@@ -973,6 +983,20 @@ $( function () {
                 // Mostrar la tabla
                 $('#tblActArea').show();
                 //$('#contenedorBotonAgregarActividad').show();
+
+
+                // ========== para pintar el select
+                var select = $("#selectActivi"); // Referencia al select
+                select.empty(); // Limpiamos el select antes de agregar opciones
+                select.append('<option value="">Seleccione una actividad</option>'); // Opción por defecto
+            
+                // Recorremos las actividades y las agregamos al select
+                actividades.forEach(function(actividad) {
+                    select.append('<option value="' + actividad.id + '">' + actividad.nombreSubActividad + '</option>');
+                });
+            
+                // Si estás usando select2, vuelve a inicializarlo
+                select.trigger('change'); 
                 
                 
             },
@@ -981,6 +1005,56 @@ $( function () {
             }
         });
     });
+
+
+    $('#selectActivi').on('change', function() {
+
+        var id_sub  = $(this).val(); 
+        var area_id = $('#area').val();
+
+        if (area_id == 0) {
+            // Si no se ha seleccionado un área, ocultar la tabla
+            $('#tblActArea').hide();
+            return;
+        }
+
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
+            data: { id: area_id, id_sub: id_sub },
+            success: function(datos) {
+
+                var data = datos.data;
+
+                var tableBody = $('#tblActArea tbody');
+                tableBody.empty(); // Limpia las filas actuales
+
+                // Agrega nuevas filas basadas en la respuesta del servidor
+                $.each(data, function(index, actividadArea) {
+                    tableBody.append(
+                        '<tr>' +
+                            '<input type="hidden" name="id_poa[]" value="' + actividadArea.id + '">' +
+                            '<td><i type="button" class="font-22 fadeIn animated bi bi-plus-square" title="Agregar actividad" onclick="CrearActArea(this)"></i></td>' +
+                            '<td>' + actividadArea.departamento + '</td>' +
+                            '<td>' + actividadArea.nombreActividadOperativa + '</td>' +
+                            '<td>' + actividadArea.nombreSubActividad + '</td>' +
+                            '<td>' + actividadArea.nombreItem + '</td>' +
+                            '<td>' + actividadArea.descripcionItem + '</td>' +
+                            '<td>' + actividadArea.monto + '</td>' +
+                        '</tr>'
+                    );
+                });
+                // Mostrar la tabla
+                $('#tblActArea').show();
+
+            },
+            error: function(error) {
+                console.error('Error al obtener los datos de la tabla', error);
+            }
+        });
+    });
+
+
 });
 
 
@@ -1018,6 +1092,10 @@ function CrearActArea(element){
                     title: 'CoreInspi',
                     text: 'Actividad agregada correctamente',
                 });
+
+                // ====== PINTAR LA FILA SELECCIONADA ======
+                fila.addClass('fila-seleccionada');
+
             // $('#contenedorBotonAgregarActividad').show();
             } else {
                 Swal.fire({
@@ -1204,4 +1282,39 @@ function agregarEstructura(){
 
     }
 
+}
+
+// calcula los totales y los muestra en los inputs
+function actualizarTotales() {
+    let totalAumenta = 0;
+    let totalDisminuye = 0;
+    let totalAjuste  = 0;
+
+    // Seleccionar solo las filas visibles
+    $('#tblActividadesEditar tbody tr:visible').each(function() {
+        let $fila = $(this);
+        let tipo = $fila.find('select[name="tipo[]"]').val();
+        let totalFila = 0;
+
+        // Sumar valores de los meses
+        $fila.find('input[name^="enero"], input[name^="febrero"], input[name^="marzo"], input[name^="abril"], input[name^="mayo"], input[name^="junio"], input[name^="julio"], input[name^="agosto"], input[name^="septiembre"], input[name^="octubre"], input[name^="noviembre"], input[name^="diciembre"]').each(function() {
+            let valor = parseFloat($(this).val()) || 0;
+            totalFila += valor;
+        });
+
+        // Sumar al total correspondiente solo si la fila está visible
+        if (tipo === 'AUMENTA') {
+            totalAumenta += totalFila;
+        } else if (tipo === 'DISMINUYE') {
+            totalDisminuye += totalFila;
+        } else if (tipo === 'AJUSTE') {
+            totalAjuste += totalFila;
+        }
+
+    });
+
+    // Actualizar los totales en los inputs
+    $('#aumTotal').val(totalAumenta);
+    $('#disTotal').val(totalDisminuye);
+    $('#ajuTotal').val(totalAjuste);
 }

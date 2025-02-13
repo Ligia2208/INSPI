@@ -46,6 +46,7 @@
                             <thead>
                                 <tr>
                                     <th>Nro de solicitud</th>
+                                    <th>Nro de reforma</th>
                                     <th>Justificacion</th>
                                     <th>Monto</th>
                                     <th>Tpo</th>
@@ -60,6 +61,7 @@
                             <tfoot>
                                 <tr>
                                     <th>Nro de solicitud</th>
+                                    <th>Nro de reforma</th>
                                     <th>Justificacion</th>
                                     <th>Monto</th>
                                     <th>Tpo</th>

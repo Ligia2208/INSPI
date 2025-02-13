@@ -912,7 +912,11 @@ $( function () {
             type: 'GET', // O el método que estés utilizando en tu ruta
             url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
             data: { id: area_id },
-            success: function(data) {
+            success: function(datos) {
+
+                var data = datos.data;
+                var actividades = datos.actividades;
+
                 var tableBody = $('#tblActArea tbody');
                 tableBody.empty(); // Limpia las filas actuales
 
@@ -933,12 +937,77 @@ $( function () {
                 });
                 // Mostrar la tabla
                 $('#tblActArea').show();
+
+
+                // ========== para pintar el select
+                var select = $("#selectActivi"); // Referencia al select
+                select.empty(); // Limpiamos el select antes de agregar opciones
+                select.append('<option value="">Seleccione una actividad</option>'); // Opción por defecto
+            
+                // Recorremos las actividades y las agregamos al select
+                actividades.forEach(function(actividad) {
+                    select.append('<option value="' + actividad.id + '">' + actividad.nombreSubActividad + '</option>');
+                });
+            
+                // Si estás usando select2, vuelve a inicializarlo
+                select.trigger('change'); 
+
+
+
             },
             error: function(error) {
                 console.error('Error al obtener los datos de la tabla', error);
             }
         });
     });
+
+    $('#selectActivi').on('change', function() {
+
+        var id_sub  = $(this).val(); 
+        var area_id = $('#area').val();
+
+        if (area_id == 0) {
+            // Si no se ha seleccionado un área, ocultar la tabla
+            $('#tblActArea').hide();
+            return;
+        }
+
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
+            data: { id: area_id, id_sub: id_sub },
+            success: function(datos) {
+
+                var data = datos.data;
+
+                var tableBody = $('#tblActArea tbody');
+                tableBody.empty(); // Limpia las filas actuales
+
+                // Agrega nuevas filas basadas en la respuesta del servidor
+                $.each(data, function(index, actividadArea) {
+                    tableBody.append(
+                        '<tr>' +
+                            '<input type="hidden" name="id_poa[]" value="' + actividadArea.id + '">' +
+                            '<td><i type="button" class="font-22 fadeIn animated bi bi-plus-square" title="Agregar actividad" onclick="agregarActAreaFila(this)"></i></td>' +
+                            '<td>' + actividadArea.departamento + '</td>' +
+                            '<td>' + actividadArea.nombreActividadOperativa + '</td>' +
+                            '<td>' + actividadArea.nombreSubActividad + '</td>' +
+                            '<td>' + actividadArea.nombreItem + '</td>' +
+                            '<td>' + actividadArea.descripcionItem + '</td>' +
+                            '<td>' + actividadArea.monto + '</td>' +
+                        '</tr>'
+                    );
+                });
+                // Mostrar la tabla
+                $('#tblActArea').show();
+
+            },
+            error: function(error) {
+                console.error('Error al obtener los datos de la tabla', error);
+            }
+        });
+    });
+
 });
 
 
@@ -956,8 +1025,8 @@ function agregarActAreaFila(element) {
         url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
         data: { id_poa: id_poa },
         success: function(data) {
-
-            console.log(data);
+            var data = data.data;
+            //console.log(data);
 
             var tableBody = $('#tblActividades tbody');
             var rows = '';
@@ -1040,6 +1109,9 @@ function agregarActAreaFila(element) {
                     </td>
                 </tr>`;
             tableBody.append(rows);
+
+            // ====== PINTAR LA FILA SELECCIONADA ======
+            fila.addClass('fila-seleccionada');
         },
         error: function(error) {
             console.error('Error al obtener los datos de la tabla', error);
@@ -1061,9 +1133,10 @@ function agregarActividad() {
             type: 'GET', // O el método que estés utilizando en tu ruta
             url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
             data: { id_poa: id_poa },
-            success: function(data) {
+            success: function(datos) {
     
-                console.log(data);
+                let data = datos.data;
+                //console.log(data);
     
                 var tableBody = $('#tblActividades tbody');
                 var rows = '';

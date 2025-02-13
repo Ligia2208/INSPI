@@ -320,6 +320,13 @@
                                     </select>
                                     <div class="invalid-feedback">Por favor seleccione un Area.</div>
                                 </div>
+
+                                <div class="col-md-4 mt-2">
+                                    <label for="selectActivi" class="form-label fs-6">Filtrar Por Actividades</label>
+                                    <select id="selectActivi" name="selectActivi" class="form-select single-select" required>
+                                    </select>
+                                </div>
+
                             </div>
 
                             <div id="tblActArea" style="display: none;" class="mt-3">
@@ -366,13 +373,8 @@
 
            
                 <div class="row mt-5">
-                    <div class="col-md-8 mt-2" style="margin-bottom: 20px">
-                        <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
-                        <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4">{{$justificacion_area}}</textarea>
-                        <div class="valid-feedback">Looks good!</div>
-                    </div>
 
-                    <div class="col-lg-4 mt-2 mb-5">
+                    <div class="col-lg-12 mt-2 mb-5">
                         <label for="select_tipo" class="form-label">Seleccione el tipo de Reforma:</label>
                         <select id="select_tipo" class="single-select filter js-example-templating col-lg-12">
                             <option value="">Elija una Opción</option>
@@ -380,6 +382,35 @@
                             <option value="R" {{ $tipo_refor == 'R' ? 'selected' : '' }}>Reforma PAPP/Presupuestaria</option>
                         </select>
                     </div>
+
+                    <div class="col-md-8 mt-2" style="margin-bottom: 20px">
+                        <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
+                        <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4">{{$justificacion_area}}</textarea>
+                        <div class="valid-feedback">Looks good!</div>
+                    </div>
+
+                    <div class="col-lg-4 row">
+
+                        <div class="col-md-6">
+                            <label for="disTotal" class="form-label fs-6 text-red">Total Disminuye</label>
+                            <input type="text" id="disTotal" name="disTotal" class="form-control disabled-red" required="" autofocus="" value="" disabled="">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="aumTotal" class="form-label fs-6 text-green">Total Aumenta</label>
+                            <input type="text" id="aumTotal" name="aumTotal" class="form-control disabled-green" required="" autofocus="" value="" disabled="">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <label for="ajuTotal" class="form-label fs-6">Total Ajuste</label>
+                            <input type="text" id="ajuTotal" name="ajuTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+                    </div>
+
                 </div>
 
 
@@ -445,5 +476,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.11')}}"></script>
+<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.12')}}"></script>
 @endpush
