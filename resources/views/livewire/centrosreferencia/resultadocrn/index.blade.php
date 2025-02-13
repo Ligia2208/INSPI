@@ -360,7 +360,7 @@
                                                 <option data-subtext="" value="1">Fecha toma de muestra</option>
                                                 <option data-subtext="" value="2">Fecha llegada al CRN/LAB</option>
                                                 <option data-subtext="" value="3">Fecha procesamiento</option>
-                                                <option data-subtext="" value="4">Fecha reporte</option>
+                                                <option data-subtext="" value="4">Fecha validación</option>
                                             </select>
                                         </div>
                                     </div>

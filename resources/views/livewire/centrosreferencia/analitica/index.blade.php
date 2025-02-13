@@ -177,7 +177,7 @@
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
                                 <th>Paciente</th>
-                                <th>Calidad</th>
+                                <th>Referencia</th>
                                 <th>Muestra</th>
                                 <th>Técnica</th>
                                 <th>Resultado</th>
@@ -189,17 +189,10 @@
                         <tbody>
                             @forelse ($analiticas as $analitica)
                                 <tr>
-                                    @if ($analitica->codigo_externo == '')
-                                        <td>
-                                            <span
-                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ str_pad($analitica->codigo_muestra, 5, '0', STR_PAD_LEFT) }}-{{ str_pad($analitica->codigo_secuencial, 2, '0', STR_PAD_LEFT) }}</span>
-                                        </td>
-                                    @else
-                                        <td>
-                                            <span
-                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->codigo_externo }}</span>
-                                        </td>
-                                    @endif
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->codigo_calidad }}</span>
+                                    </td>
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->fecha_toma }}</span>
@@ -216,10 +209,17 @@
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">({{ $analitica->preanalitica->paciente->identidad }}) {{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
                                     </td>
-                                    <td>
-                                        <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->codigo_calidad }}</span>
-                                    </td>
+                                    @if ($analitica->codigo_externo == '')
+                                        <td>
+                                            <span
+                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ str_pad($analitica->codigo_muestra, 5, '0', STR_PAD_LEFT) }}-{{ str_pad($analitica->codigo_secuencial, 2, '0', STR_PAD_LEFT) }}</span>
+                                        </td>
+                                    @else
+                                        <td>
+                                            <span
+                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analitica->codigo_externo }}</span>
+                                        </td>
+                                    @endif
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->muestra->descripcion }}</span>
