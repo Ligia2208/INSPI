@@ -99,6 +99,7 @@
                                     <th class="col-objetivo-operativo">Obj. Operativo</th>
                                     <th>Act. Operativa</th>
                                     <th>Sub Actividad</th>
+                                    <th>Item</th>
                                     <th>Ene</th>
                                     <th>Feb</th>
                                     <th>Mar</th>
@@ -120,6 +121,7 @@
                             <tfoot>
                                 <tr>
                                     <th>Total</th>
+                                    <th></th>
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -254,5 +256,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/detalle_user.js?v0.0.3')}}"></script>
+<script src="{{asset('assets/js/Planificacion/detalle_user.js?v0.0.6')}}"></script>
 @endpush

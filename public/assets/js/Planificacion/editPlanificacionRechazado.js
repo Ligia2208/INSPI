@@ -534,13 +534,18 @@ function actualizarPlanificacion(){
     let id_poa      = $('#id_poa').val();
 
     var frecuencia = $('#frecuencia').val();
-
     var unidad_ejecutora = $('#unidad_ejecutora').val();
     var programa = $('#programa').val();
     var proyecto = $('#proyecto').val();
     var actividad = $('#actividad').val();
     var fuente_financiamiento = $('#fuente_financiamiento').val();
 
+    let certificado  = $('#montoCer').val();
+    var isValid = /^\d+(\.\d+)?$/.test(certificado);
+
+    //para verificar si se excede
+    certificado  = parseFloat(certificado);
+    
     if(coordina == ''){
 
         Swal.fire({
@@ -697,6 +702,36 @@ function actualizarPlanificacion(){
             text: 'Debe describir la edición realizada.',
             showConfirmButton: true,
         });
+    }else if(!isValid){
+
+        Swal.fire({
+            icon:  'warning',
+            type:  'warning',
+            title: 'CoreInspi',
+            text:  'El monto a certificar debe de ser un número.',
+            showConfirmButton: true,
+        });
+
+    }else if(certificado <= 0){
+
+        Swal.fire({
+            icon:  'warning',
+            type:  'warning',
+            title: 'CoreInspi',
+            text:  'El monto a certificar no puede ser 0.',
+            showConfirmButton: true,
+        });
+
+    }else if(certificado > monto){
+
+        Swal.fire({
+            icon:  'warning',
+            type:  'warning',
+            title: 'CoreInspi',
+            text:  'El monto que quiere certificar, excede al monto disponible.',
+            showConfirmButton: true,
+        });
+
     }else{
         if(validarCalculos()){
 
@@ -720,29 +755,26 @@ function actualizarPlanificacion(){
                     objetivo_op: objetivo_op,
                     actividad_op: actividad_op,
                     sub_act : sub_act,
-                    // desItem : desItem ,
                     item_presupuestario: item_presupuestario,
                     id_item_dir:         id_item_dir,
                     monto:               monto,
-                    // presupuesto_proyectado : presupuesto_proyectado,
                     unidad_ejecutora: unidad_ejecutora,
-                    programa: programa,
-                    proyecto: proyecto,
-                    actividad: actividad,
+                    programa:         programa,
+                    proyecto:         proyecto,
+                    actividad:        actividad,
                     fuente_financiamiento: fuente_financiamiento,
-                    // monDisp : monDisp ,
-                    coordina: coordina,
-                    // nPOA    : nPOA    ,
-                    fecha   : fecha   ,
-                    poa     : poa     ,
-                    justifi : justifi ,
-                    comentario : comentario,
-                    plurianual : plurianual,
+                    coordina:         coordina,
+                    fecha:            fecha   ,
+                    poa:              poa     ,
+                    justifi:          justifi ,
+                    comentario:       comentario,
+                    plurianual:       plurianual,
 
-                    frecuencia: frecuencia,
-                    meses: meses,
-                    anio:  anio,
-                    proceso   : proceso,
+                    frecuencia:       frecuencia,
+                    meses:            meses,
+                    anio:             anio,
+                    proceso:          proceso,
+                    certificado:      certificado,
                 },
                 success: function(response) {
 
@@ -1041,30 +1073,20 @@ function fetchItemData(itemId) {
 }
 
 
-// function agregarUnidad(){
-//     // Realiza una solicitud AJAX para obtener las opciones de la unidad ejecutora
-//     $.ajax({
-//         type: 'GET', // O el método que estés utilizando en tu ruta
-//         url: '/planificacion/get_unidad', // Ruta en tu servidor para obtener las opciones
-//         success: function(data) {
-//             var unidadSelect = $('#unidad_ejecutora');
-//             unidadSelect.empty(); // Limpia las opciones actuales
+ // Función para validar input numérico
+ function validarInputNumerico(input) {
+    var inputValue = input.value;
+    //var isValid = /^\d+$/.test(inputValue);
+    var isValid = /^\d+(\.\d+)?$/.test(inputValue);
 
-//             unidadSelect.append($('<option>', {
-//                 value: 0,
-//                 text: 'Seleccione una unidad ejecutora'
-//             }));
+    if (!isValid) {
+        input.setCustomValidity('Ingrese solo números');
+        input.classList.add('is-invalid');
+        input.classList.remove('is-valid');
+    } else {
+        input.setCustomValidity('');
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+    }
 
-//             // Agrega las nuevas opciones basadas en la respuesta del servidor
-//             $.each(data.valores, function(index, unidad) {
-//                 unidadSelect.append($('<option>', {
-//                     value: unidad.id,
-//                     text:  unidad.nombre
-//                 }));
-//             });
-//         },
-//         error: function(error) {
-//             console.error('Error al obtener opciones de la unidad ejecutora', error);
-//         }
-//     });
-// }
+}

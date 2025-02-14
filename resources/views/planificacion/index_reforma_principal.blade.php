@@ -80,6 +80,7 @@
                             <thead>
                                 <tr>
                                     <th>Nro de solicitud</th>
+                                    <th>Nro de reforma</th>
                                     <th>Solicitante</th>
                                     <th>Justificacion</th>
                                     <th>Monto</th>
@@ -95,6 +96,7 @@
                             <tfoot>
                                 <tr>
                                     <th>Nro de solicitud</th>
+                                    <th>Nro de reforma</th>
                                     <th>Solicitante</th>
                                     <th>Justificacion</th>
                                     <th>Monto</th>
@@ -153,5 +155,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_reforma.js?v0.0.11')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_reforma.js?v0.0.12')}}"></script>
 @endpush

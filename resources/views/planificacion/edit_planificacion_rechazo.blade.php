@@ -115,6 +115,13 @@
                             </select>
                         </div>
 
+                        <div class="col-md-4 mt-2">
+                            <label for="montoCer" class="form-label fs-6 text-red">Monto A Certificar</label>
+                            <input type="text" id="montoCer" name="montoCer" class="form-control disabled-red" required="" onchange="validarInputNumerico(this)" value="{{$atributos->certificado}}">
+                            <div class="valid-feedback">¡Se ve bien!</div>
+                            <div class="invalid-feedback">Ingrese solo números</div>
+                        </div>
+
                     </div>
 
                 </div>

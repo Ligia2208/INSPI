@@ -619,25 +619,16 @@ class PlanificacionController extends Controller
 
     //Detalle del POA en base al calendario
     public function detalleUser(Request $request){
-        //respuesta para la vista
-        $id_user   = Auth::user()->id;
-        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
-        $id_area   = $filiacion->area_id;
-        $direccion_id = $filiacion->direccion_id;
 
-        if($id_area == 7){
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir_tec', $direccion_id)->first();
-            $id_direccion = $direccion->id;
-            $monto        = $direccion->monto;
-            $monto        = number_format($monto, 2);
-            $id_fuente    = $direccion->id_fuente;
-        }else{
-            $direccion    = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir', $id_area)->first();
-            $id_direccion = $direccion->id;
-            $monto        = $direccion->monto;
-            $monto        = number_format($monto, 2);
-            $id_fuente    = $direccion->id_fuente;
+        // ========= Obtener datos de dirección usando la función del Trait(Inicio)
+        $direccionData = $this->obtenerDireccion();
+
+        if (!$direccionData) {
+            return response()->json(['error' => 'No se encontró la dirección'], 404);
         }
+        $id_direccion = $direccionData['id_direccion'];
+        // ========= Obtener datos de dirección usando la función del Trait(Fin)
+        
 
         // Capturar filtros desde la petición AJAX
         $anio = $request->input('anio', date('Y')); // Si no hay, usa el año actual
@@ -646,7 +637,7 @@ class PlanificacionController extends Controller
 
         if (request()->ajax()) {
             $query = Poa::select(
-                'pla_poa1.id as id', 'area.nombre as Area',
+                'pla_poa1.id as id', 'area.nombre as Area', 'item.nombre as item',
                 'tipo_poa.nombre as POA','actOpe.nombre as act_operativa',
                 'objOpe.nombre as obj_operativo','subAct.nombre as sub_actividad',
                 'cal.enero as enero', 'cal.febrero as febrero','cal.marzo as marzo','cal.abril as abril',
@@ -659,6 +650,7 @@ class PlanificacionController extends Controller
             ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'db_inspi_planificacion.pla_poa1.id_area')
             ->join('db_inspi_planificacion.pla_obj_operativo as objOpe', 'objOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_obj_operativo')
             ->join('db_inspi_planificacion.pla_sub_actividad as subAct', 'subAct.id', '=', 'db_inspi_planificacion.pla_poa1.id_sub_actividad')
+            ->join('db_inspi_planificacion.pla_item_presupuestario as item', 'pla_poa1.id_item', '=', 'item.id')
             ->where('pla_poa1.estado', '!=', 'E')
             ->where('pla_poa1.id_area', '=', $id_direccion)
             ->where('pla_poa1.año', $anio);
@@ -753,7 +745,7 @@ class PlanificacionController extends Controller
             $atributos = DB::table('db_inspi_planificacion.pla_poa1')
                 ->select('pla_poa1.id as id','pla_poa1.departamento as departamento', 'pla_poa1.nro_poa as numero', 'pla_poa1.fecha as fecha', 'pla_poa1.id_tipo_poa as idPoa',
                 'pla_calendario.justificacion_area as justificacion','pla_poa1.plurianual as plurianual', 'pla_obj_operativo.nombre as nombreObjOperativo', 'pla_actividad_operativa.nombre as nombreActividadOperativa',
-                'pla_poa1.u_ejecutora as u_ejecutora', 'pla_poa1.programa as programa', 'pla_poa1.proyecto as proyecto',
+                'pla_poa1.u_ejecutora as u_ejecutora', 'pla_poa1.programa as programa', 'pla_poa1.proyecto as proyecto', 'pla_poa1.monto_certificado as certificado',
                 'pla_poa1.actividad as actividad', 'pla_poa1.fuente as fuente', 'pla_sub_actividad.nombre as nombreSubActividad', 'pla_poa1.monto as monto', 'pla_poa1.presupuesto_proyectado as presupuesto_proyectado', 'pla_poa1.id_tipo_monto as idTipoMonto',
                 'pla_calendario.enero', 'pla_calendario.febrero', 'pla_calendario.marzo', 'pla_calendario.abril', 'pla_calendario.mayo',
                 'pla_calendario.junio', 'pla_calendario.julio', 'pla_calendario.agosto', 'pla_calendario.septiembre', 'pla_calendario.octubre',
@@ -819,7 +811,7 @@ class PlanificacionController extends Controller
             $atributos = DB::table('db_inspi_planificacion.pla_poa1')
             ->select('pla_poa1.id as id','pla_poa1.departamento as departamento', 'pla_poa1.nro_poa as numero', 'pla_poa1.fecha as fecha', 'pla_poa1.id_tipo_poa as idPoa',
             'pla_calendario.justificacion_area as justificacion','pla_poa1.plurianual as plurianual', 'pla_obj_operativo.nombre as nombreObjOperativo', 'pla_actividad_operativa.nombre as nombreActividadOperativa',
-            'pla_poa1.u_ejecutora as u_ejecutora', 'pla_poa1.programa as programa', 'pla_poa1.proyecto as proyecto',
+            'pla_poa1.u_ejecutora as u_ejecutora', 'pla_poa1.programa as programa', 'pla_poa1.proyecto as proyecto', 'pla_poa1.monto_certificado as certificado',
             'pla_poa1.actividad as actividad', 'pla_poa1.fuente as fuente', 'pla_sub_actividad.nombre as nombreSubActividad', 'pla_poa1.monto as monto', 'pla_poa1.presupuesto_proyectado as presupuesto_proyectado', 'pla_poa1.id_tipo_monto as idTipoMonto',
             'pla_calendario.enero', 'pla_calendario.febrero', 'pla_calendario.marzo', 'pla_calendario.abril', 'pla_calendario.mayo',
             'pla_calendario.junio', 'pla_calendario.julio', 'pla_calendario.agosto', 'pla_calendario.septiembre', 'pla_calendario.octubre',
@@ -901,6 +893,23 @@ class PlanificacionController extends Controller
             }
     
             if ($estadoPoa == 'O') {
+
+                // ======  si se aprobo, se restara el monto certificado (inicio)
+                $montoAnteri = $Poa->monto;
+                $montoCertif = $Poa->monto_certificado;
+
+                $montoActual = $montoAnteri - $montoCertif;
+                // si queda un sobrante, se crea una nueva actividad 
+                if($montoActual > 0){
+                    $result = $Poa->crearNuevaActividad($Poa->id, $montoActual);
+                    if (!$result) {
+                        return response()->json(['success' => false, 'message' => 'Error al crear la actividad']);
+                    }
+                }
+                
+
+                // ======  si se aprobo, se restara el monto certificado (fin)
+
                 $itemPre = ItemDireccion::where('id', $Poa->id_item_dir)
                     ->where('estado', 'A')
                     ->first();
@@ -939,6 +948,9 @@ class PlanificacionController extends Controller
                     'nro_poa'    => $nuevoNroPoa,
                     'id_consumo' => $id_consumo ?? null,
                     'monto_item' => $montoDis,
+
+                    'monto' => $montoCertif,
+                    'monto_anterior' => $montoAnteri,
                 ]);
 
             } else {
@@ -1185,7 +1197,7 @@ class PlanificacionController extends Controller
             'pla_calendario.enero', 'pla_calendario.febrero', 'pla_calendario.marzo', 'pla_calendario.abril', 'pla_calendario.mayo',
             'pla_calendario.junio', 'pla_calendario.julio', 'pla_calendario.agosto', 'pla_calendario.septiembre', 'pla_calendario.octubre',
             'pla_calendario.noviembre', 'pla_calendario.diciembre', 'pla_poa1.id_item_dir as id_item', 'pla_item_presupuestario.nombre as nombreItem',
-            'pla_item_presupuestario.descripcion as descripcionItem', 'pla_item_presupuestario.monto as montoItem')
+            'pla_item_presupuestario.descripcion as descripcionItem', 'pla_item_presupuestario.monto as montoItem', 'pla_poa1.monto_certificado as certificado')
             ->join('db_inspi_planificacion.pla_calendario', 'pla_poa1.id', '=', 'pla_calendario.id_poa')
             ->join('db_inspi_planificacion.pla_obj_operativo', 'pla_poa1.id_obj_operativo', '=', 'pla_obj_operativo.id')
             ->join('db_inspi_planificacion.pla_actividad_operativa', 'pla_poa1.id_actividad', '=', 'pla_actividad_operativa.id')
@@ -1293,6 +1305,9 @@ class PlanificacionController extends Controller
 
 
     public function actualizarPlanificacion(Request $request, $id){
+
+        $certificado = $request->input('certificado');
+
         $poa = Poa::find($id);
 
         $poa->departamento = $request->input('coordina');
@@ -1313,6 +1328,7 @@ class PlanificacionController extends Controller
 
         $poa->plurianual   = $request->input('plurianual');
         $poa->id_obj_operativo    = $request->input('obOpera');
+        $poa->monto_certificado   = $certificado;
 
         // Verificar si el estado actual es "Rechazado"
         if ($poa->estado === 'R') {
@@ -1603,6 +1619,7 @@ class PlanificacionController extends Controller
                 ->select(
                     'pla_reforma.id as id_reforma', 
                     'pla_reforma.nro_solicitud', 
+                    'pla_reforma.nro_reforma', 
                     'pla_reforma.area_id', 
                     'pla_reforma.justificacion_area as justificacion', 
                     DB::raw('DATE_FORMAT(pla_reforma.created_at, "%Y-%m-%d") as fecha'), 
@@ -2312,6 +2329,57 @@ class PlanificacionController extends Controller
 
 
 
+
+    public function actualizaContadorRef($tipoAnterior, $tipoNuevo, $nroActual) {
+        $anioActual = date('Y');
+        $estadoActivo = 'A';
+        $nuevoNumero = $nroActual; // Mantener el número actual por defecto
+    
+        // Si el tipo de reforma ha cambiado
+        if ($tipoAnterior != $tipoNuevo) {
+            if ($tipoAnterior == 'R' && $tipoNuevo == 'M') {
+                // Si era R y ahora es M, disminuir en 1 y guardar en 0
+                $contador = ContadorRef::where('tipo', 'R')
+                    ->where('anio', $anioActual)
+                    ->where('estado', $estadoActivo)
+                    ->first();
+    
+                if ($contador && $contador->valor > 0) {
+                    $contador->decrement('valor');
+                }
+    
+                $nuevoNumero = 0; // Se guarda como 0
+            } elseif ($tipoAnterior == 'M' && $tipoNuevo == 'R') {
+                // Si era M y ahora es R, aumentar en 1
+                $contador = ContadorRef::where('tipo', 'R')
+                    ->where('anio', $anioActual)
+                    ->where('estado', $estadoActivo)
+                    ->first();
+    
+                if ($contador) {
+                    $contador->increment('valor');
+                    $nuevoNumero = $contador->valor;
+                } else {
+                    // Si no existe, se crea con valor 1
+                    $contador = ContadorRef::create([
+                        'tipo' => 'R',
+                        'anio' => $anioActual,
+                        'valor' => 1,
+                        'estado' => $estadoActivo,
+                    ]);
+                    $nuevoNumero = 1;
+                }
+            }
+        }
+    
+        return $nuevoNumero;
+    }
+    
+    
+
+
+
+
     public function actualizarReforma(Request $request, $id){
         $data = $request->validate([
             'formData'      => 'required|array',
@@ -2333,24 +2401,18 @@ class PlanificacionController extends Controller
 
             // Actualizar la reforma principal
             $reforma = Reforma::findOrFail($id);
+
+            // Obtener el tipo anterior antes de actualizarlo
+            $tipoAnterior = $reforma->tipo;
+            $nroActual    = $reforma->nro_reforma;
+
+            // Obtener el nuevo número de reforma sin perder el actual si el tipo sigue siendo 'R'
+            $nro_reforma = $this->actualizaContadorRef($tipoAnterior, $tipo_refor, $nroActual);
+
             $reforma->justificacion      = $justificacion;
             $reforma->justificacion_area = $justifi;
             $reforma->tipo               = $tipo_refor;
-
-
-            //si el tipo de reforma cambia, aumenta o disminuye el numero
-            if($tipo_refor != $reforma->tipo){
-
-                if($tipo_refor == 'M'){
-
-
-
-                }else if($tipo_refor == 'R'){
-
-                }
-
-            }
-
+            $reforma->nro_reforma        = $nro_reforma;
 
             if ($reforma->estado === 'R') {
                 // Cambiar el estado a "Corregido"
@@ -3176,7 +3238,7 @@ class PlanificacionController extends Controller
         ];
 
         $atributos = DB::table('db_inspi_planificacion.pla_reforma')
-            ->select('pla_reforma.id as id', 'pla_reforma.nro_solicitud as numero',
+            ->select('pla_reforma.id as id', 'pla_reforma.nro_solicitud as numero', 'pla_reforma.nro_reforma as nro_reforma',
             DB::raw('DATE_FORMAT(pla_reforma.created_at, "%Y-%m-%d") as fecha_sol'),
             DB::raw('DATE_FORMAT(pla_reforma.updated_at, "%Y-%m-%d") as fecha_apr'),
             'pla_reforma.fecha as fecha', 'pla_reforma.justificacion as justificacion', 'pla_reforma.justificacion_area as justificacion_area',
@@ -3807,16 +3869,19 @@ class PlanificacionController extends Controller
         $data = $request->validate([
             'solicitud_id' => 'required|string',
             'justifi'      => 'required|string',
+            'certificado'  => 'required|string',
         ]);
 
         $fecha = date('Y-m-d');
 
         $id_poa  = $request->input('solicitud_id');
         $justifi = $request->input('justifi');
+        $certificado = $request->input('certificado');
 
         $poa = Poa::find($id_poa);
         $poa->estado = 'S';
         $poa->fecha  = $fecha;
+        $poa->monto_certificado  = $certificado;
         $poa->save();
 
         $calendario = Calendario::where('id_poa', $id_poa)->first();

@@ -559,6 +559,7 @@ $( function () {
                 let id_poa         = res.poa.id;
                 let actividad      = res.poa.actividad;
                 let subactividad   = res.poa.subactividad;
+                let monto          = res.poa.monto;
 
                 $('#contModalComentarios').text('');
 
@@ -584,6 +585,19 @@ $( function () {
                                         <label for="justifi" class="form-label fs-6">Justificación área requirente</label>
                                         <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
                                         <div class="valid-feedback">Looks good!</div>
+                                    </div>
+
+                                    <div class="col-md-12 row">
+                                        <div class="col-md-6 mt-5">
+                                            <label for="total_P" class="form-label fs-6 text-green">Monto de la Actividad</label>
+                                            <input disabled="" class="form-control disabled-green" type="text" id="total_P" name="total_P[]" value="${monto}">
+                                        </div>
+                                        <div class="col-md-6 mt-5">
+                                            <label for="total_C" class="form-label fs-6 text-red">Monto a Certificar</label>
+                                            <input class="form-control disabled-red" type="text" id="total_C" name="total_C[]" value="0.00" onchange="validarInputNumerico(this)">
+                                            <div class="valid-feedback">¡Se ve bien!</div>
+                                            <div class="invalid-feedback">Ingrese solo números</div>
+                                        </div>
                                     </div>
 
                                 </div>
@@ -625,6 +639,14 @@ $( function () {
 
         let solicitud_id = $('#solicitud_id').val();
         let justifi      = $('#justifi').val();
+        let disponible   = $('#total_P').val();
+        let certificado  = $('#total_C').val();
+
+        var isValid = /^\d+(\.\d+)?$/.test(certificado);
+
+        //para verificar si se excede
+        disponible  = parseFloat(disponible);
+        certificado = parseFloat(certificado);
 
         if(justifi == ''){
 
@@ -633,6 +655,36 @@ $( function () {
                 type:  'warning',
                 title: 'CoreInspi',
                 text:  'Debe de agregar un justificación del área.',
+                showConfirmButton: true,
+            });
+
+        }else if(!isValid){
+
+            Swal.fire({
+                icon:  'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text:  'El monto a certificar debe de ser un número.',
+                showConfirmButton: true,
+            });
+
+        }else if(certificado <= 0){
+
+            Swal.fire({
+                icon:  'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text:  'El monto a certificar no puede ser 0.',
+                showConfirmButton: true,
+            });
+
+        }else if(certificado > disponible){
+
+            Swal.fire({
+                icon:  'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text:  'El monto que quiere certificar, excede al monto disponible.',
                 showConfirmButton: true,
             });
 
@@ -658,6 +710,7 @@ $( function () {
                         data: {
                             'solicitud_id': solicitud_id,
                             'justifi'     : justifi,
+                            'certificado' : certificado,
                         },
                         success: function(response) {
     
@@ -1012,13 +1065,13 @@ $(document).on('click', '#btnCerrarModalPOA', function() {
     $('#creado').val('');
     $('#autorizado').val('');
     $('#reporta').val('');
-    $('#areaReq').val('');
-    $('#planificacionYG').val('');
+    //$('#areaReq').val('');
+    //$('#planificacionYG').val('');
     $('#cargo_creado').val('');
     $('#cargo_autorizado').val('');
     $('#cargo_reporta').val('');
-    $('#cargo_areaReq').val('');
-    $('#cargo_planificacionYG').val('');
+    //$('#cargo_areaReq').val('');
+    //$('#cargo_planificacionYG').val('');
 });
 
 
@@ -1388,3 +1441,23 @@ $(document).on('click', '#btnGenerarReportPOA', function(){
     });
 
  }
+
+
+
+ // Función para validar input numérico
+function validarInputNumerico(input) {
+    var inputValue = input.value;
+    //var isValid = /^\d+$/.test(inputValue);
+    var isValid = /^\d+(\.\d+)?$/.test(inputValue);
+
+    if (!isValid) {
+        input.setCustomValidity('Ingrese solo números');
+        input.classList.add('is-invalid');
+        input.classList.remove('is-valid');
+    } else {
+        input.setCustomValidity('');
+        input.classList.remove('is-invalid');
+        input.classList.add('is-valid');
+    }
+
+}

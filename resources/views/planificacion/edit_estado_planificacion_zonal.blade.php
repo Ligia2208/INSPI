@@ -392,44 +392,39 @@
                 </div>
                 <div class="card-body">
 
-                    <!-- <div class="row p-2"> -->
-                    <div class="" style="margin-bottom: 2%;">
-                        <div class="col-md-4 mt-2">
-                            <label for="frecuencia" class="form-label fs-6">Estado de comprobación de la actividad</label>
-                            <select id="estadoPoa" name="estadoPoa" class="form-select single-select" required>
-                                <option value="0" selected>Seleccione el estado de la actividad</option>
-                                <option value="O"> Validado</option>
-                                <option value="R"> Rechazado</option>
-                                <!-- <option value="C"> Corregido</option> -->
-                                <!-- <option value="4"> Cuatrimestral </option>
-                                <option value="5"> Semestral </option>
-                                <option value="6"> Anual </option>  -->
-                            </select>
-                        </div>
-                    </div>
-
                     <!--Código de php para crear la lista de todos los comentarios que haya escrito ese usuario. Solo deberá mostrarse si-->
                     <!--es que se encuentra que el usuario tiene al menos un comentario. Si no existe ningún comentario, entonces esta lista-->
                     <!--de comentarios no debería ni mostrarse. Aquí debe hacerse un if (creo) y un for para recorrer los campos de cada comentario-->
                     <!--En el for debe estar el campo del usuario (id_usuario) del comentario en sí y de la fecha de creación, esto con la finalidad-->
                     <!--de mostrar en cada for dichos datos, para cada comentario encontrado-->
                     <div class="row">
-                        <div class="col-md-8 mt-2">
+
+                        <div class="col-md-4 mt-2">
+                            <label for="frecuencia" class="form-label fs-6">Estado de comprobación de la actividad</label>
+                            <select id="estadoPoa" name="estadoPoa" class="form-select single-select" required>
+                                <option value="0" selected>Seleccione el estado de la actividad</option>
+                                <option value="O"> Validado</option>
+                                <option value="R"> Rechazado</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label for="montoCer" class="form-label fs-6 text-red">Monto A Certificar</label>
+                            <input type="text" id="montoCer" name="montoCer" class="form-control disabled-red" required="" autofocus="" value="{{$atributos->certificado}}" disabled>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label for="montoDis" class="form-label fs-6">Monto Disponibe del Item</label>
+                            <input type="text" id="montoDis" name="montoDis" class="form-control" required="" autofocus="" value="">
+                        </div>
+
+
+                        <div class="col-md-12 mt-2">
                             <label for="justifi" class="form-label fs-6">Justificación de la selección</label>
                             <textarea id="justificacionPoa" name="justificacionPoa" class="form-control" required="" autofocus="" rows="4"></textarea>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
-                        <div class="row col-md-4">
-                            <div class="col-md-12 mt-2">
-                                <label for="montoDisSis" class="form-label fs-6">Monto Disponibe del Item / Sistema</label>
-                                <input type="text" id="montoDisSis" name="montoDisSis" class="form-control" required="" autofocus="" value="{{$item_suma}}" disabled>
-                            </div>
-
-                            <div class="col-md-12 mt-2">
-                                <label for="montoDis" class="form-label fs-6">Monto Disponibe del Item</label>
-                                <input type="text" id="montoDis" name="montoDis" class="form-control" required="" autofocus="" value="">
-                            </div>
-                        </div>
+                        
                     </div>
 
 
@@ -541,5 +536,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/editPlanificacion.js?v0.0.9')}}"></script>
+<script src="{{asset('assets/js/Planificacion/editPlanificacion.js?v0.0.10')}}"></script>
 @endpush

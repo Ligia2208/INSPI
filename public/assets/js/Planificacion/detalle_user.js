@@ -163,6 +163,7 @@ $( function () {
             { data: 'obj_operativo',       name: 'obj_operativo' },
             { data: 'act_operativa',       name: 'act_operativa' },
             { data: 'sub_actividad',       name: 'sub_actividad' },
+            { data: 'item',                name: 'item' },
 
             { data: 'enero',               name: 'enero' },
             { data: 'febrero',             name: 'febrero' },
@@ -211,7 +212,7 @@ $( function () {
             var api = this.api();
 
             // Totalizar cada columna de suma
-            var sumColumns = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+            var sumColumns = [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
             for (var i = 0; i < sumColumns.length; i++) {
                 var columnIndex = sumColumns[i];
                 var total = api

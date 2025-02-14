@@ -392,8 +392,8 @@
                         </div>
 
                         <div class="col-md-4 mt-2">
-                            <label for="montoDisSis" class="form-label fs-6">Monto Disponibe del Item / Sistema</label>
-                            <input type="text" id="montoDisSis" name="montoDisSis" class="form-control" required="" autofocus="" value="{{$item_suma}}" disabled>
+                            <label for="montoCer" class="form-label fs-6 text-red">Monto A Certificar</label>
+                            <input type="text" id="montoCer" name="montoCer" class="form-control disabled-red" required="" autofocus="" value="{{$atributos->certificado}}" disabled>
                         </div>
 
                         <div class="col-md-4 mt-2">
@@ -525,5 +525,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/editPlanificacion.js?v0.0.8')}}"></script>
+<script src="{{asset('assets/js/Planificacion/editPlanificacion.js?v0.0.10')}}"></script>
 @endpush
