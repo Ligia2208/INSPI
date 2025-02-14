@@ -170,6 +170,7 @@
                         class="table table-head-custom table-head-bg table-borderless table-vertical-center">
                         <thead>
                             <tr class="text-uppercase">
+                                <th>Código Muestra</th>
                                 <th>Intitución Salud</th>
                                 <th>Fecha Atención</th>
                                 <th>Identidad</th>
@@ -185,6 +186,16 @@
                         <tbody>
                             @forelse ($analiticas as $postanalitica)
                                 <tr>
+                                    @forelse ($postanalitica->analitica as $objPos)
+                                        @if($objPos->codigo_secuencial==1)
+                                        <?php  $codigo = $objPos->codigo_calidad; ?>
+                                        @endif
+                                    @empty
+                                    @endforelse
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $codigo }}</span>
+                                    </td>
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->instituciones->descripcion }}</span>

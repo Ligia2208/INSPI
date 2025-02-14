@@ -98,4 +98,8 @@ class Preanalitica extends Model
         return $this->belongsTo(Muestra::class);
     }
 
+    public function analitica(){
+        return $this->hasMany(Analitica::class);
+    }
+
 }

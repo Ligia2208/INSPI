@@ -77,12 +77,15 @@ class Form extends Component
 
             'Analiticas.tecnica_segunda_id' => 'sometimes|numeric',
             'Analiticas.resultado_segunda_id' => 'sometimes|numeric',
+            'Analiticas.identificado_segunda' => 'sometimes|max:200',
 
             'Analiticas.tecnica_tercera_id' => 'sometimes|numeric',
             'Analiticas.resultado_tercera_id' => 'sometimes|numeric',
+            'Analiticas.identificado_tercera' => 'sometimes|max:200',
 
             'Analiticas.tecnica_cuarta_id' => 'sometimes|numeric',
             'Analiticas.resultado_cuarta_id' => 'sometimes|numeric',
+            'Analiticas.identificado_cuarta' => 'sometimes|max:200',
 
         ];
     }
@@ -183,10 +186,11 @@ class Form extends Component
                 $newMuestra->anio_registro = $this->Analiticas->anio_registro;
                 $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+1;
-                $newMuestra->codigo_externo = 'TecAdic'.$this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
                 $newMuestra->tecnica_id = $this->Analiticas->tecnica_segunda_id;
                 $newMuestra->resultado_id = $this->Analiticas->resultado_segunda_id;
+                $newMuestra->identificado = $this->Analiticas->identificado_segunda;
                 $newMuestra->descripcion = $this->Analiticas->descripcion;
                 $newMuestra->usuariot_id = $user;
                 $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
@@ -214,10 +218,11 @@ class Form extends Component
                 $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
                 $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+2;
-                $newMuestra->codigo_externo = 'TecAdic'.$this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
                 $newMuestra->tecnica_id = $this->Analiticas->tecnica_tercera_id;
                 $newMuestra->resultado_id = $this->Analiticas->resultado_tercera_id;
+                $newMuestra->identificado = $this->Analiticas->identificado_tercera;
                 $newMuestra->descripcion = $this->Analiticas->descripcion;
                 $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
                 $newMuestra->fecha_llegada_lab = $this->Analiticas->fecha_llegada_lab;
@@ -245,10 +250,11 @@ class Form extends Component
                 $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
                 $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+3;
-                $newMuestra->codigo_externo = 'TecAdic'.$this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_externo = 'Adicional'.$this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
                 $newMuestra->tecnica_id = $this->Analiticas->tecnica_cuarta_id;
                 $newMuestra->resultado_id = $this->Analiticas->resultado_cuarta_id;
+                $newMuestra->identificado = $this->Analiticas->identificado_cuarta;
                 $newMuestra->descripcion = $this->Analiticas->descripcion;
                 $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
                 $newMuestra->fecha_llegada_lab = $this->Analiticas->fecha_llegada_lab;

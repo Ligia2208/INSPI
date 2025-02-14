@@ -10,6 +10,7 @@ use App\Http\Controllers\Plataformas\Anamnesis\AnamnesisController;
 use App\Http\Controllers\Plataformas\Constante\ConstanteController;
 use App\Http\Controllers\CentrosReferencia\Preanalitica\PreanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
+use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
@@ -73,8 +74,11 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Resultados
         Route::resource('resultadoscrn', ResultadocrnController::class)->parameters(['resultados' => 'resultado'])->names('resultadocrn');
 
-        //CRNs Plataformas Analitica de Resultados
+        //CRNs Plataformas Analitica de Resultados Pendientes
         Route::resource('analiticas', AnaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('analitica');
+
+        //CRNs Plataformas Analitica de Resultados Procesados
+        Route::resource('analiticasp', AnaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('analiticap');
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');

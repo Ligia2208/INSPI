@@ -72,7 +72,7 @@
                                             <select id="idtipo" wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha atención</option>
+                                                <option data-subtext="" value="1">Fecha recepcion</option>
                                                 <option data-subtext="" value="2">Fecha inicio sintomas</option>
                                                 <option data-subtext="" value="3">Fecha de registro</option>
                                             </select>
@@ -173,7 +173,7 @@
                         <thead>
                             <tr class="text-uppercase">
                                 <th>Id</th>
-                                <th>Fecha Atención</th>
+                                <th>Fecha Recepción</th>
                                 <th>Institución Salud</th>
                                 <th>Paciente</th>
                                 <th>Sede</th>
@@ -192,7 +192,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $preanalitica->fecha_atencion }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $preanalitica->fecha_recepcion }}</span>
                                     </td>
                                     <td>
                                         <span
