@@ -440,8 +440,24 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label>Fecha atención<span class="text-danger">*</span></label>
+                                <div class="form-group col-md-2">
+                                    <label>Fecha Recepción<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            value="{{ $preanalitica->fecha_recepcion }}"
+                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_recepcion') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Fecha Atención<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -451,12 +467,12 @@
                                         <input
                                             type="date"
                                             value="{{ $preanalitica->fecha_atencion }}"
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
+                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_atencion') is-invalid @enderror"
                                             placeholder="Seleccione una fecha" disabled
                                         />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-4">
                                     <label class="text-black"><b>Código Externo</b><span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -475,7 +491,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label class="text-black"><b>Llegada a CRN-Lab.</b><span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -491,7 +507,7 @@
                                         />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label class="text-black"><b>Fecha Procesamiento</b><span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -737,7 +753,7 @@
                             </div>
 
                             <div class="form-row" id="add_muestras" style="visibility:hidden">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-5">
                                     <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -785,9 +801,25 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label class="text-black"><b>Agente identificado</b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticas.identificado_segunda"
+                                            type="text"
+                                            required
+                                            class="form-control form-control-solid @error('Analiticas.identificado_segunda') is-invalid @enderror"
+                                            placeholder="Ej: Otra bacteria" />
+                                    </div>
+                                </div>
 
 
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-5">
                                     <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -835,8 +867,24 @@
                                         </select>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-3">
+                                    <label class="text-black"><b>Agente identificado</b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticas.identificado_tercera"
+                                            type="text"
+                                            required
+                                            class="form-control form-control-solid @error('Analiticas.identificado_tercera') is-invalid @enderror"
+                                            placeholder="Ej: Otra bacteria" />
+                                    </div>
+                                </div>
 
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-5">
                                     <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -882,6 +930,22 @@
                                             @endforeach
                                             @endif
                                         </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label class="text-black"><b>Agente identificado</b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticas.identificado_cuarta"
+                                            type="text"
+                                            required
+                                            class="form-control form-control-solid @error('Analiticas.identificado_cuarta') is-invalid @enderror"
+                                            placeholder="Ej: Otra bacteria" />
                                     </div>
                                 </div>
 

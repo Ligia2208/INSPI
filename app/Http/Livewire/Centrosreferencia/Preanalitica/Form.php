@@ -73,6 +73,7 @@ class Form extends Component
             'Preanaliticas.paciente_telefono' => 'sometimes|max:15',
             'Preanaliticas.paciente_ubicacion' => 'sometimes|max:150',
             'Preanaliticas.paciente_nacionalidad' => 'sometimes|max:150',
+            'Preanaliticas.fecha_recepcion' => 'required|max:10',
             'Preanaliticas.fecha_atencion' => 'required|max:10',
             'Preanaliticas.quien_notifica' => 'required|max:80',
             'Preanaliticas.probable_infeccion' => 'sometimes|max:200',
@@ -119,6 +120,7 @@ class Form extends Component
     public function mount(Preanalitica $Preanalitica, $method){
         $this->Preanaliticas = $Preanalitica;
         $this->method = $method;
+
         if($this->Preanaliticas->segunda_id == 0){
             $this->Preanaliticas->clase_segunda_id = 0;
             $this->Preanaliticas->segunda_id = 0;
@@ -149,6 +151,7 @@ class Form extends Component
             $this->updatedselectedCrnp($this->Preanaliticas->crns_id);
         }
         else{
+            $this->Preanaliticas->fecha_recepcion = date('Y-m-d');
             $this->Preanaliticas->embarazo='N';
             $this->Preanaliticas->laboratorio='N';
             $this->Preanaliticas->gestacion=0;
@@ -274,6 +277,7 @@ class Form extends Component
         $newToma->quien_notifica = $pa->quien_notifica;
         $newToma->probable_infeccion = $pa->probable_infeccion;
         $newToma->fecha_sintomas = $pa->fecha_sintomas;
+        $newToma->fecha_recepcion = $pa->fecha_recepcion;
         $newToma->embarazo = $pa->embarazo;
 
         $newToma->gestacion = $pa->gestacion;
@@ -811,6 +815,7 @@ class Form extends Component
         $updatePre->paciente_id=$this->Preanaliticas->paciente_id;
         $updatePre->probable_infeccion=$this->Preanaliticas->probable_infeccion;
         $updatePre->fecha_sintomas=$this->Preanaliticas->fecha_sintomas;
+        $updatePre->fecha_recepcion=$this->Preanaliticas->fecha_recepcion;
         $updatePre->embarazo=$this->Preanaliticas->embarazo;
         $updatePre->gestacion=$this->Preanaliticas->gestacion;
         $updatePre->laboratorio=$this->Preanaliticas->laboratorio;

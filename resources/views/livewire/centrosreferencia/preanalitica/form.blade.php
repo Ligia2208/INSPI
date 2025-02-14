@@ -21,7 +21,21 @@
                             <h3 class="text-dark font-weight-bold mb-10">Información general</h3>
                             @include('component.error-list')
                             <div class="form-row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-2">
+                                    <label>Fecha de Recepción<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input wire:model.defer="Preanaliticas.fecha_recepcion"
+                                            value="Preanaliticas.fecha_recepcion" type="date"
+                                            class="start_date form-control form-control-solid @error('Preanaliticas.fecha_recepcion') is-invalid @enderror"
+                                            placeholder="Seleccione la fecha de inicio sintomas" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-7">
                                     <label>Institución de Salud<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -42,7 +56,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
                                     <label>Tipología IS<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
