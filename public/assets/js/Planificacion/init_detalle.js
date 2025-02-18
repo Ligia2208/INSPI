@@ -30,7 +30,7 @@ $( function () {
             { data: 'actividad',   name: 'actividad' },
             { data: 'fuente',      name: 'fuente' },
 
-            { data: 'POA', name: 'POA' },
+            { data: 'proceso',     name: 'proceso' },
             { data: 'obj_operativo', name: 'obj_operativo' },
             { data: 'act_operativa', name: 'act_operativa' },
             { data: 'sub_actividad', name: 'sub_actividad' },
@@ -76,7 +76,7 @@ $( function () {
             };
     
             // Sumar columnas de enero a diciembre
-            for (let col = 11; col <= 24; col++) { // Índices de columnas de enero a diciembre
+            for (let col = 12; col <= 24; col++) { // Índices de columnas de enero a diciembre
                 let total = api
                     .column(col, { page: 'current' }) // Solo suma los valores visibles en la página actual
                     .data()

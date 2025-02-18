@@ -330,105 +330,31 @@ $( function () {
             },
             success: function(response, status, xhr) {
 
-                var id = response.valores['id'];
-                var departamento = response.valores['departamento'];
-                var numero = response.valores['numero'];
-                var fecha = response.valores['fecha'];
-                var fuente = response.valores['fuente'];
-                var idPoa = response.valores['idPoa'];
-                var idTipoMonto = response.valores['idTipoMonto'];
-                var id_item = response.valores['id_item'];
-                var justificacion = response.valores['justificacion'];
-                var monto = response.valores['monto'];
-                var montoItem = response.valores['montoItem'];
-                var nombreActividadOperativa = response.valores['nombreActividadOperativa'];
-                var nombreObjOperativo = response.valores['nombreObjOperativo'];
-                var nombreSubActividad = response.valores['nombreSubActividad'];
-                var nombreItem = response.valores['nombreItem'];
-
-                
                 $('#id_solicitud').val(id_solicitud);
 
+                let actividades = response.valoresSoli;
+                let solicitante = response.solicitud.solicitante;
 
-                var ene = response.valores['enero'];
-                var feb = response.valores['febrero'];
-                var mar = response.valores['marzo'];
-                var abr = response.valores['abril'];
-                var may = response.valores['mayo'];
-                var jun = response.valores['junio'];
-                var jul = response.valores['julio'];
-                var ago = response.valores['agosto'];
-                var sep = response.valores['septiembre'];
-                var oct = response.valores['octubre'];
-                var nov = response.valores['noviembre'];
-                var dic = response.valores['diciembre'];
-
-                var plurianual = response.valores['plurianual'];
-                var presupuesto_proyectado = response.valores['presupuesto_proyectado'];
-                var programa = response.valores['programa'];
-                var proyecto = response.valores['proyecto'];
-                var u_ejecutora = response.valores['u_ejecutora'];
-
-                $('#objetivo').text(nombreObjOperativo);
-                $('#actividad').text(nombreActividadOperativa);
-                $('#subActividad').text(nombreSubActividad);
-                $('#numero').text(numero);
-                
-                $('#ene').text(ene);
-                $('#feb').text(feb);
-                $('#mar').text(mar);
-                $('#may').text(abr);
-                $('#abr').text(may);
-                $('#jun').text(jun);
-                $('#jul').text(jul);
-                $('#ago').text(ago);
-                $('#sep').text(sep);
-                $('#oct').text(oct);
-                $('#nov').text(nov);
-                $('#dic').text(dic);
-
-                
-                var ene = response.valoresSoli['enero'];
-                var feb = response.valoresSoli['febrero'];
-                var mar = response.valoresSoli['marzo'];
-                var abr = response.valoresSoli['abril'];
-                var may = response.valoresSoli['mayo'];
-                var jun = response.valoresSoli['junio'];
-                var jul = response.valoresSoli['julio'];
-                var ago = response.valoresSoli['agosto'];
-                var sep = response.valoresSoli['septiembre'];
-                var oct = response.valoresSoli['octubre'];
-                var nov = response.valoresSoli['noviembre'];
-                var dic = response.valoresSoli['diciembre'];
-
-                var nombreSubActividadS = response.valoresSoli['sub_actividad'];
-                var tipo = response.valoresSoli['tipo'];
-                var fecha = response.solicitud['fecha'];
-                var solicitante = response.solicitud['solicitante'];
-
-                console.log(solicitante);
-                console.log(response.solicitud.solicitante);
-
-                $('#objetivoS').text(nombreObjOperativo);
-                $('#actividadS').text(nombreActividadOperativa);
-                $('#subActividadS').text(nombreSubActividadS);
-                $('#tipo').text(tipo);
-
-                $('#fecha').text(fecha);
-                $('#area').text(solicitante);
-
-                $('#eneS').text(ene);
-                $('#febS').text(feb);
-                $('#marS').text(mar);
-                $('#mayS').text(abr);
-                $('#abrS').text(may);
-                $('#junS').text(jun);
-                $('#julS').text(jul);
-                $('#agoS').text(ago);
-                $('#sepS').text(sep);
-                $('#octS').text(oct);
-                $('#novS').text(nov);
-                $('#dicS').text(dic);
+                // Limpiar la tabla antes de agregar nuevas filas
+                $("#tblSolicitud tbody").empty();
+        
+                // Iterar sobre cada actividad y generar una fila
+                actividades.forEach(actividad => {
+                    let nuevaFila = `
+                        <tr>
+                            <td>${solicitante}</td> 
+                            <td>${actividad.sub_actividad}</td>
+                            <td>${actividad.item}</td>
+                            <td>${actividad.tipo}</td>
+                            <td>${actividad.disponible} </td>
+                            <td><input type="number" disabled class="form-control disabled-green" value="${actividad.tipo === 'AUMENTA' ? actividad.total : 0}"></td>
+                            <td><input type="number" disabled class="form-control disabled-red" value="${actividad.tipo === 'DISMINUYE' ? actividad.total : 0}"></td>
+                        </tr>
+                    `;
+        
+                    // Agregar la fila a la tabla
+                    $("#tblSolicitud tbody").append(nuevaFila);
+                });
 
             },
             error: function(error) {

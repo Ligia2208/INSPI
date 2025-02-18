@@ -148,8 +148,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/planificacion/agregarComentarioEstado', 'PlanificacionController@agregarComentarioEstado')->name('planificacion.agregarComentarioEstado');
     
         Route::get('/planificacion/obtenerDatosItem/{id?}', 'PlanificacionController@obtenerDatosItem')->name('planificacion.obtenerDatosItem');
-    
-        Route::get('planificacion/reportHexa', 'PlanificacionController@reportHexa')->name('planificacion.reportHexa');
         Route::get('planificacion/actualizaDescarga', 'PlanificacionController@actualizaDescarga')->name('planificacion.actualizaDescarga');
     
         Route::get('/planificacion/reformaIndex', 'PlanificacionController@reformaIndex')->middleware('permission:plareformauser')->name('planificacion.reformaIndex'); //vista principal
@@ -177,7 +175,6 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/planificacion/crearActArea', 'PlanificacionController@crearActArea')->name('planificacion.crearActArea'); //Crea una nueva actividad de otra área en la ventana de editar
     
         Route::post('/planificacion/deleteReforma', 'PlanificacionController@deleteReforma')->name('planificacion.deleteReforma'); //Eliminar registro
-        Route::get('planificacion/reportReforma', 'PlanificacionController@reportReforma')->name('planificacion.reportReforma');
     
         //ESTRUCTUTA PRESUPUESTARIA
         Route::get('/planificacion/get_unidad', 'PlanificacionController@get_unidad')->name('planificacion.get_unidad');
@@ -195,8 +192,13 @@ Route::middleware(['auth'])->group(function () {
         Route::get('planificacion/reportDetalleUser', 'PlanificacionController@reportDetalleUser')->name('planificacion.reportDetalleUser');
         Route::get('planificacion/import_actividad', 'PlanificacionController@import_actividad')->name('planificacion.import_actividad');
         Route::post('planificacion/import', 'PlanificacionController@import')->name('planificacion.import');
+
+        //REPORTES 
         Route::get('planificacion/reportDetalleExcel', 'PlanificacionController@reportDetalleExcel')->name('planificacion.reportDetalleExcel');
         Route::get('planificacion/reportDetalleExcelUser', 'PlanificacionController@reportDetalleExcelUser')->name('planificacion.reportDetalleExcelUser');
+        Route::get('planificacion/reportHexa', 'PlanificacionController@reportHexa')->name('planificacion.reportHexa');
+        Route::get('planificacion/reportPOAExcel', 'PlanificacionController@reportPOAExcel')->name('planificacion.reportPOAExcel');
+        Route::get('planificacion/reportReforma', 'PlanificacionController@reportReforma')->name('planificacion.reportReforma');
     
     });
     /* =========================== PLANIFICACION =========================== */
