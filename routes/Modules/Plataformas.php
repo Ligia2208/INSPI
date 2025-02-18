@@ -15,8 +15,10 @@ use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
 use App\Http\Controllers\CentrosReferencia\Resultadocrn\ResultadocrnController;
+use App\Http\Controllers\CentrosReferencia\Resultadogerencial\ResultadogerencialController;
 use App\Http\Controllers\CentrosReferencia\VisorResultados\VisorResultadosController;
 use App\Http\Controllers\CentrosReferencia\VisorResultadoscrn\VisorResultadoscrnController;
+use App\Http\Controllers\CentrosReferencia\VisorResultadosgerencial\VisorResultadosgerencialController;
 use App\Http\Controllers\CentrosReferencia\Responsable\ResponsableController;
 use App\Http\Controllers\CentrosReferencia\Paciente\PacienteController;
 use App\Http\Controllers\CentrosReferencia\Instsalud\InstsaludController;
@@ -74,6 +76,9 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Resultados
         Route::resource('resultadoscrn', ResultadocrnController::class)->parameters(['resultados' => 'resultado'])->names('resultadocrn');
 
+        //CRNs Plataformas Resultados
+        Route::resource('resultadosgerencial', ResultadogerencialController::class)->parameters(['resultados' => 'resultado'])->names('resultadogerencial');
+
         //CRNs Plataformas Analitica de Resultados Pendientes
         Route::resource('analiticas', AnaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('analitica');
 
@@ -85,6 +90,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Resultados
         Route::resource('visorresultadoscrn', VisorResultadoscrnController::class)->parameters(['resultados' => 'resultado'])->names('visorresultadocrn');
+
+        //CRNs Plataformas Resultados
+        Route::resource('visorresultadosgerencial', VisorResultadosgerencialController::class)->parameters(['resultados' => 'resultado'])->names('visorresultadogerencial');
 
         //CRNs Plataformas Resultados
         Route::resource('visorresultados', VisorResultadosController::class)->parameters(['resultados' => 'resultado'])->names('visorresultado');

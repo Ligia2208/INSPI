@@ -10,7 +10,7 @@
                 </h3>
             </div>
             <!--end::Header-->
-            @if($rol == 'Administrador')
+            @if($claboratorios == '')
             <div class="card-body pt-0 pb-3">
                 <div class="mb-5 ">
                     <div class="row align-items-center">
@@ -357,7 +357,7 @@
                                             <select wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha toma de muestra</option>
+                                                <option data-subtext="" value="1">Fecha toma</option>
                                                 <option data-subtext="" value="2">Fecha llegada al CRN/LAB</option>
                                                 <option data-subtext="" value="3">Fecha procesamiento</option>
                                                 <option data-subtext="" value="4">Fecha validación</option>
@@ -441,7 +441,7 @@
                             <thead>
                                 <tr class="text-uppercase">
                                     <th>Código Muestra</th>
-                                    <th>Fecha Recepción</th>
+                                    <th>Fecha Toma</th>
                                     <th>Fecha Llegada_CRN</th>
                                     <th>Fecha Procesamiento</th>
                                     <th>Fecha Validación</th>
@@ -460,11 +460,11 @@
                                     @endif
                                         <td>
                                             <span
-                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $objRes->anio_registro }}-{{ str_pad($objRes->codigo_muestra, 6, "0", STR_PAD_LEFT) }}</span>
+                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $objRes->anio_registro }}-{{ str_pad($objRes->codigo_muestra, 5, "0", STR_PAD_LEFT) }}</span>
                                         </td>
                                         <td>
                                             <span
-                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->preanalitica->fecha_recepcion }}</span>
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_toma }}</span>
                                         </td>
                                         <td>
                                             <span
