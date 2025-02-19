@@ -317,6 +317,7 @@ $(document).ready(function() {
         $inputTotal.val(total.toFixed(2));
     }
 
+    
     // Evento de cambio para el select de tipo de inversión
     $('#tblActividades').on('change', 'select[name="tipo[]"]', function() {
         // Obtener el valor seleccionado (DISMINUYE o AUMENTA)
@@ -339,6 +340,7 @@ $(document).ready(function() {
         actualizarTotales();
 
     });
+    
 
 
 
@@ -483,6 +485,7 @@ function actualizarTotales() {
     let totalAumenta = 0;
     let totalDisminuye = 0;
     let totalAjuste  = 0;
+    let totalAmplia  = 0;
 
     // Seleccionar solo las filas visibles
     $('#tblActividades tbody tr:visible').each(function() {
@@ -503,6 +506,8 @@ function actualizarTotales() {
             totalDisminuye += totalFila;
         } else if (tipo === 'AJUSTE') {
             totalAjuste += totalFila;
+        }else if (tipo === 'AMPLIA') {
+            totalAmplia += totalFila;
         }
 
     });
@@ -511,6 +516,7 @@ function actualizarTotales() {
     $('#aumTotal').val(totalAumenta);
     $('#disTotal').val(totalDisminuye);
     $('#ajuTotal').val(totalAjuste);
+    $('#ampTotal').val(totalAmplia);
 }
 
 
@@ -775,6 +781,7 @@ function agregarFilaATabla(poa) {
                     <option value="AUMENTA">Aumenta</option>
                     <option value="IGUAL">Igual</option>
                     <option value="AJUSTE">Ajuste</option>
+                    <option value="AMPLIA">Amplia</option>
                 </select>
             </td>
             <td><input class="form-control" style="width: 125px;" type="text" name="enero[]" value="0"></td>
@@ -823,6 +830,36 @@ function fetchItemData(itemId) {
             // Rellenar los campos con los datos obtenidos
             $('#monDisp').val(response.monto);
             $('#desItem').val(response.descripcion);
+        },
+        error: function(error) {
+            console.error('Error al obtener datos del item: ', error);
+        }
+    });
+}
+
+function selectItem(itemId) {
+
+
+
+    $.ajax({
+        type: 'GET',
+        url: '/planificacion/obtenerObjetoContratacion/' + itemId,
+        success: function(response) {
+ 
+            if (response.atributos.length > 0) {
+                var options = '<option value="">Seleccione una Sub_Actividad/Objeto de Contratación</option>';
+                response.atributos.forEach(function(item) {
+                    options += `<option value="${item.id}" 
+                                    data-nombre-item="${item.nombreItem}" 
+                                    data-descripcion-item="${item.descripcionItem}">
+                                    ${item.nombreSubActividad} - (${item.monto})
+                                </option>`;
+                });
+                $('#select_idpoa').html(options);
+            } else {
+                $('#select_idpoa').html('<option value="">No hay datos disponibles</option>');
+            }
+
         },
         error: function(error) {
             console.error('Error al obtener datos del item: ', error);
@@ -1053,6 +1090,7 @@ function agregarActAreaFila(element) {
                             <option value="AUMENTA">Aumenta</option>
                             <option value="IGUAL">Igual</option>
                             <option value="AJUSTE">Ajuste</option>
+                            <option value="AMPLIA">Amplia</option>
                         </select>
                     </td>
                     <td>
@@ -1166,6 +1204,7 @@ function agregarActividad() {
                                 <option value="AUMENTA">Aumenta</option>
                                 <option value="IGUAL">Igual</option>
                                 <option value="AJUSTE">Ajuste</option>
+                                <option value="AMPLIA">Amplia</option>
                             </select>
                         </td>
                         <td>

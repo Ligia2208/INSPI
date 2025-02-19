@@ -14,6 +14,7 @@ $( function () {
                 d.estado = $('#filterEstado').val();
                 d.direccion = $('#filterDireccion').val();
                 d.item = $('#filterItem').val();
+                d.programa = $('#filterPrograma').val();
             }
         },
         columns: [
@@ -23,8 +24,9 @@ $( function () {
             { data: 'act_operativa', name: 'act_operativa' },
             { data: 'sub_actividad', name: 'sub_actividad' },
             { data: 'proceso', name: 'proceso' },
-            { data: 'monto', name: 'monto', render: $.fn.dataTable.render.number(',', '.', 2, '$') }, // Formato con separadores
-            { data: 'fecha', name: 'fecha' },
+            { data: 'monto',  name: 'monto', render: $.fn.dataTable.render.number(',', '.', 2, '$') }, // Formato con separadores
+            { data: 'numero', name: 'numero' },
+            { data: 'fecha',  name: 'fecha' },
             {
                 data: 'estado',
                 render: function (data, type, full, meta) {
@@ -88,7 +90,7 @@ $( function () {
                 }
             },
         ],
-        order: [[6, 'desc']],
+        order: [[8, 'desc']],
         language: {
             "emptyTable": "No hay información",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
@@ -123,7 +125,7 @@ $( function () {
     });
     
     // **Actualizar la tabla cuando cambien los filtros**
-    $('#filterEstado, #filterDireccion, #filterItem').on('change', function () {
+    $('#filterEstado, #filterDireccion, #filterItem, #filterPrograma').on('change', function () {
         table.ajax.reload();
     });
     
@@ -554,6 +556,51 @@ $(document).ready(function() {
                             showConfirmButton: true,
                         });
                     }
+                });
+            }
+        });
+
+    });
+
+
+    // Generar el reporte EXCEL para POA
+    $(document).on('click', '#btnGenerateExcel', function() {
+
+        var filterEstado    = $('#filterEstado').val();
+        var filterDireccion = $('#filterDireccion').val();
+        var filterItem      = $('#filterItem').val();
+        var filterPrograma  = $('#filterPrograma').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/planificacion/reportPOAExcel',
+            data: {
+                filterEstado       : filterEstado,
+                filterDireccion    : filterDireccion,
+                filterItem         : filterItem,
+                filterPrograma     : filterPrograma,
+            },
+            xhrFields: {
+                responseType: 'blob'  // Definir que esperamos una respuesta de tipo blob (archivo)
+            },
+            success: function(response, status, xhr) {
+                var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }); // Tipo para Excel
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_poa_' + '.xlsx'; // Extensión .xlsx para el archivo Excel
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+                $('#addReportDetalle').modal('hide');
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el archivo Excel.',
+                    showConfirmButton: true,
                 });
             }
         });

@@ -130,7 +130,8 @@ $( function () {
             },
         ],
         order: [
-            [0, 'desc']
+            //[0,'desc'],
+            [6,'desc']
         ],
 
         // Otras configuraciones de DataTables aquí
