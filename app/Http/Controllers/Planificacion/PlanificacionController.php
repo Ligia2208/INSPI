@@ -2045,10 +2045,8 @@ class PlanificacionController extends Controller
                         // 'estado' => 'A', // Suponiendo que 'A' es para estado activo
                     ]);
 
-                    if($datos['tipo'] == 'AUMENTA' || $datos['tipo'] == 'AJUSTE'){
+                    if($datos['tipo'] == 'AUMENTA' || $datos['tipo'] == 'AJUSTE'|| $datos['tipo'] == 'AMPLIA'){
                         $contador_total += $datos['total'];
-                    }else{
-                        $contador_total += 0;
                     }
 
                 }

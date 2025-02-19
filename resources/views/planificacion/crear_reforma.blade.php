@@ -47,7 +47,7 @@
                             <option value="{{ $item->id }}" 
                                 data-nombre-item="{{ $item->nombreItem }}"
                                 data-descripcion-item="{{ $item->descripcionItem }}">
-                                {{ $item->nombreSubActividad }}
+                                {{ $item->nombreSubActividad }} -  ({{$item->monto}})
                             </option>
                         @endforeach
                     </select>
@@ -426,5 +426,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.19')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.20')}}"></script>
 @endpush

@@ -852,7 +852,7 @@ function selectItem(itemId) {
                     options += `<option value="${item.id}" 
                                     data-nombre-item="${item.nombreItem}" 
                                     data-descripcion-item="${item.descripcionItem}">
-                                    ${item.nombreSubActividad}
+                                    ${item.nombreSubActividad} - (${item.monto})
                                 </option>`;
                 });
                 $('#select_idpoa').html(options);

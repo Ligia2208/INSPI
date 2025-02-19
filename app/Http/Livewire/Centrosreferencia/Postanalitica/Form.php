@@ -127,6 +127,8 @@ class Form extends Component
         $user = auth()->user()->id;
         $i=0;
         $preanalitica = Preanalitica::findOrFail($this->Analiticas->id);
+        $absede = Sede::findOrFail($preanalitica->sedes_id);
+        $abcrn = Crn::findOrFail(8);
         if($preanalitica->resultado_id==67 && ($preanalitica->evento_id==116 || $preanalitica->evento_id==117 || $preanalitica->evento_id==118 || $preanalitica->evento_id==119 || $preanalitica->evento_id==120 || $preanalitica->evento_id==125)){
                 $lista = $this->Analiticas->eventosav_id;
                 $total = count($lista);
@@ -170,7 +172,7 @@ class Form extends Component
                             $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
                             $anio = date("Y", $fechacomoentero)-2000;
                             $mes = date("m", $fechacomoentero);
-                            $newAnalitica->codigo_calidad = str_pad($newAnalitica->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($$newAnalitica->codigo_secuencial, 2, '0', STR_PAD_LEFT);
+                            $newAnalitica->codigo_calidad = str_pad($newAnalitica->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newAnalitica->codigo_secuencial, 2, '0', STR_PAD_LEFT);
                             $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
                             $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
                             $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
