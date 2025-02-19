@@ -16,6 +16,7 @@ class MontoDireccion extends Model
             'descripcion',
             'monto',
             'id_fuente',
+            'proceso_estado',
             'estado',
             'created_at',
             'updated_at'

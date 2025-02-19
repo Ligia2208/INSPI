@@ -8,8 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
 use App\Models\User;
 use App\Models\CoreBase\Nacionalidad;
-use App\Models\CoreBase\Sexo;
-
 
 class Paciente extends Model
 {

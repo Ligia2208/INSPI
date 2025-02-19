@@ -1,23 +1,19 @@
 @extends('layouts.main')
 
-@section('title', 'Resultados')
+@section('title', 'Resultados CRN')
 
 @section('content')
 
-    <!--begin::Bread-->
     <div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader">
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
-            <!--begin::Info-->
             <div class="d-flex align-items-center flex-wrap mr-1">
-                <!--begin::Page Heading-->
+                <button class="burger-icon burger-icon-left mr-4 d-inline-block d-lg-none" id="kt_subheader_mobile_toggle">
+                    <span></span>
+                </button>
                 <div class="d-flex align-items-baseline mr-5">
-                    <!--begin::Page Title-->
-                    <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">@yield('title')</h5></a>
-                    <!--end::Page Title-->
+                    <h5 class="text-dark font-weight-bold my-2 mr-5">@yield('title')</h5>
                 </div>
-                <!--end::Page Heading-->
             </div>
-            <!--end::Info-->
         </div>
     </div>
 
@@ -25,10 +21,18 @@
         <div class="d-flex flex-column-fluid">
             <div class="container-fluid">
                 <div class="row">
+                    @include('centrosreferencia.resultadocrn.menu.index')
+                </div>
+                <div class="row">
                     @livewire('centrosreferencia.resultadocrn.index')
                 </div>
             </div>
         </div>
     </div>
 
+@endsection
+
+@section('footer')
+<script src="{{ asset('assets') }}/js/pages/widgets.js"></script>
+<script src="{{ asset('assets') }}/js/pages/custom/profile/profile.js"></script>
 @endsection

@@ -621,9 +621,15 @@ pre code {
   .container-sm, .container {
     max-width: 540px;
   }
+  .container2-sm, .container2 {
+    max-width: 540px;
+  }
 }
 @media (min-width: 768px) {
   .container-md, .container-sm, .container {
+    max-width: 720px;
+  }
+  .container2-md, .container2-sm, .container2 {
     max-width: 720px;
   }
 }
@@ -631,9 +637,15 @@ pre code {
   .container-lg, .container-md, .container-sm, .container {
     max-width: 960px;
   }
+  .container2-lg, .container2-md, .container2-sm, .container2 {
+    max-width: 960px;
+  }
 }
 @media (min-width: 1200px) {
   .container-xl, .container-lg, .container-md, .container-sm, .container {
+    max-width: 1140px;
+  }
+  .container2-xl, .container2-lg, .container2-md, .container2-sm, .container2 {
     max-width: 1140px;
   }
 }

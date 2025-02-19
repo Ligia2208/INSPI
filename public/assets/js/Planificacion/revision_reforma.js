@@ -1,4 +1,14 @@
 
+$( function () {
+
+    $('.single-select').select2({
+        width: '100%',
+    });
+
+    actualizarTotales();
+
+});
+
 function agregarComentarioReforma() {
 
     let id_reforma = $('#id_reforma').val();
@@ -9,7 +19,7 @@ function agregarComentarioReforma() {
         Swal.fire({
             icon: 'warning',
             type: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar el estado de la reforma',
             showConfirmButton: true,
         });
@@ -17,7 +27,7 @@ function agregarComentarioReforma() {
         Swal.fire({
             icon: 'warning',
             type: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe justificar su selección con un comentario',
             showConfirmButton: true,
         });
@@ -41,7 +51,7 @@ function agregarComentarioReforma() {
                         Swal.fire({
                             icon: 'success',
                             type: 'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             text: 'Se ha revisado la reforma',
                             showConfirmButton: true,
                         }).then((result) => {
@@ -56,7 +66,7 @@ function agregarComentarioReforma() {
             error: function(error) {
                 Swal.fire({
                     icon: 'error',
-                    title: 'SoftInspi',
+                    title: 'CoreInspi',
                     type: 'error',
                     text: error,
                     showConfirmButton: true,
@@ -64,4 +74,40 @@ function agregarComentarioReforma() {
             }
         });
     }
+}
+
+
+
+
+function actualizarTotales() {
+    let totalAumenta = 0;
+    let totalDisminuye = 0;
+    let totalAjuste  = 0;
+
+    // Seleccionar solo las filas visibles
+    $('#tblActividades tbody tr:visible').each(function() {
+        let $fila = $(this);
+        let tipo = $fila.find('select[name="tipo[]"]').val();
+        let totalFila = 0;
+
+        // Sumar valores de los meses
+        $fila.find('input[name^="total_R"]').each(function() {
+            let valor = parseFloat($(this).val()) || 0;
+            totalFila += valor;
+        });
+
+        // Sumar al total correspondiente solo si la fila está visible
+        if (tipo === 'AUMENTA') {
+            totalAumenta += totalFila;
+        } else if (tipo === 'DISMINUYE') {
+            totalDisminuye += totalFila;
+        } else if (tipo === 'AJUSTE') {
+            totalAjuste += totalFila;
+        }
+    });
+
+    // Actualizar los totales en los inputs
+    $('#aumTotal').val(totalAumenta);
+    $('#disTotal').val(totalDisminuye);
+    $('#ajuTotal').val(totalAjuste);
 }

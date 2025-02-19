@@ -8,19 +8,19 @@
                 <div class="row align-items-center">
                 <!--begin::Nav-->
                         <div class="col-md-3 " align="center">
-                            <a href="{{ route('analitica.index') }}" class="navi-link py-4 {{ active('resultado.index') }}">
+                            <a href="{{ route('analitica.index') }}" class="navi-link py-4 {{ active('analitica.index') }}">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-tags fa-3x"></i>
                                 </span>
                                 <span class="navi-text font-size-xl">Muestras Asignadas</span>
                             </a>
                         </div>
-                        <div class="col-md-3 navi-item" align="center">
-                            <a href="{{ route('visorresultado.index') }}" class="navi-link py-4 {{ active('visorresultado.index') }}">
+                        <div class="col-md-3 " align="center">
+                            <a href="{{ route('analiticap.index') }}" class="navi-link py-4 {{ active('analiticap.index') }}">
                                 <span class="navi-icon mr-2">
-                                    <i class="fa fa-signal fa-3x"></i>
+                                    <i class="fa fa-cogs fa-3x"></i>
                                 </span>
-                                <span class="navi-text font-size-xl">Estadisticas</span>
+                                <span class="navi-text font-size-xl">Muestras Procesadas</span>
                             </a>
                         </div>
                     </div>

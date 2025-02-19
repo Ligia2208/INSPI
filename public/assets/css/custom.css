@@ -328,3 +328,44 @@ input:checked + .slider:before {
 .accordion-body {
     padding: var(--bs-accordion-body-padding-y) var(--bs-accordion-body-padding-x);
 }
+
+
+.disabled-red {
+    color: red;
+    border: 1px solid red;
+}
+
+.disabled-green {
+    color: green;
+    border: 1px solid green;
+}
+
+.text-red {
+    color: red;
+}
+
+.text-green {
+    color: green;
+}
+
+
+
+.btn-floating {
+    position: fixed;
+    bottom: 438px;
+    right: 20px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.fila-seleccionada {
+    background-color: #d4edda !important; /* Verde claro */
+}
+

@@ -70,9 +70,9 @@
                                             <select wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha toma de muestra</option>
-                                                <option data-subtext="" value="2">Fecha resultado</option>
-                                                <option data-subtext="" value="3">Fecha reporte</option>
+                                                <option data-subtext="" value="1">Fecha atención</option>
+                                                <option data-subtext="" value="2">Fecha toma de muestra</option>
+                                                <option data-subtext="" value="3">Fecha resultado</option>
                                             </select>
                                         </div>
                                     </div>
@@ -114,11 +114,13 @@
                             <div class="col-lg-12 col-xl-12">
                                 <div class="row align-items-center">
                                     <div class="col-md-6 my-2 my-md-0">
-                                        <input wire:model="search" type="search" class="form-control"
+                                        <div class="input-icon">
+                                            <input wire:model="search" type="search" class="form-control"
                                                 placeholder="Buscar...">
-                                        <span>
-                                            <i class="flaticon2-search-1 text-muted"></i>
-                                        </span>
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
+                                        </div>
                                     </div>
                                     <div class="col-md-6 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
@@ -145,13 +147,13 @@
                     <table id="data" class="table table-head-custom table-head-bg table-borderless table-vertical-center">
                         <thead>
                             <tr class="text-uppercase">
-                                <th>Código Muestra</th>
+                                <th>Período</th>
+                                <th>Paciente</th>
+                                <th>Fecha Atención</th>
                                 <th>Fecha Toma muestra</th>
-                                <th>Fecha Recepción muestra</th>
                                 <th>Sede</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
-                                <th>Técnica</th>
                                 <th>Resultado</th>
                                 <th>Fecha Reporte</th>
                                 <th>Acciones</th>
@@ -162,15 +164,19 @@
                                 <tr>
                                     <td>
                                         <span
-                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $objRes->anio_registro }}-{{ $objRes->codigo_muestra }}</span>
+                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $objRes->anio_registro }}</span>
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_toma }}</span>
+                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $objRes->paciente->identidad }}</span>
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_llegada_lab }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_atencion }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_toma_primera }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -185,16 +191,15 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->evento->simplificado }}</span>
                                     </td>
                                     <td>
-                                        <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->tecnica->descripcion }}</span>
-                                    </td>
-                                    <td>
+                                        @if($objRes->resultado_id>0)
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->resultado->descripcion }}</span>
+                                        @else
+                                        @endif
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_publicacion }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objRes->fecha_resultado }}</span>
                                     </td>
                                     <td align="center">
                                         <i class="navi-item">

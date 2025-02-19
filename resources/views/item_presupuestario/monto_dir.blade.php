@@ -30,9 +30,69 @@
 
                 <hr/>
 
+                <div class="row col-lg-12 mt-4">
+
+                    <div class="col">
+                        <div class="card radius-10 border border-1 border-primary position-relative">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+
+                                    <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-cash py-3 px-2 titulo-grande"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>Monto Presupuestado</span>
+                                        <h4 class="my-1 text-primary ms-auto" id="monto_total">${{$montos->total_monto_presupuestado}}</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card radius-10 border border-1 border-primary position-relative">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+
+                                    <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-graph-up-arrow py-3 px-2 titulo-grande"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>Total de Items Presupuestarios</span>
+                                        <h4 class="my-1 text-primary ms-auto" id="total_ocupado">${{$montos->total_monto}}</h4>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <div class="card radius-10 border border-1 border-primary position-relative">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+
+                                    <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-graph-down-arrow py-3 px-2 titulo-grande"></i>
+                                    </div>
+
+                                    <div>
+                                        <span>Total de Actividades Presupuestadas</span>
+                                        <h4 class="my-1 text-primary ms-auto" id="por_ocupar">${{$montos->total_monto_direcciones}}</h4>                                
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!--
                 <a class="col-2 mb-3 btn btn-primary d-flex align-items-center justify-content-center mr-2" type="button" data-toggle= "modal" data-target="#modalItemPres">
                     <i class="lni lni-circle-plus"></i> Crear Dirección
                 </a>
+                -->
 
             </div>
 
@@ -85,12 +145,14 @@
             <div class="card mt-4">
                 <div class="card-body">
                     <div class="table-responsive">
-                        <table id="tblItemPresupuestarioIndex" class="table table-striped table-bordered" style="width:100%">
+                        <table id="tblItemPresupuestarioIndex" class="table table-striped" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Nombre</th>
                                     <th>Descripcion</th>
                                     <th>Monto</th>
+                                    <th>Pla. Items</th>
+                                    <th>Pla. Actividades</th>
                                     <th>Fecha</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -103,6 +165,8 @@
                                     <th>Nombre</th>
                                     <th>Descripcion</th>
                                     <th>Monto</th>
+                                    <th>Pla. Items</th>
+                                    <th>Pla. Actividades</th>
                                     <th>Fecha</th>
                                     <th>Acciones</th>
                                 </tr>
@@ -205,6 +269,68 @@
     </div>
 
 
+
+        <!-- Botón para abrir la calculadora -->
+        <button type="button" class="btn btn-primary btn-floating" data-toggle="modal" data-target="#miCalculadora">
+            <i class="bi bi-calculator titulo-grande p-0"></i>
+        </button>
+
+        <!-- Modal con la calculadora -->
+        <div class="modal fade" id="miCalculadora" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Calculadora</h5>
+                        <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="modalContent">
+                            <div class="container">
+                                <input type="text" id="display" class="form-control mb-2 text-right" disabled>
+                                <div class="row">
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('7')">7</button>
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('8')">8</button>
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('9')">9</button>
+                                    <button class="btn btn-warning col m-1" onclick="addToDisplay('/')">÷</button>
+                                </div>
+                                <div class="row">
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('4')">4</button>
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('5')">5</button>
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('6')">6</button>
+                                    <button class="btn btn-warning col m-1" onclick="addToDisplay('*')">×</button>
+                                </div>
+                                <div class="row">
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('1')">1</button>
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('2')">2</button>
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('3')">3</button>
+                                    <button class="btn btn-warning col m-1" onclick="addToDisplay('-')">−</button>
+                                </div>
+                                <div class="row">
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('0')">0</button>
+                                    <button class="btn btn-secondary col m-1" onclick="addToDisplay('.')">.</button>
+                                    <button class="btn btn-success col m-1" onclick="calculateResult()">=</button>
+                                    <button class="btn btn-warning col m-1" onclick="addToDisplay('+')">+</button>
+                                </div>
+                                <div class="row">
+                                    <button class="btn btn-danger col m-1" onclick="clearDisplay()">C</button>
+                                    <button class="btn btn-info col m-1" onclick="addToMemory()">M+</button>
+                                    <button class="btn btn-dark col m-1" onclick="clearMemory()">MC</button>
+                                    <button class="btn btn-primary col m-1" onclick="useMemory()">MR</button>
+                                </div>
+                                <p class="text-right mt-2"><strong>Memoria: <span id="memoryValue">0</span></strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 @endsection
 
 <script>
@@ -227,5 +353,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/ItemPresupuestario/init_monto_dir.js?v0.0.6')}}"></script>
+<script src="{{asset('assets/js/ItemPresupuestario/init_monto_dir.js?v0.0.10')}}"></script>
 @endpush

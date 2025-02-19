@@ -83,7 +83,7 @@
                                     <label class="col-3 col-form-label">Usuario Registro:</label>
                                     <div class="col-9" style="align:left">
                                         <span class="form-control-plaintext">
-                                            <span class="font-weight-bolder">{{ $preanalitica->usuario->name }}</span>
+                                            <span class="font-weight-bolder">{{ $preanalitica->usuariot->name }}</span>
                                         </span>
                                     </div>
                                 </div>
@@ -95,13 +95,17 @@
                             <div class="card-body py-4">
                                 @forelse ($analitica as $objAn)
                                 <div class="form-group row my-2">
-                                    <label class="col-2 col-form-label">Tipo de Muestra:</label>
+                                    <label class="col-1 col-form-label">Clase:</label>
+                                    <div class="col-1" style="align:left">
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->clase->descripcion }}</span>
+                                    </div>
+                                    <label class="col-1 col-form-label">Tipo de Muestra:</label>
                                     <div class="col-2" style="align:left">
                                         <span class="form-control-plaintext font-weight-bolder">{{ $objAn->muestra->descripcion }}</span>
                                     </div>
-                                    <label class="col-2 col-form-label">Código de Muestra:</label>
+                                    <label class="col-1 col-form-label">Código de Muestra:</label>
                                     <div class="col-2" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->anio_registro }} - {{ str_pad($objAn->codigo_muestra, 5, "0", STR_PAD_LEFT) }} - {{ str_pad($objAn->codigo_secuencial, 3, "0", STR_PAD_LEFT) }}</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->anio_registro }} - {{ str_pad($objAn->codigo_muestra, 6, "0", STR_PAD_LEFT) }} - {{ str_pad($objAn->codigo_secuencial, 2, "0", STR_PAD_LEFT) }}</span>
                                     </div>
                                     <label class="col-2 col-form-label">Fecha recepción:</label>
                                     <div class="col-2" style="align:left">

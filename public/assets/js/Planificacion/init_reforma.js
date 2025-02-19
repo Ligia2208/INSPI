@@ -1,17 +1,41 @@
 $( function () {
 
+    $('.js-example-basic-single').select2({
+        width: '100%',
+    });
+
     //CÓDIGO PARA MOSTRAR LA TABLA EN EL INDEX
     $('#tblReformaIndex').DataTable({ //id de la tabla en el visual (index)
         processing: true,
         serverSide: true,
-        lengthMenu: [8, 15, 25, 50, 100],
+        lengthMenu: [25, 50, 100],
         ajax: {
             url: '/planificacion/reformaPrincipal', // La URL que devuelve los datos en JSON
+            data: function (d) {
+                d.estado    = $('#filterEstado').val();
+                d.tipo      = $('#filterTipo').val();
+                d.direccion = $('#filterDireccion').val();
+            }
         },
         columns: [
-            { data: 'nro_solicitud',        name: 'nro_solicitud' },
-            { data: 'area',        name: 'area' },
+            { data: 'nro_solicitud',   name: 'nro_solicitud' },
+            { data: 'nro_reforma',     name: 'nro_reforma' },
+            { data: 'area',            name: 'area' },
             { data: 'justificacion',   name: 'justificacion' },
+            { data: 'total_monto',     name: 'total_monto' },
+            {   
+                data: null,
+                searchable: false ,
+                render: function (data, type, full, meta) {
+                    var array = "";
+                    if(full.tipo == 'M' ){
+                        array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Modificación PAPP</span><div>';
+                    }else if(full.tipo == 'R'){
+                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Reforma PAPP/Presupuestaria</span>';
+                    }
+                    return array;
+                }
+            },
             { data: 'fecha',         name: 'fecha' },
             {
                 data: null,
@@ -20,17 +44,17 @@ $( function () {
                     var array = "";
 
                     if(full.estado == 'A' ){
-                        array = '<div class="center"><span class="badge text-bg-primary">Ingresado</span><div>';
+                        array = '<div class="text-center"><span class="badge badge-primary text-bg-primary">Ingresado</span><div>';
                     }else if(full.estado == 'O'){
-                        array = '<div class="center"><span class="badge text-bg-success">Aprobado</span>';
+                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Validado</span>';
                     }else if(full.estado == 'V'){
-                        array = '<div class="center"><span class="badge text-bg-secondary">Validado</span>';
+                        array = '<div class="text-center"><span class="badge badge-secondary text-bg-secondary">Aprobado</span>';
                     }else if(full.estado == 'R'){
-                        array = '<div class="center"><span class="badge text-bg-warning">Rechazado</span>';
+                        array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
-                        array = '<div class="center"><span class="badge text-bg-info">Corregido</span>';
+                        array = '<div class="text-center"><span class="badge badge-info text-bg-info">Corregido</span>';
                     }else{
-                        array = '<div class="center"><span class="badge text-bg-warning">Indefinido</span>';
+                        array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                     }
 
                     return array;
@@ -46,32 +70,42 @@ $( function () {
                         array =`
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
-                            <a id="btnValidarReforma" data-id_reforma="${full.id_reforma}" data-estado="${full.estado}" title="Validar Reforma" class="show-tooltip me-1" data-title="Validar Reforma">
+                            <a id="btnValidarReforma" data-id_reforma="${full.id_reforma}" data-estado="${full.estado}" title="Validar Reforma" class="show-tooltip mr-1" data-title="Validar Reforma">
                                 <i class="font-22 bi bi-layer-backward text-warning"></i>
                             </a>
 
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
+
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
+                            </a>
+
                         </div>
                         `;
                     }else if(full.estado == 'V' ){
                         array =`
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
 
                             <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
                                 <i class="font-22 bi bi-filetype-pdf"></i>
                             </a>
+
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
+                            </a>
+
                         </div>
                         `;
                     }else if(full.estado == 'R'){
                         array =`
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
                         </div>
@@ -79,14 +113,14 @@ $( function () {
                     }else{
                         array =`
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>        
-                            <a id="btnRevisarReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Revisión" class="show-tooltip" href="javascript:void(0);" data-title="Revisión">
-                                <i class="font-22 fadeIn animated bx bx-edit" ></i>
+                            <a id="btnRevisarReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Revisión" class="show-tooltip mr-1" data-title="Revisión">
+                                <i class="font-22 fadeIn animated bi bi-pen" ></i>
                             </a>
-                            <a id="btnEliminarReforma" data-id_borrar="${full.id_reforma}" title="Eliminar reforma" class="red show-tooltip" href="javascript:void(0);"  data-title="Eliminar item">
-                                <i class="font-22 fadeIn animated bx bx-trash" style="color:indianred"></i>
+                            <a id="btnEliminarReforma" data-id_borrar="${full.id_reforma}" title="Eliminar reforma" class="red show-tooltip" data-title="Eliminar reforma">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
                         </div>
                         `;
@@ -96,7 +130,7 @@ $( function () {
             },
         ],
         order: [
-            [3, 'desc']
+            [0, 'desc']
         ],
 
         // Otras configuraciones de DataTables aquí
@@ -122,8 +156,11 @@ $( function () {
         },
     });
 
-
     var table = $('#tblReformaIndex').DataTable();
+
+    $('#filterEstado, #filterTipo, #filterDireccion').on('change', function () {
+        table.ajax.reload();
+    });
 
 
     /* VALIDAR LOS CAMBIOS EN LA REFORMA */
@@ -135,7 +172,7 @@ $( function () {
         Swal.fire({
             icon: 'warning',
             type: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Seguro que quiere aplicar los cambios de la reforma a la planificación?',
             showConfirmButton: true,
             confirmButtonText: 'Sí, aplicar',
@@ -165,7 +202,7 @@ $( function () {
 
                             Swal.fire({
                                 icon: 'success',
-                                title: 'SoftInspi',
+                                title: 'CoreInspi',
                                 type: 'success',
                                 text: res.message,
                                 showConfirmButton: false,
@@ -179,7 +216,7 @@ $( function () {
         
                             Swal.fire({
                                 icon: 'error',
-                                title: 'SoftInspi',
+                                title: 'CoreInspi',
                                 type: 'error',
                                 text: res.message,
                                 showConfirmButton: true,
@@ -214,7 +251,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: '¿Seguro que quiere eliminar esta reforma?',
             showConfirmButton: true,
             showCancelButton: true,
@@ -241,7 +278,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'success',
                                     type: 'success',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 }).then((result) => {
@@ -254,7 +291,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'error',
                                     type:  'error',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 });
@@ -264,7 +301,7 @@ $(function(){
                     error: function(error) {
                         Swal.fire({
                             icon:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             type:  'success',
                             text:   error,
                             showConfirmButton: true,
@@ -288,6 +325,20 @@ $(function(){
     });
     /* CARGAR REGISTRO */
 })
+
+
+
+//CÓDIGO PARA REDIRIGIR AL FORMULARIO PARA VISUALIZAR LA REFORMA
+$(function(){
+    $(document).on('click', '#btnVerReforma', function(){
+        let id_reforma = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/verReforma/'+ id_reforma;
+
+    });
+})
+
+
 
 
 //========================================================================================================

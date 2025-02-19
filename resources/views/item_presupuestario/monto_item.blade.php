@@ -29,7 +29,7 @@
     <div class="container2">
         <div class="page-content">
 
-            <div class="row">
+            <div class="row mb-5">
 
                 <div class="col">
                     <div class="card radius-10 border border-1 border-primary position-relative">
@@ -58,7 +58,7 @@
                                 </div>
 
                                 <div>
-                                    <span>Monto ocupado</span>
+                                    <span>Total de Items Presupuestarios</span>
                                     <h4 class="my-1 text-primary ms-auto" id="total_ocupado">00.00</h4>
                                 </div>
 
@@ -87,11 +87,11 @@
 
             </div>
 
-            <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mt-4" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
+            <!-- <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mt-4" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
                 <i class="lni lni-circle-plus"></i> Crear Actividad
-            </a>
+            </a> -->
 
-            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ITEMS </h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ITEMS - {{$nombreDir}} </h2>
 
 
             <!-- MODAL PARA CREAR ITEM PRESUPUESTARIO -->
@@ -230,9 +230,11 @@
 
                 <div class="col-lg-12 d-flex align-items-center justify-content-center mt-4">
 
+                    @if(!$proestado)
                     <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="guardarEstructura()" style="margin-right: 2%">
                         <i class="bi bi-send-check"></i> Registrar
                     </a>
+                    @endif
 
                 </div>
 
@@ -244,9 +246,9 @@
 
     </hr>
 
+    @if(!$proestado)
     <div class="container2 mt-5">
-
-        <div class="card  p-4">
+        <div class="card p-4">
 
             <h2>Seleccionar y Editar Ítems Presupuestarios</h2>
 
@@ -278,8 +280,43 @@
             </div>
 
         </div>
-
     </div>
+    @else
+    <div class="container2 mt-5">
+        <div class="card p-4">
+
+            <h2>Seleccionar y Editar Ítems Presupuestarios</h2>
+
+            <div class="row mt-5">
+                <!-- Sección de selección -->
+                <div class="col-md-6">
+                    <h4>Seleccionar Ítems</h4>
+                    <select id="item-select" class="form-control js-example-basic-single" multiple placeorder="Seleccione un Item">
+                            <option value="" disabled selected>Seleccione un ítem</option>
+                        @foreach($items as $item)
+                            <option value="{{ $item->id }}">{{ $item->nombre }} - {{ $item->descripcion }}</option>
+                        @endforeach
+                    </select>
+                    <button id="add-item_0" class="btn btn-primary mt-3">Agregar Ítems</button>
+                </div>
+
+                <!-- Sección de edición -->
+                <div class="col-md-6">
+                    <h4>Editar Ítems Seleccionados</h4>
+                    <form id="edit-items-form">
+                        @csrf
+                        <input id='id_dir' value='{{$id_direccion}}' type='hidden'>
+                        <div id="selected-items">
+                            <!-- Los ítems seleccionados aparecerán aquí -->
+                        </div>
+                        <button type="button" class="btn btn-success mt-3" onclick="guardarItemsSeleccionados()">Guardar Cambios</button>                    
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    @endif
 
 </div>
 
@@ -376,5 +413,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/ItemPresupuestario/monto_item.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/ItemPresupuestario/monto_item.js?v0.0.2')}}"></script>
 @endpush

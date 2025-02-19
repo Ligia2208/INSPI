@@ -8,9 +8,11 @@ class Reforma extends Model {
     protected $fillable = [
         'id',
         'nro_solicitud',
+        'nro_reforma',
         'area_id',
         'justificacion',
         'justificacion_area',
+        'tipo',
         'fecha',
         'estado',
         'created_at',
@@ -29,4 +31,11 @@ class Reforma extends Model {
     {
     return "Una reforma ha sido {$eventName}";
     }
+
+    public function actividades()
+    {
+        return $this->hasMany(Actividad::class, 'id_reforma');
+    }
+
+
 }

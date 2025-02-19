@@ -9,10 +9,25 @@ $( function () {
             url: '/planificacion/reformaIndex', // La URL que devuelve los datos en JSON
         },
         columns: [
-            { data: 'nro_solicitud',        name: 'nro_solicitud' },
-            { data: 'area',        name: 'area' },
-            { data: 'justificacion',   name: 'justificacion' },
-            { data: 'fecha',         name: 'fecha' },
+            { data: 'nro_solicitud',  name: 'nro_solicitud' },
+            { data: 'nro_reforma',    name: 'nro_reforma' },
+            { data: 'justificacion',  name: 'justificacion' },
+            { data: 'total_monto',    name: 'total_monto' },
+            {   
+                data: null,
+                searchable: false ,
+                render: function (data, type, full, meta) {
+                    var array = "";
+                    if(full.tipo == 'M' ){
+                        array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Modificación PAPP</span><div>';
+                    }else if(full.tipo == 'R'){
+                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Reforma PAPP</span>';
+                    }
+                    return array;
+                }
+            },
+
+            { data: 'fecha',          name: 'fecha' },
             {
                 data: null,
                 searchable: false ,
@@ -20,17 +35,17 @@ $( function () {
                     var array = "";
 
                     if(full.estado == 'A' ){
-                        array = '<div class="center"><span class="badge text-bg-primary">Ingresado</span><div>';
+                        array = '<div class="text-center"><span class="badge badge-primary text-bg-primary">Ingresado</span><div>';
                     }else if(full.estado == 'V'){
-                        array = '<div class="center"><span class="badge text-bg-secondary">Validado</span>';
+                        array = '<div class="text-center"><span class="badge badge-secondary text-bg-secondary">Aprobado</span>';
                     }else if(full.estado == 'O'){
-                        array = '<div class="center"><span class="badge text-bg-success">Aprobado</span>';
+                        array = '<div class="text-center"><span class="badge badge-success text-bg-success">Validado</span>';
                     }else if(full.estado == 'R'){
-                        array = '<div class="center"><span class="badge text-bg-warning">Rechazado</span>';
+                        array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
-                        array = '<div class="center"><span class="badge text-bg-info">Corregido</span>';
+                        array = '<div class="text-center"><span class="badge badge-info text-bg-info">Corregido</span>';
                     }else{
-                        array = '<div class="center"><span class="badge text-bg-warning">Indefinido</span>';
+                        array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                     }
 
                     return array;
@@ -45,25 +60,25 @@ $( function () {
                     if(full.estado == 'O' || full.estado == 'V' ){
                         array =`
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-                            <a id="btnPDF_reforma" data-id_reforma="${full.id_reforma}" title="PDF REFORMA" class="text-secondary show-tooltip" data-title="PDF REFORMA">
-                                <i class="font-22 bi bi-filetype-pdf"></i>
+                            <a id="btnPDF_reforma" data-id_reforma="${full.id_reforma}" title="PDF REFORMA" class="show-tooltip" data-title="PDF REFORMA">
+                                <i class="font-22 bi bi-filetype-pdf text-primary"></i>
                             </a>
                         </div>
                         `;
                     } else{
                         array =`
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" href="javascript:void(0);"  data-title="Comentarios">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-                            <a id="btnEditarReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Editar reforma" class="show-tooltip" href="javascript:void(0);" data-title="Editar reforma">
-                                <i class="font-22 fadeIn animated bx bx-edit" ></i>
+                            <a id="btnEditarReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Editar reforma" class="show-tooltip mr-1" data-title="Editar reforma">
+                                <i class="font-22 fadeIn animated bi bi-pen" ></i>
                             </a>
-                            <a id="btnEliminarReforma" data-id_borrar="${full.id_reforma}" title="Eliminar reforma" class="red show-tooltip" href="javascript:void(0);"  data-title="Eliminar item">
-                                <i class="font-22 fadeIn animated bx bx-trash" style="color:indianred"></i>
+                            <a id="btnEliminarReforma" data-id_borrar="${full.id_reforma}" title="Eliminar reforma" class="red show-tooltip" data-title="Eliminar reforma">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
                         </div>
                         `;
@@ -73,7 +88,7 @@ $( function () {
             },
         ],
         order: [
-            [3, 'desc']
+            [0, 'desc']
         ],
 
         // Otras configuraciones de DataTables aquí
@@ -114,7 +129,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: '¿Seguro que quiere eliminar esta reforma?',
             showConfirmButton: true,
             showCancelButton: true,
@@ -141,7 +156,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'success',
                                     type: 'success',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 }).then((result) => {
@@ -154,7 +169,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'error',
                                     type:  'error',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 });
@@ -164,7 +179,7 @@ $(function(){
                     error: function(error) {
                         Swal.fire({
                             icon:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             type:  'success',
                             text:   error,
                             showConfirmButton: true,
@@ -340,7 +355,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que elaboró la planificación',
             showConfirmButton: true,
         });
@@ -350,7 +365,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que autorizó la planificación',
             showConfirmButton: true,
         });
@@ -360,7 +375,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que generó el reporte',
             showConfirmButton: true,
         });
@@ -370,7 +385,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que valida la planificación',
             showConfirmButton: true,
         });
@@ -380,7 +395,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que aprueba la planificación',
             showConfirmButton: true,
         });
@@ -390,7 +405,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el cargo del usuario que crea la planificación',
             showConfirmButton: true,
         });
@@ -400,7 +415,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el cargo del usuario que autorizó la planificación',
             showConfirmButton: true,
         });
@@ -410,7 +425,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el cargo del usuario que revisó la planificación',
             showConfirmButton: true,
         });
@@ -420,7 +435,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el cargo del usuario que  la planificación',
             showConfirmButton: true,
         });
@@ -430,7 +445,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe ingresar el usuario que autorizó la planificación',
             showConfirmButton: true,
         });
@@ -459,7 +474,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
                 a.href = url;
-                a.download = 'reporte_planificacion.pdf';
+                a.download = 'Reforma_PAPP-Presupuestaria.pdf';
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
@@ -468,7 +483,7 @@ $(document).on('click', '#btnGenerarReportReforma', function(){
             error: function(error) {
                 Swal.fire({
                     icon:  'error',
-                    title: 'SoftInspi',
+                    title: 'CoreInspi',
                     type:  'error',
                     text:   error,
                     showConfirmButton: true,

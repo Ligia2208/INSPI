@@ -46,8 +46,10 @@
                             <thead>
                                 <tr>
                                     <th>Nro de solicitud</th>
-                                    <th>Solicitante</th>
+                                    <th>Nro de reforma</th>
                                     <th>Justificacion</th>
+                                    <th>Monto</th>
+                                    <th>Tpo</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th>Acciones</th>
@@ -59,8 +61,10 @@
                             <tfoot>
                                 <tr>
                                     <th>Nro de solicitud</th>
-                                    <th>Solicitante</th>
+                                    <th>Nro de reforma</th>
                                     <th>Justificacion</th>
+                                    <th>Monto</th>
+                                    <th>Tpo</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th>Acciones</th>
@@ -78,7 +82,7 @@
             <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Generar Reporte Reforma</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Reporte de Reforma</h5>
                         <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -91,10 +95,12 @@
 
                                 <input type="hidden" id="id_reforma" name="id_reforma" class="form-control" required="" autofocus="" value="">
 
-                                <h1 class="form-label fs-6">Área requiriente</h1>
+                                    <div class="col-lg-12 mb-2">
+                                        <h1 class="form-label fs-6">Área requiriente</h1>
+                                    </div>
 
-                                    <div class="col-md-4 mt-1">
-                                        <label for="creado" class="form-label fs-6">Usuario que solicita</label>
+                                    <div class="col-md-4 mt-2">
+                                        <label for="creado" class="form-label fs-6">Usuario que Elabora</label>
                                         <!-- Input para ingresar el nombre manualmente -->
                                         <input type="text" id="creado" name="creado" class="form-control" placeholder="Ingrese nombre de usuario" required>
                                         <div class="invalid-feedback">Por favor ingrese el nombre.</div>
@@ -106,7 +112,7 @@
                                     </div>
 
                                     <div class="col-md-4 mt-1">
-                                        <label for="autorizado" class="form-label fs-6">Usuario que revisa</label>
+                                        <label for="autorizado" class="form-label fs-6">Usuario que Revisa</label>
                                         <!-- Input para ingresar el nombre manualmente -->
                                         <input type="text" id="autorizado" name="autorizado" class="form-control" placeholder="Ingrese nombre de usuario" required>
                                         <div class="invalid-feedback">Por favor ingrese el nombre.</div>
@@ -118,7 +124,7 @@
                                     </div>
 
                                     <div class="col-md-4 mt-1">
-                                        <label for="reporta" class="form-label fs-6">Usuario que aprueba</label>
+                                        <label for="reporta" class="form-label fs-6">Usuario que Aprueba</label>
                                         <!-- Input para ingresar el nombre manualmente -->
                                         <input type="text" id="reporta" name="reporta" class="form-control" placeholder="Ingrese nombre de usuario" required>
                                         <div class="invalid-feedback">Por favor ingrese el nombre.</div>
@@ -131,28 +137,31 @@
 
                                 <hr class="mt-4">
 
-                                <h1 class="form-label fs-6">Planificación y Gestión estratégica</h1>
-                                    <div class="col-md-6 mt-1">
-                                        <label for="areaReq" class="form-label fs-6">Usuario que registra</label>
+                                    <div class="col-lg-12 mb-2 mt-5">
+                                        <h1 class="form-label fs-6">Planificación y Gestión estratégica</h1>
+                                    </div>
+
+                                    <div class="col-md-6 mt-2">
+                                        <label for="areaReq" class="form-label fs-6">Usuario que Registra</label>
                                         <!-- Input para ingresar el nombre manualmente -->
-                                        <input type="text" id="areaReq" name="areaReq" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                        <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA" placeholder="Ingrese nombre de usuario" required>
                                         <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                         <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
                                         <!-- Input para ingresar el cargo -->
-                                        <input type="text" id="cargo_areaReq" name="cargo_areaReq" class="form-control" placeholder="Ingrese el cargo" required>
+                                        <input type="text" id="cargo_areaReq" name="cargo_areaReq" class="form-control" value="ANALISTA DE PLANIFICACION Y GESTION ESTRATEGICA" placeholder="Ingrese el cargo" required>
                                         <div class="invalid-feedback">Por favor ingrese el cargo.</div>
                                     </div>
 
                                     <div class="col-md-6 mt-1">
-                                        <label for="planificacionYG" class="form-label fs-6">Usuario que valida</label>
+                                        <label for="planificacionYG" class="form-label fs-6">Usuario que Valida</label>
                                         <!-- Input para ingresar el nombre manualmente -->
-                                        <input type="text" id="planificacionYG" name="planificacionYG" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                        <input type="text" id="planificacionYG" name="planificacionYG" class="form-control" value="ING. LADY CONCEPCION ROJAS TORRES" placeholder="Ingrese nombre de usuario" required>
                                         <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                         <label for="cargo_planificacionYG" class="form-label fs-6 mt-2">Cargo</label>
                                         <!-- Input para ingresar el cargo -->
-                                        <input type="text" id="cargo_planificacionYG" name="cargo_planificacionYG" class="form-control" placeholder="Ingrese el cargo" required>
+                                        <input type="text" id="cargo_planificacionYG" name="cargo_planificacionYG" class="form-control" value="DIRECTORA DE PLANIFICACION Y GESTION ESTRATEGICA" placeholder="Ingrese el cargo" required>
                                         <div class="invalid-feedback">Por favor ingrese el cargo.</div>
                                     </div>
                             </div>
@@ -210,5 +219,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/reforma.js?v0.0.8')}}"></script>
+<script src="{{asset('assets/js/Planificacion/reforma.js?v0.0.11')}}"></script>
 @endpush

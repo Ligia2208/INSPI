@@ -3,8 +3,9 @@ function guardarReforma() {
     if (validarCampos()) {
         // Obtener los datos de cada fila y prepararlos para enviar al servidor
         var formData = [];
-        var justificacion = $('#justificacion').val(); // Obtener el valor del textarea de justificación
-        var justifi  = $('#justifi').val(); //Obtener el valore del textarea de justificación del área requirente
+        //var justificacion = $('#justificacion').val(); // Obtener el valor del textarea de justificación
+        var justifi    = $('#justifi').val(); //Obtener el valore del textarea de justificación del área requirente
+        let tipo_refor = $('#select_tipo').val();
 
 
         // Variables para los totales
@@ -32,28 +33,28 @@ function guardarReforma() {
                 let diciembre = $(this).find('input[name="diciembre[]"]').val();
                 let total = $(this).find('input[name="total[]"]').val();
 
-                let subActividad = $(this).find('input[name="subActividad[]"]').val();
+                let subActividad = $(this).find('textarea[name="subActividad[]"]').val();
                 let id_area_soli = $(this).find('input[name="id_area_soli[]"]').val();
 
                 // Agregar datos de la fila actual al formData
                 formData.push({
-                    id_poa: id_poa,
-                    solicitud: solicitud,
-                    tipo: tipo,
-                    enero: enero,
-                    febrero: febrero,
-                    marzo: marzo,
-                    abril: abril,
-                    mayo: mayo,
-                    junio: junio,
-                    julio: julio,
-                    agosto: agosto,
-                    septiembre: septiembre,
-                    octubre: octubre,
-                    noviembre: noviembre,
-                    diciembre: diciembre,
-                    total: total,
-                    estado: 'A',
+                    id_poa:       id_poa,
+                    solicitud:    solicitud,
+                    tipo:         tipo,
+                    enero:        enero,
+                    febrero:      febrero,
+                    marzo:        marzo,
+                    abril:        abril,
+                    mayo:         mayo,
+                    junio:        junio,
+                    julio:        julio,
+                    agosto:       agosto,
+                    septiembre:   septiembre,
+                    octubre:      octubre,
+                    noviembre:    noviembre,
+                    diciembre:    diciembre,
+                    total:        total,
+                    estado:       'A',
                     subActividad: subActividad,
                     id_area_soli: id_area_soli,
                 });
@@ -67,7 +68,7 @@ function guardarReforma() {
 
             }else{
 
-
+                /*
                 let id_poa = $(this).find('input[name="id_poa[]"]').val();
                 let solicitud = $(this).find('input[name="solicitud[]"]').val();
                 let tipo = $(this).find('select[name="tipo[]"]').val();
@@ -90,26 +91,27 @@ function guardarReforma() {
 
                 // Agregar datos de la fila actual al formData
                 formData.push({
-                    id_poa: id_poa,
-                    solicitud: solicitud,
-                    tipo: tipo,
-                    enero: enero,
-                    febrero: febrero,
-                    marzo: marzo,
-                    abril: abril,
-                    mayo: mayo,
-                    junio: junio,
-                    julio: julio,
-                    agosto: agosto,
-                    septiembre: septiembre,
-                    octubre: octubre,
-                    noviembre: noviembre,
-                    diciembre: diciembre,
-                    total: total,
-                    estado: 'E',
+                    id_poa:       id_poa,
+                    solicitud:    solicitud,
+                    tipo:         tipo,
+                    enero:        enero,
+                    febrero:      febrero,
+                    marzo:        marzo,
+                    abril:        abril,
+                    mayo:         mayo,
+                    junio:        junio,
+                    julio:        julio,
+                    agosto:       agosto,
+                    septiembre:   septiembre,
+                    octubre:      octubre,
+                    noviembre:    noviembre,
+                    diciembre:    diciembre,
+                    total:        total,
+                    estado:       'E',
                     subActividad: subActividad,
                     id_area_soli: id_area_soli,
                 });
+                */
 
             }
         });
@@ -118,7 +120,7 @@ function guardarReforma() {
         if (Math.abs(totalDisminuye - totalAumenta) > 0.01) { // Utiliza un margen de error pequeño para evitar problemas de precisión
             Swal.fire({
                 icon:  'error',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 type:  'error',
                 text: 'Los totales de disminución y aumento no coinciden. Por favor, ajuste los valores.',
                 showConfirmButton: true
@@ -139,15 +141,16 @@ function guardarReforma() {
                 },
                 data: {
                     formData: formData,
-                    justificacion: justificacion,
-                    justifi : justifi
+                    //justificacion: justificacion,
+                    justifi :   justifi,
+                    tipo_refor: tipo_refor,
                 },
                 success: function(response) {
                     // Manejar la respuesta del servidor (éxito)
                     Swal.fire({
                         icon: 'success',
                         type: 'success',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         text: 'Reforma guardada correctamente.',
                         showConfirmButton: true
                     }).then((result) => {
@@ -159,7 +162,7 @@ function guardarReforma() {
                 error: function(error) {
                     Swal.fire({
                         icon:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         type:  'error',
                         text:   error,
                         showConfirmButton: true,
@@ -170,7 +173,7 @@ function guardarReforma() {
             // Mostrar mensaje de error si no hay datos para enviar
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 type:  'error',
                 text: 'No hay datos para guardar. Por favor, agregue al menos una actividad.',
                 showConfirmButton: true
@@ -202,57 +205,84 @@ function validarCampos() {
             let noviembre = $(this).find('input[name="noviembre[]"]').val();
             let diciembre = $(this).find('input[name="diciembre[]"]').val();
 
-            let subActividad = $(this).find('input[name="subActividad[]"]').val();
+            let subActividad = $(this).find('textarea[name="subActividad[]"]').val();
 
-            // Validar si algún campo está vacío
-            if (tipo === null || tipo === "" ||
-                total === null || total === "" ||
-                enero === null || enero === "" ||
-                febrero === null || febrero === "" ||
-                marzo === null || marzo === "" ||
-                abril === null || abril === "" ||
-                mayo === null || mayo === "" ||
-                junio === null || junio === "" ||
-                julio === null || julio === "" ||
-                agosto === null || agosto === "" ||
-                septiembre === null || septiembre === "" ||
-                octubre === null || octubre === "" ||
-                noviembre === null || noviembre === "" ||
-                diciembre === null || diciembre === "" ||
-                subActividad === "") {
+            
 
-                valido = false;
-                comentario = 'Debe ingresar todos los campos en la fila ' + (index + 1);
-                return false; // Salir del bucle each() si encuentra algún campo vacío
+            if(tipo === 'IGUAL'){
+
+                // Validar si algún campo está vacío
+                if (tipo === null || tipo === "" ||subActividad === "") {
+                    valido = false;
+                    comentario = 'Debe ingresar todos los campos en la fila ' + (index + 1);
+                    return false; // Salir del bucle each() si encuentra algún campo vacío
+                }
+
+            }else{
+
+                // Validar si algún campo está vacío
+                if (tipo === null || tipo === "" ||
+                    total === null || total === "" ||
+                    enero === null || enero === "" ||
+                    febrero === null || febrero === "" ||
+                    marzo === null || marzo === "" ||
+                    abril === null || abril === "" ||
+                    mayo === null || mayo === "" ||
+                    junio === null || junio === "" ||
+                    julio === null || julio === "" ||
+                    agosto === null || agosto === "" ||
+                    septiembre === null || septiembre === "" ||
+                    octubre === null || octubre === "" ||
+                    noviembre === null || noviembre === "" ||
+                    diciembre === null || diciembre === "" ||
+                    subActividad === "") {
+
+                    valido = false;
+                    comentario = 'Debe ingresar todos los campos en la fila ' + (index + 1);
+                    return false; // Salir del bucle each() si encuentra algún campo vacío
+                }
+
+                if (parseFloat(total) === 0){
+                    valido = false;
+                    comentario = 'Debe ingresar valores en los meses de la actividad ' + (index + 1);
+                    return false;
+                }
+
             }
 
-            if (parseFloat(total) === 0){
-                valido = false;
-                comentario = 'Debe ingresar valores en los meses de la actividad ' + (index + 1);
-                return false;
-            }
+
 
         }
     });
 
     // Validar justificación
+    /*
     let justificacion = $('#justificacion').val();
     if (justificacion === null || justificacion.trim() === "") {
         valido = false;
         comentario = 'Ingrese una justificación';
     }
+    */
 
     let justifi = $('#justifi').val();
     if (justifi === null || justifi.trim() === "") {
         valido = false;
-        comentario = 'Ingrese una justificación por la cual se requiere la reforma';
+        comentario = 'Ingrese una justificación por la cual se requiere la reforma.';
     }
+
+
+    let tipo = $('#select_tipo').val();
+    if (tipo === null || tipo.trim() === "") {
+        valido = false;
+        comentario = 'Seleccione el tipo Reforma que quiere realizar.';
+    }
+
 
     // Mostrar mensaje de error si es necesario
     if (!valido) {
         Swal.fire({
             icon: 'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             type:  'error',
             text: comentario,
             showConfirmButton: true
@@ -264,6 +294,12 @@ function validarCampos() {
 
 
 $(document).ready(function() {
+
+    $('.single-select').select2({
+        width: '100%',
+    });
+
+    agregarEstructura();
 
     // Función para calcular el total de los meses
     function calcularTotal($inputsMeses) {
@@ -295,17 +331,25 @@ $(document).ready(function() {
         // Actualizar el total al cambiar cualquier campo de meses
         $inputsMeses.off('input').on('input', function() {
             actualizarTotal($inputsMeses, $inputTotal);
+            actualizarTotales();
         });
 
         // Inicializar el total al cargar la página
         actualizarTotal($inputsMeses, $inputTotal);
+        actualizarTotales();
+
     });
+
+
+
+
+
 
     // Llamar al evento de cambio al cargar la página para inicializar el estado de los campos
     $('select[name="tipo[]"]').trigger('change');
 
-    agregarUnidad();
-
+    
+    // ================================ CARGAR LA ESTRUCTURA PRESUPUESTARIA ================================
     $('#unidad_ejecutora').on('change', function() {
 
         var id_unidad = $('#unidad_ejecutora').val();
@@ -429,7 +473,46 @@ $(document).ready(function() {
             }
         });
     });
+
 });
+
+
+
+// calcula los totales y los muestra en los inputs
+function actualizarTotales() {
+    let totalAumenta = 0;
+    let totalDisminuye = 0;
+    let totalAjuste  = 0;
+
+    // Seleccionar solo las filas visibles
+    $('#tblActividades tbody tr:visible').each(function() {
+        let $fila = $(this);
+        let tipo = $fila.find('select[name="tipo[]"]').val();
+        let totalFila = 0;
+
+        // Sumar valores de los meses
+        $fila.find('input[name^="enero"], input[name^="febrero"], input[name^="marzo"], input[name^="abril"], input[name^="mayo"], input[name^="junio"], input[name^="julio"], input[name^="agosto"], input[name^="septiembre"], input[name^="octubre"], input[name^="noviembre"], input[name^="diciembre"]').each(function() {
+            let valor = parseFloat($(this).val()) || 0;
+            totalFila += valor;
+        });
+
+        // Sumar al total correspondiente solo si la fila está visible
+        if (tipo === 'AUMENTA') {
+            totalAumenta += totalFila;
+        } else if (tipo === 'DISMINUYE') {
+            totalDisminuye += totalFila;
+        } else if (tipo === 'AJUSTE') {
+            totalAjuste += totalFila;
+        }
+
+    });
+
+    // Actualizar los totales en los inputs
+    $('#aumTotal').val(totalAumenta);
+    $('#disTotal').val(totalDisminuye);
+    $('#ajuTotal').val(totalAjuste);
+}
+
 
 
 function eliminarFila(button) {
@@ -437,6 +520,9 @@ function eliminarFila(button) {
     var fila = button.closest('tr');
     // Ocultar la fila (no eliminarla del DOM para mantener el índice de atributos)
     fila.style.display = 'none';
+
+    actualizarTotales();
+
 }
 
 // ================================FORMULARIO PARA CREAR ACTIVIDAD======================================
@@ -457,7 +543,11 @@ function crearReformaConActividades() {
     let obOpera = $('#obOpera').val();
     let actOpera = $('#actOpera').val();
     let subActi = $('#subActi').val();
-    let item_presupuestario = $('#item_presupuestario').val();
+
+    let id_item_dir         = $('#item_presupuestario').val();
+    let selectedOption      = $(`#item_presupuestario option[value="${id_item_dir}"]`);
+    let item_presupuestario = selectedOption.attr("data-id_item");
+
     let monDisp = $('#monDisp').val();
     let desItem = $('#desItem').val();
     let plurianual = $('#plurianual').is(':checked');
@@ -466,8 +556,9 @@ function crearReformaConActividades() {
     var programa = $('#programa').val();
     var proyecto = $('#proyecto').val();
     var actividad = $('#actividad').val();
-    let justifi2  = $('#justifi2').val();
+    //let justifi2  = $('#justifi2').val();
     var fuente_financiamiento = $('#fuente_financiamiento').val();
+    var proceso    = $('#proceso').val();
 
 
     let total = $(this).find('input[name="total[]"]').val();
@@ -478,7 +569,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Coordinación/Dirección/Proyecto.',
             showConfirmButton: true,
         });
@@ -488,7 +579,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Fecha.',
             showConfirmButton: true,
         });
@@ -498,26 +589,35 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
-            text: 'Debe de selecionar un tipo de POA.',
+            title: 'CoreInspi',
+            text: 'Debe de selecionar un tipo de Gasto.',
             showConfirmButton: true,
         });
 
-    }else if( justifi2 == '' ){
+    }else if( proceso == '' || proceso == 0 ){
 
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
+            text: 'Debe de seleccionar un Tipo de Proceso.',
+            showConfirmButton: true,
+        });
+    }/*else if( justifi2 == '' ){
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'CoreInspi',
             text: 'Debe de ingresar una Justificación del área requirente.',
             showConfirmButton: true,
         });
-    }else if(obOpera == ''){
+    }*/else if(obOpera == '' || obOpera == 0){
 
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar un Objetivo Operativo',
             showConfirmButton: true,
         });
@@ -527,7 +627,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Actividad Operativa',
             showConfirmButton: true,
         });
@@ -537,16 +637,16 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe de ingresar la Sub Actividad',
             showConfirmButton: true,
         });
 
-    }else if(item_presupuestario == '0'){
+    }else if(id_item_dir == '0'){
        Swal.fire({
        icon: 'warning',
        type:  'warning',
-       title: 'SoftInspi',
+       title: 'CoreInspi',
        text: 'Debe seleccionar el Item Presupuestario.',
        showConfirmButton: true,
     });
@@ -555,7 +655,7 @@ function crearReformaConActividades() {
     Swal.fire({
         icon: 'warning',
         type:  'warning',
-        title: 'SoftInspi',
+        title: 'CoreInspi',
         text: 'Debe seleccionar una unidad ejecutora',
         showConfirmButton: true,
     });
@@ -563,7 +663,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un programa',
             showConfirmButton: true,
         });
@@ -571,7 +671,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar un proyecto',
             showConfirmButton: true,
         });
@@ -579,7 +679,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una actividad',
             showConfirmButton: true,
         });
@@ -587,7 +687,7 @@ function crearReformaConActividades() {
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Debe seleccionar una fuente de financiamiento',
             showConfirmButton: true,
         });
@@ -599,23 +699,25 @@ function crearReformaConActividades() {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
             data: {
-                coordina: coordina,
-                fecha: fecha,
-                poa: poa,
-                obOpera: obOpera,
-                actOpera: actOpera,
-                subActi: subActi,
+                coordina:         coordina,
+                fecha:            fecha,
+                poa:              poa,
+                obOpera:          obOpera,
+                actOpera:         actOpera,
+                subActi:          subActi,
                 item_presupuestario: item_presupuestario,
-                monDisp: monDisp,
+                monDisp:          monDisp,
                 unidad_ejecutora: unidad_ejecutora,
-                programa: programa,
-                proyecto: proyecto,
-                actividad: actividad,
+                programa:         programa,
+                proyecto:         proyecto,
+                actividad:        actividad,
                 fuente_financiamiento: fuente_financiamiento,
-                desItem: desItem,
-                plurianual: plurianual ? 1 : 0,
-                justifi2 : justifi2,
-                id_reforma: id_reforma,
+                desItem:          desItem,
+                plurianual:       plurianual ? 1 : 0,
+                //justifi2 :        justifi2,
+                id_reforma:       id_reforma,
+                proceso   :       proceso,
+                id_item_dir:      id_item_dir,
             },
 
             success: function(response) {
@@ -626,14 +728,14 @@ function crearReformaConActividades() {
                     Swal.fire({
                         icon: 'success',
                         type: 'success',
-                        title: 'Éxito',
+                        title: 'CoreInspi',
                         text: 'Actividad guardada correctamente',
                     });
                     $('#contenedorBotonAgregarActividad').show();
                 } else {
                     Swal.fire({
                         icon:  'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         type:  'error',
                         text: 'No se pudo guardar la actividad: ' + response.message,
                     });
@@ -643,28 +745,36 @@ function crearReformaConActividades() {
     }
 }
 
+
+
+
+
 function agregarFilaATabla(poa) {
+
+    let id_direccion = $('#id_direccion').val();
+
     // Crea una nueva fila con los datos de la actividad
     let nuevaFila = `
         <tr style="">
-            <input type="hidden" name="id_poa[]" value="${poa.id}">
-            <input type="hidden" name="solicitud[]" value="true">
-            <input type="hidden" name="id_area_soli[]" value="${(poa.id_area)}">
-            <td>
-                <i type="button" class="font-22 fadeIn animated bx bx-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
-                </i>
+            <td class="text-center align-middle">
+                <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
+                <input type="hidden" name="id_poa[]" value="${poa.id}">
+                <input type="hidden" name="solicitud[]" value="${( poa.id_area == id_direccion ? 'true' : 'false')}">
+                <input type="hidden" name="id_area_soli[]" value="${(poa.id_area)}">
             </td>
             <td>${poa.nombreActividadOperativa}</td>
             <td>
-                <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="${poa.nombreSubActividad}">
+                <textarea class="form-control" style="width: 350px;" rows="3" name="subActividad[]">${poa.nombreSubActividad}</textarea>
             </td>
             <td>${poa.nombreItem}</td>
             <td>${poa.descripcionItem}</td>
             <td class="width">
-                <select class="form-select" name="tipo[]">
+                <select class="form-control single-select" name="tipo[]" onchange="cambioSelect(this)">
                     <option value="" selected disabled>Seleccionar tipo...</option>
                     <option value="DISMINUYE">Disminuye</option>
                     <option value="AUMENTA">Aumenta</option>
+                    <option value="IGUAL">Igual</option>
+                    <option value="AJUSTE">Ajuste</option>
                 </select>
             </td>
             <td><input class="form-control" style="width: 125px;" type="text" name="enero[]" value="0"></td>
@@ -687,8 +797,8 @@ function agregarFilaATabla(poa) {
 }
 
 function limpiarFormulario() {
-    $('#coordina').val('');
-    $('#fecha').val('');
+    //$('#coordina').val('');
+    //$('#fecha').val('');
     $('#poa').val('');
     $('#obOpera').val('');
     $('#actOpera').val('');
@@ -697,12 +807,12 @@ function limpiarFormulario() {
     $('#monDisp').val('');
     $('#desItem').val('');
     $('#plurianual').prop('checked', false);
-    $('#unidad_ejecutora').val('');
-    $('#programa').val('');
-    $('#proyecto').val('');
-    $('#actividad').val('');
-    $('#fuente').val('');
-    $('#justifi').val('');
+    //$('#unidad_ejecutora').val('');
+    //$('#programa').val('');
+    //$('#proyecto').val('');
+    //$('#actividad').val('');
+    //$('#fuente').val('');
+    //$('#justifi').val('');
 }
 
 function fetchItemData(itemId) {
@@ -751,6 +861,7 @@ function limpiarTblAct() {
     $('#tblActArea').hide();
 
 }
+
 
 //Función para filtrar por área dependiendo de la coordinación zonal
 $(document).on('change', '#czonal', function(){
@@ -801,7 +912,11 @@ $( function () {
             type: 'GET', // O el método que estés utilizando en tu ruta
             url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
             data: { id: area_id },
-            success: function(data) {
+            success: function(datos) {
+
+                var data = datos.data;
+                var actividades = datos.actividades;
+
                 var tableBody = $('#tblActArea tbody');
                 tableBody.empty(); // Limpia las filas actuales
 
@@ -809,24 +924,90 @@ $( function () {
                 $.each(data, function(index, actividadArea) {
                     tableBody.append(
                         '<tr>' +
-                        '<input type="hidden" name="id_poa[]" value="' + actividadArea.id + '">' +
-                        '<td><i type="button" class="font-22 fadeIn animated bi bi-plus-square" title="Agregar actividad" onclick="agregarActAreaFila(this)"></i></td>' +
-                        '<td>' + actividadArea.departamento + '</td>' +
-                        '<td>' + actividadArea.nombreActividadOperativa + '</td>' +
-                        '<td>' + actividadArea.nombreSubActividad + '</td>' +
-                        '<td>' + actividadArea.nombreItem + '</td>' +
-                        '<td>' + actividadArea.descripcionItem + '</td>' +
+                            '<input type="hidden" name="id_poa[]" value="' + actividadArea.id + '">' +
+                            '<td><i type="button" class="font-22 fadeIn animated bi bi-plus-square" title="Agregar actividad" onclick="agregarActAreaFila(this)"></i></td>' +
+                            '<td>' + actividadArea.departamento + '</td>' +
+                            '<td>' + actividadArea.nombreActividadOperativa + '</td>' +
+                            '<td>' + actividadArea.nombreSubActividad + '</td>' +
+                            '<td>' + actividadArea.nombreItem + '</td>' +
+                            '<td>' + actividadArea.descripcionItem + '</td>' +
+                            '<td>' + actividadArea.monto + '</td>' +
                         '</tr>'
                     );
                 });
                 // Mostrar la tabla
                 $('#tblActArea').show();
+
+
+                // ========== para pintar el select
+                var select = $("#selectActivi"); // Referencia al select
+                select.empty(); // Limpiamos el select antes de agregar opciones
+                select.append('<option value="">Seleccione una actividad</option>'); // Opción por defecto
+            
+                // Recorremos las actividades y las agregamos al select
+                actividades.forEach(function(actividad) {
+                    select.append('<option value="' + actividad.id + '">' + actividad.nombreSubActividad + '</option>');
+                });
+            
+                // Si estás usando select2, vuelve a inicializarlo
+                select.trigger('change'); 
+
+
+
             },
             error: function(error) {
                 console.error('Error al obtener los datos de la tabla', error);
             }
         });
     });
+
+    $('#selectActivi').on('change', function() {
+
+        var id_sub  = $(this).val(); 
+        var area_id = $('#area').val();
+
+        if (area_id == 0) {
+            // Si no se ha seleccionado un área, ocultar la tabla
+            $('#tblActArea').hide();
+            return;
+        }
+
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
+            data: { id: area_id, id_sub: id_sub },
+            success: function(datos) {
+
+                var data = datos.data;
+
+                var tableBody = $('#tblActArea tbody');
+                tableBody.empty(); // Limpia las filas actuales
+
+                // Agrega nuevas filas basadas en la respuesta del servidor
+                $.each(data, function(index, actividadArea) {
+                    tableBody.append(
+                        '<tr>' +
+                            '<input type="hidden" name="id_poa[]" value="' + actividadArea.id + '">' +
+                            '<td><i type="button" class="font-22 fadeIn animated bi bi-plus-square" title="Agregar actividad" onclick="agregarActAreaFila(this)"></i></td>' +
+                            '<td>' + actividadArea.departamento + '</td>' +
+                            '<td>' + actividadArea.nombreActividadOperativa + '</td>' +
+                            '<td>' + actividadArea.nombreSubActividad + '</td>' +
+                            '<td>' + actividadArea.nombreItem + '</td>' +
+                            '<td>' + actividadArea.descripcionItem + '</td>' +
+                            '<td>' + actividadArea.monto + '</td>' +
+                        '</tr>'
+                    );
+                });
+                // Mostrar la tabla
+                $('#tblActArea').show();
+
+            },
+            error: function(error) {
+                console.error('Error al obtener los datos de la tabla', error);
+            }
+        });
+    });
+
 });
 
 
@@ -834,6 +1015,7 @@ $( function () {
 function agregarActAreaFila(element) {
     // Encuentra la fila de la tabla que contiene el botón que se ha clicado
     let fila = $(element).closest('tr');
+    let id_direccion = $('#id_direccion').val();
 
     // Obtén el ID de la actividad (POA) desde el input oculto
     let id_poa = fila.find('input[name="id_poa[]"]').val();
@@ -843,8 +1025,8 @@ function agregarActAreaFila(element) {
         url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
         data: { id_poa: id_poa },
         success: function(data) {
-
-            console.log(data);
+            var data = data.data;
+            //console.log(data);
 
             var tableBody = $('#tblActividades tbody');
             var rows = '';
@@ -852,23 +1034,25 @@ function agregarActAreaFila(element) {
             // Agrega nuevas filas basadas en la respuesta del servidor
                 rows +=`
                 <tr>
-                    <input type="hidden" name="id_poa[]" value="${(data.id)}">
-                    <input type="hidden" name="solicitud[]" value="false">
-                    <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
-                    <td>
-                    <i type="button" class="font-22 fadeIn animated bx bx-trash" title="Eliminar actividad" onclick="eliminarFila(this)">
+                    <td class="text-center align-middle">
+                        <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
+                        <input type="hidden" name="id_poa[]" value="${(data.id)}">
+                        <input type="hidden" name="solicitud[]" value="${( data.id_areaS == id_direccion ? 'true' : 'false')}">
+                        <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
                     </td>
                     <td>${(data.nombreActividadOperativa)}</td>
                     <td>
-                        <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="${(data.nombreSubActividad)}">
+                        <textarea class="form-control" style="width: 350px;" rows="3" name="subActividad[]">${data.nombreSubActividad}</textarea>
                     </td>
                     <td>${(data.nombreItem)}</td>
                     <td>${(data.descripcionItem)}</td>
                     <td class="width">
-                        <select class="form-select" name="tipo[]">
+                        <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
                             <option value="" selected disabled>Seleccionar tipo...</option>
                             <option value="DISMINUYE">Disminuye</option>
                             <option value="AUMENTA">Aumenta</option>
+                            <option value="IGUAL">Igual</option>
+                            <option value="AJUSTE">Ajuste</option>
                         </select>
                     </td>
                     <td>
@@ -925,6 +1109,9 @@ function agregarActAreaFila(element) {
                     </td>
                 </tr>`;
             tableBody.append(rows);
+
+            // ====== PINTAR LA FILA SELECCIONADA ======
+            fila.addClass('fila-seleccionada');
         },
         error: function(error) {
             console.error('Error al obtener los datos de la tabla', error);
@@ -933,6 +1120,124 @@ function agregarActAreaFila(element) {
 }
 
 
+
+
+function agregarActividad() {
+
+    let id_poa = $('#select_idpoa').val();
+    let id_direccion = $('#id_direccion').val();
+
+    if(id_poa != ''){
+
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
+            data: { id_poa: id_poa },
+            success: function(datos) {
+    
+                let data = datos.data;
+                //console.log(data);
+    
+                var tableBody = $('#tblActividades tbody');
+                var rows = '';
+
+                let subActividad = data.nombreSubActividad;
+                subActividad = subActividad.replace(/^['"]|['"]$/g, '');
+    
+                // Agrega nuevas filas basadas en la respuesta del servidor
+                    rows +=`
+                    <tr>
+                        <td class="text-center align-middle">
+                            <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
+                            <input type="hidden" name="id_poa[]" value="${(data.id)}">
+                            <input type="hidden" name="solicitud[]" value="${( data.id_areaS == id_direccion ? 'true' : 'false')}">
+                            <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
+                        </td>
+                        <td>${(data.nombreActividadOperativa)}</td>
+                        <td>
+                            <textarea class="form-control" style="width: 350px;" rows="3" name="subActividad[]">${subActividad}</textarea>
+                        </td>
+                        <td>${(data.nombreItem)}</td>
+                        <td>${(data.descripcionItem)}</td>
+                        <td class="width">
+                            <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
+                                <option value="" selected disabled>Seleccionar tipo...</option>
+                                <option value="DISMINUYE">Disminuye</option>
+                                <option value="AUMENTA">Aumenta</option>
+                                <option value="IGUAL">Igual</option>
+                                <option value="AJUSTE">Ajuste</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="enero[]" value="0">
+                            <div class="form-text">${data.enero}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="febrero[]" value="0">
+                            <div class="form-text">${data.febrero}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="marzo[]" value="0">
+                            <div class="form-text">${data.marzo}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="abril[]" value="0">
+                            <div class="form-text">${data.abril}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="mayo[]" value="0">
+                            <div class="form-text">${data.mayo}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="junio[]" value="0">
+                            <div class="form-text">${data.junio}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="julio[]" value="0">
+                            <div class="form-text">${data.julio}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="agosto[]" value="0">
+                            <div class="form-text">${data.agosto}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="septiembre[]" value="0">
+                            <div class="form-text">${data.septiembre}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="octubre[]" value="0">
+                            <div class="form-text">${data.octubre}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="noviembre[]" value="0">
+                            <div class="form-text">${data.noviembre}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="diciembre[]" value="0">
+                            <div class="form-text">${data.diciembre}</div></td>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="total[]" value="0.00">
+                            <div class="form-text">${data.total}</div></td>
+                        </td>
+                    </tr>`;
+                tableBody.append(rows);
+            },
+            error: function(error) {
+                console.error('Error al obtener los datos de la tabla', error);
+            }
+        });
+
+    }
+
+}
+
+
+
+
+
+
+/*
 function agregarUnidad(){
     // Realiza una solicitud AJAX para obtener las opciones de la unidad ejecutora
     $.ajax({
@@ -961,6 +1266,7 @@ function agregarUnidad(){
         }
     });
 }
+*/
 
 
 function cambioSelect(selectElement) {
@@ -988,7 +1294,16 @@ function cambioSelect(selectElement) {
                     }
                 }
             });
-        } else {
+        }if(selectElement.value === 'IGUAL'){
+
+            inputs.forEach(function(input, index) {
+
+                input.value = '0.00';
+                input.setAttribute('disabled', 'disabled');
+
+            });
+
+        }else {
             // Si no es "DISMINUYE", deshabilitar todos los inputs en la fila excepto el último
             inputs.forEach(function(input, index) {
                 if (index < inputs.length - 1) {
@@ -1000,3 +1315,119 @@ function cambioSelect(selectElement) {
     }
 
 }
+
+
+
+function agregarEstructura(){
+
+    let id_fuente = $('#id_fuente').val();
+
+    if(id_fuente != 0 || id_fuente != ''){
+
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/itemPresupuestario/get_estructura/'+id_fuente, // Ruta en tu servidor para obtener las opciones
+            success: function(response) {
+    
+                if (response.success) {
+                    let data        = response.data;
+                    let programas   = response.programa;
+                    let proyectos   = response.proyecto;
+                    let actividades = response.actividadPre;
+                    let fuentes     = response.fuente;
+                    let unidad      = response.unidad;
+    
+                    //$('#unidad_ejecutora').val(data.id_unidad);
+                    $('#unidad_ejecutora').empty();
+                    unidad.forEach(programa => {
+                        $('#unidad_ejecutora').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_unidad ? 'selected' : ''}>
+                                ${programa.nombre} - ${programa.descripcion}
+                            </option>`
+                        );
+
+                        //programa.id == data.id_unidad ? alert('Funciona') : '';
+
+                    });
+    
+                    // Cargar y seleccionar el valor en Programa
+                    $('#programa').empty();
+                    programas.forEach(programa => {
+                        $('#programa').append(
+                            `<option value="${programa.id}" ${programa.id == data.id_programa ? 'selected' : ''}>
+                                ${programa.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Proyecto
+                    $('#proyecto').empty();
+                    proyectos.forEach(proyecto => {
+                        $('#proyecto').append(
+                            `<option value="${proyecto.id}" ${proyecto.id == data.id_proyecto ? 'selected' : ''}>
+                                ${proyecto.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Actividad
+                    $('#actividad').empty();
+                    actividades.forEach(actividad => {
+                        $('#actividad').append(
+                            `<option value="${actividad.id}" ${actividad.id == data.id_actividad ? 'selected' : ''}>
+                                ${actividad.nombre}
+                            </option>`
+                        );
+                    });
+    
+                    // Cargar y seleccionar el valor en Fuente
+                    $('#fuente_financiamiento').empty();
+                    fuentes.forEach(fuente => {
+                        $('#fuente_financiamiento').append(
+                            `<option value="${fuente.id}" ${fuente.id == data.id_fuente ? 'selected' : ''}>
+                                ${fuente.nombre}
+                            </option>`
+                        );
+                    });
+                }
+    
+    
+            },
+            error: function(error) {
+                console.error('Error al obtener opciones de la unidad ejecutora', error);
+            }
+        });
+
+    }
+
+}
+
+
+
+function formatOption(option) {
+    if (!option.id) {
+        return option.text; // Muestra el texto por defecto si no hay datos
+    }
+
+    // Recupera los datos del atributo `data-*` del `option`
+    const nombreItem = $(option.element).data('nombre-item');
+    const descripcionItem = $(option.element).data('descripcion-item');
+
+    // Construye el HTML personalizado para las opciones
+    const template = `
+        <div>
+            <strong>${option.text}</strong> <br>
+            <small style="color: #6c757d;">${nombreItem || ''} - ${descripcionItem || ''}</small>
+        </div>
+    `;
+    return $(template);
+}
+
+$(document).ready(function () {
+    // Inicializar Select2 con la plantilla personalizada
+    $('#select_idpoa').select2({
+        templateResult: formatOption, // Para las opciones del dropdown
+        templateSelection: formatOption // Para la opción seleccionada
+    });
+});
+

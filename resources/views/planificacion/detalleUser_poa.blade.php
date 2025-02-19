@@ -5,6 +5,13 @@
 <!-- DataTables CSS -->
 @push('styles')
 <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+<style>
+    .col-objetivo-operativo {
+        width: 400px; /* Ajusta el tamaño según lo necesario */
+    }
+</style>
+
 @endpush
 
 @section('content')
@@ -31,30 +38,68 @@
             </a> -->
 
             <div class="row mt-4">
+
                 <div class="col-md-2">
-                    <label for="nameItemPU" class="form-label fs-6">Seleccionar fecha</label>
-                    <select id="yearSelect" class="form-select js-example-basic-single" onchange="actualizarTabla()"></select>
+                    <label class="form-label fs-6">&nbsp;</label>
+                    <button id="btnGeneratePDF" class="btn btn-primary form-control">Generar PDF</button>
                 </div>
 
-                <div class="col-md-5 d-flex align-items-center justify-content-center">
-                    <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Planificación: </h2> <h1 class="ms-2"> {{$sumaActividades}} </h1>
+                <div class="col-md-2">
+                    <label class="form-label fs-6">&nbsp;</label>
+                    <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar Excel</button>
                 </div>
+
+                <div class="col-md-8 d-flex align-items-center justify-content-center">
+                    <h2 class="text-danger"> <i class="bi bi-layer-backward"></i> Total Planificación: </h2> <h1 class="ml-2"> ${{$sumaActividades}} </h1>
+                </div>
+
             </div>
 
-
+            <input id="id_direccion" name="id_direccion" value="{{$id_direccion}}" type="hidden">
             <hr/>
 
             <div class="card">
                 <div class="card-body">
+
+                    <div class="filters row">
+                        <div class="col-lg-4">
+                            <label for="filterAnio" class="form-label">Año:</label>
+                            <select id="filterAnio" class="basic-single filter">
+
+                            </select>
+                        </div>
+
+                        <div class="col-lg-8">
+                            <label for="filterItem" class="form-label">Item:</label>
+                            <select id="filterItem" class="basic-single filter">
+                                <option value="">Todos</option>
+                                @foreach($items as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nombre }} - {{ $item->descripcion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-lg-10 mt-2 mb-5">
+                            <label for="filterSubActividad" class="form-label">Sub Actividad:</label>
+                            <select id="filterSubActividad" class="basic-single filter">
+                                <option value="">Todas</option>
+                                @foreach($sub_actividades as $sub_actividad)
+                                    <option value="{{ $sub_actividad->id }}">{{ $sub_actividad->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+
                     <div class="table-responsive">
                         <table id="tblPlanificacionDetalleUser" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
                                     <th>Area</th>
                                     <th>Tipo de POA</th>
-                                    <th>Obj. Operativo</th>
+                                    <th class="col-objetivo-operativo">Obj. Operativo</th>
                                     <th>Act. Operativa</th>
                                     <th>Sub Actividad</th>
+                                    <th>Item</th>
                                     <th>Ene</th>
                                     <th>Feb</th>
                                     <th>Mar</th>
@@ -80,6 +125,7 @@
                                     <th></th>
                                     <th></th>
                                     <th></th>
+                                    <th></th>
                                     <th>Ene</th>
                                     <th>Feb</th>
                                     <th>Mar</th>
@@ -99,6 +145,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -129,6 +176,62 @@
     </div>
 
 
+    <a id="btnModalReportPOA" data-toggle="modal" data-target="#addReportDetalle" class="d-none"></a>
+
+    <div class="modal fade" id="addReportDetalle" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Generar Reporte de PAPP</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="modalContent">
+                        <div class="row">
+
+                            <div class="col-md-4 mt-1">
+                                <label for="creado" class="form-label fs-6">Usuario que elabora</label>
+                                <input type="text" id="elabora" name="elabora" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_creado" class="form-label fs-6 mt-2">Cargo</label>
+                                <input type="text" id="cargo_elabora" name="cargo_elabora" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+
+                            <div class="col-md-4 mt-1">
+                                <label for="autorizado" class="form-label fs-6">Usuario que revisa</label>
+                                <input type="text" id="revisa" name="revisa" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_autorizado" class="form-label fs-6 mt-2">Cargo</label>
+                                <input type="text" id="cargo_revisa" name="cargo_revisa" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+
+                            <div class="col-md-4 mt-1">
+                                <label for="reporta" class="form-label fs-6">Usuario que aprueba</label>
+                                <input type="text" id="aprueba" name="aprueba" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_reporta" class="form-label fs-6 mt-2">Cargo</label>
+                                <input type="text" id="cargo_aprueba" name="cargo_aprueba" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnGenerarReportPOA">Guardar</button>
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModalPOA" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
 
 @endsection
 
@@ -153,5 +256,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/detalle_user.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Planificacion/detalle_user.js?v0.0.6')}}"></script>
 @endpush

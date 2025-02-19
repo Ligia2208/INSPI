@@ -10,20 +10,90 @@ $( function () {
     $('#tblItemPresupuestarioIndex').DataTable({ //id de la tabla en el visual (index)
         processing: true,
         serverSide: true,
-        lengthMenu: [8, 15, 25, 50, 100],
+        lengthMenu: [15, 25, 50, 100],
         ajax: {
             url: '/montoDireccion', // La URL que devuelve los datos en JSON
         },
         columns: [
             { data: 'nombre',        name: 'nombre' },
             { data: 'descripcion',   name: 'descripcion' },
-            { data: 'monto',         name: 'monto' },
+            { data: 'monto',         className: 'text-right', name: 'monto' },
+
+            {
+                data: null,
+                searchable: false ,
+                render: function (data, type, full, meta) {
+                var array = "";
+
+                let total_monto_direcciones = parseFloat(full.total_monto_direcciones);
+                let monto = parseFloat(full.monto.replace(/,/g, ''));
+
+                    if(monto === total_monto_direcciones && monto !== 0){
+
+                        array =`
+                            <div class="center"><span class="badge badge-success text-bg-success">Cuadrado</span></div>
+                        `;
+                    }else{
+                        array =`
+                            <div class="center"><span class="badge badge-warning text-bg-success">Sin Cuadrar</span></div>
+                        `;
+                    }
+
+                return array;
+
+                }
+            },
+
+            {
+                data: null,
+                searchable: false ,
+                render: function (data, type, full, meta) {
+                var array = "";
+                let total_monto = parseFloat(full.total_monto);
+                let monto = parseFloat(full.monto.replace(/,/g, ''));
+
+                    if(monto === total_monto && monto !== 0){
+
+                        array =`
+                            <div class="center"><span class="badge badge-success text-bg-success">Cuadrado</span></div>
+                        `;
+                    }else{
+                        array =`
+                            <div class="center"><span class="badge badge-warning text-bg-success">Sin Cuadrar</span></div>
+                        `;
+                    }
+
+                return array;
+
+                }
+            },
+
             { data: 'fecha',         name: 'fecha' },
             {
                 data: null,
                 searchable: false ,
                 render: function (data, type, full, meta) {
                 var array = "";
+                var icoAprobar = "";
+
+                let total_monto = parseFloat(full.total_monto);
+                let total_monto_direcciones = parseFloat(full.total_monto_direcciones);
+                let monto = parseFloat(full.monto.replace(/,/g, ''));
+
+                if(monto === total_monto && monto === total_monto_direcciones && monto !== 0 && full.proceso_estado == false){
+                    icoAprobar = `
+                        <a id="btnCerrarProceso" data-id_direccion="${full.id}" title="Cerrar Planificación" class="show-tooltip mr-1" data-title="Cerrar Planificación">
+                            <i class="font-22 bi bi-box-arrow-in-up text-success"></i>
+                        </a>
+                    `;
+                }else if(full.proceso_estado){
+                    icoAprobar = `
+                        <a id="btnAbrirProceso" data-id_direccion="${full.id}" title="Abrir Planificación" class="show-tooltip mr-1" data-title="Abrir Planificación">
+                            <i class="font-22 bi bi-box-arrow-in-down text-danger"></i>
+                        </a>
+                    `;
+                }
+
                 array =`
                     <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
@@ -32,6 +102,8 @@ $( function () {
                             <i class="font-22 bi bi-bar-chart-steps text-success"></i>
                         </a>
                         -->
+                    
+                        ${icoAprobar}
 
                         <a id="btnEditarMonto" data-id_editar="${full.id}" title="Editar Monto" class="show-tooltip mr-1" data-title="Editar Monto">
                             <i class="font-22 fadeIn animated bi bi-pen" ></i>
@@ -49,7 +121,7 @@ $( function () {
             },
         ],
         order: [
-            [3, 'desc']
+            [5, 'desc']
         ],
 
         // Otras configuraciones de DataTables aquí
@@ -197,7 +269,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Seguro quiere eliminar este registro.',
             showConfirmButton: true,
             showCancelButton: true,
@@ -447,14 +519,96 @@ $(function(){
 
 
 
-    /* ABRIL MODAL PARA GENERAR EL HISTORIAL */
-    $(document).on('click', '#btnRecordItemP', function(){
+    /* CERRAR EL PROCESO DE PLANIFICACION */
+    $(document).on('click', '#btnCerrarProceso', function(){
 
-        var itemId = $(this).data('id_item');
-        $('#id_itemPres').val(itemId);
+        var id_direccion = $(this).data('id_direccion');
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Seguro quieres cerrar el proceso de planificación para esta Dirección?.',
+            showConfirmButton: true,
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.value == true) {
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/itemPresupuestario/cerrarDireccionMonto/' + id_direccion,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+    
+                        table.ajax.reload();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'CoreInspi',
+                            type:  'success',
+                            text: response.message,
+                        });
+    
+                    },
+                    error: function(error) {
+                        console.error('Error al actualizar el item:', error);
+                    }
+                });
+
+            }
+        });
+
 
     });
-    /* ABRIL MODAL PARA GENERAR EL HISTORIAL */
+    /* CERRAR EL PROCESO DE PLANIFICACION */
+
+
+
+    /* ABRIR EL PROCESO DE PLANIFICACION */
+    $(document).on('click', '#btnAbrirProceso', function(){
+
+        var id_direccion = $(this).data('id_direccion');
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Seguro quieres abrir el proceso de planificación para esta Dirección?.',
+            showConfirmButton: true,
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.value == true) {
+
+                $.ajax({
+                    type: 'PUT',
+                    url: '/itemPresupuestario/abrirDireccionMonto/' + id_direccion,
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    success: function(response) {
+    
+                        table.ajax.reload();
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'CoreInspi',
+                            type:  'success',
+                            text: response.message,
+                        });
+    
+                    },
+                    error: function(error) {
+                        console.error('Error al actualizar el item:', error);
+                    }
+                });
+
+            }
+        });
+
+
+    });
+    /* ABRIR EL PROCESO DE PLANIFICACION */
+
 
 
 

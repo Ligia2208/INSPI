@@ -33,6 +33,6 @@
 @endsection
 
 @section('footer')
-<script src="{{ asset('assets') }}/js/pages/widgets.js"></script>
-<script src="{{ asset('assets') }}/js/pages/custom/profile/profile.js"></script>
+    <script src="{{ asset('assets') }}/js/pages/widgets.js"></script>
+    <script src="{{ asset('assets') }}/js/pages/custom/profile/profile.js"></script>
 @endsection

@@ -9,6 +9,7 @@ class Solicitud extends Model
     protected $fillable = [
                             'id',
                             'id_actividad',
+                            'id_poa',
                             'id_area_solicitante',
                             'id_area_propietaria',
                             'estado_solicitud',

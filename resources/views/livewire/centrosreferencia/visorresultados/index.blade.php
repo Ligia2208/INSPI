@@ -111,7 +111,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
                                             <label class="form-check-label" for="exampleRadios1">
-                                              Fecha Toma Muestra
+                                              Fecha Atención
                                             </label>
                                         </div>
                                     </div>
@@ -119,7 +119,7 @@
                                         <div class="form-check">
                                             <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
                                             <label class="form-check-label" for="exampleRadios2">
-                                              Ingreso CRN - Lab.
+                                              Ingreso Toma Muestra
                                             </label>
                                         </div>
                                     </div>
@@ -177,10 +177,10 @@
                         <div class="col-lg-12 col-xl-12">
                             <div class="row align-items-center">
                                 <div class="col-md-6 my-2 my-md-0">
-                                    <div id="chartdiv1"><h3>{{ $etiqueta }}</h3></div>
+                                    <div id="chartdiv1"><h3>{{ $etiqueta1 }}</h3></div>
                                 </div>
                                 <div class="col-md-6 my-2 my-md-0">
-                                    <div id="chartdiv2"><h3>{{ $etiqueta }}</h3></div>
+                                    <div id="chartdiv2"><h3>{{ $etiqueta2 }}</h3></div>
                                 </div>
                             </div>
                         </div>
@@ -194,24 +194,10 @@
                         <div class="col-lg-12 col-xl-12">
                             <div class="row align-items-center">
                                 <div class="col-md-6 my-2 my-md-0">
-                                    <div id="chartdiv5"><h3>{{ $etiqueta }}</h3></div>
+                                    <div id="chartdiv5"><h3>{{ $etiqueta3 }}</h3></div>
                                 </div>
                                 <div class="col-md-6 my-2 my-md-0">
-                                    <div id="chartdiv6"><h3>{{ $etiqueta }}</h3></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="card-body pt-0 pb-3">
-                <div class="mb-5 ">
-                    <div class="row align-items-center">
-                        <div class="col-lg-12 col-xl-12">
-                            <div class="row align-items-center">
-                                <div class="col-md-12 my-2 my-md-0">
-                                    <div id="chartdiv3"><h3>{{ $etiqueta }}</h3></div>
+                                    <div id="chartdiv6"><h3>{{ $etiqueta4 }}</h3></div>
                                 </div>
                             </div>
                         </div>
@@ -225,7 +211,21 @@
                         <div class="col-lg-12 col-xl-12">
                             <div class="row align-items-center">
                                 <div class="col-md-12 my-2 my-md-0">
-                                    <div id="chartdiv4"><h3>{{ $etiqueta }}</h3></div>
+                                    <div id="chartdiv3"><h3>{{ $etiqueta5 }}</h3></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="card-body pt-0 pb-3">
+                <div class="mb-5 ">
+                    <div class="row align-items-center">
+                        <div class="col-lg-12 col-xl-12">
+                            <div class="row align-items-center">
+                                <div class="col-md-12 my-2 my-md-0">
+                                    <div id="chartdiv4"><h3>{{ $etiqueta6 }}</h3></div>
                                 </div>
                             </div>
                         </div>

@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Centrosreferencia\Visorresultados;
 
 use App\Models\CentrosReferencia\Resultado;
+use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
@@ -46,33 +47,37 @@ class Index extends Component
         $eventos = [];
         $data = [];
 
-        $count = Resultado::where('estado','=','A')->count();
-        $resultados = Resultado::where('estado','=','A')->orderBy('id', 'asc');
+        $count = Preanalitica::where('estado','=','A')->where('validado','=','S')->count();
+        $resultados = Preanalitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc');
 
-        $res = Resultado::where('estado','=','A')->orderBy('id', 'asc')->get()->toArray();
+        //$res = Preanalitica::where('estado','=','A')->where('validado','=','S')->orderBy('id', 'asc')->get()->toArray();
         $data = DB::table('inspi_crns.consolidado')->select('sede as grupo',DB::raw('count(evento) as total'))->groupBy('sede')->get()->toArray();
         $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->groupBy('provincia')->get()->toArray();
         $datacant = DB::table('inspi_crns.consolidado')->select('canton', DB::raw('count(evento) as eventos'))->groupBy('canton')->get()->toArray();
         $datasexo = DB::table('inspi_crns.consolidado')->select('sexo as grupo', DB::raw('count(evento) as total'))->groupBy('sexo')->get()->toArray();
         $dataedad = DB::table('inspi_crns.consolidado')->select('edad as grupo', DB::raw('count(evento) as total'))->groupBy('edad')->orderBy('edad','ASC')->get()->toArray();
 
-        $etiqueta = 'Sedes';
+        $etiqueta1 = 'Total Casos';
+        $etiqueta2 = '% Casos';
+        $etiqueta3 = '% Casos por Sexo';
+        $etiqueta4 = 'Total Casos por Edad';
+        $etiqueta5 = 'Total Casos por Provincia';
+        $etiqueta6 = 'Total Casos por Cantón';
 
         if($this->csedes>=1){
             $resultados = $resultados->where('sedes_id', '=', $this->csedes);
-            $res = $resultados->where('sedes_id', '=', $this->csedes)->get()->toArray();
             $count = $resultados->count();
 
             $config = SedeCrn::where('sedes_id','=',$this->csedes)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
 
             $dsede = Sede::findOrFail($this->csedes);
-            $data = DB::table('inspi_crns.consolidado')->select('crn as grupo',DB::raw('count(evento) as total'))->where('sede','=',$dsede->descripcion)->groupBy('crn')->get()->toArray();
+            $data = DB::table('inspi_crns.consolidado')->select('crn as grupo',DB::raw('count(evento) as total'))->where('sedes_id','=',$this->csedes)->groupBy('crn')->get()->toArray();
 
-            $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->where('sede','=',$dsede->descripcion)->groupBy('provincia')->get()->toArray();
-            $datacant = DB::table('inspi_crns.consolidado')->select('canton', DB::raw('count(evento) as eventos'))->where('sede','=',$dsede->descripcion)->groupBy('canton')->get()->toArray();
-            $datasexo = DB::table('inspi_crns.consolidado')->select('sexo as grupo', DB::raw('count(evento) as total'))->where('sede','=',$dsede->descripcion)->groupBy('sexo')->get()->toArray();
-            $dataedad = DB::table('inspi_crns.consolidado')->select('edad as grupo', DB::raw('count(evento) as total'))->where('sede','=',$dsede->descripcion)->groupBy('edad')->orderBy('edad','ASC')->get()->toArray();
+            $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->where('sedes_id','=',$this->csedes)->groupBy('provincia')->get()->toArray();
+            $datacant = DB::table('inspi_crns.consolidado')->select('canton', DB::raw('count(evento) as eventos'))->where('sedes_id','=',$this->csedes)->groupBy('canton')->get()->toArray();
+            $datasexo = DB::table('inspi_crns.consolidado')->select('sexo as grupo', DB::raw('count(evento) as total'))->where('sedes_id','=',$this->csedes)->groupBy('sexo')->get()->toArray();
+            $dataedad = DB::table('inspi_crns.consolidado')->select('edad as grupo', DB::raw('count(evento) as total'))->where('sedes_id','=',$this->csedes)->groupBy('edad')->orderBy('edad','ASC')->get()->toArray();
 
             $etiqueta = 'Crns - Laboratorios';
         }
@@ -86,14 +91,12 @@ class Index extends Component
             $count = $resultados->count();
             $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
 
-            $dsede = Sede::findOrFail($this->csedes);
-            $dlab = Crn::findOrFail($this->claboratorios);
-            $data = DB::table('inspi_crns.consolidado')->select('evento as grupo',DB::raw('count(tecnica) as total'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->groupBy('evento')->get()->toArray();
+            $data = DB::table('inspi_crns.consolidado')->select('evento as grupo',DB::raw('count(resultado) as total'))->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->groupBy('evento')->get()->toArray();
 
-            $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->groupBy('provincia')->get()->toArray();
-            $datacant = DB::table('inspi_crns.consolidado')->select('canton', DB::raw('count(evento) as eventos'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->groupBy('canton')->get()->toArray();
-            $datasexo = DB::table('inspi_crns.consolidado')->select('sexo as grupo', DB::raw('count(evento) as total'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->groupBy('sexo')->get()->toArray();
-            $dataedad = DB::table('inspi_crns.consolidado')->select('edad as grupo', DB::raw('count(evento) as total'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->groupBy('edad')->orderBy('edad','ASC')->get()->toArray();
+            $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->groupBy('provincia')->get()->toArray();
+            $datacant = DB::table('inspi_crns.consolidado')->select('canton', DB::raw('count(evento) as eventos'))->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->groupBy('canton')->get()->toArray();
+            $datasexo = DB::table('inspi_crns.consolidado')->select('sexo as grupo', DB::raw('count(evento) as total'))->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->groupBy('sexo')->get()->toArray();
+            $dataedad = DB::table('inspi_crns.consolidado')->select('edad as grupo', DB::raw('count(evento) as total'))->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->groupBy('edad')->orderBy('edad','ASC')->get()->toArray();
 
             $etiqueta = 'Eventos Registrados';
         }
@@ -103,15 +106,12 @@ class Index extends Component
             $count = $resultados->count();
             $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
 
-            $dsede = Sede::findOrFail($this->csedes);
-            $dlab = Crn::findOrFail($this->claboratorios);
-            $devento = Evento::findOrFail($this->ceventos);
-            $data = DB::table('inspi_crns.consolidado')->select('resultado as grupo',DB::raw('count(*) as total'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->where('evento','=',$devento->descripcion)->groupBy('resultado')->get()->toArray();
+            $data = DB::table('inspi_crns.consolidado')->select('resultado as grupo',DB::raw('count(*) as total'))->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->groupBy('resultado')->get()->toArray();
 
-            $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->where('evento','=',$devento->descripcion)->groupBy('provincia')->get()->toArray();
-            $datacant = DB::table('inspi_crns.consolidado')->select('canton', DB::raw('count(evento) as eventos'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->where('evento','=',$devento->descripcion)->groupBy('canton')->get()->toArray();
-            $datasexo = DB::table('inspi_crns.consolidado')->select('sexo as grupo', DB::raw('count(evento) as total'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->where('evento','=',$devento->descripcion)->groupBy('sexo')->get()->toArray();
-            $dataedad = DB::table('inspi_crns.consolidado')->select('edad as grupo', DB::raw('count(evento) as total'))->where('sede','=',$dsede->descripcion)->where('crn','=',$dlab->descripcion)->where('evento','=',$devento->descripcion)->groupBy('edad')->orderBy('edad','ASC')->get()->toArray();
+            $dataprov = DB::table('inspi_crns.consolidado')->select('provincia', DB::raw('count(evento) as eventos'))->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->groupBy('provincia')->get()->toArray();
+            $datacant = DB::table('inspi_crns.consolidado')->select('canton', DB::raw('count(evento) as eventos'))->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->groupBy('canton')->get()->toArray();
+            $datasexo = DB::table('inspi_crns.consolidado')->select('sexo as grupo', DB::raw('count(evento) as total'))->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->groupBy('sexo')->get()->toArray();
+            $dataedad = DB::table('inspi_crns.consolidado')->select('edad as grupo', DB::raw('count(evento) as total'))->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->groupBy('edad')->orderBy('edad','ASC')->get()->toArray();
 
             $etiqueta = 'Resultados Registrados';
         }
@@ -122,7 +122,7 @@ class Index extends Component
         $data_sexo = json_encode($datasexo);
         $data_edad = json_encode($dataedad);
 
-        return view('livewire.centrosreferencia.visorresultados.index', compact('count', 'resultados','data_res','data_prov','data_cant','data_sexo','data_edad','sedes','crns','eventos','etiqueta'));
+        return view('livewire.centrosreferencia.visorresultados.index', compact('count', 'resultados','data_res','data_prov','data_cant','data_sexo','data_edad','sedes','crns','eventos','etiqueta1','etiqueta2','etiqueta3','etiqueta4','etiqueta5','etiqueta6'));
     }
 
     public function eventosemanal(){

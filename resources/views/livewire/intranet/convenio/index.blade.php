@@ -8,7 +8,9 @@
                 <h3 class="card-title align-items-start flex-column">
                     <span class="text-muted mt-3 font-weight-bold font-size-sm">({{ $count }}) Convenios</span>
                 </h3>
+                @if(auth()->user()->roles()->first()->name=="Transferencia" || auth()->user()->roles()->first()->name=="Administrador")
                 <a href="{{ route('convenio.create') }}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i class="fa fa-sticky-note"></i> Agregar</a>
+                @endif
             </div>
             <!--end::Header-->
             <div class="card-body pt-0 pb-3">
@@ -67,6 +69,7 @@
                                         </a>
                                     </i>
                                     &nbsp
+                                    @if(auth()->user()->roles()->first()->name=="Transferencia" || auth()->user()->roles()->first()->name=="Administrador")
                                     <i class="navi-item" data-toggle="modal" data-target="_self">
                                         <a href="{{ route('convenio.edit', $objCon) }}" class="navi-link">
                                             <span class="navi-icon">
@@ -82,6 +85,7 @@
                                             </span>
                                         </a>
                                     </i>
+                                    @endif
                                 </div>
                             </div>
                         </div>

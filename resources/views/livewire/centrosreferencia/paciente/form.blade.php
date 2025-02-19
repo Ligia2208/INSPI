@@ -69,7 +69,7 @@
                                             data-show-subtext="true">
                                             <option value="">Selecciona una opción Sexo</option>
                                             @foreach ($sexos as $sexo)
-                                                <option data-subtext="" value="{{ $sexo->id }}">{{ $sexo->nombre }}</option>
+                                                <option data-subtext="" value="{{ $sexo->id }}">{{ $sexo->descripcion }}</option>
                                             @endforeach
                                         </select>
                                     </div>
@@ -100,26 +100,22 @@
                                     @error('Pacientes.nacionalidad_id') <div><span class="text-danger">{{ $message }}</span></div> @enderror
                                 </div>
                                 <div class="form-group col-md-4">
-                                    <label for="inputCodigo">Estado Civil <span class="text-danger">*</label>
-                                    <div class="input-group input-group-solid">
+                                    <label for="inputCodigo">Fecha Nacimiento <span class="text-danger">*</label>
+                                    <div class="input-group input-group-solid" wire:ignore wire:key="start_date">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
+                                                <i class="fas fa-date"></i>
                                             </span>
                                         </div>
-                                        <select
-                                            wire:model.defer="Pacientes.estadocivil_id"
-                                            class="form-control selectpicker form-control-solid @error('Pacientes.estadocivil_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true">
-                                            <option value="">Selecciona una opción Estado Civil</option>
-                                            @foreach ($estadoscivil as $estciv)
-                                                <option data-subtext="" value="{{ $estciv->id }}">{{ $estciv->nombre }}</option>
-                                            @endforeach
-                                        </select>
+                                        <input
+                                            wire:model.defer="Pacientes.fechanacimiento"
+                                            value="Pacientes.fechanacimiento"
+                                            type="date"
+                                            class="start_date form-control form-control-solid @error('Pacientes.fechanacimiento') is-invalid @enderror"
+                                            placeholder="Seleccione la fecha de nacimiento"
+                                        />
                                     </div>
-                                    @error('Pacientes.estadocivil_id') <div><span class="text-danger">{{ $message }}</span></div> @enderror
+                                    @error('Pacientes.fechanacimiento') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>
                             <div class="form-row">
@@ -157,49 +153,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label for="inputCodigo">Fecha Nacimiento <span class="text-danger">*</label>
-                                    <div class="input-group input-group-solid" wire:ignore wire:key="start_date">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-date"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Pacientes.fechanacimiento"
-                                            value="Pacientes.fechanacimiento"
-                                            type="date"
-                                            class="start_date form-control form-control-solid @error('Pacientes.fechanacimiento') is-invalid @enderror"
-                                            placeholder="Seleccione la fecha de nacimiento"
-                                        />
-                                    </div>
-                                    @error('Pacientes.fechanacimiento') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="inputCodigo">Tipo de Sangre <span class="text-danger">*</label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Pacientes.tiposangre_id"
-                                            class="form-control selectpicker form-control-solid @error('Pacientes.tiposangre_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true">
-                                            <option value="">Selecciona una opción Tipo de Sangre</option>
-                                            @foreach ($tipossangre as $tipsan)
-                                                <option data-subtext="" value="{{ $tipsan->id }}">{{ $tipsan->nombre }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                    @error('Pacientes.tiposangre_id') <div><span class="text-danger">{{ $message }}</span></div> @enderror
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-12">
+                                <div class="form-group col-md-9">
                                     <label for="inputCodigo">Dirección <span class="text-danger">*</label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -216,9 +170,7 @@
                                     </div>
                                     @error('Pacientes.direccion') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-3">
                                     <label for="inputCodigo">Teléfonos <span class="text-danger">*</label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -234,23 +186,6 @@
                                             placeholder="Ej: 042874612" />
                                     </div>
                                     @error('Pacientes.telefono') <span class="text-danger">{{ $message }}</span> @enderror
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label for="inputCodigo">Correo electrónico <span class="text-danger">*</label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Pacientes.correo"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Pacientes.correo') is-invalid @enderror"
-                                            placeholder="Ej: juan_rivera_2000@gmail.com" />
-                                    </div>
-                                    @error('Pacientes.correo') <span class="text-danger">{{ $message }}</span> @enderror
                                 </div>
                             </div>
                             <div class="form-row">

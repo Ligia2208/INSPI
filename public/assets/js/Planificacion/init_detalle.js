@@ -2,138 +2,101 @@ $( function () {
 
     populateYearSelect(2020);
 
-    $('.js-example-basic-single').select2({
+    $('.basic-single').select2({
         width: '100%',
     });
 
-    //CÓDIGO PARA MOSTRAR LA TABLA EN EL INDEX
-    $('#tblPlanificacionIndex').DataTable({ //id de la tabla en el visual (index)
+
+    var table = $('#tblPlanificacionDetalle').DataTable({
         processing: false,
         serverSide: false,
-        lengthMenu: [8, 15, 25, 50, 100],
+        lengthMenu: [15, 25, 50, 100],
         ajax: {
-            url: '/planificacion', // La URL que devuelve los datos en JSON
+            url: '/planificacion/detalle',
+            data: function (d) {
+                d.anio = $('#filterAnio').val();
+                d.direccion = $('#filterDireccion').val();
+                d.item = $('#filterItem').val();
+                d.sub_actividad = $('#filterSubActividad').val();
+                d.unidad = $('#filterUnidad').val();
+            }
         },
         columns: [
-            { data: 'coordinacion',        name: 'coordinacion' },
-            { data: 'POA',                 name: 'POA' },
-            { data: 'obj_operativo',       name: 'obj_operativo' },
-            { data: 'act_operativa',       name: 'act_operativa' },
-            { data: 'sub_actividad',       name: 'sub_actividad' },
-            { data: 'fecha',               name: 'fecha' },
-            //{ data: 'estado',              name: 'estado' },
+            { data: 'Area', name: 'Area' },
 
+            { data: 'u_ejecutora', name: 'u_ejecutora' },
+            { data: 'programa',    name: 'programa' },
+            { data: 'proyecto',    name: 'proyecto' },
+            { data: 'actividad',   name: 'actividad' },
+            { data: 'fuente',      name: 'fuente' },
+
+            { data: 'POA', name: 'POA' },
+            { data: 'obj_operativo', name: 'obj_operativo' },
+            { data: 'act_operativa', name: 'act_operativa' },
+            { data: 'sub_actividad', name: 'sub_actividad' },
+
+            { data: 'item', name: 'item' },
+            { data: 'monto_item', name: 'monto_item' },
+
+            { data: 'monto', name: 'monto' },
+            { data: 'enero', name: 'enero' },
+            { data: 'febrero', name: 'febrero' },
+            { data: 'marzo', name: 'marzo' },
+            { data: 'abril', name: 'abril' },
+            { data: 'mayo', name: 'mayo' },
+            { data: 'junio', name: 'junio' },
+            { data: 'julio', name: 'julio' },
+            { data: 'agosto', name: 'agosto' },
+            { data: 'septiembre', name: 'septiembre' },
+            { data: 'octubre', name: 'octubre' },
+            { data: 'noviembre', name: 'noviembre' },
+            { data: 'diciembre', name: 'diciembre' },
+            
             {
                 data: null,
-                searchable: false ,
                 render: function (data, type, full, meta) {
-                var array = "";
-
-                if(full.estado == 'A' ){
-                    array = '<div class="center"><span class="badge badge-primary text-bg-primary">Ingresado</span><div>';
-                }else if(full.estado == 'O'){
-                    array = '<div class="center"><span class="badge badge-success text-bg-success">Aprobado</span>';
-                }else if(full.estado == 'R'){
-                    array = '<div class="center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
-                }else if(full.estado == 'C'){
-                    array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span>';
-                }else{
-                    array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
-                }
-
-                return array;
-                }
-            },
-
-            {
-                data: null,
-                searchable: false ,
-                render: function (data, type, full, meta) {
-                var array = "";
-
-                if(full.estado == 'O' ){
-                    array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
-                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                    return `
+                        <div class="action-buttons">
+                            <a id="btnEditarPlan" data-id_editar="${full.id}" href="javascript:void(0);">
+                                <i class="bx bx-edit"></i>
                             </a>
-                            <!--
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
-                            </a>
-                            -->
-                        </div>
-                    `;
-                }else if(full.estado == 'R'){
-                    array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
-                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
-                            </a>
-                            <!--
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
-                            </a>
-                            -->
-                        </div>
-                    `;
-                } else{
-                    array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
-                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
-                            </a>
-
-                            <a id="btnEditarPlan" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Revisión" class="show-tooltip" data-title="Revisión">
-                                <i class="font-22 fadeIn animated bi bi-pen" ></i>
-                            </a>
-                            <!--
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
-                            </a>
-                            -->
-                        </div>
-                    `;
-
-                }
-
-
-                return array;
-
+                        </div>`;
                 }
             },
         ],
-        order: [
-            [5, 'desc']
-        ],
-
-        // Otras configuraciones de DataTables aquí
-        language: {
-            "emptyTable": "No hay información", //no hay datos disponibles
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-            "infoPostFix": "",
-            "thousands": ",",
-            "lengthMenu": "Mostrar _MENU_ Entradas",
-            "loadingRecords": "Cargando...",
-            "processing": "Procesando...",
-            "search": "Buscar:",
-            "zeroRecords": "Sin resultados encontrados",
-                        "paginate": {
-                            "first": "Primero",
-                            "last": "Ultimo",
-                            "next": "Siguiente",
-                            "previous": "Anterior",
-                            "showing": "Mostrando"
-                        }
+        order: [[0, 'desc']],
+        footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+    
+            // Función para sumar valores de una columna
+            var intVal = function (i) {
+                return typeof i === 'string' ? 
+                    parseFloat(i.replace(/[\$,]/g, '')) : 
+                    typeof i === 'number' ? i : 0;
+            };
+    
+            // Sumar columnas de enero a diciembre
+            for (let col = 11; col <= 24; col++) { // Índices de columnas de enero a diciembre
+                let total = api
+                    .column(col, { page: 'current' }) // Solo suma los valores visibles en la página actual
+                    .data()
+                    .reduce(function (a, b) {
+                        return intVal(a) + intVal(b);
+                    }, 0);
+    
+                // Actualizar el pie de la tabla con los totales
+                $(api.column(col).footer()).html(total.toFixed(2));
+            }
         },
+        language: { /* Opciones de idioma */ },
+    });
+    
+
+    // Recargar tabla al cambiar filtros
+    $('.filter').on('change', function () {
+        table.ajax.reload();
     });
 
-
-    var table = $('#tblPlanificacionIndex').DataTable();
 
 });
 
@@ -164,7 +127,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Seguro quiere eliminar este registro.',
             showConfirmButton: true,
             showCancelButton: true,
@@ -191,7 +154,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'success',
                                     type: 'success',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 }).then((result) => {
@@ -204,7 +167,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'error',
                                     type:  'error',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 });
@@ -214,7 +177,7 @@ $(function(){
                     error: function(error) {
                         Swal.fire({
                             icon:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             type:  'success',
                             text:   error,
                             showConfirmButton: true,
@@ -235,116 +198,6 @@ $(function(){
 
 
 //------------------------------------------------------------------------------------------------
-
-
-//CÓDIGO PARA MOSTRAR POA EN EL CALENDARIO
-$( function () {
-
-    //CÓDIGO PARA MOSTRAR LA TABLA EN EL INDEX
-    $('#tblPlanificacionDetalle').DataTable({ //id de la tabla en el visual (index)
-        processing: false,
-        serverSide: false,
-        lengthMenu: [8, 15, 25, 50, 100],
-        ajax: {
-            url: '/planificacion/detalle', // La URL que devuelve los datos en JSON
-        },
-        columns: [
-            { data: 'Area',                name: 'Area' },
-            { data: 'POA',                 name: 'POA' },
-            { data: 'obj_operativo',       name: 'obj_operativo' },
-            { data: 'act_operativa',       name: 'act_operativa' },
-            { data: 'sub_actividad',       name: 'sub_actividad' },
-
-            { data: 'enero',               name: 'enero' },
-            { data: 'febrero',             name: 'febrero' },
-            { data: 'marzo',               name: 'marzo' },
-            { data: 'abril',               name: 'abril' },
-            { data: 'mayo',                name: 'mayo' },
-            { data: 'junio',               name: 'junio' },
-            { data: 'julio',               name: 'julio' },
-            { data: 'agosto',              name: 'agosto' },
-            { data: 'septiembre',          name: 'septiembre' },
-            { data: 'octubre',             name: 'octubre' },
-            { data: 'noviembre',           name: 'noviembre' },
-            { data: 'diciembre',           name: 'diciembre' },
-            // { data: 'descripcion_item',    name: 'descripcion_item' },
-            // { data: 'item_presup',         name: 'item_presup' },
-            // { data: 'monto',               name: 'monto' },
-            // { data: 'monto_item',          name: 'monto_item' },
-            // { data: 'justificacion',       name: 'justificacion' },
-            // { data: 'id',                  name: 'id' },
-
-
-
-            {
-                data: null,
-                searchable: false ,
-                render: function (data, type, full, meta) {
-                var array = "";
-                array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnEditarPlan" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Revisión" class="show-tooltip" href="javascript:void(0);" data-title="Revisión">
-                                <i class="font-22 fadeIn animated bx bx-edit" ></i>
-                            </a>
-                        </div>
-                    `;
-
-                return array;
-
-                }
-            },
-        ],
-        order: [
-            [6, 'desc']
-        ],
-
-        footerCallback: function (row, data, start, end, display) {
-            var api = this.api();
-
-            // Totalizar cada columna de suma
-            var sumColumns = [5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
-            for (var i = 0; i < sumColumns.length; i++) {
-                var columnIndex = sumColumns[i];
-                var total = api
-                    .column(columnIndex, { page: 'current' })
-                    .data()
-                    .reduce(function (acc, val) {
-                        return parseFloat(acc) + parseFloat(val);
-                    }, 0);
-
-                // Mostrar el total en el footer de la columna
-                $(api.column(columnIndex).footer()).html(total);
-            }
-        },
-
-        // Otras configuraciones de DataTables aquí
-        language: {
-            "emptyTable": "No hay información", //no hay datos disponibles
-            "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
-            "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-            "infoPostFix": "",
-            "thousands": ",",
-            "lengthMenu": "Mostrar _MENU_ Entradas",
-            "loadingRecords": "Cargando...",
-            "processing": "Procesando...",
-            "search": "Buscar:",
-            "zeroRecords": "Sin resultados encontrados",
-                        "paginate": {
-                            "first": "Primero",
-                            "last": "Ultimo",
-                            "next": "Siguiente",
-                            "previous": "Anterior",
-                            "showing": "Mostrando"
-                        }
-        },
-
-    });
-
-
-    var table = $('#tblPlanificacionDetalle').DataTable();
-
-});
 
 //CÓDIGO PARA MOSTRAR COMENTARIOS
 $(function(){
@@ -451,7 +304,7 @@ $(function(){
 
 function populateYearSelect(startYear) {
     var currentYear = new Date().getFullYear();
-    var select = document.getElementById('yearSelect');
+    var select = document.getElementById('filterAnio');
 
      for (var year = startYear; year <= currentYear; year++) {
          var option = document.createElement('option');
@@ -498,6 +351,7 @@ function actualizarTabla() {
 
 }
 
+/*
 $(document).on('click', '#btnGeneratePDF', function(){
 
     let id_poa = $(this).data('id_poa');
@@ -507,6 +361,7 @@ $(document).on('click', '#btnGeneratePDF', function(){
     document.getElementById('btnModalReportPOA').click();
 
 });
+*/
 
 $(document).ready(function() {
     // Manejar clic en el botón para generar PDF
@@ -535,47 +390,51 @@ $(document).ready(function() {
         var cargo_elabora = $('#cargo_elabora').val();
         var cargo_revisa = $('#cargo_revisa').val();
         var cargo_aprueba = $('#cargo_aprueba').val();
-        var yearSelected = $('#yearSelect').val();
+
+        var filterAnio         = $('#filterAnio').val();
+        var filterDireccion    = $('#filterDireccion').val();
+        var filterItem         = $('#filterItem').val();
+        var filterSubActividad = $('#filterSubActividad').val();
 
         if (elaboraSelect == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el usuario que elaboró el reporte',
                 showConfirmButton: true,
             });
         } else if (revisaSelect == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el usuario que revisó el reporte',
                 showConfirmButton: true,
             });
         } else if (apruebaSelect == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el usuario que aprobó el reporte',
                 showConfirmButton: true,
             });
         } else if (cargo_elabora == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el cargo del usuario que elaboró el reporte',
                 showConfirmButton: true,
             });
         } else if (cargo_revisa == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el cargo del usuario que revisó el reporte',
                 showConfirmButton: true,
             });
         } else if (cargo_aprueba == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el cargo del usuario que aprobó el reporte',
                 showConfirmButton: true,
             });
@@ -584,13 +443,19 @@ $(document).ready(function() {
                 type: 'GET',
                 url: '/planificacion/reportDetalle',
                 data: {
-                    elabora: elaboraSelect,
-                    revisa: revisaSelect,
-                    aprueba: apruebaSelect,
+                    elabora:       elaboraSelect,
+                    revisa:        revisaSelect,
+                    aprueba:       apruebaSelect,
                     cargo_elabora: cargo_elabora,
-                    cargo_revisa: cargo_revisa,
+                    cargo_revisa:  cargo_revisa,
                     cargo_aprueba: cargo_aprueba,
-                    year: yearSelected
+                    //year:          yearSelected,
+
+                    filterAnio         : filterAnio,
+                    filterDireccion    : filterDireccion,
+                    filterItem         : filterItem,
+                    filterSubActividad : filterSubActividad,
+
                 },
                 xhrFields: {
                     responseType: 'blob'
@@ -600,7 +465,7 @@ $(document).ready(function() {
                     var url = window.URL.createObjectURL(blob);
                     var a = document.createElement('a');
                     a.href = url;
-                    a.download = 'reporte_anual_' + yearSelected + '.pdf';
+                    a.download = 'reporte_anual_' + filterAnio + '.pdf';
                     document.body.appendChild(a);
                     a.click();
                     window.URL.revokeObjectURL(url);
@@ -611,14 +476,67 @@ $(document).ready(function() {
                     Swal.fire({
                         icon: 'error',
                         type: 'error',
-                        title: 'SoftInspi',
-                        text: 'Error al generar el PDF',
+                        title: 'CoreInspi',
+                        text: 'Error al generar el PDF - La información es muy grande, genere un archivo EXCEL.',
                         showConfirmButton: true,
                     });
                 }
             });
         }
     });
+    
+
+
+
+    // Generar el reporte EXCEL
+    $(document).on('click', '#btnGenerateExcel', function() {
+
+        var filterAnio         = $('#filterAnio').val();
+        var filterDireccion    = $('#filterDireccion').val();
+        var filterItem         = $('#filterItem').val();
+        var filterSubActividad = $('#filterSubActividad').val();
+
+        $.ajax({
+            type: 'GET',
+            url: '/planificacion/reportDetalleExcel',
+            data: {
+                filterAnio         : filterAnio,
+                filterDireccion    : filterDireccion,
+                filterItem         : filterItem,
+                filterSubActividad : filterSubActividad,
+            },
+            xhrFields: {
+                responseType: 'blob'  // Definir que esperamos una respuesta de tipo blob (archivo)
+            },
+            success: function(response, status, xhr) {
+                var blob = new Blob([response], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' }); // Tipo para Excel
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_detalle_' + filterAnio + '.xlsx'; // Extensión .xlsx para el archivo Excel
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+                $('#addReportDetalle').modal('hide');
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el archivo Excel.',
+                    showConfirmButton: true,
+                });
+            }
+        });
+
+    });
+
+    
+
+
+
+
 });
 
 

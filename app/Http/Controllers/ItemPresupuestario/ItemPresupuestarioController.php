@@ -33,6 +33,8 @@ use App\Models\ItemPresupuestario\ItemPresupuestario;
 use App\Models\Planificacion\MontoDireccion\MontoDireccion;
 use App\Models\Planificacion\ItemDireccion\ItemDireccion;
 
+use App\Models\Planificacion\Poa1\Poa;
+
 use App\Models\ConsumoItem\ConsumoItem;
 use App\Models\RecursosHumanos\Filiacion;
 
@@ -203,26 +205,55 @@ class ItemPresupuestarioController extends Controller{
 
 
     /* ============================================ MONTO DIRECCION ============================================ */
-    public function montoDireccion(Request $request){
+    public function montoDireccion(Request $request)
+    {
+        $id_usuario = Auth::user()->id; // Trae el ID del usuario
 
-        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
+        $montos = MontoDireccion::select(
+            DB::raw('SUM(monto) AS total_monto_presupuestado'),
+            DB::raw('COALESCE((SELECT SUM(monto) FROM pla_poa1 WHERE estado != "E"), 0) AS total_monto'),
+            DB::raw('COALESCE((SELECT SUM(monto) FROM pla_items_direcciones WHERE estado = "A"), 0) AS total_monto_direcciones') 
+        )
+        ->where('estado', 'A')
+        //->groupBy('monto')
+        ->first();
 
-        if(request()->ajax()) {
+        $montos->total_monto_presupuestado = number_format($montos->total_monto_presupuestado, 2);
+        $montos->total_monto = number_format($montos->total_monto, 2);
+        $montos->total_monto_direcciones = number_format($montos->total_monto_direcciones, 2);
 
-            return datatables()->of(MontoDireccion::select('id',
-            'id_dir', 'descripcion', 'estado', 
-            'id_dir_tec', 'nombre', 'monto', 
-            DB::raw('DATE_FORMAT(created_at, "%Y-%m-%d %H:%i:%s") as fecha'))
+        
+        if (request()->ajax()) {
+            return datatables()->of(MontoDireccion::select(
+                'id',
+                'id_dir',
+                'descripcion',
+                'estado',
+                'proceso_estado',
+                'id_dir_tec',
+                'nombre',
+                'monto',
+                DB::raw('DATE_FORMAT(updated_at, "%Y-%m-%d %H:%i:%s") as fecha'),
+                // Subconsulta para obtener el total_monto por id_area
+                DB::raw('COALESCE((SELECT SUM(monto) FROM pla_poa1 WHERE id_area = pla_direcciones.id AND estado != "E"), 0) AS total_monto'),
+                DB::raw('COALESCE((SELECT SUM(monto) FROM pla_items_direcciones WHERE id_direcciones = pla_direcciones.id AND estado != "E"), 0) AS total_monto_direcciones')           
+                )
             ->where('estado', 'A')
             ->orderBy('nombre', 'asc')
-            ->get() 
-            )
+            ->get())
             ->addIndexColumn()
+            ->editColumn('monto', function($row) {
+                // Formatear el monto con comas y 2 decimales
+                return number_format($row->monto, 2, '.', ',');
+            })
             ->make(true);
         }
-        //respuesta para la vista
-        return view('item_presupuestario.monto_dir');
+        
+    
+        // Respuesta para la vista
+        return view('item_presupuestario.monto_dir', compact('montos'));
     }
+    
 
 
     /* TRAER DIRECCION POR ID */
@@ -252,6 +283,38 @@ class ItemPresupuestarioController extends Controller{
 
     }
     /* ACTUALIZA DIRECCION POR ID */
+
+
+
+    /* CIERRA EL PROCESO DE PLANIFICACIÓN */
+    public function cerrarDireccionMonto(Request $request, $id) {
+
+        //Actualiza los datos en la tabla
+        $montoDireccion = MontoDireccion::find($id);
+        $montoDireccion->proceso_estado = true;
+        $montoDireccion->save();
+    
+        return response()->json(['success' => true, 'message' => 'El proceso de planificación se ha cerrado.']);
+
+    }
+    /* CIERRA EL PROCESO DE PLANIFICACIÓN */
+
+
+
+
+    /* ABRIR EL PROCESO DE PLANIFICACIÓN */
+    public function abrirDireccionMonto(Request $request, $id) {
+
+        //Actualiza los datos en la tabla
+        $montoDireccion = MontoDireccion::find($id);
+        $montoDireccion->proceso_estado = FALSE;
+        $montoDireccion->save();
+    
+        return response()->json(['success' => true, 'message' => 'El proceso de planificación se ha abierto.']);
+
+    }
+    /* ABRIR EL PROCESO DE PLANIFICACIÓN */
+
 
 
 
@@ -291,29 +354,40 @@ class ItemPresupuestarioController extends Controller{
         $direccion_id = $filiacion->direccion_id;
 
         if($id_area == 7){
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir_tec', $direccion_id)->first();
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre', 'proceso_estado')->where('id_dir_tec', $direccion_id)->first();
             $id_direccion = $direccion->id;
             $monto        = $direccion->monto;
             $id_fuente    = $direccion->id_fuente;
+            $nombreDir    = $direccion->nombre;
+            $proestado    = $direccion->proceso_estado;
 
         }else{
-            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->find($id_area);
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre', 'proceso_estado')->where('id_dir', $id_area)->first();
             $id_direccion = $direccion->id;
             $monto        = $direccion->monto;
             $id_fuente    = $direccion->id_fuente;
+            $nombreDir    = $direccion->nombre;
+            $proestado    = $direccion->proceso_estado;
 
         }
 
-        $items = ItemPresupuestario::all();
+        $items = ItemPresupuestario::where('pla_item_presupuestario.estado', 'A')->whereNotIn('pla_item_presupuestario.id', function ($query) use ($id_direccion) {
+            $query->select('id_item')
+                    ->from('pla_items_direcciones')
+                    ->where('id_direcciones', '=', $id_direccion)
+                    ->where('estado', '=', 'A');
+        })->get();
+
 
         if(request()->ajax()) {
 
             return datatables()->of(ItemDireccion::select('pla_items_direcciones.id', 'dir.nombre as direccion', 'ite.nombre as n_item', 'pla_items_direcciones.estado', 
-            'ite.descripcion as nombre_item', 'pla_items_direcciones.monto', 
+            'ite.descripcion as nombre_item', 'pla_items_direcciones.monto', 'dir.proceso_estado',
             DB::raw('DATE_FORMAT(pla_items_direcciones.created_at, "%Y-%m-%d %H:%i:%s") as fecha'))
             ->join('pla_direcciones as dir', 'dir.id', '=', 'pla_items_direcciones.id_direcciones')
             ->join('pla_item_presupuestario as ite', 'ite.id', '=', 'pla_items_direcciones.id_item')
             ->where('pla_items_direcciones.estado', 'A')
+            ->where('dir.id', $id_direccion)
             ->orderBy('ite.nombre', 'asc')
             ->get() 
             )
@@ -321,48 +395,111 @@ class ItemPresupuestarioController extends Controller{
             ->make(true);
         }
         //respuesta para la vista
-        return view('item_presupuestario.monto_item', compact('items', 'id_area', 'direccion_id', 'id_user', 'id_direccion', 'monto', 'id_fuente'));
+        return view('item_presupuestario.monto_item', compact('items', 'id_area', 'direccion_id', 'id_user', 'id_direccion', 'monto', 'id_fuente', 'nombreDir',
+                    'proestado'));
     }
+
+
+    public function list_items($id_direccion){
+
+        $items = ItemPresupuestario::where('pla_item_presupuestario.estado', 'A')->whereNotIn('pla_item_presupuestario.id', function ($query) use ($id_direccion) {
+            $query->select('id_item')
+                    ->from('pla_items_direcciones')
+                    ->where('id_direcciones', '=', $id_direccion)
+                    ->where('estado', '=', 'A');
+        })->get();
+
+        return response()->json([
+            'success' => true,
+            'data'    => $items,
+        ], 200); 
+
+    }
+
 
 
     public function actualizarItems(Request $request)
     {
 
         $validatedData = $request->validate([
-            'id_direccion' => 'required',
-            'items' => 'required|array',
-            'items.*.id' => 'required',
+            'id_direccion'  => 'required',
+            'items'         => 'required|array',
+            'items.*.id'    => 'required',
             'items.*.valor' => 'required|numeric|min:0',
         ]);
     
         $id_dir = $validatedData['id_direccion'];
         $items = $validatedData['items'];
-    
-        DB::beginTransaction();
-    
-        try {
-            foreach ($items as $itemData) {
-                $data = [
-                    'id_direcciones' => $id_dir,
-                    'id_item' => $itemData['id'],
-                ];
-    
-                ItemDireccion::updateOrCreate(
-                    $data,
-                    ['monto' => $itemData['valor'],
-                    'estado' => 'A']
-                );
-            }
-    
-            DB::commit();
-    
-            return response()->json(['message' => 'Registro agregado exitosamente', 'data' => true], 200);
-    
-        } catch (\Exception $e) {
-            DB::rollBack();
-    
-            return response()->json(['message' => 'Error al registrar los datos', 'error' => $e->getMessage()], 500);
+
+
+
+        $id_user   = Auth::user()->id;
+        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
+        $id_area   = $filiacion->area_id;
+        $direccion_id = $filiacion->direccion_id;
+
+        if($id_area == 7){
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'proceso_estado')->where('id_dir_tec', $direccion_id)->first();
+            $id_direccion = $direccion->id;
+            $monto        = $direccion->monto;
+            $proceso      = $direccion->proceso_estado;
+        }else{
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente', 'proceso_estado')->where('id_dir', $id_area)->first();
+            $id_direccion = $direccion->id;
+            $monto        = $direccion->monto;
+            $proceso      = $direccion->proceso_estado;
         }
+
+        $montoTotal = ItemDireccion::where('id_direcciones', $id_direccion)->where('estado', 'A')->sum('monto');
+        $montoNuevo = 0;
+
+        foreach ($items as $itemData) {
+            $montoNuevo += $itemData['valor'];
+        }
+
+        $sumMonto = $montoTotal + $montoNuevo;
+
+        if($monto < $sumMonto){
+
+            return response()->json([
+                'error'   => true,
+                'message' => 'La suma del monto total excede el límite permitido.'
+            ], 400); 
+
+        }else{
+
+            DB::beginTransaction();
+    
+            try {
+                
+                foreach ($items as $itemData) {
+                    $data = [
+                        'id_direcciones' => $id_dir,
+                        'id_item' => $itemData['id'],
+                    ];
+        
+                    ItemDireccion::updateOrCreate(
+                        $data,
+                        [
+                        'monto'       => $itemData['valor'],
+                        'presupuesto' => $itemData['valor'],
+                        'estado'      => 'A'
+                        ]
+                    );
+                }
+        
+                DB::commit();
+        
+                return response()->json(['message' => 'Registro agregado exitosamente', 'data' => true], 200);
+        
+            } catch (\Exception $e) {
+                DB::rollBack();
+        
+                return response()->json(['message' => 'Error al registrar los datos', 'error' => $e->getMessage()], 500);
+            }
+
+        }
+
     }
 
 
@@ -386,6 +523,7 @@ class ItemPresupuestarioController extends Controller{
     /* ACTUALIZA LA ESTRUCTURA DE LA DIRECCION */
 
 
+
     /* TRAER EL ITEM ESPECIFICO DE LA DIRECCION POR ID */
     public function obtenerDireccionItem($id)
     {
@@ -398,16 +536,49 @@ class ItemPresupuestarioController extends Controller{
     /* TRAER EL ITEM ESPECIFICO DE LA DIRECCION POR ID */
 
 
+
     /* ACTUALIZA ACTUALIZA EL MONTO DEL ITEM POR DIRECCION */
     public function actualizarItemMonto(Request $request, $id) {
 
-        //Actualiza los datos en la tabla
-        $montoDireccion = ItemDireccion::find($id);
-        $montoDireccion->monto = $request->input('monto');
+        $id_user   = Auth::user()->id;
+        $filiacion = Filiacion::with('area')->where('user_id', $id_user)->first();
+        $id_area   = $filiacion->area_id;
+        $direccion_id = $filiacion->direccion_id;
 
-        $montoDireccion->save();
-    
-        return response()->json(['success' => true, 'message' => 'El presupuesto deL Item se ha actualizado correctamente.']);
+        if($id_area == 7){
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir_tec', $direccion_id)->first();
+            $id_direccion = $direccion->id;
+            $monto        = $direccion->monto;
+        }else{
+            $direccion = MontoDireccion::select('id', 'monto', 'id_fuente')->where('id_dir', $id_area)->first();
+            $id_direccion = $direccion->id;
+            $monto        = $direccion->monto;
+        }
+
+        $montoNuevo = $request->input('monto');
+        $montoTotal = ItemDireccion::where('id_direcciones', $id_direccion)->where('id', '!=', $id)->where('estado', 'A')->sum('monto');
+        $sumMonto = $montoTotal + $montoNuevo;
+
+        if($monto < $sumMonto && $montoNuevo != 0){
+
+            return response()->json([
+                'error'   => true,
+                'message' => 'La suma del monto total excede el límite permitido.', 
+                'total'   => $montoTotal,
+                'monto'   => $montoNuevo,
+            ], 400); 
+
+        }else{
+
+            //Actualiza los datos en la tabla
+            $montoDireccion = ItemDireccion::find($id);
+            $montoDireccion->monto = $request->input('monto');
+            $montoDireccion->presupuesto = $request->input('monto');
+            $montoDireccion->save();
+        
+            return response()->json(['error' => false, 'message' => 'El presupuesto deL Item se ha actualizado correctamente.']);
+
+        }
 
     }
     /* ACTUALIZA ACTUALIZA EL MONTO DEL ITEM POR DIRECCION */
@@ -418,7 +589,7 @@ class ItemPresupuestarioController extends Controller{
     public function deleteItemDireccion(Request $request)
     {
         $direccion = ItemDireccion::find($request->id); //Busca el registro por el ID
-
+        
         if ($direccion) {
 
             $direccion->update([
@@ -443,11 +614,11 @@ class ItemPresupuestarioController extends Controller{
 
         $estrutura = Fuente::select('pla_fuente.id as id_fuente', 'act.id as id_actividad', 'pro.id as id_proyecto',
             'proy.id as id_programa', 'uni.id as id_unidad')
-        ->join('pla_actividad_act as act', 'act.id', '=', 'pla_fuente.id_actividad')
-        ->join('pla_proyecto as pro', 'pro.id', '=', 'act.id_proyecto')
-        ->join('pla_programa as proy', 'proy.id', '=', 'pro.id_programa')
-        ->join('pla_unidad_ejecutora as uni', 'uni.id', '=', 'proy.id_unidad')
-        ->where('pla_fuente.id', $id)->first();
+            ->join('pla_actividad_act as act', 'act.id', '=', 'pla_fuente.id_actividad')
+            ->join('pla_proyecto as pro', 'pro.id', '=', 'act.id_proyecto')
+            ->join('pla_programa as proy', 'proy.id', '=', 'pro.id_programa')
+            ->join('pla_unidad_ejecutora as uni', 'uni.id', '=', 'proy.id_unidad')
+            ->where('pla_fuente.id', $id)->first();
 
         
         $unidad = UnidadEjecutora::where('estado', 'A')->get();
@@ -471,19 +642,19 @@ class ItemPresupuestarioController extends Controller{
         $monto     = $direccion->monto;
 
         $totalItems = ItemDireccion::selectRaw('SUM(monto) as total_monto')
-        ->where('id_direcciones', $id)
-        ->where('estado', 'A')
-        ->first();
+            ->where('id_direcciones', $id)
+            ->where('estado', 'A')
+            ->first();
 
         $totalOcupado = $totalItems->total_monto ?? 0;
 
         $porOcupar = $monto - $totalOcupado;
 
         return response()->json([
-            'success' => true,
-            'monto_total' => $monto,
-            'total_ocupado' => $totalOcupado,
-            'por_ocupar' => $porOcupar
+            'success'     => true,
+            'monto_total' =>    number_format($monto,2),
+            'total_ocupado' =>  number_format($totalOcupado, 2),
+            'por_ocupar'  =>    number_format($porOcupar,2)
         ]);
 
     }

@@ -68,7 +68,7 @@
                 <th rowspan="2">COORDINACIÓN/DIRECCIÓN SOLICITANTE: </th>
                 <th rowspan="2">{{ $atributos->area }}</th>
                 <th>NÚMERO DE SOLICITUD:</th>
-                <td colspan="2">{{ $atributos->numero}}</td>
+                <td colspan="2">{{ $atributos->nro_reforma}}</td>
             </tr>
             <tr>
                 <th>FECHA DE SOLICITUD: </th>
@@ -189,115 +189,28 @@
                 <th style="text-align: center; vertical-align: middle;" colspan="5">Justificación del área requirente:</th>
                 <td colspan="18">{{$atributos->justificacion_area}}</td>
             </tr>
-            <tr>
-                <th style="text-align: center; vertical-align: middle;" colspan="5">Justificación:</th>
-                <td colspan="18">{{$atributos->justificacion}}</td>
-            </tr>
         </tbody>
     </table> <br>
 
-         <!-- <table style="width: 100%; border-collapse: collapse; border: 1px solid black;">
-            <thead>
-                <tr style="background-color: #f0f0f0;">
-                    <th colspan="4" style="border: 1px solid black; width: 75%;">SOLICITUD</th>
-                    <th colspan="2" style="border: 1px solid black;">VALIDACIÓN</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle; width: 15%;">Coordinación/ Directiva Técnica o administrativa/ Proyecto</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle; width: 40%;"></td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle; width: 10%;">Fecha de solicitud</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">{{$atributos->fecha_sol}}</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle; width: 10%; background-color: #f0f0f0;">Nro de Certificación POA:</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle; background-color: #f0f0f0; ">{{$atributos->numero}}</td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: -1px; font-size: 12px; white-space: normal; word-wrap: break-word;">
-            <thead>
-                <tr style="background-color: #f0f0f0;">
-                    <th colspan="3" style="border: 1px solid black;">PLANIFICACIÓN Y GESTIÓN ESTRATÉGICA</th>
-                    <th colspan="8" style="border: 1px solid black;">ESTRUCTURA PRESUPUESTARIA</th>
-                    <th colspan="5" style="border: 1px solid black;">PROGRAMACIÓN DE EJECUCIÓN</th>
-                    <th rowspan="2" style="border: 1px solid black; width: 6%;text-align: center; vertical-align: middle;">ACTIVIDAD PLANIFICADA</th>
-                    <th rowspan="2" style="border: 1px solid black; width: 10%; text-align: center; vertical-align: middle;">MONTO<br>DISPONIBLE POR ITEM PRESUP.<br>(ESIGEF)</th>
-                </tr>
-
-                <tr style="background-color: #f0f0f0;">
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 6%;">OBJETIVO OPERATIVO</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 7%;">ACTIVIDAD OPERATIVA</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 5%;">SUB ACT./<br>OBJ. DE CONTRATACIÓN</td>
-
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 4%;">UNIDAD EJECUTORA</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 4%;">Programa (PR)</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 4%">Proyecto<br>(PY)</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 4%">Actividad (Act)</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 4%;">FUENTE DE FINANCI<br>AMIENTO</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 3%">ITEM PRESUP.</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 7%">DESCR. DE ITEM PRESUP.</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 5%">MONTO PLANIFICADO O REFERENCIAL PAPP</td>
-
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 5%">I TRIMESTRE</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 5%">II TRIMESTRE</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 5%">III TRIMESTRE</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 5%">IV TRIMESTRE</td>
-                    <th style="border: 1px solid black; text-align: center; vertical-align: middle; width: 5%">TIENE PLURI<br>ANUALIDAD</td>
-
-                </tr>
-            </thead>
-            <tbody>
-                Filas vacías para llenar desde el controlador
-                <tr style="height: 100px;">
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">9999</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">01</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">000</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">001</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">001</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">x</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                    <td>
-                    </td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;">SI</td>
-                    <td style="border: 1px solid black; text-align: center; vertical-align: middle;"></td>
-                </tr>
-                Repite estas filas según la cantidad de datos que se vayan a llenar
-            </tbody>
-        </table>
-
-        <table style="width: 100%; border-collapse: collapse; border: 1px solid black; margin-top: -1px;">
-        <tbody>
-            <tr>
-                <td style="border: 1px solid black; width: 20.71%; text-align: center; vertical-align: middle;">Justificación área requiriente</td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black; text-align: center; vertical-align: middle;">Justificación/Observación de la Dirección de Planificación</td>
-            </tr>
-        </tbody>
-    </table> <br> -->
-
-
 <!----------------------------------------------------------------------------------------------------------------------------------------------->
-     <table class="inferior">
+     <table class="inferior" style="page-break-inside: avoid;">
         <tr>
             <th colspan="6">AREAS REQUIRENTES (COORDINACIÓN/DIRECCIÓN TÉCNICAS Y ADMINISTRATIVAS)</th>
             <th colspan="4">DIRECCIÓN DE PLANIFICACIÓN Y GESTIÓN ESTRATÉGICA</th>
         </tr>
         <tr>
-            <th colspan="2">Solicitado por: {{$usuarios['creado']['name']}} </th>
+            <th colspan="2">Elaborado por: {{$usuarios['creado']['name']}} </th>
             <th colspan="2">Revisado por: {{$usuarios['autorizado']['name']}} </th>
             <th colspan="2">Aprobado por: {{$usuarios['reporta']['name']}} </th>
             <th colspan="2">Registrado por: {{$usuarios['areaReq']['name']}} </th>
             <th colspan="2">Validado por: {{$usuarios['planificacionYG']['name']}}</th>
+        </tr>
+        <tr>
+            <th colspan="2">Cargo: {{$usuarios['creado']['cargo']}} </th>
+            <th colspan="2">Cargo: {{$usuarios['autorizado']['cargo']}} </th>
+            <th colspan="2">Cargo: {{$usuarios['reporta']['cargo']}} </th>
+            <th colspan="2">Cargo: {{$usuarios['areaReq']['cargo']}} </th>
+            <th colspan="2">Cargo: {{$usuarios['planificacionYG']['cargo']}}</th>
         </tr>
         <tr>
             <th colspan="2" class="invisible">‎ </th>

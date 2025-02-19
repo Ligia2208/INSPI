@@ -4,139 +4,129 @@ $( function () {
         width: '100%',
     });
 
-    //CÓDIGO PARA MOSTRAR LA TABLA EN EL INDEX
-    $('#tblPlanificacionIndex').DataTable({ //id de la tabla en el visual (index)
+    var table = $('#tblPlanificacionIndex').DataTable({
         processing: false,
         serverSide: false,
-        lengthMenu: [8, 15, 25, 50, 100],
+        lengthMenu: [15, 25, 50, 100],
         ajax: {
-            url: '/planificacion', // La URL que devuelve los datos en JSON
+            url: '/planificacion',
+            data: function (d) {
+                d.estado = $('#filterEstado').val();
+                d.direccion = $('#filterDireccion').val();
+                d.item = $('#filterItem').val();
+            }
         },
         columns: [
-            { data: 'coordinacion',        name: 'coordinacion' },
-            { data: 'POA',                 name: 'POA' },
-            { data: 'obj_operativo',       name: 'obj_operativo' },
-            { data: 'act_operativa',       name: 'act_operativa' },
-            { data: 'sub_actividad',       name: 'sub_actividad' },
-            { data: 'proceso',             name: 'proceso' },
-            { data: 'fecha',               name: 'fecha' },
-            //{ data: 'estado',              name: 'estado' },
-
+            { data: 'coordinacion', name: 'coordinacion' },
+            { data: 'item', name: 'item' },
+            { data: 'obj_operativo', name: 'obj_operativo' },
+            { data: 'act_operativa', name: 'act_operativa' },
+            { data: 'sub_actividad', name: 'sub_actividad' },
+            { data: 'proceso', name: 'proceso' },
+            { data: 'monto', name: 'monto', render: $.fn.dataTable.render.number(',', '.', 2, '$') }, // Formato con separadores
+            { data: 'fecha', name: 'fecha' },
             {
-                data: null,
-                searchable: false ,
+                data: 'estado',
                 render: function (data, type, full, meta) {
-                var array = "";
-
-                if(full.estado == 'A' ){
-                    array = '<div class="center"><span class="badge badge-primary text-bg-primary">Registrado</span><div>';
-                }else if(full.estado == 'O'){
-                    array = '<div class="center"><span class="badge badge-success text-bg-success">Aprobado</span>';
-                }else if(full.estado == 'R'){
-                    array = '<div class="center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
-                }else if(full.estado == 'C'){
-                    array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span>';
-                }else{
-                    array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
-                }
-
-                return array;
+                    let badgeClass = {
+                        'A': 'badge-primary text-bg-primary',
+                        'O': 'badge-success text-bg-success',
+                        'R': 'badge-warning text-bg-warning',
+                        'C': 'badge-info text-bg-info',
+                        'S': 'badge-info text-bg-info'
+                    }[data] || 'badge-secondary';
+    
+                    let estadoBadge = {
+                        'A': 'Registrado',
+                        'O': 'Aprobado',
+                        'R': 'Rechazado',
+                        'C': 'Corregido',
+                        'S': 'Solicitado'
+                    }[data] || 'badge-secondary';
+    
+                    return `<div class='center'><span class='badge ${badgeClass}'>${estadoBadge}</span></div>`;
                 }
             },
-
             {
                 data: null,
-                searchable: false ,
+                searchable: false,
                 render: function (data, type, full, meta) {
-                var array = "";
+                    var array = "";
 
-                if(full.estado == 'O' ){
-                    array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                    if (full.estado == 'O') {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-                            <!--
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" title="Editar registro" class="show-tooltip mr-1">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
-                            -->
-                        </div>
-                    `;
-                }else if(full.estado == 'R'){
-                    array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-
-                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                            <a id="btnEliminarCerti" data-id_borrar="${full.id}" title="Eliminar certificación" class="red show-tooltip ml-1" data-title="Eliminar certificación">
+                                <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
+                            </a>
+                        </div>`;
+                    } else if (full.estado == 'R') {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-                            <!--
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
-                            </a>
-                            -->
-                        </div>
-                    `;
-                } else{
-                    array =`
-                    <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
-                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                        </div>`;
+                    } else {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-
-                            <a id="btnEditarPlan" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Revisión" class="show-tooltip" data-title="Revisión">
-                                <i class="font-22 fadeIn animated bi bi-pen" ></i>
+                            <a id="btnEditarPlan" data-id_editar="${full.id}" title="Revisión" class="show-tooltip">
+                                <i class="font-22 fadeIn animated bi bi-pen"></i>
                             </a>
-                            <!--
-                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
-                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
-                            </a>
-                            -->
-                        </div>
-                    `;
-
-                }
-
-
-                return array;
-
+                        </div>`;
+                    }
+                    return array;
                 }
             },
         ],
-        order: [
-            [5, 'desc']
-        ],
-
-        // Otras configuraciones de DataTables aquí
+        order: [[6, 'desc']],
         language: {
-            "emptyTable": "No hay información", //no hay datos disponibles
+            "emptyTable": "No hay información",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
-            "infoEmpty": "Mostrando 0 to 0 of 0 Entradas",
+            "infoEmpty": "Mostrando 0 a 0 de 0 Entradas",
             "infoFiltered": "(Filtrado de _MAX_ total entradas)",
-            "infoPostFix": "",
-            "thousands": ",",
             "lengthMenu": "Mostrar _MENU_ Entradas",
             "loadingRecords": "Cargando...",
             "processing": "Procesando...",
             "search": "Buscar:",
             "zeroRecords": "Sin resultados encontrados",
-                        "paginate": {
-                            "first": "Primero",
-                            "last": "Ultimo",
-                            "next": "Siguiente",
-                            "previous": "Anterior",
-                            "showing": "Mostrando"
-                        }
+            "paginate": {
+                "first": "Primero",
+                "last": "Último",
+                "next": "Siguiente",
+                "previous": "Anterior"
+            }
         },
+    
+        // Función para sumar los montos en el footer
+        footerCallback: function (row, data, start, end, display) {
+            var api = this.api();
+            var total = api
+                .column(6, { page: 'current' }) // Seleccionar la columna de montos
+                .data()
+                .reduce(function (a, b) {
+                    return parseFloat(a) + parseFloat(b);
+                }, 0);
+    
+            // Actualizar el pie de tabla
+            $(api.column(6).footer()).html('$' + total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+        }
     });
-
-    var table = $('#tblPlanificacionIndex').DataTable();
-
-    $('#filterDireccion').on('change', function () {
-        let direccion = $(this).val(); // Capturar valor del select
-        table.column(0).search(direccion).draw(); // Filtrar por la columna "coordinacion" (posición 0)
+    
+    // **Actualizar la tabla cuando cambien los filtros**
+    $('#filterEstado, #filterDireccion, #filterItem').on('change', function () {
+        table.ajax.reload();
     });
+    
 
 });
 
@@ -144,14 +134,25 @@ $( function () {
 
 //CÓDIGO PARA REDIRIGIR AL FORMULARIO PARA ACEPTAR/RECHAZAR POA
 $(function(){
-    /* CARGAR REGISTRO */
+    /* VALIDAR CERTIFICACION */
     $(document).on('click', '#btnEditarPlan', function(){
         let id_planificacion = $(this).data('id_editar');
 
         window.location.href = '/planificacion/editarEstadoPlanificacion/'+ id_planificacion;
 
     });
-    /* CARGAR REGISTRO */
+    /* VALIDAR CERTIFICACION */
+
+
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
+    $(document).on('click', '#btnVisualizaPOA', function(){
+        let id_planificacion = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/visualizarPlanificacion/'+ id_planificacion;
+
+    });
+    /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
+
 })
 
 
@@ -167,7 +168,7 @@ $(function(){
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
             text: 'Seguro quiere eliminar este registro.',
             showConfirmButton: true,
             showCancelButton: true,
@@ -194,7 +195,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'success',
                                     type: 'success',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 }).then((result) => {
@@ -207,7 +208,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'error',
                                     type:  'error',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 });
@@ -217,7 +218,7 @@ $(function(){
                     error: function(error) {
                         Swal.fire({
                             icon:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             type:  'success',
                             text:   error,
                             showConfirmButton: true,
@@ -408,42 +409,42 @@ $(document).ready(function() {
         if (elaboraSelect == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el usuario que elaboró el reporte',
                 showConfirmButton: true,
             });
         } else if (revisaSelect == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el usuario que revisó el reporte',
                 showConfirmButton: true,
             });
         } else if (apruebaSelect == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el usuario que aprobó el reporte',
                 showConfirmButton: true,
             });
         } else if (cargo_elabora == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el cargo del usuario que elaboró el reporte',
                 showConfirmButton: true,
             });
         } else if (cargo_revisa == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el cargo del usuario que revisó el reporte',
                 showConfirmButton: true,
             });
         } else if (cargo_aprueba == '') {
             Swal.fire({
                 icon: 'warning',
-                title: 'SoftInspi',
+                title: 'CoreInspi',
                 text: 'Debe ingresar el cargo del usuario que aprobó el reporte',
                 showConfirmButton: true,
             });
@@ -479,7 +480,7 @@ $(document).ready(function() {
                     Swal.fire({
                         icon: 'error',
                         type: 'error',
-                        title: 'SoftInspi',
+                        title: 'CoreInspi',
                         text: 'Error al generar el PDF',
                         showConfirmButton: true,
                     });
@@ -487,4 +488,77 @@ $(document).ready(function() {
             });
         }
     });
+
+
+    $(document).on('click', '#btnEliminarCerti', function(){
+        //alert('funciona');
+
+        let id_POA = $(this).data('id_borrar');
+
+        Swal.fire({
+            icon: 'warning',
+            type:  'warning',
+            title: 'SoftInspi',
+            text: 'Seguro quiere anular esta Certificación.',
+            showConfirmButton: true,
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.value == true) {
+
+                $.ajax({
+
+                    type: 'POST',
+                    //url: '{{ route("encuesta.saveEncuesta") }}',
+                    url: '/planificacion/deleteCertificacion',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        'id': id_POA,
+                    },
+                    success: function(response) {
+
+                        //console.log(response.data['id_chat'])
+                        if(response.data){
+
+                            if(response['data'] == true){
+                                Swal.fire({
+                                    icon: 'success',
+                                    type: 'success',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                }).then((result) => {
+                                    if (result.value == true) {
+                                        $('#tblPlanificacionIndex').DataTable().ajax.reload();
+                                    }
+                                });
+
+                            }else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    type:  'error',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                });
+                            }
+                        }
+                    },
+                    error: function(error) {
+                        Swal.fire({
+                            icon:  'success',
+                            title: 'SoftInspi',
+                            type:  'success',
+                            text:   error,
+                            showConfirmButton: true,
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+
+
 });

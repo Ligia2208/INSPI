@@ -28,4 +28,9 @@ class Canton extends Model
         return "Un Cantón ha sido {$eventName}";
     }
 
+    public function provincia()
+    {
+        return $this->belongsTo(Provincia::class);
+    }
+
 }

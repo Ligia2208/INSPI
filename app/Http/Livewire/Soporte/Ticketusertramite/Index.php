@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Livewire\Ticketusertramite;
+namespace App\Http\Livewire\Soporte\Ticketusertramite;
 
 use App\Models\CoreBase\Direccion;
 use App\Models\CoreBase\Direcciontecnica;
@@ -36,7 +36,9 @@ class Index extends Component
 
     public function render()
     {
+
         $user = Auth::user()->id;
+
         $count = Ticketsupport::where('status','=','A')->where('usuario_id','=',$user)->where('tecnico_id','>',1)->whereNotIn('estadoticket_id',[4,7])->count();
         $tickets = Ticketsupport::where('status','=','A')->where('usuario_id','=',$user)->where('tecnico_id','>',1)->whereNotIn('estadoticket_id',[4,7])->orderBy('id', 'DESC');
 

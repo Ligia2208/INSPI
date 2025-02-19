@@ -22,6 +22,33 @@
 
 <div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
+    @if($id_fuente == '' || $monto == false || $montoDir == 0)
+
+    <div class="container2">
+
+        <div class="alert alert-warning" role="alert">
+            <h4 class="alert-heading">¡Acción requerida!</h4>
+            @if($monto == false)
+            <p>El monto presupuestado de su dirección no coincide con el monto asignado a sus ítems presupuestarios. Por favor, revise y corrija esta discrepancia antes de continuar.</p>
+            @endif
+            <hr>
+            @if($id_fuente == '')
+            <p class="mb-0">No ha seleccionado una estructura presupuestaria. Complete este paso para proceder.</p>
+            @endif
+            <hr>
+            @if($montoDir == 0)
+            <p class="mb-0">No puede crear una actividad hasta que su Área tenga un monto asignado.</p>
+            @endif
+        </div>
+
+        <a class="col-2 btn btn-danger px-1 d-flex align-items-center justify-content-center mt-4" href="{{ route('itemPresupuestario.monto_item') }}" type="button" >
+            <i class="bi bi-arrow-return-left"></i> Regresar
+        </a>
+
+    </div>
+
+    @else
+
     <div class="container2">
         <div class="page-content mb-5">
             <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus titulo-grande"></i> Creación de Actividad Operativa </h2>
@@ -67,7 +94,7 @@
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación</label>
+                                <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación / Convenio</label>
                                 <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
@@ -99,7 +126,7 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="monto" class="form-label fs-6">Monto</label>
-                                <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="0">
+                                <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="0" onchange="">
                                 <div class="valid-feedback">¡Se ve bien!</div>
                                 <div class="invalid-feedback">Ingrese solo números</div>
                             </div>
@@ -223,6 +250,8 @@
                             <label for="frecuencia" class="form-label fs-6">Frecuencia</label>
                             <select id="frecuencia" name="frecuencia" class="form-select single-select" required >
                                 <option selected="" value="0">Seleccione Frecuencia</option>
+                                <option value="7"> Personalizado </option>
+                                <option value="8"> En 0 </option>
                                 <option value="1"> Mensual </option>
                                 <option value="2"> Bimensual </option>
                                 <option value="3"> Trimestral </option>
@@ -330,6 +359,8 @@
 
     </div>
 
+    @endif
+
 </div>
 
 
@@ -408,5 +439,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.5')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.9')}}"></script>
 @endpush

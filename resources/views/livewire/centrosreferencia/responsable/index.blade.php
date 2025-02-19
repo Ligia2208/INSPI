@@ -143,11 +143,11 @@
             <div class="card-body">
                 <div class="card-px text-center py-5">
                     <h2 class="fs-2x fw-bolder mb-10">Hola!</h2>
-                    <p class="text-gray-400 fs-4 fw-bold mb-10">Al parecer no tienes ningun Área/Dirección.
-                        <br> Ponga en marcha SoftInspi añadiendo su primer Área/Dirección
+                    <p class="text-gray-400 fs-4 fw-bold mb-10">Al parecer no tienes ningún Técnico/Responsable.
+                        <br> Ponga en marcha CoreInspi añadiendo su primer Rsponsable
                     </p>
                     <a data-toggle="modal" data-target=".create" href="#" class="btn btn-primary">Agregar
-                        Área/Dirección</a>
+                        Responsable</a>
                 </div>
                 <div class="text-center px-4 ">
                     <img class="img-fluid col-6" alt=""
@@ -168,11 +168,11 @@
             function confirmDestroy(id) {
                 swal.fire({
                     title: "¿Estas seguro?",
-                    text: "No podrá recuperar este Área/Dirección y los servicios creados con este tipo se quedarán sin vinculación",
+                    text: "No podrá volver a habilitar al Técnico/Responsable y se quedará sin acceso a la aplicación",
                     icon: "warning",
                     buttonsStyling: false,
                     showCancelButton: true,
-                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, eliminar</span>",
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, deshabilitar</span>",
                     cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
                     reverseButtons: true,
                     cancelButtonClass: "btn btn-light-secondary font-weight-bold",

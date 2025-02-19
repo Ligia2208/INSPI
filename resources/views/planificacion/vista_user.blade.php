@@ -63,6 +63,24 @@
                     </div>
                 </div>
 
+                <div class="col">
+                    <div class="card radius-10 border border-1 border-primary position-relative">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+
+                                <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-patch-check py-3 px-2 titulo-grande"></i>
+                                </div>
+
+                                <div>
+                                    <span>Total de Certificaciones POA</span>
+                                    <h4 class="my-1 text-primary ms-auto" id="">{{$totalCertificado}}</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
             </div>
 
 
@@ -70,13 +88,14 @@
                 <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> ACTIVIDADES - {{$area}}</h2>
                 <hr/>
 
-                <a type="button" onclick="ingreso()" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" >
-                Ingreso </a>
-
+                <!-- <a type="button" onclick="ejecutar()"  class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center">
+                    Ejecutar
+                </a> -->
+                @if(!$proestado)
                 <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
                     <i class="lni lni-circle-plus"></i> Crear Actividad
                 </a>
-                <!-- Redirige a planificacion/crearPoa -->
+                @endif
 
                 <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
                     <i class="lni lni-circle-plus"></i> Reformas
@@ -91,6 +110,32 @@
 
             <div class="card">
                 <div class="card-body">
+
+                    <div class="row">
+                        <div class="col-lg-6 mt-2 mb-5">
+                            <label for="filterItem" class="form-label">Item:</label>
+                            <select id="filterItem" class="js-example-basic-single filter">
+                                <option value="">Todos</option>
+                                @foreach($items as $item)
+                                    <option value="{{ $item->id }}">{{ $item->nombre }} - {{ $item->descripcion }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-lg-6 mt-2 mb-5">
+                            <label for="filterEstado" class="form-label">Filtrar por Estados:</label>
+                            <select id="filterEstado" class="form-control js-example-basic-single mt-2">
+                                <option value="">Todos los Estados</option>
+                                <option value="A">Registrado</option>
+                                <option value="O">Aprobado</option>
+                                <option value="R">Rechazado</option>
+                                <!-- <option value="C">Corregido</option> -->
+                                <option value="S">Solicitado</option>
+                            </select>
+                        </div>
+                    </div>
+
+
                     <div class="">
                         <table id="tblPlanificacionVistaUser" class="table table-striped table-bordered" style="width:100%">
                             <thead>
@@ -100,6 +145,7 @@
                                     <th>Objetivo Operativo</th>
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
+                                    <th>Item</th>
                                     <th>Monto</th>
                                     <th>Proceso</th>
                                     <th>Fecha</th>
@@ -113,23 +159,16 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>Departamento</th>
-                                    <th>POA</th>
-                                    <th>Objetivo Operativo</th>
-                                    <th>Actividad Operativa</th>
-                                    <th>Sub actividad</th>
-                                    <th>Monto</th>
-                                    <th>Proceso</th>
-                                    <th>Fecha</th>
-                                    <th> <center> Estado </center></th>
-                                    <th> <center> Solicitado </center></th>
-                                    <th>Acciones</th>
+                                    <th colspan="6" style="text-align:right">Total:</th>
+                                    <th></th> <!-- Aquí se mostrará el total -->
+                                    <th colspan="5"></th>
                                 </tr>
                             </tfoot>
                         </table>
                     </div>
                 </div>
             </div>
+
         </div>
 
     </div>
@@ -142,7 +181,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Generar Reporte de Actividad</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Generar Solicitud de Certificción POA</h5>
                     <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -153,79 +192,72 @@
                         <!-- Aquí se mostrarán los datos -->
                         <div class="row">
 
-                            <input type="hidden" id="id_poa" name="id_poa" class="form-control" required="" autofocus="" value="">
+                            <input type="hidden" id="id_poa" name="id_poa" required="" autofocus="" value="">
 
-                            <h1 class="form-label fs-6">Área requiriente</h1>
+                            <h1 class="form-label fs-6 col-lg-12">Área requiriente</h1>
 
-                                <div class="col-md-4 mt-1">
-                                    <label for="creado" class="form-label fs-6">Usuario que elabora</label>
-                                    <!-- Input para ingresar el nombre manualmente -->
-                                    <input type="text" id="creado" name="creado" class="form-control" placeholder="Ingrese nombre de usuario" required>
-                                    <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+                            <div class="col-md-4 mt-1">
+                                <label for="creado" class="form-label fs-6">Usuario que elabora</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="creado" name="creado" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
-                                    <label for="cargo_creado" class="form-label fs-6 mt-2">Cargo</label>
-                                    <!-- Input para ingresar el cargo -->
-                                    <input type="text" id="cargo_creado" name="cargo_creado" class="form-control" placeholder="Ingrese el cargo" required>
-                                    <div class="invalid-feedback">Por favor ingrese el cargo.</div>
-                                </div>
+                                <label for="cargo_creado" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_creado" name="cargo_creado" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
 
-                                <div class="col-md-4 mt-1">
-                                    <label for="autorizado" class="form-label fs-6">Usuario que revisa</label>
-                                    <!-- Input para ingresar el nombre manualmente -->
-                                    <input type="text" id="autorizado" name="autorizado" class="form-control" placeholder="Ingrese nombre de usuario" required>
-                                    <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+                            <div class="col-md-4 mt-1">
+                                <label for="autorizado" class="form-label fs-6">Usuario que revisa</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="autorizado" name="autorizado" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
-                                    <label for="cargo_autorizado" class="form-label fs-6 mt-2">Cargo</label>
-                                    <!-- Input para ingresar el cargo -->
-                                    <input type="text" id="cargo_autorizado" name="cargo_autorizado" class="form-control" placeholder="Ingrese el cargo" required>
-                                    <div class="invalid-feedback">Por favor ingrese el cargo.</div>
-                                </div>
+                                <label for="cargo_autorizado" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_autorizado" name="cargo_autorizado" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
 
-                                <div class="col-md-4 mt-1">
-                                    <label for="reporta" class="form-label fs-6">Usuario que aprueba</label>
-                                    <!-- Input para ingresar el nombre manualmente -->
-                                    <input type="text" id="reporta" name="reporta" class="form-control" placeholder="Ingrese nombre de usuario" required>
-                                    <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+                            <div class="col-md-4 mt-1">
+                                <label for="reporta" class="form-label fs-6">Usuario que aprueba</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="reporta" name="reporta" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
-                                    <label for="cargo_reporta" class="form-label fs-6 mt-2">Cargo</label>
-                                    <!-- Input para ingresar el cargo -->
-                                    <input type="text" id="cargo_reporta" name="cargo_reporta" class="form-control" placeholder="Ingrese el cargo" required>
-                                    <div class="invalid-feedback">Por favor ingrese el cargo.</div>
-                                </div>
+                                <label for="cargo_reporta" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_reporta" name="cargo_reporta" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
 
                             <hr class="mt-4">
+                            <h1 class="form-label fs-6 col-lg-12 mt-5">Planificación y Gestión estratégica</h1>
 
-                            <h1 class="form-label fs-6">Planificación y Gestión estratégica</h1>
-                                <div class="col-md-6 mt-1">
-                                    <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
-                                    <!-- Input para ingresar el nombre manualmente -->
-                                    <input type="text" id="areaReq" name="areaReq" class="form-control" placeholder="Ingrese nombre de usuario" required>
-                                    <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+                            <div class="col-md-6 mt-1">
+                                <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA " placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
-                                    <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
-                                    <!-- Input para ingresar el cargo -->
-                                    <input type="text" id="cargo_areaReq" name="cargo_areaReq" class="form-control" placeholder="Ingrese el cargo" required>
-                                    <div class="invalid-feedback">Por favor ingrese el cargo.</div>
-                                </div>
+                                <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_areaReq" name="cargo_areaReq" class="form-control" value="ANALISTA DE PLANIFICACION Y GESTION ESTRATEGICA" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
 
-                                <div class="col-md-6 mt-1">
-                                    <label for="planificacionYG" class="form-label fs-6">Usuario que aprueba</label>
-                                    <!-- Input para ingresar el nombre manualmente -->
-                                    <input type="text" id="planificacionYG" name="planificacionYG" class="form-control" placeholder="Ingrese nombre de usuario" required>
-                                    <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+                            <div class="col-md-6 mt-1">
+                                <label for="planificacionYG" class="form-label fs-6">Usuario que aprueba</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="planificacionYG" name="planificacionYG" class="form-control" value="ING. LADY CONCEPCION ROJAS TORRES" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
-                                    <label for="cargo_planificacionYG" class="form-label fs-6 mt-2">Cargo</label>
-                                    <!-- Input para ingresar el cargo -->
-                                    <input type="text" id="cargo_planificacionYG" name="cargo_planificacionYG" class="form-control" placeholder="Ingrese el cargo" required>
-                                    <div class="invalid-feedback">Por favor ingrese el cargo.</div>
-                                </div>
-
-                            <!-- <hr class="mt-4"> -->
-
-                            <!-- <h1 class="form-label fs-6">Justificación área requiriente</h1>
-                                <div>
-                                    <textarea id="justifi" name="justifi" class="form-control" required="" autofocus="" rows="4"></textarea>
-                                </div> -->
+                                <label for="cargo_planificacionYG" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_planificacionYG" name="cargo_planificacionYG" class="form-control" value="DIRECTORA DE PLANIFICACION Y GESTION ESTRATEGICA" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
 
                         </div>
 
@@ -234,12 +266,115 @@
                 </div>
 
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" id="btnGenerarReportPOA">Guardar</button>
+                    <button type="button" class="btn btn-primary" id="btnGenerarReportPOA"><i class="bi bi-file-earmark-arrow-down"></i>Descargar</button>
                     <button type="button" class="btn btn-secondary" id="btnCerrarModalPOA" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+
+
+
+    <!--- para los Zonales -->
+    <a id="btnModalReportPOAZonal" data-toggle="modal" data-target="#addReportPOAZonal" class="d-none"></a>
+
+    <div class="modal fade" id="addReportPOAZonal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Generar Solicitud de Certificción POA</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí se mostrarán los datos traidos desde el controlador -->
+                    <div id="modalContent">
+                        <!-- Aquí se mostrarán los datos -->
+                        <div class="row">
+
+                            <input type="hidden" id="id_poa2" name="id_poa2" required="" autofocus="" value="">
+
+                            <h1 class="form-label fs-6 col-lg-12">Área requiriente</h1>
+
+                            <div class="col-md-4 mt-1">
+                                <label for="creado" class="form-label fs-6">Usuario que elabora</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="creado2" name="creado2" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_creado" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_creado2" name="cargo_creado2" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+
+                            <div class="col-md-4 mt-1">
+                                <label for="autorizado" class="form-label fs-6">Usuario que revisa</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="autorizado2" name="autorizado2" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_autorizado" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_autorizado2" name="cargo_autorizado2" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+
+                            <div class="col-md-4 mt-1">
+                                <label for="reporta" class="form-label fs-6">Usuario que aprueba</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="reporta2" name="reporta2" class="form-control" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_reporta" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_reporta2" name="cargo_reporta2" class="form-control" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+
+                            <hr class="mt-4">
+                            <h1 class="form-label fs-6 col-lg-12 mt-5">Planificación y Gestión estratégica</h1>
+
+                            <div class="col-md-6 mt-1">
+                                <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="areaReq2" name="areaReq2" class="form-control" value="ING. JONATHAN TRUJILLO CERÓN" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_areaReq2" name="cargo_areaReq2" class="form-control" value="PLANIFICADOR INSTITUCIONAL" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+
+                            <div class="col-md-6 mt-1">
+                                <label for="planificacionYG" class="form-label fs-6">Usuario que aprueba</label>
+                                <!-- Input para ingresar el nombre manualmente -->
+                                <input type="text" id="planificacionYG2" name="planificacionYG2" class="form-control" value="TLGA. TANYA PORTUGUÉZ PILCO" placeholder="Ingrese nombre de usuario" required>
+                                <div class="invalid-feedback">Por favor ingrese el nombre.</div>
+
+                                <label for="cargo_planificacionYG" class="form-label fs-6 mt-2">Cargo</label>
+                                <!-- Input para ingresar el cargo -->
+                                <input type="text" id="cargo_planificacionYG2" name="cargo_planificacionYG2" class="form-control" value="ANALISTA ZONAL ADMINISTRATIVA FINANCIERA" placeholder="Ingrese el cargo" required>
+                                <div class="invalid-feedback">Por favor ingrese el cargo.</div>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnGenerarReportPOA2"><i class="bi bi-file-earmark-arrow-down"></i>Descargar</button>
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModalPOA" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--- para los Zonales -->
+
 
 
 
@@ -272,13 +407,13 @@
 
                             <hr class="mt-4">
 
-                            <h3 class="">Datos de la Actividad</h3>
+                            <h3 class="mt-5">Datos de la Actividad</h3>
 
                             <div class="position-static d-flex flex-column flex-lg-row align-items-stretch justify-content-start p-3 rounded-3">
                                 <nav class="col-lg-12">
                                     <ul class="list-unstyled d-flex flex-column gap-2">
                                         <li class="row">
-                                            <div class="btn text-start col-lg-9">
+                                            <div class="btn text-start col-lg-12">
                                                 <strong class="d-block">Objetivo</strong>
                                                 <small id="objetivo">  </small>
                                                 <strong class="d-block mt-1">Actividad</strong>
@@ -286,10 +421,10 @@
                                                 <strong class="d-block mt-1">Sub Actividad</strong>
                                                 <small id="subActividad">  </small>
                                             </div>
-                                            <div class="btn text-start col-lg-3">
+                                            <!-- <div class="btn text-start col-lg-3">
                                                 <strong class="d-block">Número de actividad</strong>
                                                 <small id="numero">  </small>
-                                            </div>
+                                            </div> -->
                                         </li>
 
                                         <table class="table">
@@ -339,7 +474,11 @@
 
                             <hr class="mt-0">
 
-                            <h3 class="">Datos de la Actividad Actualizados</h3>
+
+                            <div class="col-lg-12 mt-5">
+                                <h3 class="">Datos de la Actividad Actualizados</h3>
+                            </div>
+            
 
                             <div class="position-static d-flex flex-column flex-lg-row align-items-stretch justify-content-start p-3 rounded-3">
                                 <nav class="col-lg-12">
@@ -408,7 +547,7 @@
 
                         <div class="col-md-12 mt-2 text-center">
                             <label for="frecuencia" class="form-label fs-6">Quiere prestar la actividad?</label>
-                            <select id="estado" name="estado" class="form-select single-select" required="" >
+                            <select id="estado" name="estado" class="form-control js-example-basic-single" required="" >
                                 <option value="0" selected="">Seleccione el estado de la actividad</option>
                                 <option value="aprobado"> Aprobado</option>
                                 <option value="rechazado"> Rechazado</option>
@@ -432,5 +571,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.11')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.28')}}"></script>
 @endpush
