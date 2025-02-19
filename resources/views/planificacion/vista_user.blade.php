@@ -70,8 +70,8 @@
                 <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> ACTIVIDADES - {{$area}}</h2>
                 <hr/>
 
-                <a type="button" onclick="saludar()" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" >
-                saludar </a>  
+                <a type="button" onclick="ingreso()" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" >
+                Ingreso </a>
 
                 <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
                     <i class="lni lni-circle-plus"></i> Crear Actividad

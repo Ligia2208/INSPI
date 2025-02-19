@@ -189,6 +189,10 @@ Route::middleware(['auth'])->group(function () {
     
     
         Route::post('planificacion/import', 'PlanificacionController@import')->name('planificacion.import');
+
+
+
+        Route::post('planificacion/ingreso', 'PlanificacionController@ingreso')->name('planificacion.ingreso');
     
     });
     /* =========================== PLANIFICACION =========================== */

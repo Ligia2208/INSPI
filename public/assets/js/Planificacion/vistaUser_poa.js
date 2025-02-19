@@ -774,3 +774,14 @@ $(document).on('click', '#btnGenerarReportPOA', function(){
          });
      }
  });
+
+
+ function ingreso() {
+
+    window.location.href = "planificacion/ingreso";
+
+ }
+
+
+
+

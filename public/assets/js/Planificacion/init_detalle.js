@@ -620,3 +620,29 @@ $(document).ready(function() {
         }
     });
 });
+
+
+
+function prueba() {
+    console.log('Funciona');
+
+    let val1 = 0; 
+    val1 = parseFloat($('#valor1').val()); 
+
+    let val2 = 0; 
+    val2 = parseFloat($('#valor2').val()); 
+
+    alert('Funciona :) y La suma es: ' + (val1 + val2));
+}
+
+
+function prueba2() {
+    console.log('Funciona');
+
+    let text1 = $('#text1').val();
+
+    alert('Funciona :D ' + text1);
+}
+
+
+
