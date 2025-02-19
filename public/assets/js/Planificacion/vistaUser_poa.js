@@ -83,7 +83,7 @@ $( function () {
                 render: function (data, type, full, meta) {
 
                     let btnCancelarPoa = '';
-                    if( full.estado == 'O'){
+                    if( full.estado == 'O' && (full.id_area == 17 || full.id_area == 18)){
 
                         btnCancelarPoa = `
                             <a id="btnEliminarCerti" data-id_borrar="${full.id}" title="Eliminar certificación" class="red show-tooltip ml-1" data-title="Eliminar certificación">
@@ -167,10 +167,11 @@ $( function () {
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
+
                             <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Editar registro" class="show-tooltip mr-1" data-title="Editar registro">
                                 <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
-                        `;
+                            `;
 
                         if(full.id_area == 17 || full.id_area == 18 ){
 
@@ -204,6 +205,10 @@ $( function () {
 
                             <a id="btnSolicitarPOA" data-id_actividad="${full.id}" data-nombre="${full.nombre}" title="Solicitar POA" class="show-tooltip mr-1" data-title="Solicitar POA">
                                 <i class="font-22 fadeIn animated bi bi-file-earmark-text  text-warning"></i>
+                            </a>
+
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Visualizar" class="show-tooltip mr-1" data-title="Visualizar">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
 
                             ${btnEditar}

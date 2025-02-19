@@ -242,7 +242,7 @@ class Form extends Component
         $this->emit('renderJs');
     }
 
-    public function guardarp(Preanalitica $pa, $ev, $tp){
+    public function guardarp(Preanalitica $pa, $ev){
 
         $absede = Sede::findOrFail($pa->sedes_id);
         $abcrn = Crn::findOrFail($pa->crns_id);

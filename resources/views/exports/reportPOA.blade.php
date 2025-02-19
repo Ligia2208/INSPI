@@ -20,6 +20,7 @@
                 <th>Proyecto</th>
                 <th>Actividad</th>
                 <th>Fuente</th>
+                <th>Número de POA</th>
                 <th>Total</th>
                 <th>Total Certificado</th>
                 <th>Tipo POA</th>
@@ -41,6 +42,7 @@
                     <td>{{ $actividad->proyecto }}</td>
                     <td>{{ $actividad->actividad }}</td>
                     <td>{{ $actividad->fuente }}</td>
+                    <td>{{ $actividad->nro_poa }}</td>
                     
                     <td>{{ $actividad->total }}</td>
                     <td>{{ $actividad->certificado }}</td>

@@ -167,7 +167,7 @@ class Form extends Component
                             $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
                             $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,8);
                             $newAnalitica->codigo_secuencial = 1;
-                            $fechacomoentero = strtotime($objPreanalitica-->fecha_toma_primera);
+                            $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
                             $anio = date("Y", $fechacomoentero)-2000;
                             $mes = date("m", $fechacomoentero);
                             $newAnalitica->codigo_calidad = str_pad($newAnalitica->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($$newAnalitica->codigo_secuencial, 2, '0', STR_PAD_LEFT);

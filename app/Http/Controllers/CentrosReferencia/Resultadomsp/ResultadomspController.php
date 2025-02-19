@@ -161,6 +161,7 @@ class ResultadomspController extends Controller
             }
             $fecha_lab=$muestra->fecha_llegada_lab;
             $fecha_resul=$muestra->fecha_resultado;
+            $tecnico = $muestra->usuarior->name;
         }
 
         $this->fpdf->Ln(12);
@@ -196,7 +197,7 @@ class ResultadomspController extends Controller
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(80,7,utf8_decode("Llegada al CRN - Laboratorio : ".$fecha_lab),1,0,"L");
         $this->fpdf->Ln(7);
-        $this->fpdf->Cell(80,7,utf8_decode("Analítica: ".$data->usuariot->name.' ('.$fecha_resul.')'),1,0,"L");
+        $this->fpdf->Cell(80,7,utf8_decode("Analítica: ".$tecnico.' ('.$fecha_resul.')'),1,0,"L");
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(80,7,utf8_decode("Validación resultado: ".$data->usuarior->name.' ('.$data->fecha_resultado.')'),1,0,"L");
         $this->fpdf->Ln(7);

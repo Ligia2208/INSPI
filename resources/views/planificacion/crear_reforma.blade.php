@@ -29,7 +29,17 @@
 
             <div class="row">
 
-                <div class="col-lg-10 mt-2 mb-5">
+                <div class="col-md-4 mt-2">
+                    <label for="itemFiltro" class="form-label fs-6">Filtrar por Item presupuestario</label>
+                    <select id="itemFiltro" name="itemFiltro" class="form-control single-select" required onchange="selectItem(this.value)">
+                        <option value="0">Seleccione Opción</option>
+                        @foreach($item_presupuestario as $item)
+                            <option value="{{$item->id}}" data-id_item="{{$item->id_item}}" >{{$item->nombre}} - {{$item->descripcion}}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-lg-10 mt-5 mb-5">
                     <label for="select_idpoa" class="form-label">Seleccione Sub_Actividad/Objeto de contratación:</label>
                     <select id="select_idpoa" class="single-select filter js-example-templating col-lg-12">
                         <option value="">Seleccione una Sub_Actividad/Objeto de Contratación</option>
@@ -373,9 +383,15 @@
                     <div class="valid-feedback">Looks good!</div>
                 </div>
 
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <label for="ajuTotal" class="form-label fs-6">Total Ajuste</label>
                     <input type="text" id="ajuTotal" name="ajuTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                    <div class="valid-feedback">Looks good!</div>
+                </div>
+
+                <div class="col-md-6">
+                    <label for="ampTotal" class="form-label fs-6">Total Ampliación</label>
+                    <input type="text" id="ampTotal" name="ampTotal" class="form-control" required="" autofocus="" value="" disabled="">
                     <div class="valid-feedback">Looks good!</div>
                 </div>
 
@@ -410,5 +426,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.17')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.19')}}"></script>
 @endpush

@@ -85,21 +85,26 @@
 
 
             <div class="row mb-4 mt-4">
-                <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> ACTIVIDADES - {{$area}}</h2>
-                <hr/>
+                
+                <div class="col-lg-12">
+                    <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> ACTIVIDADES - {{$area}}</h2>
+                </div>
+                
+                <div class="col-lg-12 d-flex justify-content-end mt-4">
+                    @if(!$proestado)
+                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mr-3" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
+                        <i class="lni lni-circle-plus"></i> Crear Actividad
+                    </a>
+                    @else
+                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mr-3" href="{{ route('planificacion.nuevaPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
+                        <i class="lni lni-circle-plus"></i> Crear Actividad con monto 0
+                    </a>
+                    @endif
 
-                <!-- <a type="button" onclick="ejecutar()"  class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center">
-                    Ejecutar
-                </a> -->
-                @if(!$proestado)
-                <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
-                    <i class="lni lni-circle-plus"></i> Crear Actividad
-                </a>
-                @endif
-
-                <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
-                    <i class="lni lni-circle-plus"></i> Reformas
-                </a>
+                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
+                        <i class="lni lni-circle-plus"></i> Reformas
+                    </a>
+                </div>
             
             </div>
 
@@ -443,5 +448,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.29')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.30')}}"></script>
 @endpush
