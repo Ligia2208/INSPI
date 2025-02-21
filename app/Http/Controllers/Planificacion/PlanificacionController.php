@@ -31,6 +31,12 @@ use App\Models\Planificacion\TipoPoa\TipoPoa;
 use App\Models\Planificacion\Poa1\Poa;
 use App\Models\Planificacion\TipoProceso\TipoProceso;
 
+//FORMULARIO
+use App\Models\Planificacion\Formulario;
+use Illuminate\Support\Facades\Log;
+
+
+
 //Czonal y area
 use App\Models\Czonal\Czonal;
 
@@ -4202,8 +4208,58 @@ class PlanificacionController extends Controller
     
         return $contador->valor; // Retorna 1 ya que es el primer registro
     }
+
+    public function reportFormulario_Crear(){
+
+         //respuesta para la vista
+
+        return view('planificacion.reportFormulario_Crear');
+    }
+
+    public function reportFormulario_Editar(){
+
+        //respuesta para la vista
+
+       return view('planificacion.reportFormulario_Editar');
+   }
+
+
+
+    public function crear_usuarios(Request $request)
+    {
+        try {
+            // Validación de los datos
+            $data = $request->validate([
+                'nombre'   => 'required|string',
+                'apellido' => 'required|string',
+                'correo'   => 'required|string',
+                'telefono' => 'required|string',
+            ]);
     
+           // Guardar en la base de datos
+            $usuario = Formulario::create([
+                'nombre'            => $nombre,
+                'apellido'          => $apellido,
+                'correo'            => $correo,
+                'telefono'          => $telefono,
+                //'estado'            => 'A',          // Valor por defecto
+            ]);
+
     
- 
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuario creado correctamente',
+                'data'    => $usuario
+            ], 200);
+    
+        } catch (\Exception $e) {
+            Log::error('Error al crear usuario: ' . $e->getMessage());
+    
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear usuario',
+            ], 500);
+        }
+    }
 
 }
