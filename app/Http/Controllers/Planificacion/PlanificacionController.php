@@ -4235,6 +4235,7 @@ class PlanificacionController extends Controller
                 'correo'   => 'required|string',
                 'telefono' => 'required|string',
             ]);
+            
     
            // Guardar en la base de datos
             $usuario = Formulario::create([
@@ -4261,5 +4262,31 @@ class PlanificacionController extends Controller
             ], 500);
         }
     }
+
+
+
+    /*public function editar_usuario(Request $request)
+    { 
+        try {
+           
+            //agg funcion 
+
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuario creado correctamente',
+                'data'    => $usuario
+            ], 200);
+    
+        } catch (\Exception $e) {
+            Log::error('Error al crear usuario: ' . $e->getMessage());
+    
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al crear usuario',
+            ], 500);
+        }
+
+    }*/
 
 }

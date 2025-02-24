@@ -4,6 +4,7 @@ $(document).ready(function () {
     $(document).on("click", "#EditarUsuario", function () {
         //console.log("¡El botón fue detectado y clickeado!");
 
+       // var ID = $('#id').val().trim();
         var nombre = $('#nombre').val().trim();
         var apellido = $('#apellido').val().trim();
         var correo = $('#correo').val().trim();
@@ -23,7 +24,7 @@ $(document).ready(function () {
 
         
         $.ajax({
-            url: '/planificacion/crear_usuario',
+            url: '/planificacion/editar_usuario',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
             },
@@ -59,6 +60,7 @@ $(document).ready(function () {
     });
 
     function limpiarCampos() {
+        $('#id').val('');
         $('#nombre').val('');
         $('#apellido').val('');
         $('#correo').val('');

@@ -1,8 +1,10 @@
 $(document).ready(function () {
     //console.log("jQuery ha sido cargado y el DOM está listo.");
 
-    $(document).on("click", "#CrearUsuario", function () {
+    $(document).on("click", "#CrearUsuario", function (event) {
+        event.preventDefault();
         //console.log("¡El botón fue detectado y clickeado!");
+      
 
         var nombre = $('#nombre').val().trim();
         var apellido = $('#apellido').val().trim();
