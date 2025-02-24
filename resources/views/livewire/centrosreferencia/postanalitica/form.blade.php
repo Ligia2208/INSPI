@@ -3,7 +3,6 @@
     @section('head')
         <link rel="stylesheet" href="{{ asset('assets/plugins/custom/bfi/bfi.css') }}">
     @endsection
-
     <!--begin::Card-->
     <div class="card card-custom card-sticky" id="kt_page_sticky_card" >
         <div class="card-body">
@@ -19,8 +18,61 @@
                             </a>
                             <h3 class="text-dark font-weight-bold mb-10">Información general</h3>
                             @include('component.error-list')
+
                             <div class="form-row">
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-5">
+                                    <label>Institución Salud<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                required disabled
+                                                class="form-control form-control-solid"
+                                                value = "{{ $data->instituciones->descripcion }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <label>Clasificación<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                required disabled
+                                                class="form-control form-control-solid"
+                                                value = "{{ $data->instituciones->clasificacion->descripcion }} - {{ $data->instituciones->tipologia->descripcion }} - {{ $data->instituciones->nivel->descripcion }} ( {{ $data->instituciones->provincia->descripcion }}-{{ $data->instituciones->canton->descripcion }})" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-2">
+                                    <label>Fecha Recepción<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            value="{{ $data->fecha_recepcion }}"
+                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_recepcion') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
                                     <label>Sede<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -43,7 +95,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>Centro de Referencia - Laboratorio<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -68,9 +120,7 @@
                                         </select>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-8">
+                                <div class="form-group col-md-3">
                                     <label>Evento<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -84,7 +134,12 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required disabled>
+                                            required
+                                            @if($Analiticas->codigo_externo != '' && $Analiticas->adicional == 2)
+                                                enabled
+                                            @else
+                                                disabled
+                                            @endif>
                                             <option value="">Selecciona un Evento</option>
                                             @if(!is_null($eventos))
                                             @foreach ($eventos as $objEvento)
@@ -94,8 +149,10 @@
                                         </select>
                                     </div>
                                 </div>
+                            </div>
+                            <div class="form-row">
                                 <div class="form-group col-md-2">
-                                    <label>Año - Período<span class="text-danger">*</span></label>
+                                    <label>Cédula<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -103,18 +160,14 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.anio_registro"
                                             type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.anio_registro') is-invalid @enderror"
-                                            placeholder="Ej: 4A39982" />
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = {{ $data->paciente->identidad }} />
                                     </div>
-                                    @error('Analiticas.anio_registro')
-                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                                    @enderror
                                 </div>
-                                <div class="form-group col-md-2">
-                                    <label>Código Muestra<span class="text-danger">*</span></label>
+                                <div class="form-group col-md-4">
+                                    <label>Nombres Paciente<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -122,16 +175,225 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.codigo_muestra"
                                             type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.codigo_muestra') is-invalid @enderror"
-                                            placeholder="Ej: 4A39982" />
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = "{{ $data->paciente->apellidos }} {{ $data->paciente->nombres }}">
                                     </div>
-                                    @error('Analiticas.codigo_muestra')
-                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
-                                    @enderror
                                 </div>
+                                <div class="form-group col-md-2">
+                                    <label>Sexo<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = {{ $data->paciente->sexo->descripcion }}>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Fecha Nacimiento<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            value="{{ $data->paciente->fechanacimiento }}"
+                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_atencion') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Edad<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            <?php
+                                            $tiempo = strtotime($data->paciente->fechanacimiento);
+                                            $ahora = time();
+                                            $tanios = ($ahora-$tiempo)/(60*60*24*365.25);
+                                            $tmeses = ($ahora-$tiempo)/(60*60*24*30.44);
+                                            $tdias = ($ahora-$tiempo)/(60*60*24);
+                                            $anios = floor($tanios);
+                                            $meses = floor($tmeses) - $anios*12;
+                                            $mdias = floor($tdias) - $anios*365.25 - $meses*30.44;
+                                            $dias = floor($mdias);
+                                            ?>
+                                            value = "{{ $anios }} años {{ $meses }} meses {{  $dias }} días" >
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-2">
+                                    <label>Embarazo<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            @if($data->embarazo=='N')
+                                            value = "No"
+                                            @else
+                                            value = "Si"
+                                            @endif>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Gestacion<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            @if($data->gestacion>0)
+                                            value = {{ $data->gestacion }}
+                                            @else
+                                            value = "0"
+                                            @endif>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-4">
+                                    <label>Probable infección<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = "{{ $data->probable_infeccion }}" >
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Fecha inicio sintomas<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            class="start_date form-control form-control-solid"
+                                            value={{ $data->fecha_sintomas }} disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Médico Notifica<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = "{{ $data->quien_notifica }}" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <br>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="data"
+                                    class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                                    <thead>
+                                        <tr class="text-uppercase">
+                                            <label class="text-black"><b>Muestras Recibidas</b><span class="text-danger"></span></label>
+                                        </tr>
+                                    </thead>
+                                    <thead>
+                                        <tr class="text-uppercase">
+                                            <th>Código Muestra</th>
+                                            <th>Clase Muestra</th>
+                                            <th>Tipo Muestra</th>
+                                            <th>Fecha Toma</th>
+                                            <th>Técnico Procesa</th>
+                                            <th>Fecha Procesamiento</th>
+                                            <th>Técnica</th>
+                                            <th>Resultado</th>
+                                            <th>Observación Técnico</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($detalles as $objAnalitica )
+                                        <tr>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->codigo_calidad }}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->clase->descripcion }}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->muestra->descripcion }}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fecha_toma }}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->usuarior->name }}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fecha_procesamiento }}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->tecnica->descripcion }}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->resultado->descripcion }}</span>
+                                        </td>
+                                        <td>
+                                            <span
+                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->descripcion }}</span>
+                                        </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="form-row">
+                                <br>
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-8">

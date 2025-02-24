@@ -57,12 +57,11 @@ class Index extends Component
         $crns = [];
         $eventos = [];
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
-
         $mresultados = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->pluck('preanalitica_id')->toArray();
 
 
         //$count = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->count();
-        $analiticapac = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->distinct('preanalitica_id')->pluck('preanalitica_id')->toArray();
+        $analiticapac = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->where('usuariop_id','=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->distinct('preanalitica_id')->pluck('preanalitica_id')->toArray();
         $analiticas = Preanalitica::whereIn('id',$analiticapac);
         $count = $analiticas->count();
 
