@@ -218,7 +218,7 @@
                                         <div class="col mr-2" align="center">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 <img alt="Logo" src="/assets/media/png_64/cumple.png" class="center"><br>
-                                               {{ __("Válidas") }}</div>
+                                               {{ __("Aceptadas") }}</div>
                                             <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $countlabcum }}</div>
                                         </div>
                                     </div>
@@ -260,7 +260,7 @@
                                         <div class="col mr-2" align="center">
                                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                                 <img alt="Logo" src="/assets/media/png_64/validado.png" class="center"><br>
-                                                {{ __("Sin validar") }}</div>
+                                                {{ __("Procesadas") }}</div>
                                             <div class="h3 mb-0 font-weight-bold text-gray-800" align="center">{{ $countlabana }}</div>
                                         </div>
                                     </div>
