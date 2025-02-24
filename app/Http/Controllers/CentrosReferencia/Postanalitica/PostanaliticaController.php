@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\CentrosReferencia\Postanalitica;
 use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Institucion;
+use App\Models\CentrosReferencia\Crn;
 use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Paciente;
 use Illuminate\Http\Request;
@@ -41,27 +42,28 @@ class PostanaliticaController extends Controller
 
     public function informep($id){
 
+        $data = Preanalitica::findOrFail($id);
+        $data_muestras = Analitica::where('preanalitica_id','=',$id)->get();
+        $laboratorio = Crn::findOrFail($data->crns_id);
+        $unidad = Institucion::findOrFail($data->instituciones_id);
+        $paciente = Paciente::findOrFail($data->paciente_id);
+
         $this->fpdf = new Fpdf;
         $this->fpdf->SetFont('Arial', 'B', 9);
         $this->fpdf->AddPage("P", "A4");
-        $this->fpdf->Image('descargar.png',12,12,-200);
-        $this->fpdf->Cell(50, 20, "",1,0,"C");
-        $this->fpdf->Cell(80, 20, "", 1);
-        $this->fpdf->Text(80,22,"INFORME DE RESULTADOS");
+        $this->fpdf->Image('descargar.png',17,12,-200);
+        $this->fpdf->Cell(60, 20, "",1,0,"C");
+        $this->fpdf->Cell(70, 20, "", 1);
+        $this->fpdf->Text(85,22,"INFORME DE RESULTADOS");
         $this->fpdf->Cell(60, 20,"",1,0,"C");
         $this->fpdf->Text(147,18,utf8_decode("Coordinación General Técnica"));
         $this->fpdf->Text(146,23,utf8_decode("Dirección Técnica de Vigilancia"));
-        $this->fpdf->Ln(10);
-        $this->fpdf->Cell(130,10,"",0,0,"C");
-        $datetime1 = date_create(date('Y-m-d h:m'));
+        $this->fpdf->Ln(20);
+        $this->fpdf->Cell(190,8,utf8_decode($laboratorio->titulo),1,0,"C");
+        $this->fpdf->Ln(6);
         $this->fpdf->SetFont('Arial', '', 9);
-        $this->fpdf->Cell(60,28,utf8_decode("Fecha impresión: ".$datetime1->format('d/m/Y - h:m')),0,0,"C");
-        $this->fpdf->Ln(18);
-
-        $data = Preanalitica::findOrFail($id);
-        $data_muestras = Analitica::where('preanalitica_id','=',$id)->get();
-        $unidad = Institucion::findOrFail($data->instituciones_id);
-        $paciente = Paciente::findOrFail($data->paciente_id);
+        $this->fpdf->Cell(320,12,utf8_decode("Fecha impresión: ".date("d/m/Y").' '.date("H:i:s")),0,0,"C");
+        $this->fpdf->Ln(10);
 
         $this->fpdf->SetFont('Arial', 'B', 8);
         $this->fpdf->Cell(190,7,utf8_decode("Descripción Institución de Salud que referencia"),1,0,"C");
@@ -138,6 +140,7 @@ class PostanaliticaController extends Controller
         $this->fpdf->Cell(40,7,utf8_decode("Técnica aplicada"),1,0,"C");
         $this->fpdf->Cell(41,7,utf8_decode("Resultado"),1,0,"C");
         $this->fpdf->SetFont('Arial', '', 7);
+        $i=0;
         foreach($data_muestras as $muestra){
             $this->fpdf->Ln(7);
             if($muestra->codigo_externo != ''){
@@ -161,6 +164,7 @@ class PostanaliticaController extends Controller
             $fecha_lab=$muestra->fecha_llegada_lab;
             $fecha_resul=$muestra->fecha_resultado;
             $tecnico = $muestra->usuarior->name;
+            $i++;
         }
 
         $this->fpdf->Ln(12);
@@ -187,7 +191,20 @@ class PostanaliticaController extends Controller
 
         QrCode::png($dataqr,storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',QR_ECLEVEL_H,3,1);
 
-        $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',140,210,37);
+        $posy = 0;
+        if($i==1){
+            $posy = 207;
+        }
+        if($i==2){
+            $posy = 214;
+        }
+        if($i==3){
+            $posy = 221;
+        }
+        if($i==4){
+            $posy = 228;
+        }
+        $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',140,$posy,37);
 
         $this->fpdf->Ln(16);
         $this->fpdf->SetFont('Arial', 'B', 7);
