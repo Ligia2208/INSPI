@@ -127,59 +127,104 @@
                             </div>
                             <div class="col-lg-12 col-xl-12">
                                 <div class="row align-items-center">
-                                    <div class="col-md-2 my-2 my-md-0">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
-                                            <label class="form-check-label" for="exampleRadios1">
-                                              Fecha Atención
-                                            </label>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <select
+                                            wire:model="ctecnicas"
+                                            class="form-control"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">{{ __("Seleccione una Técnica") }}</option>
+                                            @if(!is_null($tecnicas))
+                                            @foreach ($tecnicas as $objTec)
+                                                <option data-subtext="" value="{{ $objTec->id }}">{{ $objTec->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 my-2 my-md-0">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                                            <label class="form-check-label" for="exampleRadios2">
-                                              Ingreso Toma Muestra
-                                            </label>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <select
+                                            wire:model="cresultados"
+                                            class="form-control"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">{{ __("Seleccione un Resultado") }}</option>
+                                            @if(!is_null($reportes))
+                                            @foreach ($reportes as $objRes)
+                                                <option data-subtext="" value="{{ $objRes->id }}">{{ $objRes->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-2 my-2 my-md-0">
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
-                                            <label class="form-check-label" for="exampleRadios2">
-                                              Fecha Validación
-                                            </label>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <select
+                                            wire:model="ctecnicos"
+                                            class="form-control"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">{{ __("Seleccione un Técnico") }}</option>
+                                            @if(!is_null($usuarios))
+                                            @foreach ($usuarios as $objTec)
+                                                <option data-subtext="" value="{{ $objTec->id }}">{{ $objTec->name }}</option>
+                                            @endforeach
+                                            @endif
+                                            </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 my-2 my-md-0">
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-xl-12">
+                                <br>
+                            </div>
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <select wire:model="controlf" class="form-control" data-size="7"
+                                                data-live-search="true" data-show-subtext="true" required>
+                                                <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
+                                                <option data-subtext="" value="1">Fecha toma de muestra</option>
+                                                <option data-subtext="" value="2">Fecha llegada al CRN/LAB</option>
+                                                <option data-subtext="" value="3">Fecha procesamiento</option>
+                                                <option data-subtext="" value="4">Fecha validación</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
-                                            <label class="mr-3 mb-0 d-none d-md-block">{{ __("Inicio") }}:</label>
+                                            <label class="mr-3 mb-0 d-none d-md-block">{{ __('Inicio') }}:</label>
                                             <div class="input-group input-group-solid">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">
                                                         <i class="fas fa-calendar"></i>
                                                     </span>
                                                 </div>
-                                                <input
-                                                    wire:model="fechainicio"
-                                                    type="date"
+                                                <input wire:model="fechainicio" type="date"
                                                     class="form-control form-control-solid @error('fechainicio') is-invalid @enderror"
                                                     placeholder="Ej: 17/04/2024" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 my-2 my-md-0">
+                                    <div class="col-md-4 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
-                                            <label class="mr-3 mb-0 d-none d-md-block">{{ __("Fin") }}:</label>
+                                            <label class="mr-3 mb-0 d-none d-md-block">{{ __('Fin') }}:</label>
                                             <div class="input-group input-group-solid">
                                                 <div class="input-group-prepend">
                                                     <span class="input-group-text">
                                                         <i class="fas fa-calendar"></i>
                                                     </span>
                                                 </div>
-                                                <input
-                                                    wire:model="fechafin"
-                                                    type="date"
+                                                <input wire:model="fechafin" type="date"
                                                     class="form-control form-control-solid @error('fechafin') is-invalid @enderror"
                                                     placeholder="Ej: 27/06/2024" />
                                             </div>

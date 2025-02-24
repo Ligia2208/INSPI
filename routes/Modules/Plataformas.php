@@ -12,6 +12,7 @@ use App\Http\Controllers\CentrosReferencia\Preanalitica\PreanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
+use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
 use App\Http\Controllers\CentrosReferencia\Resultadocrn\ResultadocrnController;
@@ -87,6 +88,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');
+
+        //CRNs Plataformas Analitica de Resultados Resonsable
+        Route::resource('postanaliticasp', PostanaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticap');
 
         //CRNs Plataformas Resultados
         Route::resource('visorresultadoscrn', VisorResultadoscrnController::class)->parameters(['resultados' => 'resultado'])->names('visorresultadocrn');

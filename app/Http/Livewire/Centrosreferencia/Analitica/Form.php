@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Centrosreferencia\Analitica;
 
+use App\Models\CentrosReferencia\Institucion;
 use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
@@ -146,7 +147,8 @@ class Form extends Component
         $estados = Estadomuestra::orderBy('id', 'asc')->cursor();
         $unidades = Unidades::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id', 'asc')->cursor();
-        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','preanalitica','estados','unidades','clases'));
+        $instituciones = Institucion::where('estado','=','A')->orderBy('id','asc')->cursor();
+        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','instituciones','preanalitica','estados','unidades','clases'));
     }
 
     public function store(){

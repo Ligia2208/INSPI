@@ -22,7 +22,59 @@
                             <h3 class="text-dark font-weight-bold mb-10">Información general</h3>
 
                             <div class="form-row">
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-5">
+                                    <label>Institución Salud<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                required disabled
+                                                class="form-control form-control-solid"
+                                                value = "{{ $Analiticas->preanalitica->instituciones->descripcion }}" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-7">
+                                    <label>Clasificación<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                type="text"
+                                                required disabled
+                                                class="form-control form-control-solid"
+                                                value = "{{ $Analiticas->preanalitica->instituciones->clasificacion->descripcion }} - {{ $Analiticas->preanalitica->instituciones->tipologia->descripcion }} - {{ $Analiticas->preanalitica->instituciones->nivel->descripcion }} ( {{ $Analiticas->preanalitica->instituciones->provincia->descripcion }}-{{ $Analiticas->preanalitica->instituciones->canton->descripcion }})" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group col-md-2">
+                                    <label>Fecha Recepción<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            value="{{ $preanalitica->fecha_recepcion }}"
+                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_recepcion') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
                                     <label>Sede<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -45,7 +97,7 @@
                                         </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-5">
+                                <div class="form-group col-md-4">
                                     <label>Centro de Referencia - Laboratorio<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -71,7 +123,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Código Calidad: <span class="text-danger">{{ $Analiticas->codigo_calidad }}</span></label>
+                                    <label>Código: <span class="text-danger">{{ $Analiticas->codigo_calidad }}</span></label>
                                     @if ($preanalitica->archivo != null)
                                     <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url($preanalitica->archivo) }}"><i class="fas fa-download mr-2"></i> Descargar Ficha</a>
                                     @else
@@ -193,7 +245,7 @@
                                             value = {{ $preanalitica->paciente->identidad }} />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>Nombres Paciente<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -224,6 +276,22 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-2">
+                                    <label>Fecha Nacimiento<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="date"
+                                            value="{{ $preanalitica->paciente->fechanacimiento }}"
+                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_atencion') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
                                     <label>Edad<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -238,10 +306,15 @@
                                             <?php
                                             $tiempo = strtotime($preanalitica->paciente->fechanacimiento);
                                             $ahora = time();
-                                            $edad = ($ahora-$tiempo)/(60*60*24*365.25);
-                                            $edad = floor($edad);
+                                            $tanios = ($ahora-$tiempo)/(60*60*24*365.25);
+                                            $tmeses = ($ahora-$tiempo)/(60*60*24*30.44);
+                                            $tdias = ($ahora-$tiempo)/(60*60*24);
+                                            $anios = floor($tanios);
+                                            $meses = floor($tmeses) - $anios*12;
+                                            $mdias = floor($tdias) - $anios*365.25 - $meses*30.44;
+                                            $dias = floor($mdias);
                                             ?>
-                                            value = "{{ $edad }} años" >
+                                            value = "{{ $anios }} años {{ $meses }} meses {{  $dias }} días" >
                                     </div>
                                 </div>
                             </div>
@@ -423,7 +496,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-2">
-                                    <label>Recepción de muestra<span class="text-danger">*</span></label>
+                                    <label>Fecha toma de muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -440,22 +513,6 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-2">
-                                    <label>Fecha Recepción<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-calendar"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="date"
-                                            value="{{ $preanalitica->fecha_recepcion }}"
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_recepcion') is-invalid @enderror"
-                                            placeholder="Seleccione una fecha" disabled
-                                        />
-                                    </div>
-                                </div>
                                 <div class="form-group col-md-2">
                                     <label>Fecha Atención<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -491,7 +548,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label class="text-black"><b>Llegada a CRN-Lab.</b><span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -507,7 +564,7 @@
                                         />
                                     </div>
                                 </div>
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-3">
                                     <label class="text-black"><b>Fecha Procesamiento</b><span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">

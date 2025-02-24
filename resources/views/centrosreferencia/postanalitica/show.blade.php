@@ -127,9 +127,17 @@
                                                                     <div class="col-2" style="align:left">
                                                                         <span class="form-control-plaintext font-weight-bolder">{{ $objAn->anio_registro }} - {{ str_pad($objAn->codigo_muestra, 5, "0", STR_PAD_LEFT) }} - {{ str_pad($objAn->codigo_secuencial, 3, "0", STR_PAD_LEFT) }}</span>
                                                                     </div>
-                                                                    <label class="col-1 col-form-label">Fecha recepción:</label>
+                                                                    <label class="col-1 col-form-label">Fecha proceso:</label>
                                                                     <div class="col-2" style="align:left">
-                                                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->created_at }}</span>
+                                                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->fecha_procesamiento }}</span>
+                                                                    </div>
+                                                                    <label class="col-1 col-form-label">Técnico proceso:</label>
+                                                                    <div class="col-2" style="align:left">
+                                                                        @if($objAn->tecnica_id>0)
+                                                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->usuarior->name }}</span>
+                                                                        @else
+                                                                        <span class="form-control-plaintext font-weight-bolder"></span>
+                                                                        @endif
                                                                     </div>
                                                                     <label class="col-1 col-form-label">Técnica aplicada:</label>
                                                                     <div class="col-2" style="align:left">
@@ -152,7 +160,7 @@
                                                                         @endif
                                                                     </div>
                                                                     <label class="col-1 col-form-label">Detalle del resultado:</label>
-                                                                    <div class="col-8" style="align:left">
+                                                                    <div class="col-5" style="align:left">
                                                                         <span class="form-control-plaintext font-weight-bolder">{{ $objAn->descripcion }}</span>
                                                                     </div>
                                                                 </div>

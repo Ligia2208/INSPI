@@ -3,12 +3,15 @@
 namespace App\Http\Livewire\Centrosreferencia\Resultadogerencial;
 
 use App\Models\CentrosReferencia\Resultado;
+use App\Models\CentrosReferencia\Reporte;
+use App\Models\CentrosReferencia\Tecnica;
 use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
 use App\Models\CentrosReferencia\Responsable;
 use App\Models\CentrosReferencia\Crn;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -33,8 +36,11 @@ class Index extends Component
     public $fechainicio;
     public $fechafin;
     public $controlf;
+    public $ctecnicas;
+    public $cresultados;
+    public $ctecnicos;
 
-    protected $queryString = ['search' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ceventos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
+    protected $queryString = ['search' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ceventos' => ['except' => ''], 'ctecnicas' => ['except' => ''], 'cresultados' => ['except' => ''], 'ctecnicos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
 
     //Theme
     protected $paginationTheme = 'bootstrap';
@@ -84,9 +90,12 @@ class Index extends Component
         $crns = [];
         $eventos = [];
         $sedes_up = [];
+        $tecnicas = [];
+        $reportes = [];
+        $usuarios = [];
 
         $count = Analitica::where('estado','=','A')->count();
-        $resultados = Analitica::where('estado','=','A')->orderBy('id', 'asc');
+        $resultados = Analitica::where('estado','=','A')->orderBy('crns_id','asc')->orderBy('id', 'asc');
 
         if($this->search){
             $resultados = $resultados->where('codigo_muestra', 'LIKE', "%{$this->search}%");
@@ -119,6 +128,10 @@ class Index extends Component
             $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
             $count = $resultados->count();
             $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $tecnicas = Tecnica::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $reportes = Reporte::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $crns_tecnicos = Responsable::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->where('vigente_hasta','=',null)->distinct('usuario_id')->pluck('usuario_id')->toArray();
+            $usuarios = User::whereIn('id',$crns_tecnicos)->orderBy('id', 'asc')->get();
 
             $countlab = $count;
             $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('estado_muestra_id','=',1)->count();
@@ -129,18 +142,201 @@ class Index extends Component
 
         }
 
+        if($this->ceventos>0){
+            if($this->ctecnicas>0){
+                if($this->cresultados>0){
+                    if($this->ctecnicos){
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos);
+                        $count = $resultados->count();
 
-        if($this->ceventos){
-            $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos);
-            $count = $resultados->count();
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                    else{
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados);
+                        $count = $resultados->count();
 
-            $countlab = $count;
-            $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',1)->count();
-            $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',2)->count();
-            $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
-            $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
-            $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                }
+                else{
+                    if($this->ctecnicos){
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('usuarior_id','=',$this->ctecnicos);
+                        $count = $resultados->count();
 
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                    else{
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                }
+            }
+            else{
+                if($this->cresultados>0){
+                    if($this->ctecnicos){
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                    else{
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                }
+                else{
+                    if($this->ctecnicos){
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('usuarior_id','=',$this->ctecnicos);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                    else{
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('resultado_id','=',$this->cresultados);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                }
+            }
+        }
+        else{
+            if($this->ctecnicas>0){
+                if($this->cresultados>0){
+                    if($this->ctecnicos){
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                    else{
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                }
+                else{
+                    if($this->ctecnicos){
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('usuarior_id','=',$this->ctecnicos);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                    else{
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('resultado_id','=',$this->cresultados);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('tecnica_id','=',$this->ctecnicas)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                }
+            }
+            else{
+                if($this->cresultados>0){
+                    if($this->ctecnicos){
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                    else{
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                }
+                else{
+                    if($this->ctecnicos){
+                        $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('usuarior_id','=',$this->ctecnicos);
+                        $count = $resultados->count();
+
+                        $countlab = $count;
+                        $countlabcum = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->count();
+                        $countlabrec = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',2)->count();
+                        $countlabpro = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','S')->count();
+                        $countlabana = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','>',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                        $countlabpen = Analitica::where('estado','=','A')->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->where('resultado_id','=',$this->cresultados)->where('usuarior_id','=',$this->ctecnicos)->where('estado_muestra_id','=',1)->where('usuarior_id','=',0)->where('validado','=','N')->where('estado_muestra_id','=',1)->count();
+                    }
+                    else{
+
+                    }
+                }
+            }
         }
 
         if($this->fechainicio){
@@ -377,7 +573,7 @@ class Index extends Component
         $resultados = $resultados->paginate($this->perPage);
         $this->emit('renderJs');
 
-        return view('livewire.centrosreferencia.resultadogerencial.index', compact('count', 'resultados','rol','sedes','crns','eventos','sedes_up','cmicobacterias','cinfluenza','cbacteriologia','cvectores','cparasitologia','cmicologia','ctoxicologia','cexantematicos','cgenomica','cram','czoonosis','cinmunohematologia','countlab','countlabpro','countlabana','countlabpen','countlabrec','countlabcum'));
+        return view('livewire.centrosreferencia.resultadogerencial.index', compact('count', 'resultados','tecnicas','reportes','usuarios','rol','sedes','crns','eventos','sedes_up','cmicobacterias','cinfluenza','cbacteriologia','cvectores','cparasitologia','cmicologia','ctoxicologia','cexantematicos','cgenomica','cram','czoonosis','cinmunohematologia','countlab','countlabpro','countlabana','countlabpen','countlabrec','countlabcum'));
     }
 
     public function destroy($id)
