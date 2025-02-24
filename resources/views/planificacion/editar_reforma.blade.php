@@ -78,6 +78,7 @@
                             <th style="min-width: 150px;">ITEM PRESUPUESTARIO</th>
                             <th style="min-width: 250px;">DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
                             <th style="min-width: 150px;">TIPO DE INGRESO</th>
+                            <th style="min-width: 120px;">TOTAL</th>
                             <th style="min-width: 100px;">ENERO</th>
                             <th style="min-width: 100px;">FEBRERO</th>
                             <th style="min-width: 100px;">MARZO</th>
@@ -90,7 +91,6 @@
                             <th style="min-width: 100px;">OCTUBRE</th>
                             <th style="min-width: 100px;">NOVIEMBRE</th>
                             <th style="min-width: 100px;">DICIEMBRE</th>
-                            <th style="min-width: 120px;">TOTAL</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -105,7 +105,7 @@
                             </td>
                             <td style="text-align: justify;">{{ $atributo->nombreActividadOperativa }}</td>
                             <td>
-                                <input class="form-control" type="text" name="subActividad[]" value="{{ $atributo->nombreSubActividad }}">
+                                <textarea class="form-control" style="width: 350px;" rows="5" name="subActividad[]">{{ $atributo->nombreSubActividad }}</textarea>
                             </td>
                             <td>{{ $atributo->nombreItem }}</td>
                             <td>{{ $atributo->descripcionItem }}</td>
@@ -119,6 +119,7 @@
                                     <option value="AMPLIA" {{ $atributo->tipo == 'AMPLIA' ? 'selected' : '' }}>Amplia</option>
                                 </select>
                             </td>
+                            <td><input class="form-control" type="text" name="total1[]" value="{{ $atributo->total }}"></td>
                             <td><input class="form-control" type="text" name="enero1[]" value="{{ $atributo->enero }}"></td>
                             <td><input class="form-control" type="text" name="febrero1[]" value="{{ $atributo->febrero }}"></td>
                             <td><input class="form-control" type="text" name="marzo1[]" value="{{ $atributo->marzo }}"></td>
@@ -131,7 +132,6 @@
                             <td><input class="form-control" type="text" name="octubre1[]" value="{{ $atributo->octubre }}"></td>
                             <td><input class="form-control" type="text" name="noviembre1[]" value="{{ $atributo->noviembre }}"></td>
                             <td><input class="form-control" type="text" name="diciembre1[]" value="{{ $atributo->diciembre }}"></td>
-                            <td><input class="form-control" type="text" name="total1[]" value="{{ $atributo->total }}"></td>
                         </tr>
                         @endforeach
                     </tbody>
@@ -405,13 +405,13 @@
                         </div>
 
                         <div class="col-md-6">
-                            <label for="ajuTotal" class="form-label fs-6">Total Ajuste</label>
+                            <label for="ajuTotal" class="form-label fs-6">Total Ajuste(-)</label>
                             <input type="text" id="ajuTotal" name="ajuTotal" class="form-control" required="" autofocus="" value="" disabled="">
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
                         <div class="col-md-6">
-                            <label for="ampTotal" class="form-label fs-6">Total Ampliación</label>
+                            <label for="ampTotal" class="form-label fs-6">Total Ampliación(+)</label>
                             <input type="text" id="ampTotal" name="ampTotal" class="form-control" required="" autofocus="" value="" disabled="">
                             <div class="valid-feedback">Looks good!</div>
                         </div>
@@ -483,5 +483,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.13')}}"></script>
+<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.15')}}"></script>
 @endpush

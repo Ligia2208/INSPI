@@ -85,7 +85,7 @@
 
 
             <div class="row mb-4 mt-4">
-                
+
                 <div class="col-lg-12">
                     <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> ACTIVIDADES - {{$area}}</h2>
                 </div>
@@ -153,6 +153,7 @@
                                     <th>Item</th>
                                     <th>Monto</th>
                                     <th>Proceso</th>
+                                    <th>Tipo Actividad</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th> <center> Solicitado </center></th>
@@ -166,7 +167,7 @@
                                 <tr>
                                     <th colspan="6" style="text-align:right">Total:</th>
                                     <th></th> <!-- Aquí se mostrará el total -->
-                                    <th colspan="5"></th>
+                                    <th colspan="6"></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -448,5 +449,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.30')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.32')}}"></script>
 @endpush

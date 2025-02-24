@@ -23,7 +23,8 @@ $( function () {
             { data: 'obj_operativo', name: 'obj_operativo' },
             { data: 'act_operativa', name: 'act_operativa' },
             { data: 'sub_actividad', name: 'sub_actividad' },
-            { data: 'proceso', name: 'proceso' },
+            { data: 'proceso',  name: 'proceso' },
+            { data: 'tipo_sub', name: 'tipo_sub' },
             { data: 'monto',  name: 'monto', render: $.fn.dataTable.render.number(',', '.', 2, '$') }, // Formato con separadores
             { data: 'numero', name: 'numero' },
             { data: 'fecha',  name: 'fecha' },
@@ -90,7 +91,7 @@ $( function () {
                 }
             },
         ],
-        order: [[8, 'desc']],
+        order: [[9, 'desc']],
         language: {
             "emptyTable": "No hay información",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",

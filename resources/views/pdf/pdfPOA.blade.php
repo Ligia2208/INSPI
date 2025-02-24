@@ -282,7 +282,7 @@
             <th>Fecha: </th>
             <td><?php echo date('d-m-Y'); ?></td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha}}</td>
         </tr>
         <tr>
             <th colspan="2">Elaborado</th>

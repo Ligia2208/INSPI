@@ -164,11 +164,31 @@ $( function () {
     });
 
 
-    /* VALIDAR LOS CAMBIOS EN LA REFORMA */
+    /* ABRE EL MODAL PARA VALIDAR LA REFORMA */
     $(document).on('click', '#btnValidarReforma', function(){
 
         var id_reforma = $(this).data('id_reforma');
         var estado     = $(this).data('estado');
+
+        //guarda en el modal
+        $('#id_reforma').val(id_reforma);
+        $('#estadoR').val(estado);
+
+        //click al boton
+        $('#btnModalValida').click();
+
+    });
+    /* ABRE EL MODAL PARA VALIDAR LA REFORMA */
+    
+
+
+
+    /* VALIDAR LOS CAMBIOS EN LA REFORMA */
+    $(document).on('click', '#btnValidaReforma', function(){
+
+        let id_reforma = $('#id_reforma').val();
+        let estado     = $('#estadoR').val();
+        let comentario = $('#comentario').val();
 
         Swal.fire({
             icon: 'warning',
@@ -192,7 +212,7 @@ $( function () {
                     data: {
                         id_reforma:    id_reforma,
                         estadoReforma: estado,
-                        justificacion: 'La reforma fue aplicada a la planificación',
+                        justificacion: comentario,
                     }, 
                     cache: false,
                     success: function(res){
@@ -200,6 +220,7 @@ $( function () {
                         if(res.valor){
 
                             table.ajax.reload();
+                            $('#btnCerrarModalReforma').click();
 
                             Swal.fire({
                                 icon: 'success',
@@ -236,8 +257,6 @@ $( function () {
 
     });
     /* VALIDAR LOS CAMBIOS EN LA REFORMA */
-    
-
 
 
 });

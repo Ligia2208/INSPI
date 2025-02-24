@@ -143,9 +143,9 @@
                             <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)" disabled>
                                 @foreach($item_presupuestario as $item)
                                 @if($item->id == $atributos->id_item)
-                                    <option value="{{$item->id}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
+                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
                                 @else
-                                    <option value="{{$item->id}}">{{$item->nombre}} - {{$item->descripcion}}</option>
+                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}">{{$item->nombre}} - {{$item->descripcion}}</option>
                                 @endif
                                 @endforeach
                             </select>

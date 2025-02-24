@@ -770,7 +770,7 @@ function agregarFilaATabla(poa) {
             </td>
             <td>${poa.nombreActividadOperativa}</td>
             <td>
-                <textarea class="form-control" style="width: 350px;" rows="3" name="subActividad[]">${poa.nombreSubActividad}</textarea>
+                <textarea class="form-control" style="width: 350px;" rows="5" name="subActividad[]">${poa.nombreSubActividad}</textarea>
             </td>
             <td>${poa.nombreItem}</td>
             <td>${poa.descripcionItem}</td>
@@ -784,6 +784,7 @@ function agregarFilaATabla(poa) {
                     <option value="AMPLIA">Amplia</option>
                 </select>
             </td>
+            <td><input class="form-control" style="width: 125px;" type="text" name="total[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="enero[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="febrero[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="marzo[]" value="0"></td>
@@ -796,7 +797,6 @@ function agregarFilaATabla(poa) {
             <td><input class="form-control" style="width: 125px;" type="text" name="octubre[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="noviembre[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="diciembre[]" value="0"></td>
-            <td><input class="form-control" style="width: 125px;" type="text" name="total[]" value="0"></td>
         </tr>
     `;
     // Agrega la nueva fila al cuerpo de la tabla
@@ -1079,7 +1079,7 @@ function agregarActAreaFila(element) {
                     </td>
                     <td>${(data.nombreActividadOperativa)}</td>
                     <td>
-                        <textarea class="form-control" style="width: 350px;" rows="3" name="subActividad[]">${data.nombreSubActividad}</textarea>
+                        <textarea class="form-control" style="width: 350px;" rows="5" name="subActividad[]">${data.nombreSubActividad}</textarea>
                     </td>
                     <td>${(data.nombreItem)}</td>
                     <td>${(data.descripcionItem)}</td>
@@ -1092,6 +1092,10 @@ function agregarActAreaFila(element) {
                             <option value="AJUSTE">Ajuste</option>
                             <option value="AMPLIA">Amplia</option>
                         </select>
+                    </td>
+                    <td>
+                        <input class ="form-control" style="width: 125px;" type="text" name="total[]" value="0.00">
+                        <div class="form-text">${data.total}</div></td>
                     </td>
                     <td>
                         <input class ="form-control" style="width: 125px;" type="text" name="enero[]" value="0">
@@ -1141,10 +1145,6 @@ function agregarActAreaFila(element) {
                         <input class ="form-control" style="width: 125px;" type="text" name="diciembre[]" value="0">
                         <div class="form-text">${data.diciembre}</div></td>
                     </td>
-                    <td>
-                        <input class ="form-control" style="width: 125px;" type="text" name="total[]" value="0.00">
-                        <div class="form-text">${data.total}</div></td>
-                    </td>
                 </tr>`;
             tableBody.append(rows);
 
@@ -1193,7 +1193,7 @@ function agregarActividad() {
                         </td>
                         <td>${(data.nombreActividadOperativa)}</td>
                         <td>
-                            <textarea class="form-control" style="width: 350px;" rows="3" name="subActividad[]">${subActividad}</textarea>
+                            <textarea class="form-control" style="width: 350px;" rows="5" name="subActividad[]">${subActividad}</textarea>
                         </td>
                         <td>${(data.nombreItem)}</td>
                         <td>${(data.descripcionItem)}</td>
@@ -1206,6 +1206,10 @@ function agregarActividad() {
                                 <option value="AJUSTE">Ajuste</option>
                                 <option value="AMPLIA">Amplia</option>
                             </select>
+                        </td>
+                        <td>
+                            <input class ="form-control" style="width: 125px;" type="text" name="total[]" value="0.00">
+                            <div class="form-text">${data.total}</div></td>
                         </td>
                         <td>
                             <input class ="form-control" style="width: 125px;" type="text" name="enero[]" value="0">
@@ -1254,10 +1258,6 @@ function agregarActividad() {
                         <td>
                             <input class ="form-control" style="width: 125px;" type="text" name="diciembre[]" value="0">
                             <div class="form-text">${data.diciembre}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="total[]" value="0.00">
-                            <div class="form-text">${data.total}</div></td>
                         </td>
                     </tr>`;
                 tableBody.append(rows);
@@ -1325,15 +1325,19 @@ function cambioSelect(selectElement) {
                 if (formText && formText.classList.contains('form-text')) {
                     var value = parseFloat(formText.textContent.trim());
                     // Si el valor es diferente de 0.00, habilitar el input
-                    if (value !== 0.00 && index < inputs.length - 1) {
-                        input.removeAttribute('disabled');
-                    } else if (index < inputs.length - 1) {
+                    if (value === 0.00 && index > 0) {
+                        //input.removeAttribute('disabled');
+                        input.setAttribute('disabled', 'disabled');
+
+                    } else if (index == 0) {
                         // Si es 0.00 y no es el último input, deshabilitarlo
                         input.setAttribute('disabled', 'disabled');
+                    }else{
+                        input.removeAttribute('disabled');
                     }
                 }
             });
-        }if(selectElement.value === 'IGUAL'){
+        }else if(selectElement.value === 'IGUAL'){
 
             inputs.forEach(function(input, index) {
 
@@ -1345,7 +1349,8 @@ function cambioSelect(selectElement) {
         }else {
             // Si no es "DISMINUYE", deshabilitar todos los inputs en la fila excepto el último
             inputs.forEach(function(input, index) {
-                if (index < inputs.length - 1) {
+                //if (index < inputs.length - 1) {
+                if (index !== 0) {
                     //input.setAttribute('disabled', 'disabled');
                     input.removeAttribute('disabled');
                 }

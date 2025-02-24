@@ -25,12 +25,12 @@
     <div class="container2">
         <div class="page-content">
 
-            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+            <!-- <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
                 <div class="col">
                     <label class="form-label fs-6">&nbsp;</label>
                     <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar POA Excel</button>
                 </div>
-            </div>
+            </div> -->
 
             <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ACTIVIDADES </h2>
             <hr/>
@@ -100,6 +100,7 @@
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
                                     <th>Tipo de Proceso</th>
+                                    <th>Tipo de Sub_Actividad</th>
                                     <th>Monto</th>
                                     <th>N° POA</th>
                                     <th>Fecha</th>
@@ -112,7 +113,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="6" class="text-end">Total:</th>
+                                    <th colspan="7" class="text-end">Total:</th>
                                     <th id="totalMonto"></th>
                                     <th colspan="4"></th>
                                 </tr>
@@ -216,6 +217,6 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.12')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.14')}}"></script>
 <script src="{{asset('assets/js/Planificacion/calculadora.js?v0.0.0')}}"></script>
 @endpush

@@ -19,6 +19,7 @@ class Poa extends Model
                             'id_sub_actividad',
                             'id_tipo_monto',
                             'id_tipo_poa',
+                            'id_tipo_sub',
                             'u_ejecutora',
                             'programa',
                             'proyecto',
@@ -86,6 +87,7 @@ class Poa extends Model
                 'id_sub_actividad'        => $sub->id,
                 'id_tipo_monto'           => $poaOriginal->id_tipo_monto,
                 'id_tipo_poa'             => $poaOriginal->id_tipo_poa,
+                'id_tipo_sub'             => 1,//actividad incluida
                 'u_ejecutora'             => $poaOriginal->u_ejecutora,
                 'programa'                => $poaOriginal->programa,
                 'proyecto'                => $poaOriginal->proyecto,

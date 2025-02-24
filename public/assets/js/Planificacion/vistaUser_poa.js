@@ -30,6 +30,7 @@ $( function () {
             { data: 'item',                name: 'item' },
             { data: 'monto',               name: 'monto' },
             { data: 'proceso',             name: 'proceso' },
+            { data: 'tipoSub',             name: 'tipoSub' },
             { data: 'fecha',               name: 'fecha' },
             {
                 data: null,
@@ -83,6 +84,8 @@ $( function () {
                 render: function (data, type, full, meta) {
 
                     let btnCancelarPoa = '';
+                    let montoT= parseFloat(full.monto);
+
                     if( full.estado == 'O' && (full.id_area == 17 || full.id_area == 18)){
 
                         btnCancelarPoa = `
@@ -100,6 +103,13 @@ $( function () {
                                 <i class="font-22 fadeIn animated bi bi-pen"></i>
                             </a>
 
+                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
+                            </a>
+                        `;
+                    }else if(full.estado_pro && montoT === 0){
+
+                        btnEditar = `
                             <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
                                 <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
@@ -223,7 +233,7 @@ $( function () {
             },
         ],
         order: [
-            [8, 'desc']
+            [9, 'desc']
         ],
 
         footerCallback: function (row, data, start, end, display) {
