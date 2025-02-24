@@ -76,6 +76,27 @@ class PostanaliticaController extends Controller
         $this->fpdf->Ln(12);
 
         $this->fpdf->SetFont('Arial', 'B', 8);
+        $this->fpdf->Cell(190,7,utf8_decode("Datos Personales del Paciente"),1,0,"C");
+        $this->fpdf->Ln(7);
+        $this->fpdf->SetFont('Arial', '', 7);
+        $this->fpdf->Cell(50,7,utf8_decode("Identidad: ".$paciente->identidad),1,0,"L");
+        $this->fpdf->Cell(100,7,utf8_decode("Nombres Completos: ".$paciente->apellidos.' '.$paciente->nombres),1,0,"L");
+        $this->fpdf->Cell(40,7,utf8_decode("Sexo: ".$paciente->sexo->nombre),1,0,"L");
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(50,7,utf8_decode("Fecha de Nacimiento: ".$paciente->fechanacimiento),1,0,"L");
+        $tiempo = strtotime($paciente->fechanacimiento);
+        $ahora = time();
+        $edad = ($ahora-$tiempo)/(60*60*24*365.25);
+        $edad = floor($edad);
+        $this->fpdf->Cell(40,7,utf8_decode("Edad: ".$edad.' años'),1,0,"L");
+        $this->fpdf->Cell(100,7,utf8_decode("Nacionalidad: ".$paciente->nacionalidad->nacionalidad),1,0,"L");
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(100,7,utf8_decode("Dirección: ".$paciente->direccion),1,0,"L");
+        $this->fpdf->Cell(50,7,utf8_decode("Zonificación: ".$paciente->provincia->descripcion.' -'.$paciente->canton->descripcion ),1,0,"L");
+        $this->fpdf->Cell(40,7,utf8_decode("Teléfono: ".$paciente->telefono ),1,0,"L");
+        $this->fpdf->Ln(12);
+
+        $this->fpdf->SetFont('Arial', 'B', 8);
         $this->fpdf->Cell(190,7,utf8_decode("Información de Recepción de Muestras"),1,0,"C");
         $this->fpdf->Ln(7);
         $this->fpdf->SetFont('Arial', '', 7);
