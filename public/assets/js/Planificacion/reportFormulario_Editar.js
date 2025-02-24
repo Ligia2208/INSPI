@@ -65,5 +65,6 @@ $(document).ready(function () {
         $('#apellido').val('');
         $('#correo').val('');
         $('#telefono').val('');
+
     }
 });
