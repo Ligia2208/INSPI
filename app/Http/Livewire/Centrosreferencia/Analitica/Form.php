@@ -168,7 +168,7 @@ class Form extends Component
         $this->validate();
         DB::beginTransaction();
         try{
-
+            $control = 0;
             $user = auth()->user()->id;
             $this->Analiticas->fecha_resultado = date("Y-m-d");
             $this->Analiticas->usuarior_id = $user;
@@ -202,8 +202,7 @@ class Form extends Component
                 $newMuestra->archivo = $this->Analiticas->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->save();
-                $this->Analiticas->adicional=1;
-                $this->Analiticas->update();
+                $control = 1;
             }
 
             if($this->Analiticas->tecnica_tercera_id>0 && $this->Analiticas->adicional==0){
@@ -234,8 +233,8 @@ class Form extends Component
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
                 $newMuestra->save();
-                $this->Analiticas->adicional=1;
-                $this->Analiticas->update();
+                $control = 1;
+
             }
 
             if($this->Analiticas->tecnica_cuarta_id>0 && $this->Analiticas->adicional==0){
@@ -266,6 +265,10 @@ class Form extends Component
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
                 $newMuestra->save();
+                $control = 1;
+            }
+
+            if($control>0){
                 $this->Analiticas->adicional=1;
                 $this->Analiticas->update();
             }

@@ -147,7 +147,7 @@ class PostanaliticaController extends Controller
                 $this->fpdf->Cell(34,7,utf8_decode($muestra->codigo_calidad),1,0,"C");
             }
 
-            $this->fpdf->Cell(25,7,utf8_decode($muestra->muestra->descripcion),1,0,"C");
+            $this->fpdf->Cell(25,7,utf8_decode(substr($muestra->muestra->descripcion,0,15)),1,0,"C");
             $this->fpdf->Cell(25,7,utf8_decode($muestra->fecha_toma),1,0,"C");
             $this->fpdf->Cell(25,7,utf8_decode($muestra->fecha_llegada_lab),1,0,"C");
             if($muestra->tecnica_id>0){
@@ -169,7 +169,7 @@ class PostanaliticaController extends Controller
         $this->fpdf->Cell(190,7,utf8_decode("Detalle del Resultado"),1,0,"C");
         $this->fpdf->Ln(7);
         $this->fpdf->SetFont('Arial', '', 7);
-        $this->fpdf->Cell(190,7,utf8_decode("Evento: ".$data->evento->descripcion." - (".$data->evento->simplificado.")"),1,0,"L");
+        $this->fpdf->Cell(190,7,utf8_decode("Evento: ".substr($data->evento->descripcion,0,75)." - (".$data->evento->simplificado.")"),1,0,"L");
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(190,7,utf8_decode("Resultado: ".$data->resultado->descripcion),1,0,"L");
         $this->fpdf->Ln(7);
@@ -187,7 +187,7 @@ class PostanaliticaController extends Controller
 
         QrCode::png($dataqr,storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',QR_ECLEVEL_H,3,1);
 
-        $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',140,190,37);
+        $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',140,210,37);
 
         $this->fpdf->Ln(16);
         $this->fpdf->SetFont('Arial', 'B', 7);
