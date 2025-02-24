@@ -57,7 +57,7 @@ $(document).ready(function () {
 
 
             },
-            error: function (xhr, status, error) {
+            error: function (_xhr, _status, error) {
                 console.error("Error en la solicitud AJAX:", error);
 
                 Swal.fire({
