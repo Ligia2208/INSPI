@@ -193,7 +193,7 @@
     </table> <br>
 
 <!----------------------------------------------------------------------------------------------------------------------------------------------->
-     <table class="inferior" style="page-break-inside: avoid;">
+     <table class="inferior" style="page-break-inside: avoid; font-size: 8px;">
         <tr>
             <th colspan="6">AREAS REQUIRENTES (COORDINACIÓN/DIRECCIÓN TÉCNICAS Y ADMINISTRATIVAS)</th>
             <th colspan="4">DIRECCIÓN DE PLANIFICACIÓN Y GESTIÓN ESTRATÉGICA</th>

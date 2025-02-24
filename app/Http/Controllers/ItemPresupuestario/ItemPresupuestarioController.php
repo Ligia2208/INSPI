@@ -211,8 +211,8 @@ class ItemPresupuestarioController extends Controller{
 
         $montos = MontoDireccion::select(
             DB::raw('SUM(monto) AS total_monto_presupuestado'),
-            DB::raw('COALESCE((SELECT SUM(monto) FROM pla_poa1 WHERE estado != "E"), 0) AS total_monto'),
-            DB::raw('COALESCE((SELECT SUM(monto) FROM pla_items_direcciones WHERE estado = "A"), 0) AS total_monto_direcciones') 
+            DB::raw('COALESCE((SELECT SUM(monto) FROM pla_poa1 WHERE estado != "E"), 0) AS total_monto_direcciones'),
+            DB::raw('COALESCE((SELECT SUM(monto) FROM pla_items_direcciones WHERE estado = "A"), 0) AS total_monto') 
         )
         ->where('estado', 'A')
         //->groupBy('monto')

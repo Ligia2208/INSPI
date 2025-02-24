@@ -705,6 +705,7 @@ function agregarFilaTabla(actividad) {
                     <option value="AUMENTA" selected>Aumenta</option>
                     <option value="IGUAL">Igual</option>
                     <option value="AJUSTE">Ajuste</option>
+                    <option value="AMPLIA">Amplia</option>
                 </select>
             </td>
             <td><input class="form-control" style="width: 125px;" type="text" name="enero1[]" value="0"></td>
@@ -1137,6 +1138,7 @@ function agregarActAreaFila(actividadPoa) {
                     <option value="AUMENTA">Aumenta</option>
                     <option value="IGUAL">Igual</option>
                     <option value="AJUSTE">Ajuste</option>
+                    <option value="AMPLIA">Amplia</option>
                 </select>
             </td>
             <td>
@@ -1289,6 +1291,7 @@ function actualizarTotales() {
     let totalAumenta = 0;
     let totalDisminuye = 0;
     let totalAjuste  = 0;
+    let totalAmplia  = 0;
 
     // Seleccionar solo las filas visibles
     $('#tblActividadesEditar tbody tr:visible').each(function() {
@@ -1309,6 +1312,8 @@ function actualizarTotales() {
             totalDisminuye += totalFila;
         } else if (tipo === 'AJUSTE') {
             totalAjuste += totalFila;
+        }else if (tipo === 'AMPLIA') {
+            totalAmplia += totalFila;
         }
 
     });
@@ -1317,4 +1322,5 @@ function actualizarTotales() {
     $('#aumTotal').val(totalAumenta);
     $('#disTotal').val(totalDisminuye);
     $('#ajuTotal').val(totalAjuste);
+    $('#ampTotal').val(totalAmplia);
 }

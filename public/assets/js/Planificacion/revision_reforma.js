@@ -83,6 +83,7 @@ function actualizarTotales() {
     let totalAumenta = 0;
     let totalDisminuye = 0;
     let totalAjuste  = 0;
+    let totalAmplia  = 0;
 
     // Seleccionar solo las filas visibles
     $('#tblActividades tbody tr:visible').each(function() {
@@ -103,6 +104,8 @@ function actualizarTotales() {
             totalDisminuye += totalFila;
         } else if (tipo === 'AJUSTE') {
             totalAjuste += totalFila;
+        }else if (tipo === 'AMPLIA') {
+            totalAmplia += totalFila;
         }
     });
 
@@ -110,4 +113,5 @@ function actualizarTotales() {
     $('#aumTotal').val(totalAumenta);
     $('#disTotal').val(totalDisminuye);
     $('#ajuTotal').val(totalAjuste);
+    $('#ampTotal').val(totalAmplia);
 }

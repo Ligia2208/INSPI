@@ -106,6 +106,7 @@
                                     <option value="AUMENTA" {{ $atributo->tipo == 'AUMENTA' ? 'selected' : '' }}>Aumenta</option>
                                     <option value="IGUAL" {{ $atributo->tipo == 'IGUAL' ? 'selected' : '' }}>Igual</option>
                                     <option value="AJUSTE" {{ $atributo->tipo == 'AJUSTE' ? 'selected' : '' }}>Ajuste</option>
+                                    <option value="AMPLIA" {{ $atributo->tipo == 'AMPLIA' ? 'selected' : '' }}>Amplia</option>
                                 </select>
                             </td>
 
@@ -130,21 +131,27 @@
 
         <div class="col-lg-12 row">
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="disTotal" class="form-label fs-6">Total Disminuye</label>
                 <input type="text" id="disTotal" name="disTotal" class="form-control disabled-red" required="" autofocus="" value="" disabled="">
                 <div class="valid-feedback">Looks good!</div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="aumTotal" class="form-label fs-6">Total Aumenta</label>
                 <input type="text" id="aumTotal" name="aumTotal" class="form-control disabled-green" required="" autofocus="" value="" disabled="">
                 <div class="valid-feedback">Looks good!</div>
             </div>
 
-            <div class="col-md-4">
+            <div class="col-md-3">
                 <label for="ajuTotal" class="form-label fs-6">Total Ajuste</label>
                 <input type="text" id="ajuTotal" name="ajuTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                <div class="valid-feedback">Looks good!</div>
+            </div>
+
+            <div class="col-md-3">
+                <label for="ampTotal" class="form-label fs-6">Total Ampliación</label>
+                <input type="text" id="ampTotal" name="ampTotal" class="form-control" required="" autofocus="" value="" disabled="">
                 <div class="valid-feedback">Looks good!</div>
             </div>
 
@@ -234,5 +241,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/revision_reforma.js?v0.0.10')}}"></script>
+<script src="{{asset('assets/js/Planificacion/revision_reforma.js?v0.0.11')}}"></script>
 @endpush

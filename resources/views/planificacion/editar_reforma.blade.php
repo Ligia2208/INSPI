@@ -116,6 +116,7 @@
                                     <option value="AUMENTA" {{ $atributo->tipo == 'AUMENTA' ? 'selected' : '' }}>Aumenta</option>
                                     <option value="IGUAL" {{ $atributo->tipo == 'IGUAL' ? 'selected' : '' }}>Igual</option>
                                     <option value="AJUSTE" {{ $atributo->tipo == 'AJUSTE' ? 'selected' : '' }}>Ajuste</option>
+                                    <option value="AMPLIA" {{ $atributo->tipo == 'AMPLIA' ? 'selected' : '' }}>Amplia</option>
                                 </select>
                             </td>
                             <td><input class="form-control" type="text" name="enero1[]" value="{{ $atributo->enero }}"></td>
@@ -403,9 +404,15 @@
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
-                        <div class="col-md-12">
+                        <div class="col-md-6">
                             <label for="ajuTotal" class="form-label fs-6">Total Ajuste</label>
                             <input type="text" id="ajuTotal" name="ajuTotal" class="form-control" required="" autofocus="" value="" disabled="">
+                            <div class="valid-feedback">Looks good!</div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="ampTotal" class="form-label fs-6">Total Ampliación</label>
+                            <input type="text" id="ampTotal" name="ampTotal" class="form-control" required="" autofocus="" value="" disabled="">
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
@@ -476,5 +483,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.12')}}"></script>
+<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.13')}}"></script>
 @endpush

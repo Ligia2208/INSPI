@@ -6,6 +6,7 @@ $( function () {
     });
 
 
+
     //CÓDIGO PARA MOSTRAR LA TABLA EN EL INDEX
     $('#tblItemPresupuestarioIndex').DataTable({ //id de la tabla en el visual (index)
         processing: true,

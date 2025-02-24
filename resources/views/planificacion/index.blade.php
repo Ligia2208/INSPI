@@ -27,6 +27,8 @@
 
             <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
                 <div class="col">
+                    <label class="form-label fs-6">&nbsp;</label>
+                    <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar POA Excel</button>
                 </div>
             </div>
 
@@ -74,6 +76,17 @@
                             </select>
                         </div>
 
+                        <div class="col-lg-6 mt-4 mb-5">
+                            <label for="filterPrograma" class="form-label">Filtrar por Programa:</label>
+                            <select id="filterPrograma" class="js-example-basic-single filter">
+                                <option value="">Todos</option>
+                                @foreach($programas as $programa)
+                                    <option value="{{ $programa->nombre }}">{{ $programa->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+
                     </div>
 
 
@@ -88,6 +101,7 @@
                                     <th>Sub actividad</th>
                                     <th>Tipo de Proceso</th>
                                     <th>Monto</th>
+                                    <th>N° POA</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th>Revisión</th>
@@ -100,7 +114,7 @@
                                 <tr>
                                     <th colspan="6" class="text-end">Total:</th>
                                     <th id="totalMonto"></th>
-                                    <th colspan="3"></th>
+                                    <th colspan="4"></th>
                                 </tr>
                             </tfoot>
 
@@ -202,6 +216,6 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.9')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.12')}}"></script>
 <script src="{{asset('assets/js/Planificacion/calculadora.js?v0.0.0')}}"></script>
 @endpush

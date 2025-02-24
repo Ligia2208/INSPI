@@ -144,57 +144,60 @@ class Form extends Component
                 $user = auth()->user()->id;
                 $i=0;
 
-                $preanalitica = Preanalitica::findOrFail($this->Analiticas->id);
-                $absede = Sede::findOrFail($preanalitica->sedes_id);
-                $abcrn = Crn::findOrFail(8);
-                if($preanalitica->resultado_id==67 && ($preanalitica->evento_id==116 || $preanalitica->evento_id==117 || $preanalitica->evento_id==118 || $preanalitica->evento_id==119 || $preanalitica->evento_id==120 || $preanalitica->evento_id==125)){
-                        $lista = $this->Analiticas->eventosav_id;
-                        $total = count($lista);
-                        if($total>0){
-                            while($i<$total){
-                                try{
-                                    $objPreanalitica = Preanalitica::findOrFail($this->Analiticas->id);
-                                    $newPreanalitica = new Preanalitica();
-                                    $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
-                                    $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
-                                    $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
-                                    $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
-                                    $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
-                                    $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
-                                    $newPreanalitica->embarazo = $objPreanalitica->embarazo;
-                                    $newPreanalitica->gestacion = $objPreanalitica->gestacion;
-                                    $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
-                                    $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
-                                    $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
-                                    $newPreanalitica->crns_id = $objPreanalitica->crns_id;
-                                    $newPreanalitica->evento_id = $this->Analiticas->eventosav_id[$i];
-                                    $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
-                                    $newPreanalitica->primera_id = $objPreanalitica->primera_id;
-                                    $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
-                                    $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
-                                    $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
-                                    $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
-                                    $newPreanalitica->usuariot_id = $objPreanalitica->usuariot_id;
-                                    $newPreanalitica->save();
+        $analiticas = Analitica::where('preanalitica_id','=',$this->Analiticas->id)->get();
+        $user = auth()->user()->id;
+        $i=0;
+        $preanalitica = Preanalitica::findOrFail($this->Analiticas->id);
+        $absede = Sede::findOrFail($preanalitica->sedes_id);
+        $abcrn = Crn::findOrFail(8);
+        if($preanalitica->resultado_id==67 && ($preanalitica->evento_id==116 || $preanalitica->evento_id==117 || $preanalitica->evento_id==118 || $preanalitica->evento_id==119 || $preanalitica->evento_id==120 || $preanalitica->evento_id==125)){
+                $lista = $this->Analiticas->eventosav_id;
+                $total = count($lista);
+                if($total>0){
+                    while($i<$total){
+                        try{
+                            $objPreanalitica = Preanalitica::findOrFail($this->Analiticas->id);
+                            $newPreanalitica = new Preanalitica();
+                            $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                            $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+                            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                            $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                            $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                            $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                            $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                            $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                            $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                            $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                            $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                            $newPreanalitica->crns_id = $objPreanalitica->crns_id;
+                            $newPreanalitica->evento_id = $this->Analiticas->eventosav_id[$i];
+                            $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                            $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                            $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                            $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                            $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+                            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                            $newPreanalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                            $newPreanalitica->save();
 
-                                    $Analiticas = Analitica::where('preanalitica_id','=',$this->Analiticas->id)->first();
-                                    $newAnalitica = new Analitica();
-                                    $newAnalitica->preanalitica_id = $newPreanalitica->id;
-                                    $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
-                                    $newAnalitica->crns_id = $objPreanalitica->crns_id;
-                                    $newAnalitica->evento_id = $this->Analiticas->eventosav_id[$i];
-                                    $newAnalitica->muestra_id = $objPreanalitica->primera_id;
-                                    $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
-                                    $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,8);
-                                    $newAnalitica->codigo_secuencial = 1;
-                                    $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
-                                    $anio = date("Y", $fechacomoentero)-2000;
-                                    $mes = date("m", $fechacomoentero);
-                                    $newAnalitica->codigo_calidad = str_pad($newAnalitica->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newAnalitica->codigo_secuencial, 2, '0', STR_PAD_LEFT);
-                                    $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
-                                    $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
-                                    $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
-                                    $newAnalitica->save();
+                            $Analiticas = Analitica::where('preanalitica_id','=',$this->Analiticas->id)->first();
+                            $newAnalitica = new Analitica();
+                            $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                            $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                            $newAnalitica->crns_id = $objPreanalitica->crns_id;
+                            $newAnalitica->evento_id = $this->Analiticas->eventosav_id[$i];
+                            $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                            $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                            $newAnalitica->codigo_muestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,8);
+                            $newAnalitica->codigo_secuencial = 1;
+                            $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                            $anio = date("Y", $fechacomoentero)-2000;
+                            $mes = date("m", $fechacomoentero);
+                            $newAnalitica->codigo_calidad = str_pad($newAnalitica->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newAnalitica->codigo_secuencial, 2, '0', STR_PAD_LEFT);
+                            $newAnalitica->codigo_externo = 'EXANT-DIF-'.$newAnalitica->codigo_muestra;
+                            $newAnalitica->usuariot_id = $objPreanalitica->usuariot_id;
+                            $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                            $newAnalitica->save();
 
                                     $newPreanalitica->campliada=$Analiticas->codigo_muestra;
                                     $newPreanalitica->update();

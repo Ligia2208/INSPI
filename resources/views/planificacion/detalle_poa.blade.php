@@ -114,7 +114,7 @@
                                     <th>Actividad</th>
                                     <th>Unidad</th>
 
-                                    <th>Tipo de POA</th>
+                                    <th>Tipo Proceso</th>
                                     <th>Obj. Operativo</th>
                                     <th>Act. Operativa</th>
                                     <th>Sub Actividad</th>
@@ -355,5 +355,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.4')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.5')}}"></script>
 @endpush

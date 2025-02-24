@@ -85,21 +85,26 @@
 
 
             <div class="row mb-4 mt-4">
-                <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> ACTIVIDADES - {{$area}}</h2>
-                <hr/>
+                
+                <div class="col-lg-12">
+                    <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> ACTIVIDADES - {{$area}}</h2>
+                </div>
+                
+                <div class="col-lg-12 d-flex justify-content-end mt-4">
+                    @if(!$proestado)
+                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mr-3" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
+                        <i class="lni lni-circle-plus"></i> Crear Actividad
+                    </a>
+                    @else
+                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mr-3" href="{{ route('planificacion.nuevaPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
+                        <i class="lni lni-circle-plus"></i> Crear Actividad con monto 0
+                    </a>
+                    @endif
 
-                <!-- <a type="button" onclick="ejecutar()"  class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center">
-                    Ejecutar
-                </a> -->
-                @if(!$proestado)
-                <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.crearPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
-                    <i class="lni lni-circle-plus"></i> Crear Actividad
-                </a>
-                @endif
-
-                <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
-                    <i class="lni lni-circle-plus"></i> Reformas
-                </a>
+                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
+                        <i class="lni lni-circle-plus"></i> Reformas
+                    </a>
+                </div>
             
             </div>
 
@@ -382,7 +387,7 @@
         <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"> Aprovación de solicitud </h5>
+                    <h5 class="modal-title" id="exampleModalLabel"> Aprobación de solicitud </h5>
                     <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -395,162 +400,34 @@
 
                             <input type="hidden" id="id_solicitud" name="id_solicitud" class="form-control" required="" autofocus="" value="">
 
-                            <h3 class="">Área requiriente</h3>
+                            <table id="tblSolicitud" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Departamento Solicitante</th>
+                                        <th>Sub actividad</th>
+                                        <th>Item</th>
+                                        <th>Tipo</th>
+                                        <th>Disponible</th>
+                                        <th>Disminuye</th>
+                                        <th>Aumenta</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
 
-                            <div class="col-md-12 mt-1 text-start">
-                                <strong class="d-block">Área Requirente</strong>
-                                <small id="area">  </small>
+                                </tbody>
+                                <tfoot>
 
-                                <strong class="d-block mt-1">Fecha</strong>
-                                <small id="fecha">  </small>
-                            </div>
-
-                            <hr class="mt-4">
-
-                            <h3 class="mt-5">Datos de la Actividad</h3>
-
-                            <div class="position-static d-flex flex-column flex-lg-row align-items-stretch justify-content-start p-3 rounded-3">
-                                <nav class="col-lg-12">
-                                    <ul class="list-unstyled d-flex flex-column gap-2">
-                                        <li class="row">
-                                            <div class="btn text-start col-lg-12">
-                                                <strong class="d-block">Objetivo</strong>
-                                                <small id="objetivo">  </small>
-                                                <strong class="d-block mt-1">Actividad</strong>
-                                                <small id="actividad"></small>
-                                                <strong class="d-block mt-1">Sub Actividad</strong>
-                                                <small id="subActividad">  </small>
-                                            </div>
-                                            <!-- <div class="btn text-start col-lg-3">
-                                                <strong class="d-block">Número de actividad</strong>
-                                                <small id="numero">  </small>
-                                            </div> -->
-                                        </li>
-
-                                        <table class="table">
-                                            <tbody class="table-group-divider">
-                                                <tr>
-                                                    <th scope="row">Ene</th>
-                                                    <th scope="row">Feb</th>
-                                                    <th scope="row">Mar</th>
-                                                    <th scope="row">May</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="ene"></td>
-                                                    <td id="feb"></td>
-                                                    <td id="mar"></td>
-                                                    <td id="may"></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Abr</th>
-                                                    <th scope="row">Jun</th>
-                                                    <th scope="row">Jul</th>
-                                                    <th scope="row">Ago</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="abr"></td>
-                                                    <td id="jun"></td>
-                                                    <td id="jul"></td>
-                                                    <td id="ago"></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Sep</th>
-                                                    <th scope="row">Oct</th>
-                                                    <th scope="row">Nov</th>
-                                                    <th scope="row">Dic</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="sep"></td>
-                                                    <td id="oct"></td>
-                                                    <td id="nov"></td>
-                                                    <td id="dic"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                    </ul>
-                                </nav>
-                            </div>
-
-                            <hr class="mt-0">
-
-
-                            <div class="col-lg-12 mt-5">
-                                <h3 class="">Datos de la Actividad Actualizados</h3>
-                            </div>
-            
-
-                            <div class="position-static d-flex flex-column flex-lg-row align-items-stretch justify-content-start p-3 rounded-3">
-                                <nav class="col-lg-12">
-                                    <ul class="list-unstyled d-flex flex-column gap-2">
-                                        <li class="row">
-                                            <div class="btn text-start col-lg-9">
-                                                <strong class="d-block">Objetivo</strong>
-                                                <small id="objetivoS">  </small>
-                                                <strong class="d-block mt-1">Actividad</strong>
-                                                <small id="actividadS"></small>
-                                                <strong class="d-block mt-1">Sub Actividad</strong>
-                                                <small id="subActividadS">  </small>
-                                            </div>
-                                            <div class="btn text-start col-lg-3">
-                                                <strong class="d-block">Tipo de Movimiento</strong>
-                                                <small id="tipo">  </small>
-                                            </div>
-                                        </li>
-
-                                        <table class="table">
-                                            <tbody class="table-group-divider">
-                                                <tr>
-                                                    <th scope="row">Ene</th>
-                                                    <th scope="row">Feb</th>
-                                                    <th scope="row">Mar</th>
-                                                    <th scope="row">May</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="eneS"></td>
-                                                    <td id="febS"></td>
-                                                    <td id="marS"></td>
-                                                    <td id="mayS"></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Abr</th>
-                                                    <th scope="row">Jun</th>
-                                                    <th scope="row">Jul</th>
-                                                    <th scope="row">Ago</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="abrS"></td>
-                                                    <td id="junS"></td>
-                                                    <td id="julS"></td>
-                                                    <td id="agoS"></td>
-                                                </tr>
-                                                <tr>
-                                                    <th scope="row">Sep</th>
-                                                    <th scope="row">Oct</th>
-                                                    <th scope="row">Nov</th>
-                                                    <th scope="row">Dic</th>
-                                                </tr>
-                                                <tr>
-                                                    <td id="sepS"></td>
-                                                    <td id="octS"></td>
-                                                    <td id="novS"></td>
-                                                    <td id="dicS"></td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                    </ul>
-                                </nav>
-                            </div>
-
+                                </tfoot>
+                            </table>
+                    
                         </div>
 
                         <div class="col-md-12 mt-2 text-center">
-                            <label for="frecuencia" class="form-label fs-6">Quiere prestar la actividad?</label>
+                            <label for="frecuencia" class="form-label fs-6">Quiere autorizar la actividad?</label>
                             <select id="estado" name="estado" class="form-control js-example-basic-single" required="" >
-                                <option value="0" selected="">Seleccione el estado de la actividad</option>
-                                <option value="aprobado"> Aprobado</option>
-                                <option value="rechazado"> Rechazado</option>
+                                <option value="0" selected="">Seleccione el estado</option>
+                                <option value="aprobado"> SI </option>
+                                <option value="rechazado"> NO </option>
                             </select>
                         </div>
 
@@ -571,5 +448,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.28')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.30')}}"></script>
 @endpush
