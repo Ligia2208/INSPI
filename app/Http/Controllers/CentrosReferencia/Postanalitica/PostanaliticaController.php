@@ -130,8 +130,8 @@ class PostanaliticaController extends Controller
             $this->fpdf->Cell(25,7,utf8_decode($muestra->fecha_toma),1,0,"C");
             $this->fpdf->Cell(25,7,utf8_decode($muestra->fecha_llegada_lab),1,0,"C");
             if($muestra->tecnica_id>0){
-                $this->fpdf->Cell(40,7,utf8_decode(substr($muestra->tecnica->descripcion,1,32)),1,0,"L");
-                $this->fpdf->Cell(41,7,utf8_decode(substr($muestra->resultado->descripcion,1,32)),1,0,"L");
+                $this->fpdf->Cell(40,7,utf8_decode(substr($muestra->tecnica->descripcion,0,32)),1,0,"L");
+                $this->fpdf->Cell(41,7,utf8_decode(substr($muestra->resultado->descripcion,0,32)),1,0,"L");
             }
             else{
                 $this->fpdf->Cell(40,7,utf8_decode(""),1,0,"C");
@@ -177,7 +177,7 @@ class PostanaliticaController extends Controller
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(90,7,utf8_decode("Llegada al CRN - Laboratorio : ".$fecha_lab),1,0,"L");
         $this->fpdf->Ln(7);
-        $this->fpdf->Cell(80,7,utf8_decode("Analítica: ".$tecnico.' ('.$fecha_resul.')'),1,0,"L");
+        $this->fpdf->Cell(90,7,utf8_decode("Analítica: ".$tecnico.' ('.$fecha_resul.')'),1,0,"L");
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(90,7,utf8_decode("Validación resultado: ".$data->usuarior->name.' ('.$data->fecha_resultado.')'),1,0,"L");
         $this->fpdf->Ln(7);
