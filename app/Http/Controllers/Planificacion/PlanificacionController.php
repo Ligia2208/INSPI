@@ -34,6 +34,9 @@ use App\Models\Planificacion\TipoProceso\TipoProceso;
 //FORMULARIO
 use App\Models\Planificacion\Formulario;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Database\Eloquent\Model;
+
+
 
 
 
@@ -4244,6 +4247,9 @@ class PlanificacionController extends Controller
                 'correo'            => $correo,
                 'telefono'          => $telefono,
                 //'estado'            => 'A',          // Valor por defecto
+                //'created_at'
+                //'updated_at'
+            
             ]);
 
     
