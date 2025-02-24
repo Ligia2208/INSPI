@@ -96,14 +96,14 @@
                         <i class="lni lni-circle-plus"></i> Crear Actividad
                     </a>
                     @else
-                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mr-3" href="{{ route('planificacion.nuevaPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
-                        <i class="lni lni-circle-plus"></i> Crear Actividad con monto 0
+                    <a class="col-2 btn btn-info px-1 d-flex align-items-center justify-content-center mr-3" href="{{ route('planificacion.nuevaPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
+                        <i class="lni lni-circle-plus"></i> Inclusión PAPP
                     </a>
                     @endif
 
-                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
+                    <!-- <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
                         <i class="lni lni-circle-plus"></i> Reformas
-                    </a>
+                    </a> -->
                 </div>
             
             </div>

@@ -78,7 +78,7 @@ $( function () {
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
 
-                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip" data-title="Ver Reforma">
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
                                 <i class="font-22 fadeIn bi bi-eye" ></i>
                             </a>
 
@@ -96,7 +96,7 @@ $( function () {
                                 <i class="font-22 bi bi-filetype-pdf"></i>
                             </a>
 
-                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip" data-title="Ver Reforma">
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
                                 <i class="font-22 fadeIn bi bi-eye" ></i>
                             </a>
 
@@ -108,6 +108,11 @@ $( function () {
                             <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
+
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
+                            </a>
+
                         </div>
                         `;
                     }else{

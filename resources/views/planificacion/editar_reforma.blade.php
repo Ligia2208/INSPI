@@ -61,9 +61,9 @@
 
                 <div class="row mb-5" id="contenedorBotonAgregarActividad">
                     <hr type="hidden"/>
-                    <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormularioActividad()" type="button">
+                    <!-- <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormularioActividad()" type="button">
                         <i class="lni lni-circle-plus" id="btnActividad"></i> Crear Actividad
-                    </a>
+                    </a> -->
                     <a class="col-2 btn btn-success px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormActArea()" type="button">
                         <i class="lni lni-circle-plus" id="btnActividadArea"></i> Actividad Externa
                     </a>

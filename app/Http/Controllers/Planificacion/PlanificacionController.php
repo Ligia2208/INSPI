@@ -101,7 +101,7 @@ class PlanificacionController extends Controller
             $direccion = request()->get('direccion');
             $item      = request()->get('item');
             $programa  = request()->get('programa');
-            $subactividad  = request()->get('subactividad');
+            //$subactividad  = request()->get('subactividad');
 
             if ($programa) {
                 $programaIds = Programa::where('nombre', $programa)->pluck('id');
@@ -152,9 +152,11 @@ class PlanificacionController extends Controller
                 $query->whereIn('pla_poa1.programa', $programaIds);
             }
 
+            /*
             if (!empty($subactividad)) {
-                $query->whereIn('pla_poa1.id_tipo_sub', $subactividad);
+                $query->where('pla_poa1.id_tipo_sub', $subactividad);
             }
+            */
         
             // **Devolver datos en formato JSON**
             return datatables()->of($query)->addIndexColumn()->make(true);
@@ -564,11 +566,16 @@ class PlanificacionController extends Controller
     public function deletePoa(Request $request)
     {
         $poa = Poa::find($request->id); //Busca el registro por el ID
+        $calendario = Calendario::where('id_poa', $request->id)->first();
 
         if ($poa) {
 
             $poa->update([
                 'estado' => 'E', //Asigna el estado "E" para no mostrarlo en la tabla
+            ]);
+
+            $calendario->update([
+                'justificacion' => $request->comentario, //justificacion de la eliminación
             ]);
 
             return response()->json(['message' => 'Registro eliminado exitosamente', 'data' => true], 200);
@@ -1971,6 +1978,7 @@ class PlanificacionController extends Controller
 
 
     public function saveReforma(Request $request){
+
         $data = $request->validate([
             'formData'      => 'required|array', // Validar que 'datos' sea un array requerido
             //'justificacion' => 'required|string', // Validar que 'justificacion' sea una cadena requerida
@@ -2675,12 +2683,14 @@ class PlanificacionController extends Controller
                     }
 
     
+                    /*
                     $poa = Poa::find($actividad->id_poa1);
                     
                     if ($poa && $poa->monto == 0) {
                         $poa->monto = $datos['total'];
                         $poa->save();
                     }
+                    */
 
                     //para las actividades solicitadas que fueron agregadas
                     if($datos['estado'] == 'A' && $datos['solicitud'] == 'false'){

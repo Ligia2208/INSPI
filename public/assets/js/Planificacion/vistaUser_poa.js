@@ -723,8 +723,18 @@ $(function(){
             text: 'Seguro quiere eliminar este registro.',
             showConfirmButton: true,
             showCancelButton: true,
+            input: 'text',
+            inputPlaceholder: 'Ingrese el motivo de eliminación',
+            preConfirm: (comentario) => {
+                if (!comentario) {
+                    Swal.showValidationMessage('Debe ingresar un motivo.');
+                }
+                return comentario; // Devuelve el comentario para usarlo luego
+            }
         }).then((result) => {
-            if (result.value == true) {
+            if (result.isConfirmed == true) {
+
+                let comentario = result.value;
 
                 $.ajax({
 
@@ -736,6 +746,7 @@ $(function(){
                     },
                     data: {
                         'id': id_POA,
+                        'comentario': comentario,
                     },
                     success: function(response) {
 

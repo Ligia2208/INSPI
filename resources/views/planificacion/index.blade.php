@@ -76,7 +76,7 @@
                             </select>
                         </div>
 
-                        <div class="col-lg-3 mt-4 mb-5">
+                        <div class="col-lg-6 mt-4 mb-5">
                             <label for="filterPrograma" class="form-label">Filtrar por Programa:</label>
                             <select id="filterPrograma" class="js-example-basic-single filter">
                                 <option value="">Todos</option>
@@ -85,17 +85,6 @@
                                 @endforeach
                             </select>
                         </div>
-
-                        <div class="col-lg-3 mt-4 mb-5">
-                            <label for="filterTipoSub" class="form-label">Filtrar por Tipo Sub_Actividad:</label>
-                            <select id="filterTipoSub" class="js-example-basic-single filter">
-                                <option value="">Todos</option>
-                                @foreach($tipo_subAct as $t_sub)
-                                    <option value="{{ $t_sub->id }}">{{ $t_sub->nombre }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-
 
                     </div>
 
