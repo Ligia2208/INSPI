@@ -48,10 +48,9 @@ $(document).ready(function () {
             },
           
             
-            error: function (xhr, _status, error) {
+            error: function (_xhr, _status, error) {
                 console.error("Error en la solicitud AJAX:", error);
-                console.log("Código de estado HTTP:", xhr.status);
-                console.log("Respuesta del servidor:", xhr.responseText);
+                
                 debugger;  // Pausa el código aquí
             }
             

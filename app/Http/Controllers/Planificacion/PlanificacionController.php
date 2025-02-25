@@ -37,10 +37,6 @@ use Illuminate\Support\Facades\Log;
 
 
 
-
-
-
-
 //Czonal y area
 use App\Models\Czonal\Czonal;
 
@@ -4261,7 +4257,7 @@ class PlanificacionController extends Controller
     //respuesta para la vista editar
     public function reportFormulario_Editar(){
 
-        $datos = Formulario::find(9);
+        $datos = Formulario::find(15);
              $id        = $datos -> id;
              $nombre    = $datos -> nombre;
              $apellido  = $datos -> apellido;
@@ -4272,10 +4268,10 @@ class PlanificacionController extends Controller
    }
  
 
-   public function editar_usuario(Formulario $request)
+    public function editar_usuario(Request $request)
     {
         try {
-            // Validar los datos recibidos
+
             $data = $request->validate([
                 'id'       => 'required|integer', 
                 'nombre'   => 'required|string',
@@ -4284,36 +4280,33 @@ class PlanificacionController extends Controller
                 'telefono' => 'required|string',
             ]);
 
-            $id         = $request->input('id');
-            $nombre     = $request->input('nombre');
-            $apellido   = $request->input('apellido');
-            $correo     = $request->input('correo');
-            $telefono   = $request->input('telefono');
+            $id = $data['id'];
 
-            // Buscar el usuario por su ID
-           ////$usuario = Formulario::find($data['id']);
-           $usuario = Formulario::find($id);
+
+            $usuario = Formulario::find($id);
+
+
+            Log::info('ID recibido para edición:', ['id' => $id]);
+            Log::info('Usuario encontrado:', ['usuario' => $usuario]);
+
 
             if (!$usuario) {
                 return response()->json([
                     'success' => false,
-                    'message' => 'Usuario no encontrado'
+                    'message' => 'Usuario no encontrado en la base de datos',
+                    'id_recibido' => $id
                 ], 404);
-            } 
+            }
 
-            // Actualizar el usuario con los datos validados (excluyendo el id)
-           /* $usuario->update([
-                'nombre'   => $data['nombre'],
-                'apellido' => $data['apellido'],
-                'correo'   => $data['correo'],
-                'telefono' => $data['telefono'],
-            ]);*/
-
-            /* $usuario->nombre = $data['nombre'];
+            // Actualizar los datos del usuario
+            $usuario->nombre = $data['nombre'];
             $usuario->apellido = $data['apellido'];
-            $usuario->correo   = $data['correo'];
+            $usuario->correo = $data['correo'];
             $usuario->telefono = $data['telefono'];
-            $usuario->save();*/
+            $usuario->save();
+
+
+            Log::info('Usuario actualizado correctamente:', ['usuario' => $usuario]);
 
             return response()->json([
                 'success' => true,
@@ -4321,18 +4314,20 @@ class PlanificacionController extends Controller
                 'data'    => $usuario
             ], 200);
 
+        } catch (\ValidationException $ve) {
+            return response()->json([
+                'success' => false,
+                'error' => $ve->errors()
+            ], 400);
+        } catch (\Exception $e) {
 
-            } catch (\Illuminate\Validation\ValidationException $ve) {
-
-                return response()->json(['success' => false, 'error' => $ve->errors()], 200);
-
-            } catch (\Exception $e) {
-                Log::error('Error al editar usuario: '.$e->getMessage());
-    
+            // Registrar en logs el error exacto
+            Log::error('Error al editar usuario:', ['error' => $e->getMessage()]);
 
             return response()->json([
                 'success' => false,
                 'message' => 'Error al editar usuario',
+                'error'   => $e->getMessage()
             ], 500);
         }
     }
