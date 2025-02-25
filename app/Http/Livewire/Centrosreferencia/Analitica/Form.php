@@ -16,6 +16,7 @@ use App\Models\CentrosReferencia\Provincia;
 use App\Models\CentrosReferencia\Canton;
 use App\Models\CentrosReferencia\Reporte;
 use App\Models\CentrosReferencia\Tecnica;
+use App\Models\CentrosReferencia\Tipoparametros;
 use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Unidades;
 use Illuminate\Support\Facades\Auth;
@@ -88,6 +89,56 @@ class Form extends Component
             'Analiticas.resultado_cuarta_id' => 'sometimes|numeric',
             'Analiticas.identificado_cuarta' => 'sometimes|max:200',
 
+            'Analiticas.germenaislado_mico' => 'sometimes|max:80',
+            'Analiticas.directokoh_mico' => 'sometimes|max:80',
+            'Analiticas.directoplaca_mico' => 'sometimes|max:80',
+            'Analiticas.tintachina_mico' => 'sometimes|max:80',
+            'Analiticas.antibiogramaid_mico' => 'sometimes|max:200',
+
+            'Analiticas.fungicounoid_mico' => 'sometimes|numeric',
+            'Analiticas.cimuno_mico' => 'sometimes|numeric',
+            'Analiticas.difusionuno_mico' => 'sometimes|max:40',
+            'Analiticas.escalaunoid_mico' => 'sometimes|numeric',
+
+            'Analiticas.fungicodosid_mico' => 'sometimes|numeric',
+            'Analiticas.cimdos_mico' => 'sometimes|numeric',
+            'Analiticas.difusiondos_mico' => 'sometimes|max:40',
+            'Analiticas.escaladosid_mico' => 'sometimes|numeric',
+
+            'Analiticas.fungicotresid_mico' => 'sometimes|numeric',
+            'Analiticas.cimtres_mico' => 'sometimes|numeric',
+            'Analiticas.difusiontres_mico' => 'sometimes|max:40',
+            'Analiticas.escalatresid_mico' => 'sometimes|numeric',
+
+            'Analiticas.fungicocuatroid_mico' => 'sometimes|numeric',
+            'Analiticas.cimcuatro_mico' => 'sometimes|numeric',
+            'Analiticas.difusioncuatro_mico' => 'sometimes|max:40',
+            'Analiticas.escalacuatroid_mico' => 'sometimes|numeric',
+
+            'Analiticas.fungicocincoid_mico' => 'sometimes|numeric',
+            'Analiticas.cimcinco_mico' => 'sometimes|numeric',
+            'Analiticas.difusioncinco_mico' => 'sometimes|max:40',
+            'Analiticas.escalacincoid_mico' => 'sometimes|numeric',
+
+            'Analiticas.fungicoseisid_mico' => 'sometimes|numeric',
+            'Analiticas.cimseis_mico' => 'sometimes|numeric',
+            'Analiticas.difusionseis_mico' => 'sometimes|max:40',
+            'Analiticas.escalaseisid_mico' => 'sometimes|numeric',
+
+            'Analiticas.fungicosieteid_mico' => 'sometimes|numeric',
+            'Analiticas.cimsiete_mico' => 'sometimes|numeric',
+            'Analiticas.difusionsiete_mico' => 'sometimes|max:40',
+            'Analiticas.escalasieteid_mico' => 'sometimes|numeric',
+
+            'Analiticas.deteccionunoid_mico' => 'sometimes|numeric',
+            'Analiticas.interpretaunoid_mico' => 'sometimes|numeric',
+            'Analiticas.detecciondosid_mico' => 'sometimes|numeric',
+            'Analiticas.interpretadosid_mico' => 'sometimes|numeric',
+            'Analiticas.detecciontresid_mico' => 'sometimes|numeric',
+            'Analiticas.interpretatresid_mico' => 'sometimes|numeric',
+            'Analiticas.deteccioncuatroid_mico' => 'sometimes|numeric',
+            'Analiticas.interpretacuatroid_mico' => 'sometimes|numeric',
+
         ];
     }
 
@@ -148,7 +199,10 @@ class Form extends Component
         $unidades = Unidades::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $instituciones = Institucion::where('estado','=','A')->orderBy('id','asc')->cursor();
-        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','instituciones','preanalitica','estados','unidades','clases'));
+        $paramicrobianos = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antimicrobianos')->orderBy('id','asc')->cursor();
+        $paradifusion = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Inmunodifusion')->orderBy('id','asc')->cursor();
+        $parabiograma = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antibiograma')->orderBy('id','asc')->cursor();
+        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','instituciones','paramicrobianos','paradifusion','parabiograma','preanalitica','estados','unidades','clases'));
     }
 
     public function store(){
@@ -201,6 +255,7 @@ class Form extends Component
                 $newMuestra->usuarior_id = $user;
                 $newMuestra->archivo = $this->Analiticas->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
+                $newMuestra->adicional = 1;
                 $newMuestra->save();
                 $control = 1;
             }
@@ -232,6 +287,7 @@ class Form extends Component
                 $newMuestra->archivo = $this->Analiticas->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
+                $newMuestra->adicional = 1;
                 $newMuestra->save();
                 $control = 1;
 
@@ -264,6 +320,7 @@ class Form extends Component
                 $newMuestra->archivo = $this->Analiticas->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
+                $newMuestra->adicional = 1;
                 $newMuestra->save();
                 $control = 1;
             }
