@@ -1,13 +1,14 @@
 $(document).ready(function () {
-    //console.log("jQuery ha sido cargado y el DOM está listo.");
 
     $(document).on("click", "#EditarUsuario", function () {
         
-       //onsole.log("¡El botón fue detectado y clickeado!");
-        var id = $('#id').val().trim();
-        var nombre = $('#nombre').val().trim();
+      // console.log("¡El botón fue detectado y clickeado!");
+
+        //var id = parseInt($('#id').val().trim());
+        var id       = $('#id').val().trim();
+        var nombre   = $('#nombre').val().trim();
         var apellido = $('#apellido').val().trim();
-        var correo = $('#correo').val().trim();
+        var correo   = $('#correo').val().trim();
         var telefono = $('#telefono').val().trim();
 
 
@@ -45,16 +46,15 @@ $(document).ready(function () {
 
 
             },
-            error: function (_xhr, _status, error) {
+          
+            
+            error: function (xhr, _status, error) {
                 console.error("Error en la solicitud AJAX:", error);
-
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Error en la solicitud. Intente de nuevo.',
-                    confirmButtonText: 'Aceptar'
-                });
+                console.log("Código de estado HTTP:", xhr.status);
+                console.log("Respuesta del servidor:", xhr.responseText);
+                debugger;  // Pausa el código aquí
             }
+            
         });
 
     });

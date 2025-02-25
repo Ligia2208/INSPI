@@ -4272,7 +4272,7 @@ class PlanificacionController extends Controller
    }
  
 
-    public function editar_usuario(Formulario $request)
+   public function editar_usuario(Formulario $request)
     {
         try {
             // Validar los datos recibidos
@@ -4294,22 +4294,22 @@ class PlanificacionController extends Controller
            ////$usuario = Formulario::find($data['id']);
            $usuario = Formulario::find($id);
 
-           /* if (!$usuario) {
+            if (!$usuario) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Usuario no encontrado'
                 ], 404);
-            } */
+            } 
 
             // Actualizar el usuario con los datos validados (excluyendo el id)
-            $usuario->update([
+           /* $usuario->update([
                 'nombre'   => $data['nombre'],
                 'apellido' => $data['apellido'],
                 'correo'   => $data['correo'],
                 'telefono' => $data['telefono'],
-            ]);    
+            ]);*/
 
-            /*$usuario->nombre = $data['nombre'];
+            /* $usuario->nombre = $data['nombre'];
             $usuario->apellido = $data['apellido'];
             $usuario->correo   = $data['correo'];
             $usuario->telefono = $data['telefono'];
@@ -4321,7 +4321,8 @@ class PlanificacionController extends Controller
                 'data'    => $usuario
             ], 200);
 
-            } catch (\ValidationException $ve) {
+
+            } catch (\Illuminate\Validation\ValidationException $ve) {
 
                 return response()->json(['success' => false, 'error' => $ve->errors()], 200);
 
@@ -4334,6 +4335,6 @@ class PlanificacionController extends Controller
                 'message' => 'Error al editar usuario',
             ], 500);
         }
-    } 
+    }
 
 }
