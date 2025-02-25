@@ -149,7 +149,7 @@ class Form extends Component
         $i=0;
         $preanalitica = Preanalitica::findOrFail($this->Analiticas->id);
         $absede = Sede::findOrFail($preanalitica->sedes_id);
-        $abcrn = Crn::findOrFail(8);
+        $abcrn = Crn::findOrFail($preanalitica->crns_id);
         if($preanalitica->resultado_id==67 && ($preanalitica->evento_id==116 || $preanalitica->evento_id==117 || $preanalitica->evento_id==118 || $preanalitica->evento_id==119 || $preanalitica->evento_id==120 || $preanalitica->evento_id==125)){
                 $lista = $this->Analiticas->eventosav_id;
                 $total = count($lista);
