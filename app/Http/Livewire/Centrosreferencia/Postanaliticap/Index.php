@@ -118,7 +118,7 @@ class Index extends Component
                         $this->fechafin='';
                     }
                     if($this->controlf==1){
-                        $analiticas = $analiticas->where('fecha_toma_muestra', '>=', $this->fechainicio)->where('fecha_toma_muestra','<=',$this->fechafin);
+                        $analiticas = $analiticas->where('fecha_toma_primera', '>=', $this->fechainicio)->where('fecha_toma_primera','<=',$this->fechafin);
                         $count = $analiticas->count();
 
                     }
