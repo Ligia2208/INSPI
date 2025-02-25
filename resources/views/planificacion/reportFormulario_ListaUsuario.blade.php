@@ -7,38 +7,29 @@
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 @endpush
 
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th scope="col">id</th>
+            <th scope="col">nombre</th>
+            <th scope="col">apellido</th>
+            <th scope="col">correo</th>
+             <th scope="col">telefono</th>
+        </tr>
+    </thead>
 
-
-@foreach($Formularios as $Formulario)
-
-     <table class="table">
-        
-        <thead>
+    <tbody>
+         @foreach($Formularios as $Formulario)
             <tr>
-
-                <th scope="col">id</th>
-                <th scope="col">nombre</th>
-                <th scope="col">apellido</th>
-                <th scope="col">correo</th>
-                <th scope="col">telefono</th>
-
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr>
-                <td>{{$Formulario -> id}}</td>
-                <td>{{$Formulario -> nombre}}</td>
-                <td>{{$Formulario -> apellido}}</td>
-                <td>{{$Formulario -> correo}}</td>
-                <td>{{$Formulario -> telefono}}</td>
-
-            </tr>
-        </tbody>
-        
-    </table>
-
-@endforeach
+                <td>{{ $Formulario->id }}</td>
+                <td>{{ $Formulario->nombre }}</td>
+                <td>{{ $Formulario->apellido }}</td>
+                <td>{{ $Formulario->correo }}</td>
+                <td>{{ $Formulario->telefono }}</td>
+             </tr>
+        @endforeach
+    </tbody>
+</table>
 
 @push('scripts')
 <script src="{{asset('assets/js/Planificacion/reportFormulario_ListaUsuario.js?v0.0.0')}}"></script>

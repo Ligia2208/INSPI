@@ -215,6 +215,7 @@ Route::middleware(['auth'])->group(function () {
         //  LISTA USUARIO
 
         Route::get('planificacion/reportFormulario_ListaUsuario', 'PlanificacionController@reportFormulario_ListaUsuario')->name('planificacion.reportFormulario_ListaUsuario');
+      //  Route::post('/planificacion/listar_usuario', 'PlanificacionController@listar_usuario')->name('planificacion.listar_usuario'); //Editar registro
 
     });
     /* =========================== PLANIFICACION =========================== */
