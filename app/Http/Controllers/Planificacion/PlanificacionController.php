@@ -4255,16 +4255,18 @@ class PlanificacionController extends Controller
 
     
     //respuesta para la vista editar
-    public function reportFormulario_Editar(){
+    public function reportFormulario_Editar($id){
 
-        $datos = Formulario::find(15);
-             $id        = $datos -> id;
-             $nombre    = $datos -> nombre;
-             $apellido  = $datos -> apellido;
-             $correo    = $datos -> correo;
-             $telefono  = $datos -> telefono;
+        $datos = Formulario::find($id);
+
+        $id        = $datos -> id;
+        $nombre    = $datos -> nombre;
+        $apellido  = $datos -> apellido;
+        $correo    = $datos -> correo;
+        $telefono  = $datos -> telefono;
 
        return view('planificacion.reportFormulario_Editar', compact('id', 'nombre', 'apellido', 'correo', 'telefono'));
+       
    }
  
 
@@ -4331,5 +4333,21 @@ class PlanificacionController extends Controller
             ], 500);
         }
     }
+
+
+    //respuesta para la vista lista de usuario
+    public function reportFormulario_ListaUsuario(){
+
+        return view('planificacion.reportFormulario_ListaUsuario');
+    }
+
+
+    public function listarFormularios()
+    {
+        $formularios = Formulario::all(); // Obtiene todos los registros de la tabla "formularios"
+        
+        return view('formularios.index', compact('formularios')); 
+    }
+
 
 }

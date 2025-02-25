@@ -209,9 +209,12 @@ Route::middleware(['auth'])->group(function () {
        
         //  EDITAR USUARIO
 
-        Route::get('planificacion/reportFormulario_Editar', 'PlanificacionController@reportFormulario_Editar')->name('planificacion.reportFormulario_Editar');
+        Route::get('planificacion/reportFormulario_Editar/{id}', 'PlanificacionController@reportFormulario_Editar')->name('planificacion.reportFormulario_Editar');
         Route::post('/planificacion/editar_usuario', 'PlanificacionController@editar_usuario')->name('planificacion.editar_usuario'); //Editar registro
 
+        //  LISTA USUARIO
+
+        Route::get('planificacion/reportFormulario_ListaUsuario', 'PlanificacionController@reportFormulario_ListaUsuario')->name('planificacion.reportFormulario_ListaUsuario');
 
     });
     /* =========================== PLANIFICACION =========================== */
