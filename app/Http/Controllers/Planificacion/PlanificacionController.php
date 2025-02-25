@@ -32,9 +32,8 @@ use App\Models\Planificacion\Poa1\Poa;
 use App\Models\Planificacion\TipoProceso\TipoProceso;
 
 //FORMULARIO
-use App\Models\Planificacion\Formulario;
+use App\Models\Planificacion\Formulario\Formulario;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Database\Eloquent\Model;
 
 
 
@@ -4212,87 +4211,109 @@ class PlanificacionController extends Controller
         return $contador->valor; // Retorna 1 ya que es el primer registro
     }
 
-    public function reportFormulario_Crear(){
 
-         //respuesta para la vista
+    //respuesta para la vista crear
+    public function reportFormulario_Crear(){
 
         return view('planificacion.reportFormulario_Crear');
     }
 
+    
+    //respuesta para la vista editar
     public function reportFormulario_Editar(){
 
-        //respuesta para la vista
+        $datos = Formulario::find(5);
+             $id        = $datos -> id;
+             $nombre    =  $datos -> nombre;
+             $apellido  = $datos -> apellido;
+             $correo    =     $datos -> correo;
+             $telefono  =   $datos -> telefono;
 
-       return view('planificacion.reportFormulario_Editar');
+       return view('planificacion.reportFormulario_Editar', compact('id', 'nombre', 'apellido', 'correo', 'telefono'));
    }
 
+   
 
+   public function crear_usuarios(Request $request)
+   {
+       try {
+           $data = $request->validate([
+               'nombre'   => 'required|string',
+               'apellido' => 'required|string',
+               'correo'   => 'required|string',
+               'telefono' => 'required|string',
+           ]);
+           
+           $nombre   = $request->input('nombre');
+           $apellido = $request->input('apellido');
+           $correo   = $request->input('correo');
+           $telefono = $request->input('telefono');
+   
+           $usuario = Formulario::create([
+               'nombre'   => $nombre,
+               'apellido' => $apellido,
+               'correo'   => $correo,
+               'telefono' => $telefono,
+           ]);
+   
+           return response()->json(['usuario' => $usuario], 200);
+       } catch (\Exception $e) {
+           return response()->json(['error' => $e->getMessage()], 500);
+       }
+   }
+   
 
-    public function crear_usuarios(Request $request)
+    public function editar_usuario(Request $request)
     {
         try {
-            // Validación de los datos
+            // Validar los datos recibidos
             $data = $request->validate([
-                'nombre'   => 'required|string',
-                'apellido' => 'required|string',
-                'correo'   => 'required|string',
-                'telefono' => 'required|string',
-            ]);
-            
-    
-           // Guardar en la base de datos
-            $usuario = Formulario::create([
-                'nombre'            => $nombre,
-                'apellido'          => $apellido,
-                'correo'            => $correo,
-                'telefono'          => $telefono,
-                //'estado'            => 'A',          // Valor por defecto
-                //'created_at'
-                //'updated_at'
-            
+                'id'       => 'required|integer|exists:Formulario,id', // Asegúrate de que "formularios" es el nombre correcto de la tabla
+                'nombre'   => 'required|string|max:255',
+                'apellido' => 'required|string|max:255',
+                'correo'   => 'required|email|max:255',
+                'telefono' => 'required|string|max:50',
             ]);
 
-    
+            $id         = $request->input('id');
+            $nombre     = $request->input('nombre');
+            $apellido   = $request->input('apellido');
+            $correo     = $request->input('correo');
+            $telefono   = $request->input('telefono');
+
+
+            // Buscar el usuario por su ID
+            $usuario = Formulario::find($id);
+
+            if (!$usuario) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Usuario no encontrado'
+                ], 404);
+            }
+
+            // Actualizar el usuario con los datos validados (excluyendo el id)
+            $usuario->update([
+                'nombre'   => $nombre,
+                'apellido' => $apellido,
+                'correo'   => $correo,
+                'telefono' => $telefono,
+            ]);
+
             return response()->json([
                 'success' => true,
-                'message' => 'Usuario creado correctamente',
+                'message' => 'Usuario editado correctamente',
                 'data'    => $usuario
             ], 200);
     
-        } catch (\Exception $e) {
+            } catch (\Exception $e) {
             Log::error('Error al crear usuario: ' . $e->getMessage());
     
             return response()->json([
                 'success' => false,
-                'message' => 'Error al crear usuario',
+                'message' => 'Error al editar usuario',
             ], 500);
         }
-    }
-
-
-
-    /*public function editar_usuario(Request $request)
-    { 
-        try {
-           
-            //agg funcion 
-
-    
-            return response()->json([
-                'success' => true,
-                'message' => 'Usuario creado correctamente',
-                'data'    => $usuario
-            ], 200);
-    
-        } catch (\Exception $e) {
-            Log::error('Error al crear usuario: ' . $e->getMessage());
-    
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al crear usuario',
-            ], 500);
-        }
-
-    }*/
+    } 
 
 }

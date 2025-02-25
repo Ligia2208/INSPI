@@ -17,30 +17,30 @@
 
             <div class="col-md-6">
                     <label for="name" class="form-label">ID</label>
-                    <input type="text" class="form-control" id="id" placeholder="Id">
+                    <input type="text" class="form-control" id="id" placeholder="Id" value='{{$id}}'>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="name" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" placeholder="Nombre">
+                    <input type="text" class="form-control" id="nombre" placeholder="Nombre" value='{{$nombre}}'>
                 </div>
 
                 <div class="col-md-6">
                     <label for="surname" class="form-label">Apellido</label>
-                    <input type="text" class="form-control" id="apellido" placeholder="Apellido">
+                    <input type="text" class="form-control" id="apellido" placeholder="Apellido" value='{{$apellido}}'>
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="correo" class="form-label">Correo</label>
-                    <input type="email" class="form-control" id="correo" placeholder="Correo electrónico">
+                    <input type="email" class="form-control" id="correo" placeholder="Correo electrónico" value='{{$correo}}'>
                 </div>
 
                 <div class="col-md-6">
                     <label for="telefono" class="form-label">Teléfono</label>
-                    <input type="tel" class="form-control" id="telefono" placeholder="Teléfono">
+                    <input type="tel" class="form-control" id="telefono" placeholder="Teléfono" value='{{$correo}}'>
                 </div>
             </div>
 
