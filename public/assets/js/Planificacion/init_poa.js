@@ -15,6 +15,7 @@ $( function () {
                 d.direccion = $('#filterDireccion').val();
                 d.item = $('#filterItem').val();
                 d.programa = $('#filterPrograma').val();
+                //d.subactividad = $('#filterTipoSub').val();
             }
         },
         columns: [
@@ -114,14 +115,14 @@ $( function () {
         footerCallback: function (row, data, start, end, display) {
             var api = this.api();
             var total = api
-                .column(6, { page: 'current' }) // Seleccionar la columna de montos
+                .column(7, { page: 'current' }) // Seleccionar la columna de montos
                 .data()
                 .reduce(function (a, b) {
                     return parseFloat(a) + parseFloat(b);
                 }, 0);
     
             // Actualizar el pie de tabla
-            $(api.column(6).footer()).html('$' + total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+            $(api.column(7).footer()).html('$' + total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         }
     });
     

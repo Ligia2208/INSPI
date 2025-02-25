@@ -86,7 +86,6 @@
                             </select>
                         </div>
 
-
                     </div>
 
 
@@ -217,6 +216,6 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.14')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.15')}}"></script>
 <script src="{{asset('assets/js/Planificacion/calculadora.js?v0.0.0')}}"></script>
 @endpush
