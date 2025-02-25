@@ -39,6 +39,8 @@ use Illuminate\Support\Facades\Log;
 
 
 
+
+
 //Czonal y area
 use App\Models\Czonal\Czonal;
 
@@ -4218,23 +4220,8 @@ class PlanificacionController extends Controller
         return view('planificacion.reportFormulario_Crear');
     }
 
-    
-    //respuesta para la vista editar
-    public function reportFormulario_Editar(){
 
-        $datos = Formulario::find(5);
-             $id        = $datos -> id;
-             $nombre    =  $datos -> nombre;
-             $apellido  = $datos -> apellido;
-             $correo    =     $datos -> correo;
-             $telefono  =   $datos -> telefono;
-
-       return view('planificacion.reportFormulario_Editar', compact('id', 'nombre', 'apellido', 'correo', 'telefono'));
-   }
-
-   
-
-   public function crear_usuarios(Request $request)
+    public function crear_usuarios(Request $request)
    {
        try {
            $data = $request->validate([
@@ -4255,24 +4242,46 @@ class PlanificacionController extends Controller
                'correo'   => $correo,
                'telefono' => $telefono,
            ]);
-   
-           return response()->json(['usuario' => $usuario], 200);
-       } catch (\Exception $e) {
-           return response()->json(['error' => $e->getMessage()], 500);
-       }
-   }
-   
 
-    public function editar_usuario(Request $request)
+            return response()->json(['success' => true, 'usuario' => $usuario], 200);
+        
+        } catch (\ValidationException $ve) {
+
+            return response()->json(['success' => false, 'error' => $ve->getMessage()], 200);
+
+        } catch (\Exception $e) {
+
+            return response()->json(['success' => false, 'error' => $e->getMessage()], 200);
+
+        }
+   
+    }
+
+    
+    //respuesta para la vista editar
+    public function reportFormulario_Editar(){
+
+        $datos = Formulario::find(9);
+             $id        = $datos -> id;
+             $nombre    = $datos -> nombre;
+             $apellido  = $datos -> apellido;
+             $correo    = $datos -> correo;
+             $telefono  = $datos -> telefono;
+
+       return view('planificacion.reportFormulario_Editar', compact('id', 'nombre', 'apellido', 'correo', 'telefono'));
+   }
+ 
+
+    public function editar_usuario(Formulario $request)
     {
         try {
             // Validar los datos recibidos
             $data = $request->validate([
-                'id'       => 'required|integer|exists:Formulario,id', // Asegúrate de que "formularios" es el nombre correcto de la tabla
-                'nombre'   => 'required|string|max:255',
-                'apellido' => 'required|string|max:255',
-                'correo'   => 'required|email|max:255',
-                'telefono' => 'required|string|max:50',
+                'id'       => 'required|integer', 
+                'nombre'   => 'required|string',
+                'apellido' => 'required|string',
+                'correo'   => 'required|email', 
+                'telefono' => 'required|string',
             ]);
 
             $id         = $request->input('id');
@@ -4281,34 +4290,45 @@ class PlanificacionController extends Controller
             $correo     = $request->input('correo');
             $telefono   = $request->input('telefono');
 
-
             // Buscar el usuario por su ID
-            $usuario = Formulario::find($id);
+           ////$usuario = Formulario::find($data['id']);
+           $usuario = Formulario::find($id);
 
-            if (!$usuario) {
+           /* if (!$usuario) {
                 return response()->json([
                     'success' => false,
                     'message' => 'Usuario no encontrado'
                 ], 404);
-            }
+            } */
 
             // Actualizar el usuario con los datos validados (excluyendo el id)
             $usuario->update([
-                'nombre'   => $nombre,
-                'apellido' => $apellido,
-                'correo'   => $correo,
-                'telefono' => $telefono,
-            ]);
+                'nombre'   => $data['nombre'],
+                'apellido' => $data['apellido'],
+                'correo'   => $data['correo'],
+                'telefono' => $data['telefono'],
+            ]);    
+
+            /*$usuario->nombre = $data['nombre'];
+            $usuario->apellido = $data['apellido'];
+            $usuario->correo   = $data['correo'];
+            $usuario->telefono = $data['telefono'];
+            $usuario->save();*/
 
             return response()->json([
                 'success' => true,
                 'message' => 'Usuario editado correctamente',
                 'data'    => $usuario
             ], 200);
-    
+
+            } catch (\ValidationException $ve) {
+
+                return response()->json(['success' => false, 'error' => $ve->errors()], 200);
+
             } catch (\Exception $e) {
-            Log::error('Error al crear usuario: ' . $e->getMessage());
+                Log::error('Error al editar usuario: '.$e->getMessage());
     
+
             return response()->json([
                 'success' => false,
                 'message' => 'Error al editar usuario',

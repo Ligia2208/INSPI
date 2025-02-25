@@ -40,12 +40,12 @@
 
                 <div class="col-md-6">
                     <label for="telefono" class="form-label">Teléfono</label>
-                    <input type="tel" class="form-control" id="telefono" placeholder="Teléfono" value='{{$correo}}'>
+                    <input type="tel" class="form-control" id="telefono" placeholder="Teléfono" value='{{$telefono}}'>
                 </div>
             </div>
 
             <div class="d-flex justify-content-center">
-                <button type="submit" class="btn btn-primary">Editar</button>
+                <button type="submit" id="EditarUsuario"  class="btn btn-primary">Editar</button>
             </div>
         </form>
     </div>

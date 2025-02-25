@@ -11,8 +11,6 @@ $(document).ready(function () {
         var correo = $('#correo').val().trim();
         var telefono = $('#telefono').val().trim();
 
-        //console.log("Valores obtenidos:", { nombre, apellido, correo, telefono });
-
         if (!nombre || !apellido || !correo || !telefono) {
             console.log("Faltan campos por llenar.");
             Swal.fire({

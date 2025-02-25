@@ -2,17 +2,17 @@ $(document).ready(function () {
     //console.log("jQuery ha sido cargado y el DOM está listo.");
 
     $(document).on("click", "#EditarUsuario", function () {
-        //console.log("¡El botón fue detectado y clickeado!");
-
-       // var ID = $('#id').val().trim();
+        
+       //onsole.log("¡El botón fue detectado y clickeado!");
+        var id = $('#id').val().trim();
         var nombre = $('#nombre').val().trim();
         var apellido = $('#apellido').val().trim();
         var correo = $('#correo').val().trim();
         var telefono = $('#telefono').val().trim();
 
-        //console.log("Valores obtenidos:", { nombre, apellido, correo, telefono });
 
         var datosUsuario = {
+            id: id,
             nombre: nombre,
             apellido: apellido,
             correo: correo,
@@ -45,7 +45,7 @@ $(document).ready(function () {
 
 
             },
-            error: function (xhr, status, error) {
+            error: function (_xhr, _status, error) {
                 console.error("Error en la solicitud AJAX:", error);
 
                 Swal.fire({
