@@ -93,7 +93,7 @@ class Form extends Component
             'Analiticas.directokoh_mico' => 'sometimes|max:80',
             'Analiticas.directoplaca_mico' => 'sometimes|max:80',
             'Analiticas.tintachina_mico' => 'sometimes|max:80',
-            'Analiticas.antibiogramamico_id' => 'sometimes|max:200',
+            'Analiticas.antibiogramamico_id' => 'sometimes|numeric',
 
             'Analiticas.fungicounomico_id' => 'sometimes|numeric',
             'Analiticas.cimuno_mico' => 'sometimes|numeric',
