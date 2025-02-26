@@ -215,6 +215,9 @@ Route::middleware(['auth'])->group(function () {
         //  LISTA USUARIO
 
         Route::get('planificacion/reportFormulario_ListaUsuario', 'PlanificacionController@reportFormulario_ListaUsuario')->name('planificacion.reportFormulario_ListaUsuario');
+        Route::get('/formularios/{id}/edit', [FormularioController::class, 'edit'])->name('formularios.edit');
+        Route::delete('/formularios/{id}', [FormularioController::class, 'destroy'])->name('formularios.destroy');
+
       //  Route::post('/planificacion/listar_usuario', 'PlanificacionController@listar_usuario')->name('planificacion.listar_usuario'); //Editar registro
 
     });

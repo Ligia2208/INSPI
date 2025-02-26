@@ -4336,7 +4336,8 @@ class PlanificacionController extends Controller
 
 
     //respuesta para la vista lista de usuario
-    public function reportFormulario_ListaUsuario(){
+    public function reportFormulario_ListaUsuario()
+    {
 
         $formularios = Formulario::all(); 
         
@@ -4344,12 +4345,49 @@ class PlanificacionController extends Controller
     }
 
 
-   /* public function listar_usuario()
+    //respuesta para la vista de estado de usuario
+    public function reportFormulario_Estado($id)
     {
-        $Formularios = Formulario::all(); // Obtiene todos los registros de la tabla "formularios"
-        
-        return view('Formularios.index', compact('Formularios')); 
-    }*/
+        $datos = Formulario::find(9);
+
+        if (!$datos) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Usuario no encontrado'
+            ], 404);
+        }
+
+        $id       = $datos->id;
+        $nombre   = $datos->nombre;
+        $apellido = $datos->apellido;
+        $correo   = $datos->correo;
+        $telefono = $datos->telefono;
+        $estado   = $datos->estado; // A -> Activo, E -> Eliminado
+
+        return view('planificacion.reportFormulario_Estado', compact('id', 'nombre', 'apellido', 'correo', 'telefono', 'estado'));
+    }
+
+    public function obtener_usuarios_eliminados()
+    {
+        try {
+            $usuariosEliminados = Formulario::where('estado', 'E')->get();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Usuarios eliminados obtenidos correctamente',
+                'data'    => $usuariosEliminados
+            ], 200);
+        } catch (\Exception $e) {
+            Log::error('Error al obtener usuarios eliminados:', ['error' => $e->getMessage()]);
+
+            return response()->json([
+                'success' => false,
+                'message' => 'Error al obtener usuarios eliminados',
+                'error'   => $e->getMessage()
+            ], 500);
+        }
+    }
+
 
 
 }
