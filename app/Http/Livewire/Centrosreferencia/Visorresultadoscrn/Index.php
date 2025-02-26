@@ -84,8 +84,6 @@ class Index extends Component
             $resultados = DB::table('inspi_crns.detalle_muestras')->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users);
             $count = $resultados->count();
 
-            $sedes_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('sedes_id')->pluck('sedes_id')->toArray();
-            $crns_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('crns_id')->pluck('crns_id')->toArray();
             $sedes = Sede::whereIn('id',$sedes_users)->orderBy('id', 'asc')->cursor();
 
             $data = DB::table('inspi_crns.detalle_muestras')->select('evento as grupo',DB::raw('count(*) as total'))->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->groupBy('evento')->get()->toArray();
@@ -121,8 +119,9 @@ class Index extends Component
                 $crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
             }
             else{
-                $config = SedeCrn::where('sedes_id','=',$this->csedes)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
-                $crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
+                $sedes_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('sedes_id')->pluck('sedes_id')->toArray();
+                $crns_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('crns_id')->pluck('crns_id')->toArray();
+                $crns = Crn::whereIn('id',$crns_users)->orderBy('id', 'asc')->get();
             }
 
             $data = DB::table('inspi_crns.detalle_muestras')->select('evento as grupo',DB::raw('count(*) as total'))->where('sedes_id','=',$this->csedes)->groupBy('evento')->get()->toArray();

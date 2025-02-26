@@ -96,37 +96,37 @@ class Form extends Component
             'Analiticas.antibiogramamico_id' => 'sometimes|numeric',
 
             'Analiticas.fungicounomico_id' => 'sometimes|numeric',
-            'Analiticas.cimuno_mico' => 'sometimes|numeric',
+            'Analiticas.cimuno_mico' => 'sometimes|max:15',
             'Analiticas.difusionuno_mico' => 'sometimes|max:40',
             'Analiticas.escalaunomico_id' => 'sometimes|numeric',
 
             'Analiticas.fungicodosmico_id' => 'sometimes|numeric',
-            'Analiticas.cimdos_mico' => 'sometimes|numeric',
+            'Analiticas.cimdos_mico' => 'sometimes|max:15',
             'Analiticas.difusiondos_mico' => 'sometimes|max:40',
             'Analiticas.escaladosmico_id' => 'sometimes|numeric',
 
             'Analiticas.fungicotresmico_id' => 'sometimes|numeric',
-            'Analiticas.cimtres_mico' => 'sometimes|numeric',
+            'Analiticas.cimtres_mico' => 'sometimes|max:15',
             'Analiticas.difusiontres_mico' => 'sometimes|max:40',
             'Analiticas.escalatresmico_id' => 'sometimes|numeric',
 
             'Analiticas.fungicocuatromico_id' => 'sometimes|numeric',
-            'Analiticas.cimcuatro_mico' => 'sometimes|numeric',
+            'Analiticas.cimcuatro_mico' => 'sometimes|max:15',
             'Analiticas.difusioncuatro_mico' => 'sometimes|max:40',
             'Analiticas.escalacuatromico_id' => 'sometimes|numeric',
 
             'Analiticas.fungicocincomico_id' => 'sometimes|numeric',
-            'Analiticas.cimcinco_mico' => 'sometimes|numeric',
+            'Analiticas.cimcinco_mico' => 'sometimes|max:15',
             'Analiticas.difusioncinco_mico' => 'sometimes|max:40',
             'Analiticas.escalacincomico_id' => 'sometimes|numeric',
 
             'Analiticas.fungicoseismico_id' => 'sometimes|numeric',
-            'Analiticas.cimseis_mico' => 'sometimes|numeric',
+            'Analiticas.cimseis_mico' => 'sometimes|max:15',
             'Analiticas.difusionseis_mico' => 'sometimes|max:40',
             'Analiticas.escalaseismico_id' => 'sometimes|numeric',
 
             'Analiticas.fungicosietemico_id' => 'sometimes|numeric',
-            'Analiticas.cimsiete_mico' => 'sometimes|numeric',
+            'Analiticas.cimsiete_mico' => 'sometimes|max:15',
             'Analiticas.difusionsiete_mico' => 'sometimes|max:40',
             'Analiticas.escalasietemico_id' => 'sometimes|numeric',
 
