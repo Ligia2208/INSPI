@@ -1871,25 +1871,13 @@
                 });
             });
 
-            function mostrar_antifungicos(){
-                var x = document.getElementById("selecttecnica");
-                swal.fire({
-                    title: "¿Estas seguro?",
-                    text: "No podrá recuperar este Área/Dirección y los servicios creados con este tipo se quedarán sin vinculación",
-                    icon: "warning",
-                    buttonsStyling: false,
-                    showCancelButton: true,
-                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, eliminar</span>",
-                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
-                    reverseButtons: true,
-                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
-                    confirmButtonClass: "btn btn-danger",
-                    showLoaderOnConfirm: true,
-                }).then(function(result) {
-                    if (result.isConfirmed) {
-                        @this.call('destroy', id);
-                    }
-                });
+            function ver_ocultar() {
+                var x = document.getElementById("add_muestras");
+                if (x.style.visibility === "visible") {
+                    x.style.visibility = "hidden";
+                } else {
+                    x.style.visibility = "visible";
+                }
             }
         </script>
     @endsection
