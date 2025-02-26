@@ -4338,9 +4338,9 @@ class PlanificacionController extends Controller
     //respuesta para la vista lista de usuario
     public function reportFormulario_ListaUsuario(){
 
-        $Formularios = Formulario::all(); 
+        $formularios = Formulario::all(); 
         
-        return view('planificacion.reportFormulario_ListaUsuario', compact('Formularios'));
+        return view('planificacion.reportFormulario_ListaUsuario', compact('formularios'));
     }
 
 
