@@ -61,6 +61,7 @@ class Index extends Component
         $reportes = [];
         $usuarios = [];
 
+
         if($rol == 'Administrador'){
             $resultados = DB::table('inspi_crns.detalle_muestras');
             $count = $resultados->count();
@@ -78,6 +79,8 @@ class Index extends Component
             $dataresu = DB::table('inspi_crns.detalle_muestras')->select('resultado as grupo', DB::raw('count(*) as total'))->groupBy('resultado')->get()->toArray();
         }
         else{
+            $sedes_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('sedes_id')->pluck('sedes_id')->toArray();
+            $crns_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('crns_id')->pluck('crns_id')->toArray();
             $resultados = DB::table('inspi_crns.detalle_muestras')->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users);
             $count = $resultados->count();
 
