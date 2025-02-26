@@ -93,51 +93,51 @@ class Form extends Component
             'Analiticas.directokoh_mico' => 'sometimes|max:80',
             'Analiticas.directoplaca_mico' => 'sometimes|max:80',
             'Analiticas.tintachina_mico' => 'sometimes|max:80',
-            'Analiticas.antibiogramaid_mico' => 'sometimes|max:200',
+            'Analiticas.antibiogramamico_id' => 'sometimes|max:200',
 
-            'Analiticas.fungicounoid_mico' => 'sometimes|numeric',
+            'Analiticas.fungicounomico_id' => 'sometimes|numeric',
             'Analiticas.cimuno_mico' => 'sometimes|numeric',
             'Analiticas.difusionuno_mico' => 'sometimes|max:40',
-            'Analiticas.escalaunoid_mico' => 'sometimes|numeric',
+            'Analiticas.escalaunomico_id' => 'sometimes|numeric',
 
-            'Analiticas.fungicodosid_mico' => 'sometimes|numeric',
+            'Analiticas.fungicodosmico_id' => 'sometimes|numeric',
             'Analiticas.cimdos_mico' => 'sometimes|numeric',
             'Analiticas.difusiondos_mico' => 'sometimes|max:40',
-            'Analiticas.escaladosid_mico' => 'sometimes|numeric',
+            'Analiticas.escaladosmico_id' => 'sometimes|numeric',
 
-            'Analiticas.fungicotresid_mico' => 'sometimes|numeric',
+            'Analiticas.fungicotresmico_id' => 'sometimes|numeric',
             'Analiticas.cimtres_mico' => 'sometimes|numeric',
             'Analiticas.difusiontres_mico' => 'sometimes|max:40',
-            'Analiticas.escalatresid_mico' => 'sometimes|numeric',
+            'Analiticas.escalatresmico_id' => 'sometimes|numeric',
 
-            'Analiticas.fungicocuatroid_mico' => 'sometimes|numeric',
+            'Analiticas.fungicocuatromico_id' => 'sometimes|numeric',
             'Analiticas.cimcuatro_mico' => 'sometimes|numeric',
             'Analiticas.difusioncuatro_mico' => 'sometimes|max:40',
-            'Analiticas.escalacuatroid_mico' => 'sometimes|numeric',
+            'Analiticas.escalacuatromico_id' => 'sometimes|numeric',
 
-            'Analiticas.fungicocincoid_mico' => 'sometimes|numeric',
+            'Analiticas.fungicocincomico_id' => 'sometimes|numeric',
             'Analiticas.cimcinco_mico' => 'sometimes|numeric',
             'Analiticas.difusioncinco_mico' => 'sometimes|max:40',
-            'Analiticas.escalacincoid_mico' => 'sometimes|numeric',
+            'Analiticas.escalacincomico_id' => 'sometimes|numeric',
 
-            'Analiticas.fungicoseisid_mico' => 'sometimes|numeric',
+            'Analiticas.fungicoseismico_id' => 'sometimes|numeric',
             'Analiticas.cimseis_mico' => 'sometimes|numeric',
             'Analiticas.difusionseis_mico' => 'sometimes|max:40',
-            'Analiticas.escalaseisid_mico' => 'sometimes|numeric',
+            'Analiticas.escalaseismico_id' => 'sometimes|numeric',
 
-            'Analiticas.fungicosieteid_mico' => 'sometimes|numeric',
+            'Analiticas.fungicosietemico_id' => 'sometimes|numeric',
             'Analiticas.cimsiete_mico' => 'sometimes|numeric',
             'Analiticas.difusionsiete_mico' => 'sometimes|max:40',
-            'Analiticas.escalasieteid_mico' => 'sometimes|numeric',
+            'Analiticas.escalasietemico_id' => 'sometimes|numeric',
 
-            'Analiticas.deteccionunoid_mico' => 'sometimes|numeric',
-            'Analiticas.interpretaunoid_mico' => 'sometimes|numeric',
-            'Analiticas.detecciondosid_mico' => 'sometimes|numeric',
-            'Analiticas.interpretadosid_mico' => 'sometimes|numeric',
-            'Analiticas.detecciontresid_mico' => 'sometimes|numeric',
-            'Analiticas.interpretatresid_mico' => 'sometimes|numeric',
-            'Analiticas.deteccioncuatroid_mico' => 'sometimes|numeric',
-            'Analiticas.interpretacuatroid_mico' => 'sometimes|numeric',
+            'Analiticas.deteccionunomico_id' => 'sometimes|numeric',
+            'Analiticas.interpretaunomico_id' => 'sometimes|numeric',
+            'Analiticas.detecciondosmico_id' => 'sometimes|numeric',
+            'Analiticas.interpretadosmico_id' => 'sometimes|numeric',
+            'Analiticas.detecciontresmico_id' => 'sometimes|numeric',
+            'Analiticas.interpretatresmico_id' => 'sometimes|numeric',
+            'Analiticas.deteccioncuatromico_id' => 'sometimes|numeric',
+            'Analiticas.interpretacuatromico_id' => 'sometimes|numeric',
 
         ];
     }
@@ -159,6 +159,61 @@ class Form extends Component
         if($this->Analiticas->tecnica_cuarta_id == 0){
             $this->Analiticas->tecnica_cuarta_id = 0;
             $this->Analiticas->resultado_cuarta_id = 0;
+        }
+
+        if($this->Analiticas->deteccionunomico_id == 0){
+            $this->Analiticas->deteccionunomico_id = 0;
+            $this->Analiticas->interpretaunomico_id = 0;
+        }
+
+        if($this->Analiticas->detecciondosmico_id == 0){
+            $this->Analiticas->detecciondosmico_id = 0;
+            $this->Analiticas->interpretadosmico_id = 0;
+        }
+
+        if($this->Analiticas->detecciontresmico_id == 0){
+            $this->Analiticas->detecciontresmico_id = 0;
+            $this->Analiticas->interpretatresmico_id = 0;
+        }
+
+        if($this->Analiticas->deteccioncuatromico_id == 0){
+            $this->Analiticas->deteccioncuatromico_id = 0;
+            $this->Analiticas->interpretacuatromico_id = 0;
+        }
+
+        if($this->Analiticas->fungicounomico_id == 0){
+            $this->Analiticas->fungicounomico_id = 0;
+            $this->Analiticas->escalaunomico_id = 0;
+        }
+
+        if($this->Analiticas->fungicodosmico_id == 0){
+            $this->Analiticas->fungicodosmico_id = 0;
+            $this->Analiticas->escaladosmico_id = 0;
+        }
+
+        if($this->Analiticas->fungicotresmico_id == 0){
+            $this->Analiticas->fungicotresmico_id = 0;
+            $this->Analiticas->escalatresmico_id = 0;
+        }
+
+        if($this->Analiticas->fungicocuatromico_id == 0){
+            $this->Analiticas->fungicocuatromico_id = 0;
+            $this->Analiticas->escalacuatromico_id = 0;
+        }
+
+        if($this->Analiticas->fungicocincomico_id == 0){
+            $this->Analiticas->fungicocincomico_id = 0;
+            $this->Analiticas->escalacincomico_id = 0;
+        }
+
+        if($this->Analiticas->fungicoseismico_id == 0){
+            $this->Analiticas->fungicoseismico_id = 0;
+            $this->Analiticas->escalaseismico_id = 0;
+        }
+
+        if($this->Analiticas->fungicosietemico_id == 0){
+            $this->Analiticas->fungicosietemico_id = 0;
+            $this->Analiticas->escalasietemico_id = 0;
         }
 
         if($method=='update'){
@@ -338,7 +393,7 @@ class Form extends Component
          }
         catch (\Exception $e) {
             DB::rollback();
-            $this->alert('warning', 'Ocurrió un error al agregar la Analitica');
+            $this->alert('warning', 'Ocurrió un error al agregar la Analitica'.$e->getMessage());
             return $e->getMessage();
         }
 

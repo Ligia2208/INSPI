@@ -806,8 +806,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.deteccionunoid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.deteccionunoid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.deteccionunomico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.deteccionunomico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -828,8 +828,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.interpretaunoid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretaunoid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.interpretaunomico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretaunomico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -849,8 +849,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.detecciondosid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.detecciondosid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.detecciondosmico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.detecciondosmico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -871,8 +871,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.interpretadosid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretadosid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.interpretadosmico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretadosmico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -894,8 +894,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.detecciontresid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.detecciontresid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.detecciontresmico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.detecciontresmico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -916,8 +916,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.interpretatresid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretatresid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.interpretatresmico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretatresmico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -937,8 +937,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.deteccioncuatroid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.deteccioncuatroid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.deteccioncuatromico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.deteccioncuatromico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -959,8 +959,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.interpretacuatroid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretacuatroid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.interpretacuatromico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretacuatromico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -982,8 +982,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.antibiogramaid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.antibiogramaid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.antibiogramamico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.antibiogramamico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1006,7 +1006,7 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.fungicounoid_mico"
+                                            wire:model.defer="Analiticas.fungicounomico_id"
                                             class="form-control selectpicker form-control-solid @error('Analiticas.fungicounoid_mico') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
@@ -1060,7 +1060,7 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.escalaunoid_mico"
+                                            wire:model.defer="Analiticas.escalaunomico_id"
                                             class="form-control selectpicker form-control-solid @error('Analiticas.escalaid_mico') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
@@ -1084,8 +1084,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.fungicodosid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicodosid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.fungicodosmico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicodosmico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1138,8 +1138,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.escaladosid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escaladosid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.escaladosmico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.escaladosmico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1162,8 +1162,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.fungicotresid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicotresid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.fungicotresmico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicotresmico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1216,8 +1216,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.escalatresid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalatresid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.escalatresmico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalatresmico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1240,8 +1240,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.fungicocuatroid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicocuatroid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.fungicocuatromico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicocuatromico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1294,8 +1294,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.escalacuatroid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalacuatroid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.escalacuatromico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalacuatromico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1318,8 +1318,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.fungicocincoid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicocincoid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.fungicocincomico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicocincomico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1372,8 +1372,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.escalacincoid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalacincoid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.escalacincomico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalacincomico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1396,8 +1396,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.fungicoseisid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicoseisid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.fungicoseismico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicoseismico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1450,8 +1450,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.escalaseisid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalaseisid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.escalaseismico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalaseismico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1474,8 +1474,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.fungicosieteid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicosieteid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.fungicosietemico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicosietemico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -1528,8 +1528,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.escalasieteid_mico"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalasieteid_mico') is-invalid @enderror"
+                                            wire:model.defer="Analiticas.escalasietemico_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalasietemico_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
