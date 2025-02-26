@@ -798,7 +798,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Detección AC</b><span class="text-danger"></span></label>
+                                    <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -812,7 +812,7 @@
                                             data-live-search="true"
                                             data-show-subtext="true"
                                             required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
+                                            <option value="">Selecciona un Evento</option>
                                             @foreach ($paradifusion as $objPar)
                                                 <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
                                             @endforeach
@@ -841,7 +841,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Detección AC</b><span class="text-danger"></span></label>
+                                    <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -855,7 +855,7 @@
                                             data-live-search="true"
                                             data-show-subtext="true"
                                             required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
+                                            <option value="">Selecciona un Evento</option>
                                             @foreach ($paradifusion as $objPar)
                                                 <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
                                             @endforeach
@@ -886,7 +886,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Detección AC</b><span class="text-danger"></span></label>
+                                    <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -900,7 +900,7 @@
                                             data-live-search="true"
                                             data-show-subtext="true"
                                             required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
+                                            <option value="">Selecciona un Evento</option>
                                             @foreach ($paradifusion as $objPar)
                                                 <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
                                             @endforeach
@@ -929,7 +929,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Detección AC</b><span class="text-danger"></span></label>
+                                    <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -943,7 +943,7 @@
                                             data-live-search="true"
                                             data-show-subtext="true"
                                             required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
+                                            <option value="">Selecciona un Evento</option>
                                             @foreach ($paradifusion as $objPar)
                                                 <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
                                             @endforeach
@@ -1558,6 +1558,25 @@
                                             cols="30"
                                             rows="3"
                                             class="form-control form-control-solid @error('Analiticas.descripcion') is-invalid @enderror"
+                                            placeholder="Ej: Datos relevantes a reportar"
+                                            >
+                                        </textarea>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-12">
+                                    <label class="text-black"><b>Observación/Investigación:</b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <textarea
+                                            wire:model.defer="Analiticas.observacioninvestiga"
+                                            id=""
+                                            cols="30"
+                                            rows="2"
+                                            class="form-control form-control-solid @error('Analiticas.observacioninvestiga') is-invalid @enderror"
                                             placeholder="Ej: Datos relevantes a reportar"
                                             >
                                         </textarea>

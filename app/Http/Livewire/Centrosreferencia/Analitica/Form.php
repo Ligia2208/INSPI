@@ -139,6 +139,8 @@ class Form extends Component
             'Analiticas.deteccioncuatromico_id' => 'sometimes|numeric',
             'Analiticas.interpretacuatromico_id' => 'sometimes|numeric',
 
+            'Analiticas.observacioninvestiga' => 'sometimes|max:250',
+
         ];
     }
 
