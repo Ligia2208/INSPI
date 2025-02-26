@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Planificacion\Calendario\Calendario;
 use App\Models\Planificacion\Comentario\Comentario;
 use App\Models\Planificacion\SubActividad\SubActividad;
+use App\Models\Planificacion\ItemDireccion\ItemDireccion;
 
 class Poa extends Model
 {
@@ -153,6 +154,49 @@ class Poa extends Model
         }
     }
 
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        /*
+        static::creating(function ($actividad) {
+            $itemDireccion = ItemDireccion::find($actividad->id_item);
+
+            if (!$itemDireccion) {
+                throw ValidationException::withMessages(['id_item' => 'El ítem no existe.']);
+            }
+
+            // Verificar que el nuevo monto no supere el monto total asignado
+            $montoPresupuestadoActual = $itemDireccion->presupuesto; // Monto ya usado en actividades
+            $montoTotalAsignado = $itemDireccion->monto; // Monto disponible
+
+            if (($montoPresupuestadoActual + $actividad->monto) > $montoTotalAsignado) {
+                throw ValidationException::withMessages(['monto' => 'El monto de la actividad excede el monto asignado al ítem.']);
+            }
+
+            // Actualizar el monto presupuestado sumando la nueva actividad
+            $itemDireccion->increment('presupuesto', $actividad->monto);
+        });
+        */
+
+        static::updating(function ($actividad) {
+            if ($actividad->isDirty('estado') && $actividad->estado === 'E') {
+                //\Log::info("Marcando actividad POA como eliminada ID: {$actividad->id}");
+    
+                if ($actividad->id_item_dir) {
+                    $itemDireccion = ItemDireccion::find($actividad->id_item_dir);
+                    if ($itemDireccion) {
+                        $itemDireccion->decrement('presupuesto', $actividad->monto);
+                        //\Log::info("Presupuesto actualizado para ItemDireccion ID: {$itemDireccion->id}");
+                    } else {
+                        //\Log::warning("No se encontró ItemDireccion con ID: {$actividad->id_item_dir}");
+                    }
+                }
+            }
+        });
+
+    }
 
 
 }
