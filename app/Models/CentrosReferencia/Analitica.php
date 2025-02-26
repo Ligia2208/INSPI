@@ -87,4 +87,61 @@ class Analitica extends Model
         return $this->belongsTo(Clase::class);
     }
 
+    public function antibiogramamico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function deteccionunomico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function detecciondosmico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+    public function detecciontresmico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+    public function deteccioncuatromico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function fungicounomico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function fungicodosmico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function fungicotresmico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function fungicocuatromico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function fungicocincomico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function fungicseismico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function fungicsietemico()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
 }

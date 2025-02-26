@@ -388,6 +388,236 @@
                                                 class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->descripcion }}</span>
                                         </td>
                                         </tr>
+                                        @if($objAnalitica->crns_id==12)
+                                            @if($objAnalitica->carga_viral>0)
+                                            <tr>
+                                                <th colspan="9">
+                                                    Valores registrados durante el análisis técnico.
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="5">
+                                                    <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Carga viral: {{ $objAnalitica->carga_viral }} {{ $objAnalitica->unidades->descripcion }}</span>
+                                                </th>
+                                                <th colspan="4">
+                                                    <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Observaciones: {{ $objAnalitica->recomendacion_inmuno }}</span>
+                                                </th>
+                                            </tr>
+                                            @endif
+                                        @endif
+                                        @if($objAnalitica->crns_id==3)
+                                            @if($objAnalitica->identificado!='')
+                                            <tr>
+                                                <th colspan="9">
+                                                    Valores registrados durante el análisis técnico.
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="5">
+                                                    <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Agente identificado: {{ $objAnalitica->identificado }}</span>
+                                                </th>
+                                                <th colspan="4">
+                                                    <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Observaciones: {{ $objAnalitica->recomendacion_bacterio }}</span>
+                                                </th>
+                                            </tr>
+                                            @endif
+                                        @endif
+                                        @if($objAnalitica->crns_id==6)
+                                            <tr>
+                                                <th colspan="9">
+                                                    Valores registrados durante el análisis técnico.
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="5">
+                                                    <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Germen Aislado: {{ $objAnalitica->germenaislado_mico }}</span>
+                                                </th>
+                                                <th colspan="4">
+                                                    <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Directo KOH: {{ $objAnalitica->directokoh_mico }}</span>
+                                                </th>
+                                            </tr>
+                                            <tr>
+                                                <th colspan="5">
+                                                    <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Directo Placa Teñida : {{ $objAnalitica->directoplaca_mico }}</span>
+                                                </th>
+                                                <th colspan="4">
+                                                    <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Tinta China: {{ $objAnalitica->tintachina_mico }}</span>
+                                                </th>
+                                            </tr>
+                                            @if($objAnalitica->deteccionunomico_id>0)
+                                                <tr>
+                                                    <th colspan="9">
+                                                        <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Inmunodifusión - Detección de anticuerpos</span>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="4">
+                                                        <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->deteccionunomico->descripcion }} : @if($objAnalitica->interpretaunomico_id==1) Positivo @else Negativo @endif</span>
+                                                    </th>
+                                                    <th colspan="5">
+                                                        <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->detecciondosmico->descripcion }} : @if($objAnalitica->interpretadosmico_id==1) Positivo @else Negativo @endif</span>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="4">
+                                                        <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->detecciontresmico->descripcion }} : @if($objAnalitica->interpretatresmico_id==1) Positivo @else Negativo @endif</span>
+                                                    </th>
+                                                    <th colspan="5">
+                                                        <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->deteccioncuatromico->descripcion }} : @if($objAnalitica->interpretacuatromico_id==1) Positivo @else Negativo @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibiogramamico_id>0)
+                                                <tr>
+                                                    <tr>
+                                                        <th colspan="9">
+                                                            <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg">Antibiograma : {{ $objAnalitica->antibiogramamico->descripcion }}</span>
+                                                        </th>
+                                                    </tr>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->fungicounomico_id>0)
+                                                <tr>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">Antifúngico</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">CIM</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">Difusión</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">Interpretación</span>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fungicounomico->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimuno_mico }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->difusionuno_mico }}</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalaunomico_id==1) Sensible @else @if($objAnalitica->escalaunomico_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->fungicodosmico_id>0)
+                                                <tr>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fungicodosmico->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimdos_mico }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->difusiondos_mico }}</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escaladosmico_id==1) Sensible @else @if($objAnalitica->escaladosmico_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->fungicotresmico_id>0)
+                                                <tr>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fungicotresmico->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimtres_mico }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->difusiontres_mico }}</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalatresmico_id==1) Sensible @else @if($objAnalitica->escalatresmico_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->fungicocuatromico_id>0)
+                                                <tr>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fungicocuatromico->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimcuatro_mico }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->difusioncuatro_mico }}</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalacuatromico_id==1) Sensible @else @if($objAnalitica->escalacuatromico_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->fungicocincomico_id>0)
+                                                <tr>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fungicocincomico->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimcinco_mico }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->difusioncinco_mico }}</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalacincomico_id==1) Sensible @else @if($objAnalitica->escalacincomico_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->fungicoseismico_id>0)
+                                                <tr>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fungicoseismico->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimseis_mico }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->difusionseis_mico }}</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalaseismico_id==1) Sensible @else @if($objAnalitica->escalaseismico_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->fungicosietemico_id>0)
+                                                <tr>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fungicosietemico->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimsiete_mico }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->difusionsiete_mico }}</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalasietemico_id==1) Sensible @else @if($objAnalitica->escalasietemico_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                        @endif
+                                        </tbody>
                                         @endforeach
                                     </tbody>
                                 </table>

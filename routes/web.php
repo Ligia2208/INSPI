@@ -202,6 +202,17 @@ Route::middleware(['auth'])->group(function () {
         Route::get('planificacion/reportPOAExcel', 'PlanificacionController@reportPOAExcel')->name('planificacion.reportPOAExcel');
         Route::get('planificacion/reportReforma', 'PlanificacionController@reportReforma')->name('planificacion.reportReforma');
     
+        //  CREAR USUARIO
+
+        Route::get('planificacion/reportFormulario_Crear', 'PlanificacionController@reportFormulario_Crear')->name('planificacion.reportFormulario_Crear');
+        Route::post('/planificacion/crear_usuario', 'PlanificacionController@crear_usuarios')->name('planificacion.crear_usuarios'); //Crear registro
+       
+        //  EDITAR USUARIO
+
+        Route::get('planificacion/reportFormulario_Editar', 'PlanificacionController@reportFormulario_Editar')->name('planificacion.reportFormulario_Editar');
+        Route::post('/planificacion/editar_usuario', 'PlanificacionController@editar_usuario')->name('planificacion.editar_usuario'); //Editar registro
+
+
     });
     /* =========================== PLANIFICACION =========================== */
 
