@@ -4345,11 +4345,19 @@ class PlanificacionController extends Controller
     }
 
 
-    //respuesta para la vista de estado de usuario
-    public function reportFormulario_Estado($id)
+    public function eliminar_usuario($id)
     {
-        $datos = Formulario::find(9);
+        $usuario = Formulario::findOrFail($id);
+        $usuario->delete(); 
+    
+        return redirect()->route('planificacion.reportFormulario_ListaUsuario') ->with('success', 'Usuario eliminado correctamente.');
+    }
 
+    //respuesta para la vista de estado de usuario
+        public function reportFormulario_Estado($id)
+    {
+        $datos = Formulario::find($id);
+ 
         if (!$datos) {
             return response()->json([
                 'success' => false,
@@ -4367,16 +4375,14 @@ class PlanificacionController extends Controller
         return view('planificacion.reportFormulario_Estado', compact('id', 'nombre', 'apellido', 'correo', 'telefono', 'estado'));
     }
 
-    public function obtener_usuarios_eliminados()
+
+    /*public function obtener_usuarios_eliminados()
     {
         try {
             $usuariosEliminados = Formulario::where('estado', 'E')->get();
 
-            return response()->json([
-                'success' => true,
-                'message' => 'Usuarios eliminados obtenidos correctamente',
-                'data'    => $usuariosEliminados
-            ], 200);
+            return view('planificacion.usuarios_eliminados', compact('usuariosEliminados'));
+
         } catch (\Exception $e) {
             Log::error('Error al obtener usuarios eliminados:', ['error' => $e->getMessage()]);
 
@@ -4386,8 +4392,6 @@ class PlanificacionController extends Controller
                 'error'   => $e->getMessage()
             ], 500);
         }
-    }
-
-
+    }*/
 
 }

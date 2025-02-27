@@ -34,8 +34,17 @@
 
 @section('content')
     <div class="container mt-4">
-        <h2 class="text-center mb-4">Lista de Usuarios</h2>
-        
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+        <a href="{{ route('planificacion.reportFormulario_Crear') }}" 
+               class="btn btn-success" title="Crear Usuario">
+               <i class="bi bi-person-add">Crear Usuario </i>
+
+            </a>
+
+            <h2 class="text-center flex-grow-1">Lista de Usuarios</h2>
+        </div>
+
         <table class="table table-striped table-hover table-bordered custom-table">
             <thead class="table-dark text-center">
                 <tr>
@@ -58,15 +67,13 @@
                         <td>{{ $formulario->telefono }}</td>
                         <td>
                             <div class="d-flex justify-content-center">
-                                <!-- Botón Editar -->
-                                <a href="{{ route('formularios.edit', $formulario->id) }}" 
+
+                                <a href="{{ route('planificacion.reportFormulario_Editar', $formulario->id) }}" 
                                    class="btn btn-warning btn-sm btn-circle mx-1" title="Editar">
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
 
-                                <!-- Botón Eliminar -->
-                                <form action="{{ route('formularios.destroy', $formulario->id) }}" 
-                                      method="POST" style="display:inline;">
+                                <form action="{{ route('eliminar_usuario', $formulario->id) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger btn-sm btn-circle mx-1" 
@@ -81,7 +88,6 @@
                 @endforeach
             </tbody>
         </table>
-
     </div>
 @endsection
 

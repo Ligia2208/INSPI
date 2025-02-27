@@ -203,22 +203,26 @@ Route::middleware(['auth'])->group(function () {
         Route::get('planificacion/reportReforma', 'PlanificacionController@reportReforma')->name('planificacion.reportReforma');
     
         //  CREAR USUARIO
-
         Route::get('planificacion/reportFormulario_Crear', 'PlanificacionController@reportFormulario_Crear')->name('planificacion.reportFormulario_Crear');
         Route::post('/planificacion/crear_usuario', 'PlanificacionController@crear_usuarios')->name('planificacion.crear_usuarios'); //Crear registro
        
         //  EDITAR USUARIO
-
         Route::get('planificacion/reportFormulario_Editar/{id}', 'PlanificacionController@reportFormulario_Editar')->name('planificacion.reportFormulario_Editar');
         Route::post('/planificacion/editar_usuario', 'PlanificacionController@editar_usuario')->name('planificacion.editar_usuario'); //Editar registro
 
         //  LISTA USUARIO
-
         Route::get('planificacion/reportFormulario_ListaUsuario', 'PlanificacionController@reportFormulario_ListaUsuario')->name('planificacion.reportFormulario_ListaUsuario');
-        Route::get('/formularios/{id}/edit', [FormularioController::class, 'edit'])->name('formularios.edit');
-        Route::delete('/formularios/{id}', [FormularioController::class, 'destroy'])->name('formularios.destroy');
+      
+        //ELIMINAR USUARIO / ESTADO DE ELIMINACION
+        +
+        
+        Route::delete('/planificacion/ eliminar_usuario', [PlanificacionController::class, 'eliminar_usuario'])->name('eliminar_usuario');
 
-      //  Route::post('/planificacion/listar_usuario', 'PlanificacionController@listar_usuario')->name('planificacion.listar_usuario'); //Editar registro
+        Route::get('planificacion/reportFormulario_Estado', 'PlanificacionController@reportFormulario_Estado')->name('planificacion.reportFormulario_Estado');
+
+
+        
+
 
     });
     /* =========================== PLANIFICACION =========================== */
@@ -226,7 +230,7 @@ Route::middleware(['auth'])->group(function () {
 
 
     /* =========================== ITEM PRESUPUESTARIO =========================== */
-    Route::group(['namespace' => 'App\Http\Controllers\ItemPresupuestario'], function(){
+        Route::group(['namespace' => 'App\Http\Controllers\ItemPresupuestario'], function(){
         Route::get('/itemPresupuestario', 'ItemPresupuestarioController@index')->name('itemPresupuestario'); //vista principal
         Route::post('/itemPresupuestario/saveItemPres', 'ItemPresupuestarioController@saveItemPres')->name('itemPresupuestario.saveItemPres'); //Modal para crear nuevo item
         Route::post('/itemPresupuestario/deleteItemP', 'ItemPresupuestarioController@deleteItemP')->name('itemPresupuestario.deleteItemP');//Borrar item presupuestario
