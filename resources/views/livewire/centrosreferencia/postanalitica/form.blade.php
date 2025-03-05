@@ -425,6 +425,148 @@
                                                 </th>
                                             </tr>
                                             @endif
+                                            @if($objAnalitica->antibioticopsunobacte_id>0)
+                                                <tr>
+                                                    <th colspan="9">
+                                                        <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Pruebas de Susceptibilidad - Método de difusión: Kirby Bauer</span>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticopsunobacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->halopsuno_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalapsunobacte_id==1) Sensible @else @if($objAnalitica->escalapsunobacte_id==2) Intermedio @else @if($objAnalitica->escalapsunobacte_id==3) Resistente @else Sensibilidad disminuida a penicilina  @endif @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibioticopsdosbacte_id>0)
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticopsdosbacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->halopsdos_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalapsdosbacte_id==1) Sensible @else @if($objAnalitica->escalapsdosbacte_id==2) Intermedio @else @if($objAnalitica->escalapsdosbacte_id==3) Resistente @else Sensibilidad disminuida a penicilina  @endif @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibioticopstresbacte_id>0)
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticopstresbacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->halopstres_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalapstresbacte_id==1) Sensible @else @if($objAnalitica->escalapstresbacte_id==2) Intermedio @else @if($objAnalitica->escalapstresbacte_id==3) Resistente @else Sensibilidad disminuida a penicilina  @endif @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibioticopscuatrobacte_id>0)
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticopscuatrobacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->halopscuatro_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalapscuatrobacte_id==1) Sensible @else @if($objAnalitica->escalapscuatrobacte_id==2) Intermedio @else @if($objAnalitica->escalapscuatrobacte_id==3) Resistente @else Sensibilidad disminuida a penicilina  @endif @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibioticopscincobacte_id>0)
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticopscincobacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->halopscinco_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalapscincobacte_id==1) Sensible @else @if($objAnalitica->escalapscincobacte_id==2) Intermedio @else @if($objAnalitica->escalapscincobacte_id==3) Resistente @else Sensibilidad disminuida a penicilina  @endif @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibioticopsseisbacte_id>0)
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticopsseisbacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->halopsseis_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalapsseisbacte_id==1) Sensible @else @if($objAnalitica->escalapsseisbacte_id==2) Intermedio @else @if($objAnalitica->escalapsseisbacte_id==3) Resistente @else Sensibilidad disminuida a penicilina  @endif @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibioticomdunobacte_id>0)
+                                                <tr>
+                                                    <th colspan="9">
+                                                        <span
+                                                    class="text-dark-50 font-weight-bolder d-block font-size-lg">Métodos de Dilusión - Concentración Mínima Inhibitoria</span>
+                                                    </th>
+                                                </tr>
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticomdunobacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimmduno_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalamdunobacte_id==1) Sensible @else @if($objAnalitica->escalamdunobacte_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibioticomddosbacte_id>0)
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticomddosbacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimmddos_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalamddosbacte_id==1) Sensible @else @if($objAnalitica->escalamddosbacte_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibioticomdtresbacte_id>0)
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticomdtresbacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimmdtres_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalamdtresbacte_id==1) Sensible @else @if($objAnalitica->escalamdtresbacte_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
+                                            @if($objAnalitica->antibioticomdcuatrobacte_id>0)
+                                                <tr>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->antibioticomdcuatrobacte->descripcion }}</span>
+                                                    </th>
+                                                    <th colspan="2">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->cimmdcuatro_bacte }} mm.</span>
+                                                    </th>
+                                                    <th colspan="3">
+                                                        <span class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($objAnalitica->escalamdcuatrobacte_id==1) Sensible @else @if($objAnalitica->escalamdcuatrobacte_id==2) Intermedio @else Resistente @endif @endif</span>
+                                                    </th>
+                                                </tr>
+                                            @endif
                                         @endif
                                         @if($objAnalitica->crns_id==6)
                                             <tr>

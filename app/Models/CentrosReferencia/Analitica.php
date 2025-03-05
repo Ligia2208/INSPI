@@ -144,4 +144,54 @@ class Analitica extends Model
     {
         return $this->belongsTo(Tipoparametros::class);
     }
+
+    public function antibioticopsunobacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function antibioticopsdosbacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function antibioticopstresbacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function antibioticopscuatrobacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function antibioticopscincobacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function antibioticopsseisbacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function antibioticomdunobacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function antibioticomddosbacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function antibioticomdtresbacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
+
+    public function antibioticomdcuatrobacte()
+    {
+        return $this->belongsTo(Tipoparametros::class);
+    }
 }
