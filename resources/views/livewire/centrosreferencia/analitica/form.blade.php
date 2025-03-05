@@ -634,914 +634,1540 @@
                                 </div>
                             </div>
                             @if($Analiticas->crns_id==3)
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label class="text-black"><b>Agente identificado</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label class="text-black"><b>Agente identificado</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.identificado"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.identificado') is-invalid @enderror"
+                                                placeholder="Ej: Otra bacteria" />
                                         </div>
-                                        <input
-                                            wire:model.defer="Analiticas.identificado"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.identificado') is-invalid @enderror"
-                                            placeholder="Ej: Otra bacteria" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-black"><b>Observación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.recomendacion_bacterio"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.recomendacion_bacterio') is-invalid @enderror"
+                                                placeholder="Ej: Realizar pruebas adicionales condicionadas" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label class="text-black"><b>Recomendación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.recomendacion_bacterio"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.recomendacion_bacterio') is-invalid @enderror"
-                                            placeholder="Ej: Realizar pruebas adicionales condicionadas" />
+                                <div class="form-row">
+                                    <div class="form-group col-md-6" style="text-align:center">
+                                        <label class="text-black"><b>Pruebas de Susceptibilidad (Método difusión: Kirby Bauer)</b></label>
+                                    </div>
+                                    <div class="form-group col-md-6" style="text-align:center">
+                                        <label class="text-black"><b>Métodos de Dilución (Concentración mínima inhibitoria)</b></label>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticopsunobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticopsunobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>HALO (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.halopsuno_bacte"
+                                                type="number"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.halopsuno_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalapsunobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalapsunobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                                <option value="4">Sensibilidad disminuida a penicilina</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticomdunobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticomdunobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>CIM (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimmduno_bacte"
+                                                type="number"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimmduno_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalamdunobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalamdunobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticopsdosbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticopsdosbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>HALO (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.halopsdos_bacte"
+                                                type="number"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.halopsdos_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalapsdosbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalapsdosbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                                <option value="4">Sensibilidad disminuida a penicilina</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticomddosbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticomddosbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>CIM (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimmddos_bacte"
+                                                type="number"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimmddos_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalamddosbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalamddosbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticopstresbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticopstresbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>HALO (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.halopstres_bacte"
+                                                type="number"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.halopstres_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalapstresbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalapstresbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                                <option value="4">Sensibilidad disminuida a penicilina</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticomdtresbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticomdtresbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>CIM (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimmdtres_bacte"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimmdtres_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalamdtresbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalamdtresbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticopscuatrobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticopscuatrobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>HALO (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.halopscuatro_bacte"
+                                                type="number"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.halopscuatro_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalapscuatrobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalapscuatrobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                                <option value="4">Sensibilidad disminuida a penicilina</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticomdcuatrobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticomdcuatrobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>CIM (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimmdcuatro_bacte"
+                                                type="number"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimmdcuatro_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalamdcuatrobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalamdcuatrobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticopscincobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticopscincobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>HALO (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.halopscinco_bacte"
+                                                type="number"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.halopscinco_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalapscincobacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalapscincobacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                                <option value="4">Sensibilidad disminuida a penicilina</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Antibiótico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibioticopsseisbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibioticopsseisbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiotico</option>
+                                                @foreach ($bacteantibiotico as $objBacAnti)
+                                                    <option data-subtext="" value="{{ $objBacAnti->id }}">{{ $objBacAnti->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-1">
+                                        <label class="text-black"><b>HALO (mm.)</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.halopsseis_bacte"
+                                                type="number"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.halopsseis_bacte') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalapsseisbacte_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalapsseisbacte_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                                <option value="4">Sensibilidad disminuida a penicilina</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                             @endif
                             @if($Analiticas->crns_id==12)
-                            <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Carga Viral</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Carga Viral</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.carga_viral"
+                                                type="numeric"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.carga_viral') is-invalid @enderror"
+                                                placeholder="Ej: 1287" />
                                         </div>
-                                        <input
-                                            wire:model.defer="Analiticas.carga_viral"
-                                            type="numeric"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.carga_viral') is-invalid @enderror"
-                                            placeholder="Ej: 1287" />
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Unidades</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.unidades_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una unidad</option>
+                                                @foreach ($unidades as $objUni)
+                                                    <option data-subtext="" value="{{ $objUni->id }}">{{ $objUni->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-black"><b>Recomendación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.recomendacion_inmuno"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.recomendacion_inmuno') is-invalid @enderror"
+                                                placeholder="Ej: Realizar pruebas adicionales condicionadas" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Unidades</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.unidades_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una unidad</option>
-                                            @foreach ($unidades as $objUni)
-                                                <option data-subtext="" value="{{ $objUni->id }}">{{ $objUni->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label class="text-black"><b>Recomendación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.recomendacion_inmuno"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.recomendacion_inmuno') is-invalid @enderror"
-                                            placeholder="Ej: Realizar pruebas adicionales condicionadas" />
-                                    </div>
-                                </div>
-                            </div>
                             @endif
                             @if($Analiticas->crns_id==6)
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label class="text-black"><b>Germen aislado</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label class="text-black"><b>Germen aislado</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.germenaislado_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.germenaislado_mico') is-invalid @enderror"
+                                                placeholder="Ej: Germen aislado" />
                                         </div>
-                                        <input
-                                            wire:model.defer="Analiticas.germenaislado_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.germenaislado_mico') is-invalid @enderror"
-                                            placeholder="Ej: Germen aislado" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-black"><b>Directo KOH</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.directokoh_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.directokoh_mico') is-invalid @enderror"
+                                                placeholder="Ej: Directo KOH" />
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label class="text-black"><b>Directo KOH</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label class="text-black"><b>Directo placa teñida</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.directoplaca_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.directoplaca_mico') is-invalid @enderror"
+                                                placeholder="Ej: Placa teñida" />
                                         </div>
-                                        <input
-                                            wire:model.defer="Analiticas.directokoh_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.directokoh_mico') is-invalid @enderror"
-                                            placeholder="Ej: Directo KOH" />
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label class="text-black"><b>Tinta china</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.tintachina_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.tintachina_mico') is-invalid @enderror"
+                                                placeholder="Ej: Tinta china" />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label class="text-black"><b>Directo placa teñida</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.deteccionunomico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.deteccionunomico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Evento</option>
+                                                @foreach ($paradifusion as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <input
-                                            wire:model.defer="Analiticas.directoplaca_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.directoplaca_mico') is-invalid @enderror"
-                                            placeholder="Ej: Placa teñida" />
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.interpretaunomico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.interpretaunomico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Positivo</option>
+                                                <option value="2">Negativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.detecciondosmico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.detecciondosmico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Evento</option>
+                                                @foreach ($paradifusion as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.interpretadosmico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.interpretadosmico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Positivo</option>
+                                                <option value="2">Negativo</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-6">
-                                    <label class="text-black"><b>Tinta china</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.detecciontresmico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.detecciontresmico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Evento</option>
+                                                @foreach ($paradifusion as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <input
-                                            wire:model.defer="Analiticas.tintachina_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.tintachina_mico') is-invalid @enderror"
-                                            placeholder="Ej: Tinta china" />
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.interpretatresmico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.interpretatresmico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Positivo</option>
+                                                <option value="2">Negativo</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.deteccioncuatromico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.deteccioncuatromico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Evento</option>
+                                                @foreach ($paradifusion as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.interpretacuatromico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.interpretacuatromico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Positivo</option>
+                                                <option value="2">Negativo</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-8">
+                                        <label class="text-black"><b>Antibiograma</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.antibiogramamico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.antibiogramamico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antibiograma</option>
+                                                @foreach ($parabiograma as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <select
-                                            wire:model.defer="Analiticas.deteccionunomico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.deteccionunomico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Evento</option>
-                                            @foreach ($paradifusion as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.fungicounomico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.fungicounoid_mico') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antimicrobiano</option>
+                                                @foreach ($paramicrobianos as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <select
-                                            wire:model.defer="Analiticas.interpretaunomico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretaunomico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Positivo</option>
-                                            <option value="2">Negativo</option>
-                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>CIM</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimuno_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimuno_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Difusión</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.difusionuno_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimuno_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor Difusión" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalaunomico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalaid_mico') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.fungicodosmico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.fungicodosmico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antimicrobiano</option>
+                                                @foreach ($paramicrobianos as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <select
-                                            wire:model.defer="Analiticas.detecciondosmico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.detecciondosmico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Evento</option>
-                                            @foreach ($paradifusion as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>CIM</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimdos_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimdos_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Difusión</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.difusiondos_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimdos_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor Difusión" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escaladosmico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escaladosmico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.fungicotresmico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.fungicotresmico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antimicrobiano</option>
+                                                @foreach ($paramicrobianos as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <select
-                                            wire:model.defer="Analiticas.interpretadosmico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretadosmico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Positivo</option>
-                                            <option value="2">Negativo</option>
-                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>CIM</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimtres_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimtres_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Difusión</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.difusiontres_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.difusiontres_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor Difusión" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalatresmico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalatresmico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.fungicocuatromico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.fungicocuatromico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antimicrobiano</option>
+                                                @foreach ($paramicrobianos as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <select
-                                            wire:model.defer="Analiticas.detecciontresmico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.detecciontresmico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Evento</option>
-                                            @foreach ($paradifusion as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>CIM</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimcuatro_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimcuatro_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Difusión</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.difusioncuatro_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.difusioncuatro_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor Difusión" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalacuatromico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalacuatromico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.fungicocincomico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.fungicocincomico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antimicrobiano</option>
+                                                @foreach ($paramicrobianos as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <select
-                                            wire:model.defer="Analiticas.interpretatresmico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretatresmico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Positivo</option>
-                                            <option value="2">Negativo</option>
-                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>CIM</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimcinco_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimcinco_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Difusión</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.difusioncinco_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.difusioncinco_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor Difusión" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalacincomico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalacincomico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Detección Ac</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.fungicoseismico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.fungicoseismico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antimicrobiano</option>
+                                                @foreach ($paramicrobianos as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <select
-                                            wire:model.defer="Analiticas.deteccioncuatromico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.deteccioncuatromico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Evento</option>
-                                            @foreach ($paradifusion as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>CIM</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimseis_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimseis_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Difusión</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.difusionseis_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.difusionseis_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor Difusión" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalaseismico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalaseismico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
+                                <div class="form-row">
+                                    <div class="form-group col-md-4">
+                                        <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.fungicosietemico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.fungicosietemico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona un Antimicrobiano</option>
+                                                @foreach ($paramicrobianos as $objPar)
+                                                    <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
-                                        <select
-                                            wire:model.defer="Analiticas.interpretacuatromico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.interpretacuatromico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Positivo</option>
-                                            <option value="2">Negativo</option>
-                                        </select>
+                                    </div>
+                                    <div class="form-group col-md-2">
+                                        <label class="text-black"><b>CIM</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.cimsiete_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.cimsiete_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor CIM" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Difusión</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-edit"></i>
+                                                </span>
+                                            </div>
+                                            <input
+                                                wire:model.defer="Analiticas.difusionsiete_mico"
+                                                type="text"
+                                                required
+                                                class="form-control form-control-solid @error('Analiticas.difusionsiete_mico') is-invalid @enderror"
+                                                placeholder="Ej: Valor Difusión" />
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-3">
+                                        <label class="text-black"><b>Interpretación</b></label>
+                                        <div class="input-group input-group-solid">
+                                            <div class="input-group-prepend">
+                                                <span class="input-group-text">
+                                                    <i class="fas fa-list"></i>
+                                                </span>
+                                            </div>
+                                            <select
+                                                wire:model.defer="Analiticas.escalasietemico_id"
+                                                class="form-control selectpicker form-control-solid @error('Analiticas.escalasietemico_id') is-invalid @enderror"
+                                                data-size="7"
+                                                data-live-search="true"
+                                                data-show-subtext="true"
+                                                required>
+                                                <option value="">Selecciona una escala</option>
+                                                <option value="1">Sensible</option>
+                                                <option value="2">Intermedio</option>
+                                                <option value="3">Resistente</option>
+                                            </select>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-8">
-                                    <label class="text-black"><b>Antibiograma</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.antibiogramamico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.antibiogramamico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Antibiograma</option>
-                                            @foreach ($parabiograma as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.fungicounomico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicounoid_mico') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
-                                            @foreach ($paramicrobianos as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label class="text-black"><b>CIM</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.cimuno_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.cimuno_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor CIM" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Difusión</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.difusionuno_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.cimuno_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor Difusión" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.escalaunomico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalaid_mico') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Sensible</option>
-                                            <option value="2">Intermedio</option>
-                                            <option value="3">Resistente</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.fungicodosmico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicodosmico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
-                                            @foreach ($paramicrobianos as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label class="text-black"><b>CIM</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.cimdos_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.cimdos_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor CIM" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Difusión</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.difusiondos_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.cimdos_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor Difusión" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.escaladosmico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escaladosmico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Sensible</option>
-                                            <option value="2">Intermedio</option>
-                                            <option value="3">Resistente</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.fungicotresmico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicotresmico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
-                                            @foreach ($paramicrobianos as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label class="text-black"><b>CIM</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.cimtres_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.cimtres_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor CIM" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Difusión</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.difusiontres_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.difusiontres_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor Difusión" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.escalatresmico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalatresmico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Sensible</option>
-                                            <option value="2">Intermedio</option>
-                                            <option value="3">Resistente</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.fungicocuatromico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicocuatromico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
-                                            @foreach ($paramicrobianos as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label class="text-black"><b>CIM</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.cimcuatro_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.cimcuatro_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor CIM" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Difusión</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.difusioncuatro_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.difusioncuatro_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor Difusión" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.escalacuatromico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalacuatromico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Sensible</option>
-                                            <option value="2">Intermedio</option>
-                                            <option value="3">Resistente</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.fungicocincomico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicocincomico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
-                                            @foreach ($paramicrobianos as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label class="text-black"><b>CIM</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.cimcinco_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.cimcinco_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor CIM" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Difusión</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.difusioncinco_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.difusioncinco_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor Difusión" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.escalacincomico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalacincomico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Sensible</option>
-                                            <option value="2">Intermedio</option>
-                                            <option value="3">Resistente</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.fungicoseismico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicoseismico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
-                                            @foreach ($paramicrobianos as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label class="text-black"><b>CIM</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.cimseis_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.cimseis_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor CIM" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Difusión</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.difusionseis_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.difusionseis_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor Difusión" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.escalaseismico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalaseismico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Sensible</option>
-                                            <option value="2">Intermedio</option>
-                                            <option value="3">Resistente</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label class="text-black"><b>Antifúngico</b><span class="text-danger"></span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.fungicosietemico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.fungicosietemico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona un Antimicrobiano</option>
-                                            @foreach ($paramicrobianos as $objPar)
-                                                <option data-subtext="" value="{{ $objPar->id }}">{{ $objPar->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label class="text-black"><b>CIM</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.cimsiete_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.cimsiete_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor CIM" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Difusión</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            wire:model.defer="Analiticas.difusionsiete_mico"
-                                            type="text"
-                                            required
-                                            class="form-control form-control-solid @error('Analiticas.difusionsiete_mico') is-invalid @enderror"
-                                            placeholder="Ej: Valor Difusión" />
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-3">
-                                    <label class="text-black"><b>Interpretación</b></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Analiticas.escalasietemico_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.escalasietemico_id') is-invalid @enderror"
-                                            data-size="7"
-                                            data-live-search="true"
-                                            data-show-subtext="true"
-                                            required>
-                                            <option value="">Selecciona una escala</option>
-                                            <option value="1">Sensible</option>
-                                            <option value="2">Intermedio</option>
-                                            <option value="3">Resistente</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
                             @endif
                             <div class="form-row">
                                 <div class="form-group col-md-12">

@@ -141,6 +141,45 @@ class Form extends Component
 
             'Analiticas.observacioninvestiga' => 'sometimes|max:250',
 
+            'Analiticas.antibioticopsunobacte_id' => 'sometimes|numeric',
+            'Analiticas.halopsuno_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapsunobacte_id' => 'sometimes|numeric',
+            
+            'Analiticas.antibioticopsdosbacte_id' => 'sometimes|numeric',
+            'Analiticas.halopsdos_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapsdosbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticopstresbacte_id' => 'sometimes|numeric',
+            'Analiticas.halopstres_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapstresbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticopscuatrobacte_id' => 'sometimes|numeric',
+            'Analiticas.halopscuatro_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapscuatrobacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticopscincobacte_id' => 'sometimes|numeric',
+            'Analiticas.halopscinco_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapscincobacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticopsseisbacte_id' => 'sometimes|numeric',
+            'Analiticas.halopsseis_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapsseisbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticomdunobacte_id' => 'sometimes|numeric',
+            'Analiticas.cimmduno_bacte' => 'sometimes|numeric',
+            'Analiticas.escalamdunobacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticomddosbacte_id' => 'sometimes|numeric',
+            'Analiticas.cimmddos_bacte' => 'sometimes|numeric',
+            'Analiticas.escalamddosbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticomdtresbacte_id' => 'sometimes|numeric',
+            'Analiticas.cimmdtres_bacte' => 'sometimes|numeric',
+            'Analiticas.escalamdtresbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticomdcuatrobacte_id' => 'sometimes|numeric',
+            'Analiticas.cimmdcuatro_bacte' => 'sometimes|numeric',
+            'Analiticas.escalamdcuatrobacte_id' => 'sometimes|numeric',
         ];
     }
 
@@ -218,6 +257,76 @@ class Form extends Component
             $this->Analiticas->escalasietemico_id = 0;
         }
 
+        if($this->Analiticas->antibioticopsunobacte_id == 0){
+            $this->Analiticas->antibioticopsunobacte_id = 0;
+            $this->Analiticas->halopsuno_bacte = 0;
+            $this->Analiticas->escalapsunobacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopsdosbacte_id == 0){
+            $this->Analiticas->antibioticopsdosbacte_id = 0;
+            $this->Analiticas->halopsdos_bacte = 0;
+            $this->Analiticas->escalapsdosbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopstresbacte_id == 0){
+            $this->Analiticas->antibioticopstresbacte_id = 0;
+            $this->Analiticas->halopstres_bacte = 0;
+            $this->Analiticas->escalapstresbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopscuatrobacte_id == 0){
+            $this->Analiticas->antibioticopscuatrobacte_id = 0;
+            $this->Analiticas->halopscuatro_bacte = 0;
+            $this->Analiticas->escalapscuatroacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopscincobacte_id == 0){
+            $this->Analiticas->antibioticopscincobacte_id = 0;
+            $this->Analiticas->halopscinco_bacte = 0;
+            $this->Analiticas->escalapscincobacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopsseisbacte_id == 0){
+            $this->Analiticas->antibioticopsseisbacte_id = 0;
+            $this->Analiticas->halopsseis_bacte = 0;
+            $this->Analiticas->escalapsseisbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticomdunobacte_id == 0){
+            $this->Analiticas->antibioticomdunobacte_id = 0;
+            $this->Analiticas->cimmduno_bacte = 0;
+            $this->Analiticas->escalamdunobacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticomddosbacte_id == 0){
+            $this->Analiticas->antibioticomddosbacte_id = 0;
+            $this->Analiticas->cimmddos_bacte = 0;
+            $this->Analiticas->escalamddosbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticomdtresbacte_id == 0){
+            $this->Analiticas->antibioticomdtresbacte_id = 0;
+            $this->Analiticas->cimmdtres_bacte = 0;
+            $this->Analiticas->escalamdtresbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticomdcuatrobacte_id == 0){
+            $this->Analiticas->antibioticomdcuatrobacte_id = 0;
+            $this->Analiticas->cimmdcuatro_bacte = 0;
+            $this->Analiticas->escalamdcuatrobacte_id = 0;
+
+        }
+
         if($method=='update'){
             $config = SedeCrn::where('sedes_id','=',$this->Analiticas->sedes_id)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $this->crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
@@ -259,7 +368,8 @@ class Form extends Component
         $paramicrobianos = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antimicrobianos')->orderBy('id','asc')->cursor();
         $paradifusion = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Inmunodifusion')->orderBy('id','asc')->cursor();
         $parabiograma = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antibiograma')->orderBy('id','asc')->cursor();
-        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','instituciones','paramicrobianos','paradifusion','parabiograma','preanalitica','estados','unidades','clases'));
+        $bacteantibiotico = Tipoparametros::where('estado','=','A')->where('crns_id','=',3)->where('tipo','=','Antibiotico')->orderBy('id','asc')->cursor();
+        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','instituciones','paramicrobianos','paradifusion','parabiograma','bacteantibiotico','preanalitica','estados','unidades','clases'));
     }
 
     public function store(){
