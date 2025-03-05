@@ -127,9 +127,9 @@ class Index extends Component
         if($this->claboratorios){
             $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
             $count = $resultados->count();
-            $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
-            $tecnicas = Tecnica::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
-            $reportes = Reporte::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $reportes = Reporte::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
             $crns_tecnicos = Responsable::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->where('vigente_hasta','=',null)->distinct('usuario_id')->pluck('usuario_id')->toArray();
             $usuarios = User::whereIn('id',$crns_tecnicos)->orderBy('id', 'asc')->get();
 

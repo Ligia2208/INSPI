@@ -85,8 +85,8 @@ class PostanaliticapController extends Controller
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(190,7,utf8_decode("Clasificación: ".$unidad->clasificacion->descripcion.' - '.$unidad->nivel->descripcion.' - '.$unidad->tipologia->descripcion.' ( '.$unidad->provincia->descripcion.' - '.$unidad->canton->descripcion.' )'),1,0,"L");
         $this->fpdf->Ln(7);
-        $this->fpdf->Cell(80,7,utf8_decode("Fecha atención: ".$data->fecha_atencion),1,0,"L");
         $this->fpdf->Cell(110,7,utf8_decode("Nombre de quien notifica: ".$data->quien_notifica),1,0,"L");
+        $this->fpdf->Cell(80,7,utf8_decode("Fecha atención: ".$data->fecha_atencion),1,0,"L");
         $this->fpdf->Ln(12);
 
         $this->fpdf->SetFont('Arial', 'B', 8);

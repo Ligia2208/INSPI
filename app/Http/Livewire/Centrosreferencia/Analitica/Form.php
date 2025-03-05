@@ -144,7 +144,7 @@ class Form extends Component
             'Analiticas.antibioticopsunobacte_id' => 'sometimes|numeric',
             'Analiticas.halopsuno_bacte' => 'sometimes|numeric',
             'Analiticas.escalapsunobacte_id' => 'sometimes|numeric',
-            
+
             'Analiticas.antibioticopsdosbacte_id' => 'sometimes|numeric',
             'Analiticas.halopsdos_bacte' => 'sometimes|numeric',
             'Analiticas.escalapsdosbacte_id' => 'sometimes|numeric',
@@ -531,7 +531,7 @@ class Form extends Component
             }
 
             $this->Analiticas->archivo = null;
-            $this->Analiticass->update();
+            $this->Analiticas->update();
         }
         $this->reset('AnaliticaTmp');
         $this->alert('success', 'Informe digitalizado eliminado con exito');
