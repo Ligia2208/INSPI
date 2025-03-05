@@ -89,7 +89,7 @@ class Index extends Component
             $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
             $res = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->get()->toArray();
             $count = $resultados->count();
-            $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
 
             $data = DB::table('inspi_crns.consolidado')->select('evento as grupo',DB::raw('count(resultado) as total'))->where('sedes_id','=',$this->csedes)->where('crns_id','=',$this->claboratorios)->groupBy('evento')->get()->toArray();
 
@@ -104,7 +104,7 @@ class Index extends Component
             $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos);
             $res = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->get()->toArray();
             $count = $resultados->count();
-            $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
 
             $data = DB::table('inspi_crns.consolidado')->select('resultado as grupo',DB::raw('count(*) as total'))->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos)->groupBy('resultado')->get()->toArray();
 

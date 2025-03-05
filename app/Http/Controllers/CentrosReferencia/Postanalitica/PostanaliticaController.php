@@ -44,6 +44,8 @@ class PostanaliticaController extends Controller
 
         $data = Preanalitica::findOrFail($id);
         $data_muestras = Analitica::where('preanalitica_id','=',$id)->get();
+        $codigo_muestra = Analitica::where('preanalitica_id','=',$id)->first()->codigo_calidad;
+        $codigom = substr($codigo_muestra, 0, -3);
         $laboratorio = Crn::findOrFail($data->crns_id);
         $unidad = Institucion::findOrFail($data->instituciones_id);
         $paciente = Paciente::findOrFail($data->paciente_id);
@@ -62,7 +64,9 @@ class PostanaliticaController extends Controller
         $this->fpdf->Cell(190,8,utf8_decode($laboratorio->titulo),1,0,"C");
         $this->fpdf->Ln(6);
         $this->fpdf->SetFont('Arial', '', 9);
-        $this->fpdf->Cell(320,12,utf8_decode("Fecha impresión: ".date("d/m/Y").' '.date("H:i:s")),0,0,"C");
+
+        $this->fpdf->Cell(120,13,utf8_decode("Código muestra: ".$codigom),0,0,"L");
+        $this->fpdf->Cell(70,13,utf8_decode("Fecha impresión: ".date("d/m/Y").' '.date("H:i:s")),0,0,"R");
         $this->fpdf->Ln(10);
 
         $this->fpdf->SetFont('Arial', 'B', 8);
@@ -73,8 +77,9 @@ class PostanaliticaController extends Controller
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(190,7,utf8_decode("Clasificación: ".$unidad->clasificacion->descripcion.' - '.$unidad->nivel->descripcion.' - '.$unidad->tipologia->descripcion.' ( '.$unidad->provincia->descripcion.' - '.$unidad->canton->descripcion.' )'),1,0,"L");
         $this->fpdf->Ln(7);
-        $this->fpdf->Cell(80,7,utf8_decode("Fecha atención: ".$data->fecha_atencion),1,0,"L");
         $this->fpdf->Cell(110,7,utf8_decode("Nombre de quien notifica: ".$data->quien_notifica),1,0,"L");
+        $this->fpdf->Cell(80,7,utf8_decode("Fecha atención: ".$data->fecha_atencion),1,0,"L");
+
         $this->fpdf->Ln(12);
 
         $this->fpdf->SetFont('Arial', 'B', 8);
@@ -83,7 +88,7 @@ class PostanaliticaController extends Controller
         $this->fpdf->SetFont('Arial', '', 7);
         $this->fpdf->Cell(50,7,utf8_decode("Identidad: ".$paciente->identidad),1,0,"L");
         $this->fpdf->Cell(100,7,utf8_decode("Nombres Completos: ".$paciente->apellidos.' '.$paciente->nombres),1,0,"L");
-        $this->fpdf->Cell(40,7,utf8_decode("Sexo: ".$paciente->sexo->nombre),1,0,"L");
+        $this->fpdf->Cell(40,7,utf8_decode("Sexo: ".$paciente->sexo->descripcion),1,0,"L");
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(50,7,utf8_decode("Fecha de Nacimiento: ".$paciente->fechanacimiento),1,0,"L");
         $tiempo = strtotime($paciente->fechanacimiento);
@@ -136,7 +141,7 @@ class PostanaliticaController extends Controller
         $this->fpdf->Cell(34,7,utf8_decode("Código muestra"),1,0,"C");
         $this->fpdf->Cell(25,7,utf8_decode("Tipo muestra"),1,0,"C");
         $this->fpdf->Cell(25,7,utf8_decode("Toma muestra"),1,0,"C");
-        $this->fpdf->Cell(25,7,utf8_decode("Llegada a CRN"),1,0,"C");
+        $this->fpdf->Cell(25,7,utf8_decode("Recepción en CRN"),1,0,"C");
         $this->fpdf->Cell(40,7,utf8_decode("Técnica aplicada"),1,0,"C");
         $this->fpdf->Cell(41,7,utf8_decode("Resultado"),1,0,"C");
         $this->fpdf->SetFont('Arial', '', 7);
@@ -144,7 +149,7 @@ class PostanaliticaController extends Controller
         foreach($data_muestras as $muestra){
             $this->fpdf->Ln(7);
             if($muestra->codigo_externo != ''){
-                $this->fpdf->Cell(34,7,utf8_decode($muestra->anio_registro.'-'.$muestra->codigo_externo),1,0,"C");
+                $this->fpdf->Cell(34,7,utf8_decode($muestra->codigo_externo.'-'.$muestra->anio_registro),1,0,"C");
             }
             else{
                 $this->fpdf->Cell(34,7,utf8_decode($muestra->codigo_calidad),1,0,"C");
