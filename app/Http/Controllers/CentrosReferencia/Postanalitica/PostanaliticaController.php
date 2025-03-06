@@ -186,7 +186,33 @@ class PostanaliticaController extends Controller
         $this->fpdf->Cell(190,7,utf8_decode("Descripción del resultado encontrado:"),1,0,"L");
         $this->fpdf->Ln(7);
         $this->fpdf->SetFont('Arial', '', 7);
-        $this->fpdf->Cell(190,7,utf8_decode($data->descripcion),1,0,"L");
+        $this->fpdf->Cell(190,23,"",1,0,"L");
+        $this->fpdf->Ln(1);
+        $countwords = strlen($data->descripcion);
+        $texto = $data->descripcion;
+        $lineas = 0;
+        while($countwords>160){
+            $control = stripos($texto, ' ');
+            $arriba = substr($texto, 0, $control);
+            $abajo = substr($texto, $control+1, $countwords);
+            while($control<160){
+                $paso = $control+1;
+                $control = stripos($abajo, ' ');
+                $arriba = $arriba.' '.substr($abajo, 0, $control);
+                $abajo = substr($abajo, $control+1, $countwords);
+                $control = $control + $paso;
+                if($control>155){
+                    $control = $control + 20;
+                }
+            }
+            $this->fpdf->cell(190,5.5,$arriba,0,0,"L");
+            $this->fpdf->Ln(5.5);
+            $countwords = $countwords - strlen($arriba);
+            $texto = $abajo;
+            $lineas++;
+        }
+        $this->fpdf->cell(190,5.5,$abajo,0,0,"L");
+
 
         $dataqr = $data->sedes->descripcion." - ".$data->crns->descripcion."\n";
         $dataqr .= "Ev: ".$data->evento->descripcion."\n";
@@ -209,6 +235,7 @@ class PostanaliticaController extends Controller
         if($i==4){
             $posy = 228;
         }
+        $posy = $posy + $lineas*7;
         $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',140,$posy,37);
 
         $this->fpdf->Ln(16);
