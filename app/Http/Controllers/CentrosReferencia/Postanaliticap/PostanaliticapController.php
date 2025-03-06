@@ -42,40 +42,32 @@ class PostanaliticapController extends Controller
 
     public function informep($id){
 
+        $data = Preanalitica::findOrFail($id);
+        $data_muestras = Analitica::where('preanalitica_id','=',$id)->get();
+        $codigo_muestra = Analitica::where('preanalitica_id','=',$id)->first()->codigo_calidad;
+        $codigom = substr($codigo_muestra, 0, -3);
+        $laboratorio = Crn::findOrFail($data->crns_id);
+        $unidad = Institucion::findOrFail($data->instituciones_id);
+        $paciente = Paciente::findOrFail($data->paciente_id);
+
         $this->fpdf = new Fpdf;
         $this->fpdf->SetFont('Arial', 'B', 9);
         $this->fpdf->AddPage("P", "A4");
-        $this->fpdf->Image('descargar.png',9,21,-180);
-        $this->fpdf->Cell(50, 40, "",1,0,"C");
-        $this->fpdf->Cell(80, 20, "", 1);
-        $this->fpdf->Text(80,18,"INFORME DE RESULTADOS");
-        $this->fpdf->Text(74,24,"NOTIFICACION Y CIERRE DE CASO");
-        $this->fpdf->Cell(30, 10, utf8_decode("Código:"),1,0,"C");
-        $this->fpdf->Cell(30, 10, "F-DIPC-004",1,0,"C");
-        $this->fpdf->Ln(10);
-        $this->fpdf->Cell(130,10,"",0,0,"C");
-        $this->fpdf->Cell(30, 10, utf8_decode("Edición"),1,0,"C");
-        $this->fpdf->Cell(30, 10, "005",1,0,"C");
-        $this->fpdf->Ln(10);
-        $this->fpdf->Cell(50,20,"",0,0,"C");
-        $this->fpdf->SetFont('Arial', 'B', 8);
-        $this->fpdf->Text(72,37,"Macro-Proceso");
-        $this->fpdf->Text(61,41,utf8_decode("Coordinación General Técnica"));
-        $this->fpdf->Text(67,45,utf8_decode("Dirección de Vigilancia"));
-        $this->fpdf->Cell(43, 20, "",1);
-        $this->fpdf->Cell(37, 20, "",1,0,"C");
-        $this->fpdf->Text(110,37,"Proceso Interno");
-        $this->fpdf->Text(105,41,utf8_decode("Dirección de Vigilancia"));
-        $this->fpdf->Text(110,45,utf8_decode("Epidemiológica"));
-        $this->fpdf->SetFont('Arial', 'B', 9);
-        $this->fpdf->Cell(30, 20, utf8_decode("Fecha Aprobación"),1,0,"C");
-        $this->fpdf->Cell(30, 20, "28/03/2019",1,0,"C");
-        $this->fpdf->Ln(28);
+        $this->fpdf->Image('descargar.png',17,12,-200);
+        $this->fpdf->Cell(60, 20, "",1,0,"C");
+        $this->fpdf->Cell(70, 20, "", 1);
+        $this->fpdf->Text(85,22,"INFORME DE RESULTADOS");
+        $this->fpdf->Cell(60, 20,"",1,0,"C");
+        $this->fpdf->Text(147,18,utf8_decode("Coordinación General Técnica"));
+        $this->fpdf->Text(146,23,utf8_decode("Dirección Técnica de Vigilancia"));
+        $this->fpdf->Ln(20);
+        $this->fpdf->Cell(190,8,utf8_decode($laboratorio->titulo),1,0,"C");
+        $this->fpdf->Ln(6);
+        $this->fpdf->SetFont('Arial', '', 9);
 
-        $data = Preanalitica::findOrFail($id);
-        $data_muestras = Analitica::where('preanalitica_id','=',$id)->get();
-        $unidad = Institucion::findOrFail($data->instituciones_id);
-        $paciente = Paciente::findOrFail($data->paciente_id);
+        $this->fpdf->Cell(120,13,utf8_decode("Código muestra: ".$codigom),0,0,"L");
+        $this->fpdf->Cell(70,13,utf8_decode("Fecha impresión: ".date("d/m/Y").' '.date("H:i:s")),0,0,"R");
+        $this->fpdf->Ln(10);
 
         $this->fpdf->SetFont('Arial', 'B', 8);
         $this->fpdf->Cell(190,7,utf8_decode("Descripción Institución de Salud que referencia"),1,0,"C");
@@ -87,6 +79,7 @@ class PostanaliticapController extends Controller
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(110,7,utf8_decode("Nombre de quien notifica: ".$data->quien_notifica),1,0,"L");
         $this->fpdf->Cell(80,7,utf8_decode("Fecha atención: ".$data->fecha_atencion),1,0,"L");
+
         $this->fpdf->Ln(12);
 
         $this->fpdf->SetFont('Arial', 'B', 8);
@@ -95,7 +88,7 @@ class PostanaliticapController extends Controller
         $this->fpdf->SetFont('Arial', '', 7);
         $this->fpdf->Cell(50,7,utf8_decode("Identidad: ".$paciente->identidad),1,0,"L");
         $this->fpdf->Cell(100,7,utf8_decode("Nombres Completos: ".$paciente->apellidos.' '.$paciente->nombres),1,0,"L");
-        $this->fpdf->Cell(40,7,utf8_decode("Sexo: ".$paciente->sexo->nombre),1,0,"L");
+        $this->fpdf->Cell(40,7,utf8_decode("Sexo: ".$paciente->sexo->descripcion),1,0,"L");
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(50,7,utf8_decode("Fecha de Nacimiento: ".$paciente->fechanacimiento),1,0,"L");
         $tiempo = strtotime($paciente->fechanacimiento);
@@ -140,30 +133,43 @@ class PostanaliticapController extends Controller
 
         $this->fpdf->Ln(12);
         $this->fpdf->SetFont('Arial', 'B', 8);
-        $this->fpdf->Cell(190,7,utf8_decode("Muestras Recibidas"),1,0,"C");
-        $this->fpdf->SetFont('Arial', '', 7);
+        $this->fpdf->Cell(190,7,utf8_decode("Técnicas Aplicadas"),1,0,"C");
+        $this->fpdf->SetFont('Arial', 'B', 7);
         $fecha_lab = '';
+
+        $this->fpdf->Ln(7);
+        $this->fpdf->Cell(34,7,utf8_decode("Código muestra"),1,0,"C");
+        $this->fpdf->Cell(25,7,utf8_decode("Tipo muestra"),1,0,"C");
+        $this->fpdf->Cell(25,7,utf8_decode("Toma muestra"),1,0,"C");
+        $this->fpdf->Cell(25,7,utf8_decode("Recepción en CRN"),1,0,"C");
+        $this->fpdf->Cell(40,7,utf8_decode("Técnica aplicada"),1,0,"C");
+        $this->fpdf->Cell(41,7,utf8_decode("Resultado"),1,0,"C");
+        $this->fpdf->SetFont('Arial', '', 7);
+        $i=0;
         foreach($data_muestras as $muestra){
             $this->fpdf->Ln(7);
             if($muestra->codigo_externo != ''){
-                $this->fpdf->Cell(34,7,utf8_decode("Código: ".$muestra->anio_registro.'-'.$muestra->codigo_externo),1,0,"L");
+                $this->fpdf->Cell(34,7,utf8_decode($muestra->codigo_externo.'-'.$muestra->anio_registro),1,0,"C");
             }
             else{
-                $this->fpdf->Cell(34,7,utf8_decode("Código: ".$muestra->anio_registro.'-'.str_pad($muestra->codigo_muestra, 6, "0", STR_PAD_LEFT).'-'.str_pad($muestra->codigo_secuencial, 2, "0", STR_PAD_LEFT)),1,0,"L");
+                $this->fpdf->Cell(34,7,utf8_decode($muestra->codigo_calidad),1,0,"C");
             }
 
-            $this->fpdf->Cell(45,7,utf8_decode("Muestra: ".$muestra->muestra->descripcion),1,0,"L");
-            $this->fpdf->Cell(28,7,utf8_decode("Toma: ".$muestra->fecha_toma),1,0,"L");
-            $this->fpdf->Cell(28,7,utf8_decode("Llegada: ".$muestra->fecha_llegada_lab),1,0,"L");
+            $this->fpdf->Cell(25,7,utf8_decode(substr($muestra->muestra->descripcion,0,15)),1,0,"C");
+            $this->fpdf->Cell(25,7,utf8_decode($muestra->fecha_toma),1,0,"C");
+            $this->fpdf->Cell(25,7,utf8_decode($muestra->fecha_llegada_lab),1,0,"C");
             if($muestra->tecnica_id>0){
-                $this->fpdf->Cell(55,7,utf8_decode("Técnica: ".substr($muestra->tecnica->descripcion,1,39)),1,0,"L");
+                $this->fpdf->Cell(40,7,utf8_decode(substr($muestra->tecnica->descripcion,0,32)),1,0,"L");
+                $this->fpdf->Cell(41,7,utf8_decode(substr($muestra->resultado->descripcion,0,32)),1,0,"L");
             }
             else{
-                $this->fpdf->Cell(55,7,utf8_decode("Técnica: "),1,0,"L");
+                $this->fpdf->Cell(40,7,utf8_decode(""),1,0,"C");
+                $this->fpdf->Cell(41,7,utf8_decode(""),1,0,"C");
             }
             $fecha_lab=$muestra->fecha_llegada_lab;
             $fecha_resul=$muestra->fecha_resultado;
             $tecnico = $muestra->usuarior->name;
+            $i++;
         }
 
         $this->fpdf->Ln(12);
@@ -172,7 +178,7 @@ class PostanaliticapController extends Controller
         $this->fpdf->Cell(190,7,utf8_decode("Detalle del Resultado"),1,0,"C");
         $this->fpdf->Ln(7);
         $this->fpdf->SetFont('Arial', '', 7);
-        $this->fpdf->Cell(190,7,utf8_decode("Evento: ".$data->evento->descripcion),1,0,"L");
+        $this->fpdf->Cell(190,7,utf8_decode("Evento: ".substr($data->evento->descripcion,0,75)." - (".$data->evento->simplificado.")"),1,0,"L");
         $this->fpdf->Ln(7);
         $this->fpdf->Cell(190,7,utf8_decode("Resultado: ".$data->resultado->descripcion),1,0,"L");
         $this->fpdf->Ln(7);
@@ -180,28 +186,70 @@ class PostanaliticapController extends Controller
         $this->fpdf->Cell(190,7,utf8_decode("Descripción del resultado encontrado:"),1,0,"L");
         $this->fpdf->Ln(7);
         $this->fpdf->SetFont('Arial', '', 7);
-        $this->fpdf->Cell(190,7,utf8_decode($data->descripcion),1,0,"L");
+        $this->fpdf->Cell(190,23,"",1,0,"L");
+        $this->fpdf->Ln(1);
+        $countwords = strlen($data->descripcion);
+        $texto = $data->descripcion;
+        $lineas = 0;
+        while($countwords>160){
+            $control = stripos($texto, ' ');
+            $arriba = substr($texto, 0, $control);
+            $abajo = substr($texto, $control+1, $countwords);
+            while($control<160){
+                $paso = $control+1;
+                $control = stripos($abajo, ' ');
+                $arriba = $arriba.' '.substr($abajo, 0, $control);
+                $abajo = substr($abajo, $control+1, $countwords);
+                $control = $control + $paso;
+                if($control>155){
+                    $control = $control + 20;
+                }
+            }
+            $this->fpdf->cell(190,5.5,utf8_decode($arriba),0,0,"L");
+            $this->fpdf->Ln(5.5);
+            $countwords = $countwords - strlen($arriba);
+            $texto = $abajo;
+            $lineas++;
+        }
+        $this->fpdf->cell(190,5.5,utf8_decode($abajo),0,0,"L");
+
 
         $dataqr = $data->sedes->descripcion." - ".$data->crns->descripcion."\n";
-        $dataqr .= "Evento: ".$data->evento->descripcion."\n";
-        $dataqr .= "Resultado: ".$data->resultado->descripcion."\n";
-        $dataqr .= "Código muestra: ".$data->anio_registro.'-'.str_pad($muestra->codigo_muestra, 8, "0", STR_PAD_LEFT)."\n";
-        $dataqr .= "Validación: ".$data->usuarior_id.'-'.$data->fecha_resultado;
+        $dataqr .= "Ev: ".$data->evento->descripcion."\n";
+        $dataqr .= "Re: ".$data->resultado->descripcion."\n";
+        $dataqr .= "Co: ".$data->codigo_calidad."\n";
+        $dataqr .= "Va: ".$data->usuarior_id.'-'.$data->fecha_resultado;
 
         QrCode::png($dataqr,storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',QR_ECLEVEL_H,3,1);
 
-        $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',140,230,37);
+        $posy = 0;
+        if($i==1){
+            $posy = 207;
+        }
+        if($i==2){
+            $posy = 214;
+        }
+        if($i==3){
+            $posy = 221;
+        }
+        if($i==4){
+            $posy = 228;
+        }
+        $posy = $posy + $lineas*7;
+        $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',140,$posy,37);
 
         $this->fpdf->Ln(16);
-        $this->fpdf->Cell(80,7,utf8_decode("Trazabilidad del proceso"),1,0,"C");
+        $this->fpdf->SetFont('Arial', 'B', 7);
+        $this->fpdf->Cell(90,7,utf8_decode("Trazabilidad del proceso"),1,0,"C");
+        $this->fpdf->SetFont('Arial', '', 7);
         $this->fpdf->Ln(7);
-        $this->fpdf->Cell(80,7,utf8_decode("Recepción muestra: ".$data->usuariot->name.' ('.$data->created_at.')'),1,0,"L");
+        $this->fpdf->Cell(90,7,utf8_decode("Recepción muestra: ".$data->usuariot->name.' ('.$data->fecha_recepcion.')'),1,0,"L");
         $this->fpdf->Ln(7);
-        $this->fpdf->Cell(80,7,utf8_decode("Llegada al CRN - Laboratorio : ".$fecha_lab),1,0,"L");
+        $this->fpdf->Cell(90,7,utf8_decode("Llegada al CRN - Laboratorio : ".$fecha_lab),1,0,"L");
         $this->fpdf->Ln(7);
-        $this->fpdf->Cell(80,7,utf8_decode("Analítica: ".$tecnico.' ('.$fecha_resul.')'),1,0,"L");
+        $this->fpdf->Cell(90,7,utf8_decode("Analítica: ".$tecnico.' ('.$fecha_resul.')'),1,0,"L");
         $this->fpdf->Ln(7);
-        $this->fpdf->Cell(80,7,utf8_decode("Validación resultado: ".$data->usuarior->name.' ('.$data->fecha_resultado.')'),1,0,"L");
+        $this->fpdf->Cell(90,7,utf8_decode("Validación resultado: ".$data->usuarior->name.' ('.$data->fecha_resultado.')'),1,0,"L");
         $this->fpdf->Ln(7);
 
         $this->fpdf->Output();
