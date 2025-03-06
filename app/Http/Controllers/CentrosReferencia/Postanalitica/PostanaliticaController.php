@@ -205,13 +205,13 @@ class PostanaliticaController extends Controller
                     $control = $control + 20;
                 }
             }
-            $this->fpdf->cell(190,5.5,$arriba,0,0,"L");
+            $this->fpdf->cell(190,5.5,utf8_decode($arriba),0,0,"L");
             $this->fpdf->Ln(5.5);
             $countwords = $countwords - strlen($arriba);
             $texto = $abajo;
             $lineas++;
         }
-        $this->fpdf->cell(190,5.5,$abajo,0,0,"L");
+        $this->fpdf->cell(190,5.5,utf8_decode($abajo),0,0,"L");
 
 
         $dataqr = $data->sedes->descripcion." - ".$data->crns->descripcion."\n";
