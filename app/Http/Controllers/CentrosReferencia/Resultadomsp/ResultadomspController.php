@@ -406,6 +406,8 @@ class ResultadomspController extends Controller
         $countwords = strlen($data->descripcion);
         $texto = $data->descripcion;
         $lineas = 0;
+        $arriba = '';
+        $abajo = '';
         while($countwords>160){
             $control = stripos($texto, ' ');
             $arriba = substr($texto, 0, $control);
