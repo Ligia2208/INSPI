@@ -131,6 +131,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('planificacion/nuevaPlanificacion/{id_direccion}', 'PlanificacionController@nuevaPlanificacion')->name('planificacion.nuevaPlanificacion');
         Route::post('planificacion/savePlanificacion', 'PlanificacionController@savePlanificacion')->name('planificacion.savePlanificacion');
         Route::post('/planificacion/deletePoa', 'PlanificacionController@deletePoa')->name('planificacion.deletePoa'); //Eliminar registro
+        Route::post('/planificacion/cerrarConvenio', 'PlanificacionController@cerrarConvenio')->name('planificacion.cerrarConvenio');
         Route::post('/planificacion/deleteCertificacion', 'PlanificacionController@deleteCertificacion')->name('planificacion.deleteCertificacion');
         Route::get('/planificacion/detalle', 'PlanificacionController@detalle')->middleware('permission:pladetalle')->name('planificacion.detalle');
         Route::get('/planificacion/detalleUser', 'PlanificacionController@detalleUser')->middleware('permission:pladetalleuser')->name('planificacion.detalleUser'); 
@@ -189,6 +190,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/planificacion/aproSolicitud', 'PlanificacionController@aproSolicitud')->name('planificacion.aproSolicitud'); //Aprobar o Rechazar solicitud
         Route::get('/planificacion/obtenerpoa/{id}', 'PlanificacionController@obtenerPoa')->name('planificacion.obtenerPoa');
         Route::post('/planificacion/solicitadPOA', 'PlanificacionController@solicitadPOA')->name('planificacion.solicitadPOA');
+        Route::post('/planificacion/solicitaEliminacionPOA', 'PlanificacionController@solicitaEliminacionPOA')->name('planificacion.solicitaEliminacionPOA');
     
         Route::get('planificacion/reportDetalle', 'PlanificacionController@reportDetalle')->name('planificacion.reportDetalle');
         Route::get('planificacion/reportDetalleUser', 'PlanificacionController@reportDetalleUser')->name('planificacion.reportDetalleUser');

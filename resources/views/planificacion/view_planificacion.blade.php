@@ -24,7 +24,7 @@
     <div class="container2">
         <div class="page-content mb-5">
 
-            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus"></i> Editar actividad </h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus"></i> Visualizar Actividad </h2>
 
             <hr/>
 
@@ -158,16 +158,24 @@
                         </div>
 
                         <div class="col-md-4 mt-2">
-                            <label for="desItem" class="form-label fs-6">Descripción del Item Presupuestario</label>
-                            <input type="text" id="desItem" name="desItem" class="form-control" required="" autofocus="" value="{{$atributos->descripcionItem}}" disabled>
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
                             <label for="monto" class="form-label fs-6">Monto</label>
                             <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="{{intval($atributos->monto)}}" disabled>
                             <div class="valid-feedback">¡Se ve bien!</div>
                             <div class="invalid-feedback">Ingrese solo números</div>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label for="proceso" class="form-label fs-6">Tipo de Proceso</label>
+                            <select id="proceso" name="proceso" class="form-control single-select" required disabled>
+                                <option value="0">Seleccione Opción</option>
+                                @foreach($proceso as $tipo)
+                                @if($atributos->id_proceso == $tipo->id)
+                                <option value="{{$tipo->id}}" selected> {{$tipo->nombre}} </option>
+                                @else
+                                <option value="{{$tipo->id}}"> {{$tipo->nombre}} </option>
+                                @endif
+                                @endforeach
+                            </select>
                         </div>
 
                     </div>
@@ -376,7 +384,7 @@
                                             @elseif($comentario->estado_planificacion == 'Corregido')
                                                 <span class="m-2 mb-3 badge bg-info fs-6">{{ $comentario->estado_planificacion }}</span>
                                             @else
-                                                <!-- <p class="m-2 mb-3 badge"><strong>Estado de la planificación:</strong> {{ $comentario->estado_planificacion }}</p> -->
+                                                <span class="m-2 mb-3 badge bg-info fs-6">{{ $comentario->estado_planificacion }}</span>
                                             @endif
                                         </p>
                                     </div>

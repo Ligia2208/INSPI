@@ -64,7 +64,7 @@ class Form extends Component
             'Preanaliticas.institucion_tipologia' => 'sometimes|max:75',
             'Preanaliticas.institucion_ubicacion' => 'sometimes|max:150',
             'Preanaliticas.paciente_id' => 'sometimes|max:10',
-            'Preanaliticas.identidad' => 'sometimes|max:10',
+            'Preanaliticas.identidad' => 'sometimes|max:13',
             'Preanaliticas.paciente_fechanac' => 'required|max:10',
             'Preanaliticas.paciente_sexo' => 'required|numeric',
             'Preanaliticas.paciente_nombres' => 'sometimes|max:75',

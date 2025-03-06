@@ -136,6 +136,7 @@
                                 <option value="R">Rechazado</option>
                                 <!-- <option value="C">Corregido</option> -->
                                 <option value="S">Solicitado</option>
+                                <option value="X">Eliminación POA</option>
                             </select>
                         </div>
                     </div>
@@ -244,7 +245,8 @@
                             <div class="col-md-6 mt-1">
                                 <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA " placeholder="Ingrese nombre de usuario" required>
+                                <!-- <input type="text" id="areaReq" name="areaReq" class="form-control" value="ING. JOHANNA MARIELA SANCHEZ TORBAY" placeholder="Ingrese nombre de usuario" required> -->
+                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
@@ -409,8 +411,8 @@
                                         <th>Item</th>
                                         <th>Tipo</th>
                                         <th>Disponible</th>
-                                        <th>Disminuye</th>
                                         <th>Aumenta</th>
+                                        <th>Disminuye</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -445,9 +447,53 @@
         </div>
     </div>
 
+
+
+    <!--- SOLICITUD DE ELIMINACION POA -->
+    <a id="btndeletePoaModal" data-toggle="modal" data-target="#deletePoaModal" class="d-none"></a>
+
+    <div class="modal fade" id="deletePoaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Generar Solicitud de Eliminación de Certificción POA</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí se mostrarán los datos traidos desde el controlador -->
+                    <div id="modalContent">
+                        <!-- Aquí se mostrarán los datos -->
+                        <div class="row">
+
+                            <input type="hidden" id="id_poaEli" name="id_poaEli" required="" autofocus="" value="">
+
+                            <div class="col-md-12 mt-5">
+                                <label for="justifiEli" class="form-label fs-6">Justificación de eliminación</label>
+                                <textarea id="justifiEli" name="justifiEli" class="form-control" required="" autofocus="" rows="4"></textarea>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnEnviarSolicitud"><i class="bi bi-send"></i>Enviar</button>
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModalEli" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--- SOLICITUD DE ELIMINACION POA -->
+
+
+
 @endsection
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.32')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.35')}}"></script>
 @endpush

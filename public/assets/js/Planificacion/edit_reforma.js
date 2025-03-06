@@ -1413,7 +1413,7 @@ function agregarActividad() {
                             </select>
                         </td>
                         <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="total[]1" value="0.00">
+                            <input class ="form-control" style="width: 125px;" type="text" name="total1[]" value="0.00">
                             <div class="form-text">${data.total}</div></td>
                         </td>
                         <td>

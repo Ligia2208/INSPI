@@ -56,6 +56,16 @@ $( function () {
                 searchable: false ,
                 render: function (data, type, full, meta) {
                     var array = "";
+                    let btnPDF = "";
+
+                    if(full.tipo === 'R'){
+                        btnPDF = `
+                            <a id="btnPDF_reforma" data-id_reforma="${full.id_reforma}" title="PDF REFORMA" class="show-tooltip" data-title="PDF REFORMA">
+                                <i class="font-22 bi bi-filetype-pdf text-primary"></i>
+                            </a>`;
+                    }else{
+                        btnPDF = "";
+                    }
 
                     if(full.estado == 'O' || full.estado == 'V' ){
                         array =`
@@ -63,9 +73,9 @@ $( function () {
                             <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
-                            <a id="btnPDF_reforma" data-id_reforma="${full.id_reforma}" title="PDF REFORMA" class="show-tooltip" data-title="PDF REFORMA">
-                                <i class="font-22 bi bi-filetype-pdf text-primary"></i>
-                            </a>
+
+                            ${btnPDF}
+
                         </div>
                         `;
                     } else{
