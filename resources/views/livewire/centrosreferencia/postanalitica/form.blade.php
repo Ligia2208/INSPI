@@ -306,7 +306,11 @@
                                     </thead>
                                     <tbody>
                                         @foreach ($detalles as $objAnalitica)
+                                            @if($objAnalitica->usuarior_id>0)
                                             <tr>
+                                            @else
+                                            <tr style="background-color:rgb(255, 205, 200)">
+                                            @endif
                                                 <td>
                                                     <span
                                                         class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->codigo_calidad }}</span>
@@ -323,6 +327,7 @@
                                                     <span
                                                         class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fecha_toma }}</span>
                                                 </td>
+                                                @if($objAnalitica->usuarior_id>0)
                                                 <td>
                                                     <span
                                                         class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->usuarior->name }}</span>
@@ -343,6 +348,28 @@
                                                     <span
                                                         class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->descripcion }}</span>
                                                 </td>
+                                                @else
+                                                <td>
+                                                    <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
+                                                </td>
+                                                <td>
+                                                    <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg"></span>
+                                                </td>
+                                                @endif
                                             </tr>
                                             @if ($objAnalitica->crns_id == 12)
                                                 @if ($objAnalitica->carga_viral > 0)

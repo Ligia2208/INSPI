@@ -226,21 +226,21 @@ class PostanaliticaController extends Controller
 
         $posy = 0;
         if($i==1){
-            $posy = 207;
-        }
-        if($i==2){
-            $posy = 214;
-        }
-        if($i==3){
             $posy = 221;
         }
-        if($i==4){
+        if($i==2){
             $posy = 228;
+        }
+        if($i==3){
+            $posy = 235;
+        }
+        if($i==4){
+            $posy = 242;
         }
         $posy = $posy + $lineas*7;
         $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',140,$posy,37);
 
-        $this->fpdf->Ln(16);
+        $this->fpdf->Ln(29+$lineas*7);
         $this->fpdf->SetFont('Arial', 'B', 7);
         $this->fpdf->Cell(90,7,utf8_decode("Trazabilidad del proceso"),1,0,"C");
         $this->fpdf->SetFont('Arial', '', 7);
