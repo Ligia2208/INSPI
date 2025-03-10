@@ -10,6 +10,13 @@
 @section('content')
 
 <div class="container">
+
+        <a href="{{ route('planificacion.reportFormulario_ListaUsuario') }}" 
+            style="background-color:rgb(185, 32, 70); color: white; border-color: rgb(185, 32, 70);" 
+            class="btn btn-success" title="Lista Usuario">
+            <i class="bi bi-person-add">Lista de Usuario</i>
+
+        </a>
     <h2 class="text-center mt-4 ">Crear Usuario</h2>
 
     <div class="card p-4 shadow-sm">

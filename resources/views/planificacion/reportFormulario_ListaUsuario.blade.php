@@ -39,10 +39,9 @@
         <a href="{{ route('planificacion.reportFormulario_Crear') }}" 
                class="btn btn-success" title="Crear Usuario">
                <i class="bi bi-person-add">Crear Usuario </i>
+        </a>
 
-            </a>
-
-            <h2 class="text-center flex-grow-1">Lista de Usuarios</h2>
+              <h2 class="text-center flex-grow-1">Lista de Usuarios</h2>
         </div>
 
         <table class="table table-striped table-hover table-bordered custom-table">
@@ -73,15 +72,17 @@
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
 
-                                <form action="{{ route('eliminar_usuario', $formulario->id) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('planificacion.eliminar_usuario', ['id' => $formulario->id]) }}" method="POST" style="display:inline;">
                                     @csrf
-                                    @method('DELETE')
+                                    @method('POST') 
+                                    <input type="hidden" name="id" value="{{ $formulario->id }}">
                                     <button type="submit" class="btn btn-danger btn-sm btn-circle mx-1" 
                                             onclick="return confirm('¿Seguro que deseas eliminar este usuario?')" 
                                             title="Eliminar">
                                         <i class="bi bi-trash"></i>
                                     </button>
                                 </form>
+
                             </div>
                         </td>
                     </tr>

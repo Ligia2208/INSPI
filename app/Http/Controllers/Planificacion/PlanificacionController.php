@@ -4253,7 +4253,6 @@ class PlanificacionController extends Controller
    
     }
 
-    
     //respuesta para la vista editar
     public function reportFormulario_Editar($id){
 
@@ -4266,75 +4265,67 @@ class PlanificacionController extends Controller
         $telefono  = $datos -> telefono;
 
        return view('planificacion.reportFormulario_Editar', compact('id', 'nombre', 'apellido', 'correo', 'telefono'));
-       
+
    }
  
+   public function editar_usuario(Request $request)
+   {
+       try {
+           Log::info('Datos recibidos para actualización:', ['request' => $request->all()]);
 
-    public function editar_usuario(Request $request)
-    {
-        try {
+           $data = $request->validate([
+               'id'       => 'required|integer', 
+               'nombre'   => 'required|string',
+               'apellido' => 'required|string',
+               'correo'   => 'required|email', 
+               'telefono' => 'required|string',
+           ]);
+           $id       = $request->input('id');
+           $nombre   = $request->input('nombre');
+           $apellido = $request->input('apellido');
+           $correo   = $request->input('correo');
+           $telefono = $request->input('telefono');
+   
+           $usuario = Formulario::find($data['id']);
+           Log::info('Usuario encontrado:', ['usuario' => $usuario]);
+   
+           if (!$usuario) {
+               return response()->json([
+                   'success' => false,
+                   'message' => 'Usuario no encontrado en la base de datos',
+                   'id_recibido' => $data['id']
+               ], 404);
+           }
+   
+           $usuario->nombre   = $data['nombre'];
+           $usuario->apellido = $data['apellido'];
+           $usuario->correo   = $data['correo'];
+           $usuario->telefono = $data['telefono'];
 
-            $data = $request->validate([
-                'id'       => 'required|integer', 
-                'nombre'   => 'required|string',
-                'apellido' => 'required|string',
-                'correo'   => 'required|email', 
-                'telefono' => 'required|string',
-            ]);
-
-            $id = $data['id'];
-
-
-            $usuario = Formulario::find($id);
-
-
-            Log::info('ID recibido para edición:', ['id' => $id]);
-            Log::info('Usuario encontrado:', ['usuario' => $usuario]);
-
-
-            if (!$usuario) {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'Usuario no encontrado en la base de datos',
-                    'id_recibido' => $id
-                ], 404);
-            }
-
-            // Actualizar los datos del usuario
-            $usuario->nombre = $data['nombre'];
-            $usuario->apellido = $data['apellido'];
-            $usuario->correo = $data['correo'];
-            $usuario->telefono = $data['telefono'];
-            $usuario->save();
-
-
-            Log::info('Usuario actualizado correctamente:', ['usuario' => $usuario]);
-
-            return response()->json([
-                'success' => true,
-                'message' => 'Usuario editado correctamente',
-                'data'    => $usuario
-            ], 200);
-
-        } catch (\ValidationException $ve) {
-            return response()->json([
-                'success' => false,
-                'error' => $ve->errors()
-            ], 400);
-        } catch (\Exception $e) {
-
-            // Registrar en logs el error exacto
-            Log::error('Error al editar usuario:', ['error' => $e->getMessage()]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al editar usuario',
-                'error'   => $e->getMessage()
-            ], 500);
-        }
-    }
-
-
+           $usuario->save();
+   
+           Log::info('Usuario actualizado correctamente:', ['usuario' => $usuario]);
+   
+           return response()->json([
+               'success' => true,
+               'message' => 'Usuario editado correctamente',
+               'data'    => $usuario
+           ], 200);
+   
+       } catch (\ValidationException $ve) {
+           return response()->json([
+               'success' => false,
+               'error' => $ve->errors()
+           ], 400);
+       } catch (\Exception $e) {   
+           return response()->json([
+               'success' => false,
+               'message' => 'Error al editar usuario',
+               'error'   => $e->getMessage()
+           ], 500);
+       }
+   }
+   
     //respuesta para la vista lista de usuario
     public function reportFormulario_ListaUsuario()
     {
@@ -4344,54 +4335,64 @@ class PlanificacionController extends Controller
         return view('planificacion.reportFormulario_ListaUsuario', compact('formularios'));
     }
 
-
-    public function eliminar_usuario($id)
+    //accion de eliminar usuario
+    public function eliminar_usuario(Request $request)
     {
-        $usuario = Formulario::findOrFail($id);
-        $usuario->delete(); 
-    
-        return redirect()->route('planificacion.reportFormulario_ListaUsuario') ->with('success', 'Usuario eliminado correctamente.');
+        try {
+            $id = $request->input('id'); // Capturar el ID desde el formulario
+            Log::info('ID recibido para eliminación:', ['id' => $id]);
+
+            if (!$id) {
+                return redirect()->route('planificacion.reportFormulario_ListaUsuario')
+                    ->with('error', 'No se recibió un ID válido.');
+            }
+
+            // Buscar el usuario en la base de datos
+            $usuario = Formulario::find($id);
+
+            if (!$usuario) {
+                Log::warning('Usuario no encontrado para eliminación:', ['id' => $id]);
+                return redirect()->route('planificacion.reportFormulario_ListaUsuario')
+                    ->with('error', 'Usuario no encontrado.');
+            }
+
+            // Eliminar usuario
+            $usuario->delete();
+            Log::info('Usuario eliminado con éxito:', ['id' => $id]);
+
+            return redirect()->route('planificacion.reportFormulario_ListaUsuario')
+                ->with('success', 'Usuario eliminado correctamente.');
+
+        } catch (\Exception $e) {
+            Log::error('Error al eliminar usuario:', ['error' => $e->getMessage()]);
+
+            return redirect()->route('planificacion.reportFormulario_ListaUsuario')
+                ->with('error', 'Error al eliminar el usuario.');
+        }
     }
 
     //respuesta para la vista de estado de usuario
-        public function reportFormulario_Estado($id)
-    {
-        $datos = Formulario::find($id);
- 
-        if (!$datos) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Usuario no encontrado'
-            ], 404);
+
+    public function reportFormularioEstado(Request $request) 
+     {
+        $estado = $request->input('estado');
+    
+        $query = User::query();
+    
+        if ($estado == 'activo') {
+                $query->whereNull('deleted_at'); 
+        } elseif ($estado == 'eliminado') {
+                $query->whereNotNull('deleted_at'); 
         }
-
-        $id       = $datos->id;
-        $nombre   = $datos->nombre;
-        $apellido = $datos->apellido;
-        $correo   = $datos->correo;
-        $telefono = $datos->telefono;
-        $estado   = $datos->estado; // A -> Activo, E -> Eliminado
-
-        return view('planificacion.reportFormulario_Estado', compact('id', 'nombre', 'apellido', 'correo', 'telefono', 'estado'));
+    
+        $usuarios = $query->paginate(10);
+    
+        return view('planificacion.reportFormulario_Estado', compact('usuarios'));
     }
-
-
-    /*public function obtener_usuarios_eliminados()
-    {
-        try {
-            $usuariosEliminados = Formulario::where('estado', 'E')->get();
-
-            return view('planificacion.usuarios_eliminados', compact('usuariosEliminados'));
-
-        } catch (\Exception $e) {
-            Log::error('Error al obtener usuarios eliminados:', ['error' => $e->getMessage()]);
-
-            return response()->json([
-                'success' => false,
-                'message' => 'Error al obtener usuarios eliminados',
-                'error'   => $e->getMessage()
-            ], 500);
-        }
-    }*/
-
+    
+    
 }
+
+
+
+

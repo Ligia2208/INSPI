@@ -14,22 +14,23 @@
     <div class="d-flex justify-content-between align-items-center mt-4">
         <h2>Editar Usuario</h2>
 
-        <!-- Botón de regreso a la lista de usuarios -->
         <a href="{{ route('planificacion.reportFormulario_ListaUsuario') }}" 
+           style="background-color: rgb(185, 32, 70); color: white; border-color: rgb(185, 32, 70)"; 
            class="btn btn-warning btn-circle" title="Volver a la lista">
             <i class="bi bi-arrow-bar-left"></i>
         </a>
     </div>
 
     <div class="card p-4 shadow-sm mt-3">
-        <form>
+        <form id="formEditarUsuario" action="{{ route('planificacion.editar_usuario') }}" method="POST">
+            @csrf
+            <input type="hidden" name="id" id="id" value="{{ $id }}">
 
-            <!-- Campo ID con botón de búsqueda -->
             <div class="row mb-3">
                 <div class="col-md-6">
-                    <label for="id" class="form-label">ID</label>
+                    <label for="buscar_id" class="form-label">ID</label>
                     <div class="input-group">
-                        <input type="number" class="form-control" id="buscar_id" placeholder="Ingrese ID" value="{{$id}}">
+                        <input type="number" class="form-control" id="buscar_id" placeholder="Ingrese ID" value="{{ $id }}">
                         <button class="btn btn-primary" type="button" onclick="buscarUsuario()">
                             <i class="bi bi-search"></i>
                         </button>
@@ -40,24 +41,24 @@
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" id="nombre" placeholder="Nombre" value="{{$nombre}}">
+                    <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Nombre" value="{{ $nombre }}">
                 </div>
 
                 <div class="col-md-6">
                     <label for="apellido" class="form-label">Apellido</label>
-                    <input type="text" class="form-control" id="apellido" placeholder="Apellido" value="{{$apellido}}">
+                    <input type="text" class="form-control" id="apellido" name="apellido" placeholder="Apellido" value="{{ $apellido }}">
                 </div>
             </div>
 
             <div class="row mb-3">
                 <div class="col-md-6">
                     <label for="correo" class="form-label">Correo</label>
-                    <input type="email" class="form-control" id="correo" placeholder="Correo electrónico" value="{{$correo}}">
+                    <input type="email" class="form-control" id="correo" name="correo" placeholder="Correo electrónico" value="{{ $correo }}">
                 </div>
 
                 <div class="col-md-6">
                     <label for="telefono" class="form-label">Teléfono</label>
-                    <input type="tel" class="form-control" id="telefono" placeholder="Teléfono" value="{{$telefono}}">
+                    <input type="tel" class="form-control" id="telefono" name="telefono" placeholder="Teléfono" value="{{ $telefono }}">
                 </div>
             </div>
 
@@ -71,7 +72,7 @@
 @endsection
 
 @push('scripts')
-<script src="{{asset('assets/js/Planificacion/reportFormulario_Editar.js?v0.0.0')}}"></script>
+<script src="{{ asset('assets/js/Planificacion/reportFormulario_Editar.js?v0.0.0') }}"></script>
 
 <script>
     function buscarUsuario() {
