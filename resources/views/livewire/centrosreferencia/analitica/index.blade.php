@@ -195,7 +195,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->fecha_recepcion }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->fecha_recepcion }}</span>
                                     </td>
                                     <td>
                                         <span

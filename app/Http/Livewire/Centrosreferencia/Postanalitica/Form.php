@@ -76,6 +76,7 @@ class Form extends Component
 
         $muestra = Analitica::where('preanalitica_id','=',$data->id)->pluck('codigo_muestra')->first();
         $resMuestra = Analitica::where('preanalitica_id','=',$data->id)->pluck('resultado_id')->first();
+        $descMuestra = Analitica::where('preanalitica_id','=',$data->id)->pluck('descripcion')->first();
 
         $this->Analiticas = $data;
         $this->Analiticas->codigo_muestra = str_pad($muestra, 6, "0", STR_PAD_LEFT);
@@ -88,6 +89,7 @@ class Form extends Component
             $this->eventos = Evento::whereIn('estado',['A','M'])->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
             if ($this->Analiticas->resultado_id==0){
                 $this->Analiticas->resultado_id = $resMuestra;
+                $this->Analiticas->descripcion = $descMuestra;
             }
 
         }
@@ -237,7 +239,7 @@ class Form extends Component
 
                     $preanalitica_update = Preanalitica::findOrFail($this->Analiticas->id);
                     $preanalitica_update->resultado_id=$this->Analiticas->resultado_id;
-                    $preanalitica_update->descripcion=$this->Analiticas->descripcion_responsable;
+                    $preanalitica_update->descripcion=$this->Analiticas->descripcion;
                     $preanalitica_update->fecha_resultado = date("Y-m-d");
                     $preanalitica_update->usuarior_id = $user;
                     $preanalitica_update->validado = 'S';
