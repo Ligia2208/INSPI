@@ -212,11 +212,12 @@ Route::middleware(['auth'])->group(function () {
 
         //  LISTA USUARIO
         Route::get('planificacion/reportFormulario_ListaUsuario', 'PlanificacionController@reportFormulario_ListaUsuario')->name('planificacion.reportFormulario_ListaUsuario');
-        Route::post('/planificacion/ eliminar_usuario', 'PlanificacionController@eliminar_usuario')->name('planificacion.eliminar_usuario');
 
         //ELIMINAR USUARIO / ESTADO DE ELIMINACIO
         Route::get('planificacion/reportFormulario_Estado', 'PlanificacionController@reportFormulario_Estado')->name('planificacion.reportFormulario_Estado');
+        Route::post('planificacion/cambiar_estado_usuario', 'PlanificacionController@cambiar_estado_usuario')->name('planificacion.cambiar_estado_usuario');
 
+      
     });
     /* =========================== PLANIFICACION =========================== */
 

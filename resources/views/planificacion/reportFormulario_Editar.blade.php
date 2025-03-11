@@ -11,15 +11,18 @@
 @section('content')
 
 <div class="container">
-    <div class="d-flex justify-content-between align-items-center mt-4">
-        <h2>Editar Usuario</h2>
+    <div class="d-flex align-items-center mt-4">
+        <div class="flex-grow-1 text-center">
+            <h2 class="mt-4">Editar Usuario</h2>
+        </div>
 
         <a href="{{ route('planificacion.reportFormulario_ListaUsuario') }}" 
-           style="background-color: rgb(185, 32, 70); color: white; border-color: rgb(185, 32, 70)"; 
-           class="btn btn-warning btn-circle" title="Volver a la lista">
-            <i class="bi bi-arrow-bar-left"></i>
+        style="background-color: rgb(185, 32, 70); color: white; border-color: rgb(185, 32, 70)"; 
+        class="btn btn-warning btn-circle" title="Volver a la lista">
+            <i class="bi bi-arrow-bar-left">Volver a Lista</i>
         </a>
     </div>
+
 
     <div class="card p-4 shadow-sm mt-3">
         <form id="formEditarUsuario" action="{{ route('planificacion.editar_usuario') }}" method="POST">

@@ -4335,12 +4335,12 @@ class PlanificacionController extends Controller
         return view('planificacion.reportFormulario_ListaUsuario', compact('formularios'));
     }
 
-    //accion de eliminar usuario
-    public function eliminar_usuario(Request $request)
+        // Acción para cambiar el estado del usuario en lugar de eliminarlo
+    public function cambiar_estado_usuario(Request $request)
     {
         try {
             $id = $request->input('id'); // Capturar el ID desde el formulario
-            Log::info('ID recibido para eliminación:', ['id' => $id]);
+            Log::info('ID recibido para cambio de estado:', ['id' => $id]);
 
             if (!$id) {
                 return redirect()->route('planificacion.reportFormulario_ListaUsuario')
@@ -4351,46 +4351,43 @@ class PlanificacionController extends Controller
             $usuario = Formulario::find($id);
 
             if (!$usuario) {
-                Log::warning('Usuario no encontrado para eliminación:', ['id' => $id]);
+                Log::warning('Usuario no encontrado para cambio de estado:', ['id' => $id]);
                 return redirect()->route('planificacion.reportFormulario_ListaUsuario')
                     ->with('error', 'Usuario no encontrado.');
             }
 
-            // Eliminar usuario
-            $usuario->delete();
-            Log::info('Usuario eliminado con éxito:', ['id' => $id]);
+            // Cambiar el estado del usuario
+            $usuario->estado = ($usuario->estado === 'A') ? 'E' : 'A';
+            $usuario->save();
+            Log::info('Estado del usuario cambiado con éxito:', ['id' => $id, 'nuevo_estado' => $usuario->estado]);
+
+            $mensaje = ($usuario->estado === 'E') ? 'Usuario marcado como eliminado.' : 'Usuario reactivado correctamente.';
 
             return redirect()->route('planificacion.reportFormulario_ListaUsuario')
-                ->with('success', 'Usuario eliminado correctamente.');
+                ->with('success', $mensaje);
 
         } catch (\Exception $e) {
-            Log::error('Error al eliminar usuario:', ['error' => $e->getMessage()]);
+            Log::error('Error al cambiar estado del usuario:', ['error' => $e->getMessage()]);
 
             return redirect()->route('planificacion.reportFormulario_ListaUsuario')
-                ->with('error', 'Error al eliminar el usuario.');
+                ->with('error', 'Error al cambiar el estado del usuario.');
         }
     }
 
     //respuesta para la vista de estado de usuario
-
-    public function reportFormularioEstado(Request $request) 
-     {
+    public function reportFormulario_Estado(Request $request)
+    {
         $estado = $request->input('estado');
+
+        $formularios = Formulario::when($estado, function ($query, $estado) {
+            return $query->where('estado', $estado);
+        })->paginate(20);
     
-        $query = User::query();
-    
-        if ($estado == 'activo') {
-                $query->whereNull('deleted_at'); 
-        } elseif ($estado == 'eliminado') {
-                $query->whereNotNull('deleted_at'); 
-        }
-    
-        $usuarios = $query->paginate(10);
-    
-        return view('planificacion.reportFormulario_Estado', compact('usuarios'));
+        return view('planificacion.reportFormulario_Estado', compact('formularios'));
     }
     
-    
+
+
 }
 
 

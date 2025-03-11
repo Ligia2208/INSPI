@@ -81,4 +81,5 @@ class User extends Authenticatable
         $expenses = $this->expenses()->sum('monto');
         return '$'.number_format($expenses, 2, '.', ',');
     }
+
 }

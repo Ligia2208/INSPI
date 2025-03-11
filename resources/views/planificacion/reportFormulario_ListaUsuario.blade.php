@@ -34,14 +34,20 @@
 
 @section('content')
     <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="d-flex justify-content-between align-items-center position-relative mb-3">
+            
+            <a href="{{ route('planificacion.reportFormulario_Estado') }}" 
+               class="btn btn-warning" title="Estado Usuario">
+               <i class="bi bi-toggles"> Estado Usuario </i> 
+            </a>
 
-        <a href="{{ route('planificacion.reportFormulario_Crear') }}" 
+            <h2 class="position-absolute start-50 translate-middle-x">Lista de Usuarios</h2>
+
+            <a href="{{ route('planificacion.reportFormulario_Crear') }}" 
                class="btn btn-success" title="Crear Usuario">
-               <i class="bi bi-person-add">Crear Usuario </i>
-        </a>
+               <i class="bi bi-person-add"> Crear Usuario </i> 
+            </a>
 
-              <h2 class="text-center flex-grow-1">Lista de Usuarios</h2>
         </div>
 
         <table class="table table-striped table-hover table-bordered custom-table">
@@ -72,7 +78,7 @@
                                     <i class="bi bi-pencil-square"></i>
                                 </a>
 
-                                <form action="{{ route('planificacion.eliminar_usuario', ['id' => $formulario->id]) }}" method="POST" style="display:inline;">
+                                <form action="{{ route('planificacion.cambiar_estado_usuario', ['id' => $formulario->id]) }}" method="POST" style="display:inline;">
                                     @csrf
                                     @method('POST') 
                                     <input type="hidden" name="id" value="{{ $formulario->id }}">
