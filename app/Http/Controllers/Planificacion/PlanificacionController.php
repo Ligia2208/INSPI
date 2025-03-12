@@ -4311,6 +4311,7 @@ class PlanificacionController extends Controller
                'message' => 'Usuario editado correctamente',
                'data'    => $usuario
            ], 200);
+           
    
        } catch (\ValidationException $ve) {
            return response()->json([
