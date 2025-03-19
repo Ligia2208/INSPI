@@ -274,13 +274,13 @@
         </tr>
         <tr>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha2}}</td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha2}}</td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha2}}</td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha2}}</td>
             <th>Fecha: </th>
             <td>{{$fecha}}</td>
         </tr>

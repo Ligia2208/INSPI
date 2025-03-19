@@ -53,6 +53,8 @@ $( function () {
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
                         array = '<div class="text-center"><span class="badge badge-info text-bg-info">Corregido</span>';
+                    }else if(full.estado == 'D'){
+                        array = '<div class="text-center"><span class="badge badge-danger text-bg-danger">Eliminado</span>';
                     }else{
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                     }
@@ -73,6 +75,20 @@ $( function () {
                             <a id="btnValidarReforma" data-id_reforma="${full.id_reforma}" data-estado="${full.estado}" title="Validar Reforma" class="show-tooltip mr-1" data-title="Validar Reforma">
                                 <i class="font-22 bi bi-layer-backward text-warning"></i>
                             </a>
+
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
+                            </a>
+
+                        </div>
+                        `;
+                    }else if(full.estado == 'D'){
+                        array =`
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
 
                             <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>

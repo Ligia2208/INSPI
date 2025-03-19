@@ -188,11 +188,14 @@
                             @forelse ($analiticas as $postanalitica)
                                 <tr>
                                     @forelse ($postanalitica->analitica as $objPos)
-                                        @if($objPos->codigo_secuencial==1)
+                                        @if($objPos->codigo_secuencial==1 && $objPos->usuarior_id>0)
                                         <?php  $codigo = $objPos->codigo_calidad; $tecnico = $objPos->usuarior->name; $restec = $objPos->resultado->descripcion;?>
+                                        @else
+                                        <?php  $codigo = $objPos->codigo_calidad; $tecnico = ''; $restec = '';?>
                                         @endif
                                     @empty
                                     @endforelse
+
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $codigo }}</span>

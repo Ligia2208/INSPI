@@ -99,7 +99,7 @@ $( function () {
                                 <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
                             </a>
                         </div>`;
-                    } else {
+                    } else if (full.estado === 'S') {
                         array = `
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
@@ -108,6 +108,16 @@ $( function () {
                             <a id="btnEditarPlan" data-id_editar="${full.id}" title="Revisión" class="show-tooltip">
                                 <i class="font-22 fadeIn animated bi bi-pen"></i>
                             </a>
+                        </div>`;
+                    } else {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                            <!-- <a id="btnEditarPlan" data-id_editar="${full.id}" title="Revisión" class="show-tooltip">
+                                <i class="font-22 fadeIn animated bi bi-pen"></i>
+                            </a> -->
                         </div>`;
                     }
                     return array;
@@ -697,7 +707,8 @@ $(document).ready(function() {
     // Generar el reporte EXCEL para POA
     $(document).on('click', '#btnGenerateExcel', function() {
 
-        var filterEstado    = $('#filterEstado').val();
+        //var filterEstado    = $('#filterEstado').val();
+        var filterAnio    = $('#filterAnio').val();
         var filterDireccion = $('#filterDireccion').val();
         var filterItem      = $('#filterItem').val();
         var filterPrograma  = $('#filterPrograma').val();
@@ -706,7 +717,7 @@ $(document).ready(function() {
             type: 'GET',
             url: '/planificacion/reportPOAExcel',
             data: {
-                filterEstado       : filterEstado,
+                filterAnio         : filterAnio,
                 filterDireccion    : filterDireccion,
                 filterItem         : filterItem,
                 filterPrograma     : filterPrograma,

@@ -44,6 +44,8 @@ $( function () {
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
                         array = '<div class="text-center"><span class="badge badge-info text-bg-info">Corregido</span>';
+                    }else if(full.estado == 'D'){
+                        array = '<div class="text-center"><span class="badge badge-danger text-bg-danger">Eliminada</span>';
                     }else{
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                     }
@@ -67,7 +69,22 @@ $( function () {
                         btnPDF = "";
                     }
 
-                    if(full.estado == 'O' || full.estado == 'V' ){
+                    if(full.estado == 'O'){
+                        array =`
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+
+                            ${btnPDF}
+
+                            <a id="btnEliminarReformaPre" data-id_borrar="${full.id_reforma}" title="Eliminar reforma" class="red show-tooltip" data-title="Eliminar reforma">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
+                            </a>
+
+                        </div>
+                        `;
+                    }else if( full.estado == 'V' ){
                         array =`
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
                             <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
@@ -78,7 +95,27 @@ $( function () {
 
                         </div>
                         `;
-                    } else{
+                    }else if(full.estado == 'D'){
+                        array =`
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                        </div>
+                        `;
+                    }else if(full.estado == 'R'){
+                        array =`
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                            <a id="btnEditarReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Editar reforma" class="show-tooltip mr-1" data-title="Editar reforma">
+                                <i class="font-22 fadeIn animated bi bi-pen" ></i>
+                            </a>
+                        </div>
+                        `;
+                    }
+                     else{
                         array =`
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
                             <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
@@ -200,6 +237,88 @@ $(function(){
         });
     });
     var table = $('#tblReformaIndex').DataTable();
+
+    $(document).on('click', '#btnEliminarReformaPre', function(){
+        let id_reforma = $(this).data('id_borrar');
+    
+        Swal.fire({
+            icon: 'warning',
+            title: 'CoreInspi',
+            text: '¿Seguro que quiere eliminar esta reforma?',
+            showCancelButton: true,
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar',
+        }).then((result) => {
+            if (result.isConfirmed) {
+                Swal.fire({
+                    icon: 'info',
+                    title: 'Justificación',
+                    input: 'textarea',
+                    inputPlaceholder: 'Ingrese la justificación de la eliminación...',
+                    inputAttributes: {
+                        'aria-label': 'Ingrese la justificación aquí'
+                    },
+                    showCancelButton: true,
+                    confirmButtonText: 'Enviar',
+                    cancelButtonText: 'Cancelar',
+                    preConfirm: (justificacion) => {
+                        if (!justificacion) {
+                            Swal.showValidationMessage('Debe ingresar una justificación');
+                        }
+                        return justificacion;
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        let justificacion = result.value; // Captura la justificación
+    
+                        $.ajax({
+                            type: 'POST',
+                            url: '/planificacion/deleteReformaPre',
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            },
+                            data: {
+                                'id': id_reforma,
+                                'justificacion': justificacion
+                            },
+                            success: function(response) {
+                                if(response.data){
+                                    if(response['data'] == true){
+                                        Swal.fire({
+                                            icon: 'success',
+                                            title: 'CoreInspi',
+                                            text: response['message'],
+                                            showConfirmButton: true,
+                                        }).then(() => {
+                                            table.ajax.reload(); // Recargar la tabla
+                                        });
+    
+                                    } else {
+                                        Swal.fire({
+                                            icon: 'error',
+                                            title: 'CoreInspi',
+                                            text: response['message'],
+                                            showConfirmButton: true,
+                                        });
+                                    }
+                                }
+                            },
+                            error: function(error) {
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error',
+                                    text: 'Ocurrió un error al eliminar la reforma.',
+                                    showConfirmButton: true,
+                                });
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    });
+    
+
 })
 
 

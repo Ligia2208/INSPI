@@ -362,7 +362,7 @@ function guardarPlanificacion(){
             icon: 'warning',
             type:  'warning',
             title: 'CoreInspi',
-            text: 'Debe de selecionar un tipo de POA.',
+            text: 'Debe de selecionar un tipo de Gasto.',
             showConfirmButton: true,
         });
 

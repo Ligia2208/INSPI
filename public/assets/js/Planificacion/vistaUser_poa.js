@@ -31,6 +31,7 @@ $( function () {
             { data: 'monto',               name: 'monto' },
             { data: 'proceso',             name: 'proceso' },
             { data: 'tipoSub',             name: 'tipoSub' },
+            { data: 'numero',              name: 'numero' },
             { data: 'fecha',               name: 'fecha' },
             {
                 data: null,
@@ -129,16 +130,16 @@ $( function () {
                         if(full.id_area == 17 || full.id_area == 18){
 
                             btnDescarga = `
-                            <a id="btnPDF_POAZonal" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
-                                <i class="font-22 bi bi-filetype-pdf"></i>
+                            <a id="btnPDF_POAZonal" data-id_POA="${full.id}" title="PDF POA" class="show-tooltip" data-title="PDF POA">
+                                <i class="font-22 bi bi-filetype-pdf text-warning"></i>
                             </a>
                             `;
 
                         }else{
 
                             btnDescarga = `
-                            <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
-                                <i class="font-22 bi bi-filetype-pdf"></i>
+                            <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="show-tooltip" data-title="PDF POA">
+                                <i class="font-22 bi bi-filetype-pdf text-warning"></i>
                             </a>
                             `;
 
@@ -146,7 +147,7 @@ $( function () {
 
                     }else{
                         btnDescarga = `
-                            <a id="btnPDF_descargado" data-id_POA="${full.id}" title="PDF Descargado" class="show-tooltip" data-title="PDF Descargado">
+                            <a id="btnPDF_descargado" data-id_POA="${full.id}" title="PDF Descargado" class="show-tooltip mr-1" data-title="PDF Descargado">
                                 <i class="font-22 bi bi-check2-circle text-success"></i>
                             </a>
                             `;
@@ -180,6 +181,9 @@ $( function () {
                                 <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
                             </a>
                             ${btnDescarga}
+                            <a id="btnLiquidar" data-id_liquidar="${full.id}" data-monto="${full.monto}" title="Liquidación POA" class="red show-tooltip mr-1" data-title="Liquidación POA">
+                                <i class="font-22 fadeIn animated bi bi-arrow-counterclockwise text-blue_navy"></i>
+                            </a>
                         `;
                         /*${btnCancelarPoa}*/
                     }else if(full.estado == 'S'){
@@ -262,7 +266,7 @@ $( function () {
             },
         ],
         order: [
-            [9, 'desc']
+            [10, 'desc']
         ],
 
         footerCallback: function (row, data, start, end, display) {
@@ -838,6 +842,100 @@ $( function () {
 
 //CÓDIGO PARA BOTÓN DE BORRAR
 $(function(){
+
+    /* PARA LA LIQUIDACIÓN DE UNA CERTIFICACION POA */
+    $(document).on('click', '#btnLiquidar', function(){
+        let id_POA = $(this).data('id_liquidar');
+        let monto = parseFloat($(this).data('monto')); // Convertir a número
+    
+        Swal.fire({
+            icon: 'warning',
+            title: 'SoftInspi',
+            text: 'Monto a liquidar de la certficación.',
+            showConfirmButton: true,
+            showCancelButton: true,
+            input: 'text',
+            inputPlaceholder: 'Ingrese el monto a liquidar',
+            preConfirm: (montoIngresado) => {
+                // Convertir el valor ingresado a número
+                let montoNum = parseFloat(montoIngresado);
+    
+                if (!montoIngresado) {
+                    Swal.showValidationMessage('Debe ingresar un monto.');
+                } else if (isNaN(montoNum)) {
+                    Swal.showValidationMessage('Debe ingresar un número válido.');
+                } else if (montoNum <= 0) {
+                    Swal.showValidationMessage('El monto debe ser mayor a 0.');
+                } else if (!/^\d+(\.\d{1,2})?$/.test(montoIngresado)) {
+                    Swal.showValidationMessage('El monto solo puede tener hasta dos decimales.');
+                } else if (montoNum > (monto / 2)) {
+                    Swal.showValidationMessage('El monto a liquidar no puede ser mayor de la mitad del monto certificado.');
+                } else {
+                    return montoNum; // Devuelve el monto validado
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                let montoIngresado = result.value;
+
+                $.ajax({
+
+                    type: 'POST',
+                    //url: '{{ route("encuesta.saveEncuesta") }}',
+                    url: '/planificacion/liquidarPoa',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        'id': id_POA,
+                        'montoIngresado': montoIngresado,
+                    },
+                    success: function(response) {
+
+                        //console.log(response.data['id_chat'])
+                        if(response.data){
+
+                            if(response['data'] == true){
+                                Swal.fire({
+                                    icon: 'success',
+                                    type: 'success',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                }).then((result) => {
+                                    if (result.value == true) {
+                                        table.ajax.reload(); //actualiza la tabla
+                                    }
+                                });
+
+                            }else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    type:  'error',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                });
+                            }
+                        }
+                    },
+                    error: function(error) {
+                        Swal.fire({
+                            icon:  'success',
+                            title: 'SoftInspi',
+                            type:  'success',
+                            text:   error,
+                            showConfirmButton: true,
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+    /* PARA LA LIQUIDACIÓN DE UNA CERTIFICACION POA */
+
 
     $(document).on('click', '#btnEliminarPOA', function(){
         //alert('funciona');

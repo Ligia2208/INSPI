@@ -144,7 +144,7 @@
                                     <div class="col-md-6 mt-2">
                                         <label for="areaReq" class="form-label fs-6">Usuario que Registra</label>
                                         <!-- Input para ingresar el nombre manualmente -->
-                                        <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA" placeholder="Ingrese nombre de usuario" required>
+                                        <input type="text" id="areaReq" name="areaReq" class="form-control" value="ING. JOHANNA MARIELA SANCHEZ TORBAY" placeholder="Ingrese nombre de usuario" required>
                                         <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                         <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
@@ -219,5 +219,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/reforma.js?v0.0.13')}}"></script>
+<script src="{{asset('assets/js/Planificacion/reforma.js?v0.0.15')}}"></script>
 @endpush

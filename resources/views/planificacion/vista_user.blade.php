@@ -155,6 +155,7 @@
                                     <th>Monto</th>
                                     <th>Proceso</th>
                                     <th>Tipo Actividad</th>
+                                    <th>N° POA</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th> <center> Solicitado </center></th>
@@ -245,8 +246,8 @@
                             <div class="col-md-6 mt-1">
                                 <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <!-- <input type="text" id="areaReq" name="areaReq" class="form-control" value="ING. JOHANNA MARIELA SANCHEZ TORBAY" placeholder="Ingrese nombre de usuario" required> -->
-                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA" placeholder="Ingrese nombre de usuario" required>
+                                <!-- <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA" placeholder="Ingrese nombre de usuario" required> -->
+                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="ING. JOHANNA MARIELA SANCHEZ TORBAY" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
@@ -347,24 +348,24 @@
                             <div class="col-md-6 mt-1">
                                 <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <input type="text" id="areaReq2" name="areaReq2" class="form-control" value="ING. JONATHAN TRUJILLO CERÓN" placeholder="Ingrese nombre de usuario" required>
+                                <input type="text" id="areaReq2" name="areaReq2" class="form-control" value="TLGA. TANYA PORTUGUÉZ PILCO" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
                                 <!-- Input para ingresar el cargo -->
-                                <input type="text" id="cargo_areaReq2" name="cargo_areaReq2" class="form-control" value="PLANIFICADOR INSTITUCIONAL" placeholder="Ingrese el cargo" required>
+                                <input type="text" id="cargo_areaReq2" name="cargo_areaReq2" class="form-control" value="ANALISTA ZONAL ADMINISTRATIVA FINANCIERA" placeholder="Ingrese el cargo" required>
                                 <div class="invalid-feedback">Por favor ingrese el cargo.</div>
                             </div>
 
                             <div class="col-md-6 mt-1">
                                 <label for="planificacionYG" class="form-label fs-6">Usuario que aprueba</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <input type="text" id="planificacionYG2" name="planificacionYG2" class="form-control" value="TLGA. TANYA PORTUGUÉZ PILCO" placeholder="Ingrese nombre de usuario" required>
+                                <input type="text" id="planificacionYG2" name="planificacionYG2" class="form-control" value="ING. JONATHAN TRUJILLO CERÓN" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_planificacionYG" class="form-label fs-6 mt-2">Cargo</label>
                                 <!-- Input para ingresar el cargo -->
-                                <input type="text" id="cargo_planificacionYG2" name="cargo_planificacionYG2" class="form-control" value="ANALISTA ZONAL ADMINISTRATIVA FINANCIERA" placeholder="Ingrese el cargo" required>
+                                <input type="text" id="cargo_planificacionYG2" name="cargo_planificacionYG2" class="form-control" value="PLANIFICADOR INSTITUCIONAL" placeholder="Ingrese el cargo" required>
                                 <div class="invalid-feedback">Por favor ingrese el cargo.</div>
                             </div>
 
@@ -495,5 +496,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.35')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.39')}}"></script>
 @endpush

@@ -120,23 +120,24 @@
                 <div class="card-body">
                     <div class="row p-2">
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
-                            <input type="text" id="obOpera" name="obOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreObjOperativo}}" disabled>
+                            <textarea id="obOpera" name="obOpera" class="form-control" rows="3" required autofocus disabled>{{$atributos->nombreObjOperativo}}</textarea>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-2">
                             <label for="actOpera" class="form-label fs-6">Actividad Operativa</label>
-                            <input type="text" id="actOpera" name="actOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreActividadOperativa}}" disabled>
+                            <textarea id="actOpera" name="actOpera" class="form-control" rows="5" required autofocus disabled>{{$atributos->nombreActividadOperativa}}</textarea>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
-                        <div class="col-md-4 mt-2">
+                        <div class="col-md-6 mt-2">
                             <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación / Convenio</label>
-                            <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="{{$atributos->nombreSubActividad}}" disabled>
+                            <textarea id="subActi" name="subActi" class="form-control" rows="5" required autofocus disabled>{{$atributos->nombreSubActividad}}</textarea>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
+
 
                         <div class="col-md-4 mt-2">
                             <label for="item" class="form-label fs-6">Item presupuestario</label>

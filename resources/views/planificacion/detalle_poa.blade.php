@@ -13,7 +13,7 @@
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <div class="d-flex align-items-center flex-wrap mr-1">
             <div class="d-flex align-items-baseline mr-5">
-                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Detalle Planificación2</h5></a>
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Detalle Planificación</h5></a>
             </div>
         </div>
     </div>
@@ -120,7 +120,7 @@
                                     <th>Act. Operativa</th>
                                     <th>Sub Actividad</th>
                                     <th>Item</th>
-                                    <th>Total/Item</th>
+                                    <!-- <th>Total/Item</th> -->
                                     <th>Total</th>
                                     <th>Ene</th>
                                     <th>Feb</th>
@@ -145,7 +145,7 @@
                                     <th>Total</th>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
+                                    <!-- <th></th> -->
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -356,5 +356,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.5')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.6')}}"></script>
 @endpush

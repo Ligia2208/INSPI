@@ -1379,93 +1379,107 @@ function agregarActividad() {
     
                 let data = datos.data;
                 //console.log(data);
-    
-                var tableBody = $('#tblActividadesEditar tbody');
-                var rows = '';
 
-                let subActividad = data.nombreSubActividad;
-                subActividad = subActividad.replace(/^['"]|['"]$/g, '');
+                if(data == null){
+
+                    Swal.fire({
+                        icon: 'warning',
+                        type: 'warning',
+                        title: 'CoreInspi',
+                        text: 'El Objeto de Contratación actualmente esta en Certificación POA',
+                    });
+
+                }else{
+
+                    var tableBody = $('#tblActividadesEditar tbody');
+                    var rows = '';
     
-                // Agrega nuevas filas basadas en la respuesta del servidor
-                    rows +=`
-                    <tr>
-                        <td class="text-center align-middle">
-                            <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
-                            <input type="hidden" name="id_actividad[]" value="0">
-                            <input type="hidden" name="id_poa[]" value="${(data.id)}">
-                            <input type="hidden" name="solicitud[]" value="${( data.id_areaS == id_direccion ? 'true' : 'false')}">
-                            <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
-                        </td>
-                        <td>${(data.nombreActividadOperativa)}</td>
-                        <td>
-                            <textarea class="form-control" style="width: 350px;" rows="5" name="subActividad[]">${subActividad}</textarea>
-                        </td>
-                        <td>${(data.nombreItem)}</td>
-                        <td>${(data.descripcionItem)}</td>
-                        <td class="width">
-                            <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
-                                <option value="" selected disabled>Seleccionar tipo...</option>
-                                <option value="DISMINUYE">Disminuye</option>
-                                <option value="AUMENTA">Aumenta</option>
-                                <option value="IGUAL">Igual</option>
-                                <option value="AJUSTE">Ajuste</option>
-                                <option value="AMPLIA">Amplia</option>
-                            </select>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="total1[]" value="0.00">
-                            <div class="form-text">${data.total}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="enero1[]" value="0">
-                            <div class="form-text">${data.enero}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="febrero1[]" value="0">
-                            <div class="form-text">${data.febrero}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="marzo1[]" value="0">
-                            <div class="form-text">${data.marzo}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="abril1[]" value="0">
-                            <div class="form-text">${data.abril}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="mayo1[]" value="0">
-                            <div class="form-text">${data.mayo}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="junio1[]" value="0">
-                            <div class="form-text">${data.junio}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="julio1[]" value="0">
-                            <div class="form-text">${data.julio}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="agosto1[]" value="0">
-                            <div class="form-text">${data.agosto}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="septiembre1[]" value="0">
-                            <div class="form-text">${data.septiembre}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="octubre1[]" value="0">
-                            <div class="form-text">${data.octubre}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="noviembre1[]" value="0">
-                            <div class="form-text">${data.noviembre}</div></td>
-                        </td>
-                        <td>
-                            <input class ="form-control" style="width: 125px;" type="text" name="diciembre1[]" value="0">
-                            <div class="form-text">${data.diciembre}</div></td>
-                        </td>
-                    </tr>`;
-                tableBody.append(rows);
+                    let subActividad = data.nombreSubActividad;
+                    subActividad = subActividad.replace(/^['"]|['"]$/g, '');
+        
+                    // Agrega nuevas filas basadas en la respuesta del servidor
+                        rows +=`
+                        <tr>
+                            <td class="text-center align-middle">
+                                <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
+                                <input type="hidden" name="id_actividad[]" value="0">
+                                <input type="hidden" name="id_poa[]" value="${(data.id)}">
+                                <input type="hidden" name="solicitud[]" value="${( data.id_areaS == id_direccion ? 'true' : 'false')}">
+                                <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
+                            </td>
+                            <td>${(data.nombreActividadOperativa)}</td>
+                            <td>
+                                <textarea class="form-control" style="width: 350px;" rows="5" name="subActividad[]">${subActividad}</textarea>
+                            </td>
+                            <td>${(data.nombreItem)}</td>
+                            <td>${(data.descripcionItem)}</td>
+                            <td class="width">
+                                <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
+                                    <option value="" selected disabled>Seleccionar tipo...</option>
+                                    <option value="DISMINUYE">Disminuye</option>
+                                    <option value="AUMENTA">Aumenta</option>
+                                    <option value="IGUAL">Igual</option>
+                                    <option value="AJUSTE">Ajuste</option>
+                                    <option value="AMPLIA">Amplia</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="total1[]" value="0.00">
+                                <div class="form-text">${data.total}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="enero1[]" value="0">
+                                <div class="form-text">${data.enero}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="febrero1[]" value="0">
+                                <div class="form-text">${data.febrero}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="marzo1[]" value="0">
+                                <div class="form-text">${data.marzo}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="abril1[]" value="0">
+                                <div class="form-text">${data.abril}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="mayo1[]" value="0">
+                                <div class="form-text">${data.mayo}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="junio1[]" value="0">
+                                <div class="form-text">${data.junio}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="julio1[]" value="0">
+                                <div class="form-text">${data.julio}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="agosto1[]" value="0">
+                                <div class="form-text">${data.agosto}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="septiembre1[]" value="0">
+                                <div class="form-text">${data.septiembre}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="octubre1[]" value="0">
+                                <div class="form-text">${data.octubre}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="noviembre1[]" value="0">
+                                <div class="form-text">${data.noviembre}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="diciembre1[]" value="0">
+                                <div class="form-text">${data.diciembre}</div></td>
+                            </td>
+                        </tr>`;
+                    tableBody.append(rows);
+
+                }
+    
             },
             error: function(error) {
                 console.error('Error al obtener los datos de la tabla', error);

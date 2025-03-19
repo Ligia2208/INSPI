@@ -131,6 +131,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('planificacion/nuevaPlanificacion/{id_direccion}', 'PlanificacionController@nuevaPlanificacion')->name('planificacion.nuevaPlanificacion');
         Route::post('planificacion/savePlanificacion', 'PlanificacionController@savePlanificacion')->name('planificacion.savePlanificacion');
         Route::post('/planificacion/deletePoa', 'PlanificacionController@deletePoa')->name('planificacion.deletePoa'); //Eliminar registro
+        Route::post('/planificacion/liquidarPoa', 'PlanificacionController@liquidarPoa')->name('planificacion.liquidarPoa');
         Route::post('/planificacion/cerrarConvenio', 'PlanificacionController@cerrarConvenio')->name('planificacion.cerrarConvenio');
         Route::post('/planificacion/deleteCertificacion', 'PlanificacionController@deleteCertificacion')->name('planificacion.deleteCertificacion');
         Route::get('/planificacion/detalle', 'PlanificacionController@detalle')->middleware('permission:pladetalle')->name('planificacion.detalle');
@@ -178,6 +179,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/planificacion/crearActArea', 'PlanificacionController@crearActArea')->name('planificacion.crearActArea'); //Crea una nueva actividad de otra área en la ventana de editar
     
         Route::post('/planificacion/deleteReforma', 'PlanificacionController@deleteReforma')->name('planificacion.deleteReforma'); //Eliminar registro
+        Route::post('/planificacion/deleteReformaPre', 'PlanificacionController@deleteReformaPre')->name('planificacion.deleteReformaPre');
     
         //ESTRUCTUTA PRESUPUESTARIA
         Route::get('/planificacion/get_unidad', 'PlanificacionController@get_unidad')->name('planificacion.get_unidad');

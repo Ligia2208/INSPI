@@ -65,12 +65,12 @@
 
             </div>
 
-            <!-- <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
+            <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
                 <div class="col">
                     <label class="form-label fs-6">&nbsp;</label>
-                    <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar POA Excel</button>
+                    <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar Historial POA Excel</button>
                 </div>
-            </div> -->
+            </div>
 
             <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE ACTIVIDADES </h2>
             <hr/>
@@ -101,7 +101,7 @@
                             <select id="filterDireccion" class="form-control js-example-basic-single mt-2">
                                 <option value="">Todas las Direcciones</option>
                                 @foreach($direcciones as $direccion)
-                                    <option value="{{ $direccion->departamento }}">{{ $direccion->departamento }}</option>
+                                    <option value="{{ $direccion->id }}">{{ $direccion->departamento }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -116,13 +116,22 @@
                             </select>
                         </div>
 
-                        <div class="col-lg-6 mt-4 mb-5">
+                        <div class="col-lg-4 mt-4 mb-5">
                             <label for="filterPrograma" class="form-label">Filtrar por Programa:</label>
                             <select id="filterPrograma" class="js-example-basic-single filter">
                                 <option value="">Todos</option>
                                 @foreach($programas as $programa)
                                     <option value="{{ $programa->nombre }}">{{ $programa->nombre }}</option>
                                 @endforeach
+                            </select>
+                        </div>
+
+                        <div class="col-lg-2 mt-4 mb-5">
+                            <label for="filterAnio" class="form-label">Filtrar por Año:</label>
+                            <select id="filterAnio" class="js-example-basic-single filter">
+                                @for($i = date('Y'); $i >= date('Y') - 2; $i--)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
                             </select>
                         </div>
 
@@ -303,6 +312,6 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.18')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.22')}}"></script>
 <script src="{{asset('assets/js/Planificacion/calculadora.js?v0.0.0')}}"></script>
 @endpush

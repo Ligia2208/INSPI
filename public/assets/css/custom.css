@@ -348,6 +348,10 @@ input:checked + .slider:before {
     color: green;
 }
 
+.text-blue_navy {
+    color: #000080;
+}
+
 
 
 .btn-floating {

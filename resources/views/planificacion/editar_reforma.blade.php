@@ -512,5 +512,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.17')}}"></script>
+<script src="{{asset('assets/js/Planificacion/edit_reforma.js?v0.0.21')}}"></script>
 @endpush

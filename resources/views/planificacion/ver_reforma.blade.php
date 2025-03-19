@@ -193,6 +193,8 @@
                                         <span class="m-2 mb-3 badge bg-success fs-6">{{ $comentario->estado_planificacion }}</span>
                                     @elseif($comentario->estado_planificacion == 'Corregido')
                                         <span class="m-2 mb-3 badge bg-info fs-6">{{ $comentario->estado_planificacion }}</span>
+                                    @elseif($comentario->estado_planificacion == 'Eliminado')
+                                        <span class="m-2 mb-3 badge bg-danger fs-6">{{ $comentario->estado_planificacion }}</span>
                                     @else
                                         <!-- <p class="m-2 mb-3 badge"><strong>Estado de la planificación:</strong> {{ $comentario->estado_planificacion }}</p> -->
                                     @endif
