@@ -370,7 +370,11 @@ class Form extends Component
         $parabiograma = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antibiograma')->orderBy('id','asc')->cursor();
         $bacteantibioticomic = Tipoparametros::where('estado','=','A')->where('crns_id','=',3)->where('tipo','=','AntibioticoMIC')->orderBy('id','asc')->cursor();
         $bacteantibioticokb = Tipoparametros::where('estado','=','A')->where('crns_id','=',3)->where('tipo','=','AntibioticoKB')->orderBy('id','asc')->cursor();
-        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','instituciones','paramicrobianos','paradifusion','parabiograma','bacteantibioticomic','bacteantibioticokb','preanalitica','estados','unidades','clases'));
+        $medicamentopi = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-PI')->orderBy('id','asc')->cursor();
+        $medicamentonrti = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-NRTI')->orderBy('id','asc')->cursor();
+        $medicamentonnrti = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-NNRTI')->orderBy('id','asc')->cursor();
+        $medicamentoini = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-INI')->orderBy('id','asc')->cursor();
+        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','instituciones','paramicrobianos','paradifusion','parabiograma','bacteantibioticomic','bacteantibioticokb','medicamentopi','medicamentonrti','medicamentonnrti','medicamentoini','preanalitica','estados','unidades','clases'));
     }
 
     public function store(){

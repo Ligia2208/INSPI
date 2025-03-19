@@ -9,8 +9,11 @@ use App\Http\Controllers\Plataformas\Tratamiento\TratamientoController;
 use App\Http\Controllers\Plataformas\Anamnesis\AnamnesisController;
 use App\Http\Controllers\Plataformas\Constante\ConstanteController;
 use App\Http\Controllers\CentrosReferencia\Preanalitica\PreanaliticaController;
+use App\Http\Controllers\CentrosReferencia\Preanaliticatoxico\PreanaliticatoxicoController;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
+use App\Http\Controllers\CentrosReferencia\Analiticatoxico\AnaliticatoxicoController;
+use App\Http\Controllers\CentrosReferencia\Analiticatoxicop\AnaliticatoxicopController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
@@ -20,6 +23,7 @@ use App\Http\Controllers\CentrosReferencia\Resultadogerencial\Resultadogerencial
 use App\Http\Controllers\CentrosReferencia\VisorResultados\VisorResultadosController;
 use App\Http\Controllers\CentrosReferencia\VisorResultadoscrn\VisorResultadoscrnController;
 use App\Http\Controllers\CentrosReferencia\VisorResultadosgerencial\VisorResultadosgerencialController;
+use App\Http\Controllers\CentrosReferencia\GeorefResultadosgerencial\GeorefResultadosgerencialController;
 use App\Http\Controllers\CentrosReferencia\Responsable\ResponsableController;
 use App\Http\Controllers\CentrosReferencia\Paciente\PacienteController;
 use App\Http\Controllers\CentrosReferencia\Instsalud\InstsaludController;
@@ -68,6 +72,9 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Preanalitica
         Route::resource('preanaliticas', PreanaliticaController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanalitica');
 
+        //CRNs Plataformas Preanalitica
+        Route::resource('preanaliticastoxico', PreanaliticatoxicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticatoxico');
+
         //CRNs Plataformas Resultados
         Route::resource('resultados', ResultadoController::class)->parameters(['resultados' => 'resultado'])->names('resultado');
 
@@ -86,6 +93,12 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Analitica de Resultados Procesados
         Route::resource('analiticasp', AnaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('analiticap');
 
+        //CRNs Toxicología Analitica de Resultados Pendientes
+        Route::resource('analiticastoxico', AnaliticatoxicoController::class)->parameters(['analiticastoxico' => 'analiticatoxico'])->names('analiticatoxico');
+
+        //CRNs Toxicología Analitica de Resultados Pendientes
+        Route::resource('analiticastoxicop', AnaliticatoxicopController::class)->parameters(['analiticastoxico' => 'analiticatoxico'])->names('analiticatoxicop');
+
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');
 
@@ -97,6 +110,10 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Resultados
         Route::resource('visorresultadosgerencial', VisorResultadosgerencialController::class)->parameters(['resultados' => 'resultado'])->names('visorresultadogerencial');
+
+        //CRNs Plataformas Resultados
+        Route::resource('georefresultadosgerencial', GeorefResultadosgerencialController::class)->parameters(['resultados' => 'resultado'])->names('georefresultadogerencial');
+
 
         //CRNs Plataformas Resultados
         Route::resource('visorresultados', VisorResultadosController::class)->parameters(['resultados' => 'resultado'])->names('visorresultado');
