@@ -176,9 +176,9 @@ class Form extends Component
     }
 
     public function updatedselectedCrnp($crns_id){
-        $this->eventos = Evento::where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
-        $this->tecnicas = Tecnica::where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
-        $this->reportes = Reporte::where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->emit('renderJs');
     }
 
@@ -529,8 +529,8 @@ class Form extends Component
                             $this->guardarp($this->Preanaliticas,163);
                         }
                         else{
-                            $this->guardarp($this->Preanaliticas,$this->Preanaliticas->evento_id);
-                        }
+                                $this->guardarp($this->Preanaliticas,$this->Preanaliticas->evento_id);
+                            }
                     }
                 }
             }
@@ -904,7 +904,7 @@ class Form extends Component
             }
 
             $this->Preanaliticas->archivo = null;
-            $this->Preanaliticass->update();
+            $this->Preanaliticas->update();
         }
         $this->reset('PreanaliticaTmp');
         $this->alert('success', 'Ficha digitalizada eliminada con exito');

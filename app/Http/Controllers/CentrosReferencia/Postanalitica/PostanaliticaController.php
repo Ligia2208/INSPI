@@ -104,76 +104,72 @@ class PostanaliticaController extends Controller
         $this->fpdf->Cell(40,6.5,utf8_decode("Teléfono: ".$paciente->telefono ),1,0,"L");
         $this->fpdf->Ln(9);
 
-        /* $this->fpdf->SetFont('Arial', 'B', 8);
-        $this->fpdf->Cell(190,7,utf8_decode("Información de Recepción de Muestras"),1,0,"C");
-        $this->fpdf->Ln(7);
-        $this->fpdf->SetFont('Arial', '', 7);
-        $this->fpdf->Cell(100,7,utf8_decode("Lugar probable infección: ".$data->probable_infeccion),1,0,"L");
-        $this->fpdf->Cell(50,7,utf8_decode("Fecha inicio de sintomas: ".$data->fecha_sintomas),1,0,"L");
-        $datetime1 = date_create(date('Y-m-d'));
-        $datetime2 = date_create($data->fecha_sintomas);
-        $interval = date_diff($datetime2,$datetime1);
-        $this->fpdf->Cell(40,7,utf8_decode("Dias evolución: ".$interval->format('%R%a dias')),1,0,"L");
-        $this->fpdf->Ln(7);
-        if ($data->embarazo=='N'){
-            $datemb = 'No';
-        }
-        else{
-            $datemb = 'Si';
-        }
-        if ($data->laboratorio=='N'){
-            $datlab = 'No';
-        }
-        else{
-            $datlab = 'Si';
-        }
-        $this->fpdf->Cell(40,7,utf8_decode("Embarazada: ".$datemb),1,0,"L");
-        $this->fpdf->Cell(50,7,utf8_decode("Semanas de gestación: ".$data->gestacion),1,0,"L");
-        $this->fpdf->Cell(40,7,utf8_decode("Muestra Laboratorio: ".$datlab),1,0,"L");
-        $this->fpdf->Cell(60,7,utf8_decode("Nombre Laboratorio: ".$data->nombre_laboratorio),1,0,"L");
-        $this->fpdf->Ln(9);*/
-
-
         $this->fpdf->SetFont('Arial', 'B', 8);
         $this->fpdf->Cell(190,6.5,utf8_decode("Técnicas Aplicadas"),1,0,"C",true);
         $this->fpdf->SetFont('Arial', 'B', 7);
         $fecha_lab = '';
 
-        $this->fpdf->Ln(6.5);
-        $this->fpdf->Cell(34,6.5,utf8_decode("Código muestra"),1,0,"C");
-        $this->fpdf->Cell(25,6.5,utf8_decode("Tipo muestra"),1,0,"C");
-        $this->fpdf->Cell(25,6.5,utf8_decode("Toma muestra"),1,0,"C");
-        $this->fpdf->Cell(25,6.5,utf8_decode("Recepción en CRN"),1,0,"C");
-        $this->fpdf->Cell(40,6.5,utf8_decode("Técnica aplicada"),1,0,"C");
-        $this->fpdf->Cell(41,6.5,utf8_decode("Resultado"),1,0,"C");
-        $this->fpdf->SetFont('Arial', '', 7);
-        $i=0;
-        foreach($data_muestras as $muestra){
+        if($data->crns_id==7){
             $this->fpdf->Ln(6.5);
-            /* if($muestra->codigo_externo != ''){
-                $this->fpdf->Cell(34,7,utf8_decode($muestra->codigo_externo.'-'.$muestra->anio_registro),1,0,"C");
+            $this->fpdf->Cell(32,6.5,utf8_decode("Código muestra"),1,0,"C");
+            $this->fpdf->Cell(20,6.5,utf8_decode("Tipo muestra"),1,0,"C");
+            $this->fpdf->Cell(21,6.5,utf8_decode("Toma muestra"),1,0,"C");
+            $this->fpdf->Cell(21,6.5,utf8_decode("Recepción CRN"),1,0,"C");
+            $this->fpdf->Cell(23,6.5,utf8_decode("Evento"),1,0,"C");
+            $this->fpdf->Cell(41,6.5,utf8_decode("Técnica aplicada"),1,0,"C");
+            $this->fpdf->Cell(32,6.5,utf8_decode("Resultado"),1,0,"C");
+            $this->fpdf->SetFont('Arial', '', 7);
+            $i=0;
+            foreach($data_muestras as $muestra){
+                $this->fpdf->Ln(6.5);
+                $this->fpdf->Cell(32,6.5,utf8_decode($muestra->codigo_calidad),1,0,"C");
+                $this->fpdf->Cell(20,6.5,utf8_decode(substr($muestra->muestra->descripcion,0,15)),1,0,"C");
+                $this->fpdf->Cell(21,6.5,utf8_decode($muestra->fecha_toma),1,0,"C");
+                $this->fpdf->Cell(21,6.5,utf8_decode($muestra->fecha_llegada_lab),1,0,"C");
+                $this->fpdf->Cell(23,6.5,utf8_decode($muestra->evento->simplificado),1,0,"C");
+                if($muestra->tecnica_id>0){
+                    $this->fpdf->Cell(41,6.5,utf8_decode(substr($muestra->tecnica->descripcion,0,34)),1,0,"L");
+                    $this->fpdf->Cell(32,6.5,utf8_decode(substr($muestra->resultado->descripcion,0,32)),1,0,"L");
+                }
+                else{
+                    $this->fpdf->Cell(41,6.5,utf8_decode(""),1,0,"C");
+                    $this->fpdf->Cell(32,6.5,utf8_decode(""),1,0,"C");
+                }
+                $fecha_lab=$muestra->fecha_llegada_lab;
+                $fecha_resul=$muestra->fecha_resultado;
+                $tecnico = $muestra->usuarior->name;
+                $i++;
             }
-            else{
-                $this->fpdf->Cell(34,7,utf8_decode($muestra->codigo_calidad),1,0,"C");
-            } */
-
-
-            $this->fpdf->Cell(34,6.5,utf8_decode($muestra->codigo_calidad),1,0,"C");
-            $this->fpdf->Cell(25,6.5,utf8_decode(substr($muestra->muestra->descripcion,0,15)),1,0,"C");
-            $this->fpdf->Cell(25,6.5,utf8_decode($muestra->fecha_toma),1,0,"C");
-            $this->fpdf->Cell(25,6.5,utf8_decode($muestra->fecha_llegada_lab),1,0,"C");
-            if($muestra->tecnica_id>0){
-                $this->fpdf->Cell(40,6.5,utf8_decode(substr($muestra->tecnica->descripcion,0,32)),1,0,"L");
-                $this->fpdf->Cell(41,6.5,utf8_decode(substr($muestra->resultado->descripcion,0,32)),1,0,"L");
+        }
+        else{
+            $this->fpdf->Ln(6.5);
+            $this->fpdf->Cell(34,6.5,utf8_decode("Código muestra"),1,0,"C");
+            $this->fpdf->Cell(25,6.5,utf8_decode("Tipo muestra"),1,0,"C");
+            $this->fpdf->Cell(25,6.5,utf8_decode("Toma muestra"),1,0,"C");
+            $this->fpdf->Cell(25,6.5,utf8_decode("Recepción en CRN"),1,0,"C");
+            $this->fpdf->Cell(40,6.5,utf8_decode("Técnica aplicada"),1,0,"C");
+            $this->fpdf->Cell(41,6.5,utf8_decode("Resultado"),1,0,"C");
+            $this->fpdf->SetFont('Arial', '', 7);
+            $i=0;
+            foreach($data_muestras as $muestra){
+                $this->fpdf->Ln(6.5);
+                $this->fpdf->Cell(34,6.5,utf8_decode($muestra->codigo_calidad),1,0,"C");
+                $this->fpdf->Cell(25,6.5,utf8_decode(substr($muestra->muestra->descripcion,0,15)),1,0,"C");
+                $this->fpdf->Cell(25,6.5,utf8_decode($muestra->fecha_toma),1,0,"C");
+                $this->fpdf->Cell(25,6.5,utf8_decode($muestra->fecha_llegada_lab),1,0,"C");
+                if($muestra->tecnica_id>0){
+                    $this->fpdf->Cell(40,6.5,utf8_decode(substr($muestra->tecnica->descripcion,0,32)),1,0,"L");
+                    $this->fpdf->Cell(41,6.5,utf8_decode(substr($muestra->resultado->descripcion,0,32)),1,0,"L");
+                }
+                else{
+                    $this->fpdf->Cell(40,6.5,utf8_decode(""),1,0,"C");
+                    $this->fpdf->Cell(41,6.5,utf8_decode(""),1,0,"C");
+                }
+                $fecha_lab=$muestra->fecha_llegada_lab;
+                $fecha_resul=$muestra->fecha_resultado;
+                $tecnico = $muestra->usuarior->name;
+                $i++;
             }
-            else{
-                $this->fpdf->Cell(40,6.5,utf8_decode(""),1,0,"C");
-                $this->fpdf->Cell(41,6.5,utf8_decode(""),1,0,"C");
-            }
-            $fecha_lab=$muestra->fecha_llegada_lab;
-            $fecha_resul=$muestra->fecha_resultado;
-            $tecnico = $muestra->usuarior->name;
-            $i++;
         }
 
         $dataqr = utf8_decode($data->sedes->descripcion)." - ".utf8_decode($data->crns->descripcion)."\n";
@@ -192,7 +188,7 @@ class PostanaliticaController extends Controller
             if($muestra->carga_viral>0){
                 $this->fpdf->Cell(40,6.5,utf8_decode("DETALLE CARGA VIRAL"),1,0,"C",true);
                 $this->fpdf->Cell(40,6.5,utf8_decode("Carga viral: ".$muestra->carga_viral." ".$muestra->unidades->descripcion),1,0,"L");
-                $this->fpdf->Cell(150,6.5,utf8_decode("Observaciones: ".$muestra->recomendacion_inmuno),1,0,"L");
+                $this->fpdf->Cell(110,6.5,utf8_decode("Observaciones: ".$muestra->recomendacion_inmuno),1,0,"L");
             }
             $this->fpdf->Ln(9);
         }
@@ -543,9 +539,17 @@ class PostanaliticaController extends Controller
         $this->fpdf->SetFont('Arial', 'B', 8);
         $this->fpdf->Cell(190,6.5,utf8_decode("Descripción del resultado encontrado:"),1,0,"L");
         $this->fpdf->Ln(6.5);
-        $this->fpdf->SetFont('Arial', '', 7);
-        $this->fpdf->Cell(190,23,"",1,0,"L");
-        $this->fpdf->Ln(1);
+        if($muestra->crns_id==7){
+            $this->fpdf->SetFont('Arial', '', 7);
+            $this->fpdf->Cell(190,12,"",1,0,"L");
+            $this->fpdf->Ln(1);
+        }
+        else{
+            $this->fpdf->SetFont('Arial', '', 7);
+            $this->fpdf->Cell(190,23,"",1,0,"L");
+            $this->fpdf->Ln(1);
+        }
+
         $countwords = strlen($data->descripcion);
         $texto = $data->descripcion;
         $lineas = 0;
@@ -578,8 +582,12 @@ class PostanaliticaController extends Controller
             $this->fpdf->cell(190,5.5,utf8_decode($data->descripcion),0,0,"L");
         }
 
-
-        $this->fpdf->Ln(27);
+        if($muestra->crns_id==7){
+            $this->fpdf->Ln(15);
+        }
+        else{
+            $this->fpdf->Ln(27);
+        }
         $this->fpdf->SetFont('Arial', 'B', 7);
         $this->fpdf->Cell(90,6.5,utf8_decode("Trazabilidad del proceso"),1,0,"C",true);
         $this->fpdf->SetFont('Arial', '', 7);

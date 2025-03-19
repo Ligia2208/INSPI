@@ -297,6 +297,9 @@
                                             <th>Clase Muestra</th>
                                             <th>Tipo Muestra</th>
                                             <th>Fecha Toma</th>
+                                            @if ($Analiticas->crns_id==7)
+                                            <th>Evento</th>
+                                            @endif
                                             <th>Técnico Procesa</th>
                                             <th>Fecha Procesamiento</th>
                                             <th>Técnica</th>
@@ -327,6 +330,12 @@
                                                     <span
                                                         class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->fecha_toma }}</span>
                                                 </td>
+                                                @if ($objAnalitica->crns_id==7)
+                                                <td>
+                                                    <span
+                                                        class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objAnalitica->evento->simplificado }}</span>
+                                                </td>
+                                                @endif
                                                 @if($objAnalitica->usuarior_id>0)
                                                 <td>
                                                     <span

@@ -966,7 +966,7 @@ class ResultadomspController extends Controller
             if($muestra->carga_viral>0){
                 $this->fpdf->Cell(40,6.5,utf8_decode("DETALLE CARGA VIRAL"),1,0,"C",true);
                 $this->fpdf->Cell(40,6.5,utf8_decode("Carga viral: ".$muestra->carga_viral." ".$muestra->unidades->descripcion),1,0,"L");
-                $this->fpdf->Cell(150,6.5,utf8_decode("Observaciones: ".$muestra->recomendacion_inmuno),1,0,"L");
+                $this->fpdf->Cell(110,6.5,utf8_decode("Observaciones: ".$muestra->recomendacion_inmuno),1,0,"L");
             }
             $this->fpdf->Ln(9);
         }

@@ -1328,6 +1328,9 @@
                                     <li role="presentation" class="active" wire:ignore>
                                         <a class="btn btn-default" href="#tab-1" aria-controls="#tab-1" role="tab" data-toggle="tab">Resultado Cuantitativo</a>
                                     </li>
+                                    <li role="presentation" wire:ignore>
+                                        <a class="btn btn-default" href="#tab-2" aria-controls="#tab-2" role="tab" data-toggle="tab">Medicamentos</a>
+                                    </li>
                                 </ul>
                                 @include('component.error-list')
                                 <div class="tab-content mt-5">
@@ -1386,6 +1389,873 @@
                                                             required
                                                             class="form-control form-control-solid @error('Analiticas.recomendacion_inmuno') is-invalid @enderror"
                                                             placeholder="Ej: Realizar pruebas adicionales condicionadas" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div role="tabpanel" class="tab-pane" id="tab-2" wire:ignore.self>
+                                        <div class="form-row">
+                                            <div class="col-md-6 col-md-offset-2">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-12" align="center">
+                                                        <label class="text-black"><b> - PI - </b></label>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="text-black"><b>Nombre Genérico</b></label>
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentopi as $objUni)
+                                                            @if($objUni->id==57)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="text-black"><b>Interpretación</b></label>
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentopi as $objUni)
+                                                                @if($objUni->id==58)
+                                                                <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentopi as $objUni)
+                                                                @if($objUni->id==59)
+                                                                <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentopi as $objUni)
+                                                                @if($objUni->id==60)
+                                                                <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentopi as $objUni)
+                                                                @if($objUni->id==61)
+                                                                <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentopi as $objUni)
+                                                                @if($objUni->id==62)
+                                                                <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentopi as $objUni)
+                                                                @if($objUni->id==63)
+                                                                <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentopi as $objUni)
+                                                                @if($objUni->id==64)
+                                                                <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-md-offset-2">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-12" align="center">
+                                                        <label class="text-black"><b> - NRTI - </b></label>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="text-black"><b>Nombre Genérico</b></label>
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonrti as $objUni)
+                                                            @if($objUni->id==65)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="text-black"><b>Interpretación</b></label>
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonrti as $objUni)
+                                                            @if($objUni->id==66)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonrti as $objUni)
+                                                            @if($objUni->id==67)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonrti as $objUni)
+                                                            @if($objUni->id==68)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonrti as $objUni)
+                                                            @if($objUni->id==69)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonrti as $objUni)
+                                                            @if($objUni->id==70)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonrti as $objUni)
+                                                            @if($objUni->id==71)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr>
+                                        <div class="form-row">
+                                            <div class="col-md-6 col-md-offset-2">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-12" align="center">
+                                                        <label class="text-black"><b> - NNRTI - </b></label>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="text-black"><b>Nombre Genérico</b></label>
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonnrti as $objUni)
+                                                            @if($objUni->id==72)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="text-black"><b>Interpretación</b></label>
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonnrti as $objUni)
+                                                            @if($objUni->id==73)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonnrti as $objUni)
+                                                            @if($objUni->id==74)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonnrti as $objUni)
+                                                            @if($objUni->id==75)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonnrti as $objUni)
+                                                            @if($objUni->id==76)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentonnrti as $objUni)
+                                                            @if($objUni->id==77)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6 col-md-offset-2">
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-12" align="center">
+                                                        <label class="text-black"><b> - INI - </b></label>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="text-black"><b>Nombre Genérico</b></label>
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentoini as $objUni)
+                                                            @if($objUni->id==78)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <label class="text-black"><b>Interpretación</b></label>
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentoini as $objUni)
+                                                            @if($objUni->id==79)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentoini as $objUni)
+                                                            @if($objUni->id==80)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentoini as $objUni)
+                                                            @if($objUni->id==81)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="form-row">
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required disabled>
+                                                            @foreach ($medicamentoini as $objUni)
+                                                            @if($objUni->id==82)
+                                                            <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                            @endif
+                                                            @endforeach
+                                                        </select>
+                                                    </div>
+                                                    <div class="form-group col-md-6">
+                                                        <select
+                                                            wire:model.defer="Analiticas.unidades_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            data-size="7"
+                                                            data-live-search="true"
+                                                            data-show-subtext="true"
+                                                            required>
+                                                            <option value="">Selecciona una interpretación</option>
+                                                            <option data-subtext="" value="1">Sensible</option>
+                                                            <option data-subtext="" value="2">Resistencia Intermedia</option>
+                                                            <option data-subtext="" value="3">Resistencia Alta</option>
+
+                                                        </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -2240,6 +3110,25 @@
                                         </div>
                                     </div>
                                 </div>
+                                <div class="form-group col-md-12">
+                                    <label class="text-black"><b>Observación/Investigación:</b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <textarea
+                                            wire:model.defer="Analiticas.observacioninvestiga"
+                                            id=""
+                                            cols="30"
+                                            rows="2"
+                                            class="form-control form-control-solid @error('Analiticas.observacioninvestiga') is-invalid @enderror"
+                                            placeholder="Ej: Datos relevantes a reportar"
+                                            >
+                                        </textarea>
+                                    </div>
+                                </div>
                             @endif
 
                             <hr>
@@ -2275,25 +3164,7 @@
                                                     </textarea>
                                                 </div>
                                             </div>
-                                            <div class="form-group col-md-12">
-                                                <label class="text-black"><b>Observación/Investigación:</b></label>
-                                                <div class="input-group input-group-solid">
-                                                    <div class="input-group-prepend">
-                                                        <span class="input-group-text">
-                                                            <i class="fas fa-edit"></i>
-                                                        </span>
-                                                    </div>
-                                                    <textarea
-                                                        wire:model.defer="Analiticas.observacioninvestiga"
-                                                        id=""
-                                                        cols="30"
-                                                        rows="2"
-                                                        class="form-control form-control-solid @error('Analiticas.observacioninvestiga') is-invalid @enderror"
-                                                        placeholder="Ej: Datos relevantes a reportar"
-                                                        >
-                                                    </textarea>
-                                                </div>
-                                            </div>
+
                                         </div>
                                         <div class="form-row">
                                             <div class="form-group col-md-6">

@@ -116,6 +116,31 @@
 
             @endcanany
 
+
+            @canany(['preanaliticatoxico','analiticastoxico'])
+            <div class="my-5"></div>
+                <li class="menu-section">
+                    <h4 class="menu-text">CRN Toxicología</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+                @can('preanaliticatoxico')
+                    <li class="menu-item {{ active('preanaliticatoxico.*') }}">
+                        <a href="{{ route('preanaliticatoxico.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-cogs"></i>
+                            <span class="menu-text">Muestras - Preanalítica</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('analiticastoxico')
+                    <li class="menu-item {{ active('analiticatoxico.*') }}">
+                        <a href="{{ route('analiticatoxico.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-spinner"></i>
+                            <span class="menu-text">Analitica Resultados CRN</span>
+                        </a>
+                    </li>
+                @endcan
+            @endcanany
+
             @canany(['pacientes', 'resultados', 'instituciones', 'visorresultados', 'resultadosmsp', 'resultadoscrn', 'resultadosgerencial',
                 'preanalitica', 'postanaliticas', 'analiticas'])
                 <div class="my-5"></div>
