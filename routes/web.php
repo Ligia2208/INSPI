@@ -198,6 +198,7 @@ Route::middleware(['auth'])->group(function () {
         //REPORTES 
         Route::get('planificacion/reportDetalleExcel', 'PlanificacionController@reportDetalleExcel')->name('planificacion.reportDetalleExcel');
         Route::get('planificacion/reportDetalleExcelUser', 'PlanificacionController@reportDetalleExcelUser')->name('planificacion.reportDetalleExcelUser');
+        Route::get('planificacion/reportReformExcel', 'PlanificacionController@reportReformExcel')->name('planificacion.reportReformExcel');
         Route::get('planificacion/reportHexa', 'PlanificacionController@reportHexa')->name('planificacion.reportHexa');
         Route::get('planificacion/reportPOAExcel', 'PlanificacionController@reportPOAExcel')->name('planificacion.reportPOAExcel');
         Route::get('planificacion/reportReforma', 'PlanificacionController@reportReforma')->name('planificacion.reportReforma');

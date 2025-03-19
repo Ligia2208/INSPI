@@ -87,8 +87,7 @@ use App\Imports\ActividadImport;
 
 use App\Exports\ReportDetalleExport;
 use App\Exports\ReportPOAExport;
-//use Maatwebsite\Excel\Facades\Excel;
-
+use App\Exports\ReportReformExport;
 use App\Traits\GetDireccionTrait;
 
 class PlanificacionController extends Controller
@@ -3938,7 +3937,70 @@ class PlanificacionController extends Controller
 
     }
 
+    //Reforma Excel
+    
+    public function reportReformExcel(Request $request)
+    {
+        try {
+            $filterEstado = $request->input('filterEstado');
+            $filterTipo = $request->input('filterTipo');
+            $filterDireccion = $request->input('filterDireccion');
+    
+            // Construcción del Query
+            $query = Reforma::selectRaw("
+                    pla_reforma.*, 
+                    dir.nombre,
+                    CASE 
+                        WHEN pla_reforma.estado = 'A' THEN 'Ingresado' 
+                        WHEN pla_reforma.estado = 'O' THEN 'Validado' 
+                        WHEN pla_reforma.estado = 'V' THEN 'Aprobado' 
+                        WHEN pla_reforma.estado = 'R' THEN 'Rechazado' 
+                        ELSE 'Desconocido' 
+                    END as estado_reform,
+                    CASE 
+                        WHEN pla_reforma.tipo = 'M' THEN 'Modificación PAPP' 
+                        WHEN pla_reforma.tipo = 'R' THEN 'Reforma PAPP/Presupuestaria' 
+                        ELSE 'Desconocido' 
+                    END as tipo_reform
+                ")
+                ->join('pla_direcciones as dir', 'dir.id', '=', 'pla_reforma.area_id');
+    
+            // Aplicar filtros si existen
+            if (!empty($filterEstado)) {
+                $query->where('pla_reforma.estado', $filterEstado);
+            }
+    
+            if (!empty($filterTipo)) {
+                $query->where('pla_reforma.tipo', $filterTipo);
+            }
+    
+            if (!empty($filterDireccion)) {
+                $query->where('pla_reforma.area_id', $filterDireccion);
+            }
+    
+            // Obtener los datos filtrados
+            $actividades = $query->get();
+    
+            if ($actividades->isEmpty()) {
+                return response()->json(['error' => 'No se encontraron datos para generar el reporte.'], 404);
+            }
+    
+            if (!class_exists(Excel::class)) {
+                return response()->json(['error' => 'Maatwebsite Excel no está instalado correctamente.'], 500);
+            }
+    
+            return Excel::download(new ReportReformExport($actividades), 'Reporte_Reforma.xlsx');
+    
+        } catch (\Exception $e) {
+            \Log::error("Error en reportReformExcel: " . $e->getMessage());
+            return response()->json(['error' => 'Error interno al generar el reporte.', 'message' => $e->getMessage()], 500);
+        }
+    }
+    
+    
 
+    
+    
     //Excel
     public function reportPOAExcel(Request $request)
     {

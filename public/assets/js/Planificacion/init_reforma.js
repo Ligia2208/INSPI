@@ -235,11 +235,91 @@ $( function () {
         });
 
     });
-    /* VALIDAR LOS CAMBIOS EN LA REFORMA */
     
+    
+    /* VALIDAR LOS CAMBIOS EN LA REFORMA */
 
+    // Generar el reporte EXCEL
+    $(document).on('click', '#btnGenerateExcel', function() {
+        var filterEstado = $('#filterEstado').val();
+        var filterTipo = $('#filterTipo').val();
+        var filterDireccion = $('#filterDireccion').val();
+    
+        Swal.fire({
+            title: 'Generando Reporte...',
+            text: 'Por favor, espera unos segundos.',
+            allowOutsideClick: false,
+            didOpen: () => {
+                Swal.showLoading();
+            }
+        });
+    
+        $.ajax({
+            type: 'GET',
+            url: '/planificacion/reportReformExcel',
+            data: {
+                filterEstado: filterEstado,
+                filterTipo: filterTipo,
+                filterDireccion: filterDireccion
+            },
+            xhrFields: {
+                responseType: 'blob'  // Permite manejar archivos binarios (Excel)
+            },
+            success: function(response, status, xhr) {
+                Swal.close(); 
+    
+                var contentType = xhr.getResponseHeader('Content-Type');
+                if (contentType !== 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'La respuesta del servidor no es un archivo Excel válido.',
+                        showConfirmButton: true
+                    });
+                    return;
+                }
+    
+                var blob = new Blob([response], { type: contentType });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'Reporte_Reforma.xlsx'; 
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            },
+            error: function(xhr, status, error) {
+                Swal.close(); // Cierra el loader
+    
+                console.error("Error en la petición:", xhr.responseText);
+    
+                let errorMessage = "Error al generar el archivo Excel.";
+                
+                if (xhr.status === 404) {
+                    errorMessage = "No se encontraron datos con los filtros seleccionados.";
+                } else if (xhr.status === 500) {
+                    errorMessage = "Error interno del servidor. Contacte al soporte técnico.";
+                } else if (xhr.status === 403) {
+                    errorMessage = "No tienes permisos para realizar esta acción.";
+                }
+    
+                Swal.fire({
+                    icon: 'error',
+                    title: 'CoreInspi',
+                    text: errorMessage,
+                    showConfirmButton: true
+                });
+            }
 
-
+        });
+    });
+    
+    
+    
+    
+    
+    
 });
 
 //CÓDIGO PARA BOTÓN DE BORRAR

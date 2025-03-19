@@ -32,6 +32,19 @@
             <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> SOLICITUD DE REFORMAS PAPP/PRESUPUESTARIA </h2>
             <hr/>
 
+            <div class="row mt-4">
+ 
+            <div class="col-md-2 text-center">
+                <label class="form-label fs-6">&nbsp;</label>
+                <button id="btnGenerateExcel" class="btn btn-warning text-white px-4 py-2" style="width: 200px; margin-bottom: 20px;">
+                    <i class="bi bi-file-earmark-spreadsheet mr-1"></i> Generar Reforma Excel</button>
+            </div>
+
+
+
+
+            </div>
+
 
             <div id="contModalComentarios">
             </div>
