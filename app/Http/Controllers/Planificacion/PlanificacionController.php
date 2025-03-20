@@ -1902,8 +1902,8 @@ class PlanificacionController extends Controller
                     'area.nombre as area',
                     'pla_reforma.total as total_monto'
                 )
-                ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_reforma.area_id')
-                ->whereNotIn('pla_reforma.estado', ['E']);
+                ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_reforma.area_id');
+              
         
             // Aplicar filtros si existen
             if (!empty($estado)) {
@@ -1911,11 +1911,11 @@ class PlanificacionController extends Controller
             }
         
             if (!empty($tipo)) {
-                $query->where('pla_reforma.tipo', $tipo); // Corregido alias de tabla
+                $query->where('pla_reforma.tipo', $tipo); 
             }
 
             if (!empty($direccion)) {
-                $query->where('pla_reforma.area_id', $direccion); // Corregido alias de tabla
+                $query->where('pla_reforma.area_id', $direccion); 
             }
         
             return datatables()->of($query->get())
@@ -4186,7 +4186,8 @@ class PlanificacionController extends Controller
                         WHEN pla_reforma.estado = 'A' THEN 'Ingresado' 
                         WHEN pla_reforma.estado = 'O' THEN 'Validado' 
                         WHEN pla_reforma.estado = 'V' THEN 'Aprobado' 
-                        WHEN pla_reforma.estado = 'R' THEN 'Rechazado' 
+                        WHEN pla_reforma.estado = 'R' THEN 'Rechazado'
+                        WHEN pla_reforma.estado = 'E' THEN 'Eliminado' 
                         ELSE 'Desconocido' 
                     END as estado_reform,
                     CASE 
@@ -4225,13 +4226,9 @@ class PlanificacionController extends Controller
             return Excel::download(new ReportReformExport($actividades), 'Reporte_Reforma.xlsx');
     
         } catch (\Exception $e) {
-            \Log::error("Error en reportReformExcel: " . $e->getMessage());
             return response()->json(['error' => 'Error interno al generar el reporte.', 'message' => $e->getMessage()], 500);
         }
     }
-    
-    
-
     
     
     //Excel
