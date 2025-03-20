@@ -3964,6 +3964,7 @@ class PlanificacionController extends Controller
                     END as tipo_reform
                 ")
                 ->join('pla_direcciones as dir', 'dir.id', '=', 'pla_reforma.area_id');
+                //->whereNotIn('pla_reforma.estado', ['E']);
     
             // Aplicar filtros si existen
             if (!empty($filterEstado)) {
