@@ -3,12 +3,15 @@
 namespace App\Http\Livewire\Centrosreferencia\Resultadocrn;
 
 use App\Models\CentrosReferencia\Resultado;
+use App\Models\CentrosReferencia\Reporte;
+use App\Models\CentrosReferencia\Tecnica;
 use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
 use App\Models\CentrosReferencia\Responsable;
 use App\Models\CentrosReferencia\Crn;
+use App\Models\User;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -30,11 +33,14 @@ class Index extends Component
     public $csedes;
     public $claboratorios;
     public $ceventos;
+    public $ctecnicas;
+    public $cresultados;
+    public $ctecnicos;
     public $fechainicio;
     public $fechafin;
     public $controlf;
 
-    protected $queryString = ['search' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ceventos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
+    protected $queryString = ['search' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ctecnicas' => ['except' => ''], 'cresultados' => ['except' => ''], 'ctecnicos' => ['except' => ''], 'ceventos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
 
     //Theme
     protected $paginationTheme = 'bootstrap';
@@ -90,6 +96,9 @@ class Index extends Component
 
         $crns = [];
         $eventos = [];
+        $tecnicas = [];
+        $reportes = [];
+        $usuarios = [];
 
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
         if($rol == 'Administrador'){
@@ -129,13 +138,32 @@ class Index extends Component
             }
         }
         if($this->claboratorios){
-            $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
+            $resultados = $resultados->where('crns_id','=',$this->claboratorios);
             $count = $resultados->count();
-            $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $reportes = Reporte::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $crns_tecnicos = Responsable::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->where('vigente_hasta','=',null)->distinct('usuario_id')->pluck('usuario_id')->toArray();
+            $usuarios = User::whereIn('id',$crns_tecnicos)->orderBy('id', 'asc')->get();
         }
 
         if($this->ceventos){
-            $resultados = $resultados->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos);
+            $resultados = $resultados->where('evento_id','=',$this->ceventos);
+            $count = $resultados->count();
+        }
+
+        if($this->ctecnicas){
+            $resultados = $resultados->where('tecnica_id','=',$this->ctecnicas);
+            $count = $resultados->count();
+        }
+
+        if($this->cresultados){
+            $resultados = $resultados->where('resultado_id','=',$this->cresultados);
+            $count = $resultados->count();
+        }
+
+        if($this->ctecnicos){
+            $resultados = $resultados->where('usuarior_id','=',$this->ctecnicos);
             $count = $resultados->count();
         }
 
@@ -176,7 +204,7 @@ class Index extends Component
         $resultados = $resultados->paginate($this->perPage);
         $this->emit('renderJs');
 
-        return view('livewire.centrosreferencia.resultadocrn.index', compact('count', 'resultados','rol','sedes','crns','eventos','sedes_up','cmicobacterias','cinfluenza','cbacteriologia','cvectores','cparasitologia','cmicologia','ctoxicologia','cexantematicos','cgenomica','cram','czoonosis','cinmunohematologia','countlab','countlabpro','countlabana','countlabpen','countlabrec','countlabcum'));
+        return view('livewire.centrosreferencia.resultadocrn.index', compact('count', 'resultados','rol','sedes','crns','eventos','tecnicas','reportes','usuarios','sedes_up','cmicobacterias','cinfluenza','cbacteriologia','cvectores','cparasitologia','cmicologia','ctoxicologia','cexantematicos','cgenomica','cram','czoonosis','cinmunohematologia','countlab','countlabpro','countlabana','countlabpen','countlabrec','countlabcum'));
     }
 
     public function destroy($id)

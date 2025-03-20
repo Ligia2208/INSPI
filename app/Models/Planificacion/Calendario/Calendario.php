@@ -49,6 +49,40 @@ class Calendario extends Model
         $this->update(['total' => $total]);
     }
 
+    public function ajustarCalendario($excedente)
+    {
+        // Lista de los meses en orden
+        $meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 
+                'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+        foreach ($meses as $mes) {
+            // Si el excedente es cero, ya terminamos
+            if ($excedente <= 0) {
+                break;
+            }
+
+            // Obtener el valor actual del mes
+            $montoMes = $this->$mes;
+
+            // Si el mes tiene dinero disponible
+            if ($montoMes > 0) {
+                // Determinar cuánto se puede restar sin que el mes quede en negativo
+                $resta = min($montoMes, $excedente);
+
+                // Restar la cantidad y disminuir el excedente
+                $this->$mes -= $resta;
+                $excedente -= $resta;
+            }
+        }
+
+        // Recalcular el total después de los ajustes
+        $this->actualizaTotal();
+        
+        // Guardar los cambios en la base de datos
+        $this->save();
+    }
+
+
     public function getDescriptionForEvent(string $eventName)
     {
         return "Un POA ha sido {$eventName}";

@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Centrosreferencia\Analitica;
 
+use App\Models\CentrosReferencia\Institucion;
 use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
@@ -15,6 +16,7 @@ use App\Models\CentrosReferencia\Provincia;
 use App\Models\CentrosReferencia\Canton;
 use App\Models\CentrosReferencia\Reporte;
 use App\Models\CentrosReferencia\Tecnica;
+use App\Models\CentrosReferencia\Tipoparametros;
 use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Unidades;
 use Illuminate\Support\Facades\Auth;
@@ -87,6 +89,97 @@ class Form extends Component
             'Analiticas.resultado_cuarta_id' => 'sometimes|numeric',
             'Analiticas.identificado_cuarta' => 'sometimes|max:200',
 
+            'Analiticas.germenaislado_mico' => 'sometimes|max:80',
+            'Analiticas.directokoh_mico' => 'sometimes|max:80',
+            'Analiticas.directoplaca_mico' => 'sometimes|max:80',
+            'Analiticas.tintachina_mico' => 'sometimes|max:80',
+            'Analiticas.antibiogramamico_id' => 'sometimes|numeric',
+
+            'Analiticas.fungicounomico_id' => 'sometimes|numeric',
+            'Analiticas.cimuno_mico' => 'sometimes|max:15',
+            'Analiticas.difusionuno_mico' => 'sometimes|max:40',
+            'Analiticas.escalaunomico_id' => 'sometimes|numeric',
+
+            'Analiticas.fungicodosmico_id' => 'sometimes|numeric',
+            'Analiticas.cimdos_mico' => 'sometimes|max:15',
+            'Analiticas.difusiondos_mico' => 'sometimes|max:40',
+            'Analiticas.escaladosmico_id' => 'sometimes|numeric',
+
+            'Analiticas.fungicotresmico_id' => 'sometimes|numeric',
+            'Analiticas.cimtres_mico' => 'sometimes|max:15',
+            'Analiticas.difusiontres_mico' => 'sometimes|max:40',
+            'Analiticas.escalatresmico_id' => 'sometimes|numeric',
+
+            'Analiticas.fungicocuatromico_id' => 'sometimes|numeric',
+            'Analiticas.cimcuatro_mico' => 'sometimes|max:15',
+            'Analiticas.difusioncuatro_mico' => 'sometimes|max:40',
+            'Analiticas.escalacuatromico_id' => 'sometimes|numeric',
+
+            'Analiticas.fungicocincomico_id' => 'sometimes|numeric',
+            'Analiticas.cimcinco_mico' => 'sometimes|max:15',
+            'Analiticas.difusioncinco_mico' => 'sometimes|max:40',
+            'Analiticas.escalacincomico_id' => 'sometimes|numeric',
+
+            'Analiticas.fungicoseismico_id' => 'sometimes|numeric',
+            'Analiticas.cimseis_mico' => 'sometimes|max:15',
+            'Analiticas.difusionseis_mico' => 'sometimes|max:40',
+            'Analiticas.escalaseismico_id' => 'sometimes|numeric',
+
+            'Analiticas.fungicosietemico_id' => 'sometimes|numeric',
+            'Analiticas.cimsiete_mico' => 'sometimes|max:15',
+            'Analiticas.difusionsiete_mico' => 'sometimes|max:40',
+            'Analiticas.escalasietemico_id' => 'sometimes|numeric',
+
+            'Analiticas.deteccionunomico_id' => 'sometimes|numeric',
+            'Analiticas.interpretaunomico_id' => 'sometimes|numeric',
+            'Analiticas.detecciondosmico_id' => 'sometimes|numeric',
+            'Analiticas.interpretadosmico_id' => 'sometimes|numeric',
+            'Analiticas.detecciontresmico_id' => 'sometimes|numeric',
+            'Analiticas.interpretatresmico_id' => 'sometimes|numeric',
+            'Analiticas.deteccioncuatromico_id' => 'sometimes|numeric',
+            'Analiticas.interpretacuatromico_id' => 'sometimes|numeric',
+
+            'Analiticas.observacioninvestiga' => 'sometimes|max:250',
+
+            'Analiticas.antibioticopsunobacte_id' => 'sometimes|numeric',
+            'Analiticas.halopsuno_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapsunobacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticopsdosbacte_id' => 'sometimes|numeric',
+            'Analiticas.halopsdos_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapsdosbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticopstresbacte_id' => 'sometimes|numeric',
+            'Analiticas.halopstres_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapstresbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticopscuatrobacte_id' => 'sometimes|numeric',
+            'Analiticas.halopscuatro_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapscuatrobacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticopscincobacte_id' => 'sometimes|numeric',
+            'Analiticas.halopscinco_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapscincobacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticopsseisbacte_id' => 'sometimes|numeric',
+            'Analiticas.halopsseis_bacte' => 'sometimes|numeric',
+            'Analiticas.escalapsseisbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticomdunobacte_id' => 'sometimes|numeric',
+            'Analiticas.cimmduno_bacte' => 'sometimes|numeric',
+            'Analiticas.escalamdunobacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticomddosbacte_id' => 'sometimes|numeric',
+            'Analiticas.cimmddos_bacte' => 'sometimes|numeric',
+            'Analiticas.escalamddosbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticomdtresbacte_id' => 'sometimes|numeric',
+            'Analiticas.cimmdtres_bacte' => 'sometimes|numeric',
+            'Analiticas.escalamdtresbacte_id' => 'sometimes|numeric',
+
+            'Analiticas.antibioticomdcuatrobacte_id' => 'sometimes|numeric',
+            'Analiticas.cimmdcuatro_bacte' => 'sometimes|numeric',
+            'Analiticas.escalamdcuatrobacte_id' => 'sometimes|numeric',
         ];
     }
 
@@ -107,6 +200,131 @@ class Form extends Component
         if($this->Analiticas->tecnica_cuarta_id == 0){
             $this->Analiticas->tecnica_cuarta_id = 0;
             $this->Analiticas->resultado_cuarta_id = 0;
+        }
+
+        if($this->Analiticas->deteccionunomico_id == 0){
+            $this->Analiticas->deteccionunomico_id = 0;
+            $this->Analiticas->interpretaunomico_id = 0;
+        }
+
+        if($this->Analiticas->detecciondosmico_id == 0){
+            $this->Analiticas->detecciondosmico_id = 0;
+            $this->Analiticas->interpretadosmico_id = 0;
+        }
+
+        if($this->Analiticas->detecciontresmico_id == 0){
+            $this->Analiticas->detecciontresmico_id = 0;
+            $this->Analiticas->interpretatresmico_id = 0;
+        }
+
+        if($this->Analiticas->deteccioncuatromico_id == 0){
+            $this->Analiticas->deteccioncuatromico_id = 0;
+            $this->Analiticas->interpretacuatromico_id = 0;
+        }
+
+        if($this->Analiticas->fungicounomico_id == 0){
+            $this->Analiticas->fungicounomico_id = 0;
+            $this->Analiticas->escalaunomico_id = 0;
+        }
+
+        if($this->Analiticas->fungicodosmico_id == 0){
+            $this->Analiticas->fungicodosmico_id = 0;
+            $this->Analiticas->escaladosmico_id = 0;
+        }
+
+        if($this->Analiticas->fungicotresmico_id == 0){
+            $this->Analiticas->fungicotresmico_id = 0;
+            $this->Analiticas->escalatresmico_id = 0;
+        }
+
+        if($this->Analiticas->fungicocuatromico_id == 0){
+            $this->Analiticas->fungicocuatromico_id = 0;
+            $this->Analiticas->escalacuatromico_id = 0;
+        }
+
+        if($this->Analiticas->fungicocincomico_id == 0){
+            $this->Analiticas->fungicocincomico_id = 0;
+            $this->Analiticas->escalacincomico_id = 0;
+        }
+
+        if($this->Analiticas->fungicoseismico_id == 0){
+            $this->Analiticas->fungicoseismico_id = 0;
+            $this->Analiticas->escalaseismico_id = 0;
+        }
+
+        if($this->Analiticas->fungicosietemico_id == 0){
+            $this->Analiticas->fungicosietemico_id = 0;
+            $this->Analiticas->escalasietemico_id = 0;
+        }
+
+        if($this->Analiticas->antibioticopsunobacte_id == 0){
+            $this->Analiticas->antibioticopsunobacte_id = 0;
+            $this->Analiticas->halopsuno_bacte = 0;
+            $this->Analiticas->escalapsunobacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopsdosbacte_id == 0){
+            $this->Analiticas->antibioticopsdosbacte_id = 0;
+            $this->Analiticas->halopsdos_bacte = 0;
+            $this->Analiticas->escalapsdosbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopstresbacte_id == 0){
+            $this->Analiticas->antibioticopstresbacte_id = 0;
+            $this->Analiticas->halopstres_bacte = 0;
+            $this->Analiticas->escalapstresbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopscuatrobacte_id == 0){
+            $this->Analiticas->antibioticopscuatrobacte_id = 0;
+            $this->Analiticas->halopscuatro_bacte = 0;
+            $this->Analiticas->escalapscuatroacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopscincobacte_id == 0){
+            $this->Analiticas->antibioticopscincobacte_id = 0;
+            $this->Analiticas->halopscinco_bacte = 0;
+            $this->Analiticas->escalapscincobacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticopsseisbacte_id == 0){
+            $this->Analiticas->antibioticopsseisbacte_id = 0;
+            $this->Analiticas->halopsseis_bacte = 0;
+            $this->Analiticas->escalapsseisbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticomdunobacte_id == 0){
+            $this->Analiticas->antibioticomdunobacte_id = 0;
+            $this->Analiticas->cimmduno_bacte = 0;
+            $this->Analiticas->escalamdunobacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticomddosbacte_id == 0){
+            $this->Analiticas->antibioticomddosbacte_id = 0;
+            $this->Analiticas->cimmddos_bacte = 0;
+            $this->Analiticas->escalamddosbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticomdtresbacte_id == 0){
+            $this->Analiticas->antibioticomdtresbacte_id = 0;
+            $this->Analiticas->cimmdtres_bacte = 0;
+            $this->Analiticas->escalamdtresbacte_id = 0;
+
+        }
+
+        if($this->Analiticas->antibioticomdcuatrobacte_id == 0){
+            $this->Analiticas->antibioticomdcuatrobacte_id = 0;
+            $this->Analiticas->cimmdcuatro_bacte = 0;
+            $this->Analiticas->escalamdcuatrobacte_id = 0;
+
         }
 
         if($method=='update'){
@@ -146,7 +364,17 @@ class Form extends Component
         $estados = Estadomuestra::orderBy('id', 'asc')->cursor();
         $unidades = Unidades::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id', 'asc')->cursor();
-        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','preanalitica','estados','unidades','clases'));
+        $instituciones = Institucion::where('estado','=','A')->orderBy('id','asc')->cursor();
+        $paramicrobianos = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antimicrobianos')->orderBy('id','asc')->cursor();
+        $paradifusion = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Inmunodifusion')->orderBy('id','asc')->cursor();
+        $parabiograma = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antibiograma')->orderBy('id','asc')->cursor();
+        $bacteantibioticomic = Tipoparametros::where('estado','=','A')->where('crns_id','=',3)->where('tipo','=','AntibioticoMIC')->orderBy('id','asc')->cursor();
+        $bacteantibioticokb = Tipoparametros::where('estado','=','A')->where('crns_id','=',3)->where('tipo','=','AntibioticoKB')->orderBy('id','asc')->cursor();
+        $medicamentopi = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-PI')->orderBy('id','asc')->cursor();
+        $medicamentonrti = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-NRTI')->orderBy('id','asc')->cursor();
+        $medicamentonnrti = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-NNRTI')->orderBy('id','asc')->cursor();
+        $medicamentoini = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-INI')->orderBy('id','asc')->cursor();
+        return view('livewire.centrosreferencia.analitica.form', compact('sedes','muestras','instituciones','paramicrobianos','paradifusion','parabiograma','bacteantibioticomic','bacteantibioticokb','medicamentopi','medicamentonrti','medicamentonnrti','medicamentoini','preanalitica','estados','unidades','clases'));
     }
 
     public function store(){
@@ -166,7 +394,7 @@ class Form extends Component
         $this->validate();
         DB::beginTransaction();
         try{
-
+            $control = 0;
             $user = auth()->user()->id;
             $this->Analiticas->fecha_resultado = date("Y-m-d");
             $this->Analiticas->usuarior_id = $user;
@@ -199,9 +427,9 @@ class Form extends Component
                 $newMuestra->usuarior_id = $user;
                 $newMuestra->archivo = $this->Analiticas->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
+                $newMuestra->adicional = 1;
                 $newMuestra->save();
-                $this->Analiticas->adicional=1;
-                $this->Analiticas->update();
+                $control = 1;
             }
 
             if($this->Analiticas->tecnica_tercera_id>0 && $this->Analiticas->adicional==0){
@@ -231,9 +459,10 @@ class Form extends Component
                 $newMuestra->archivo = $this->Analiticas->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
+                $newMuestra->adicional = 1;
                 $newMuestra->save();
-                $this->Analiticas->adicional=1;
-                $this->Analiticas->update();
+                $control = 1;
+
             }
 
             if($this->Analiticas->tecnica_cuarta_id>0 && $this->Analiticas->adicional==0){
@@ -263,7 +492,12 @@ class Form extends Component
                 $newMuestra->archivo = $this->Analiticas->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
+                $newMuestra->adicional = 1;
                 $newMuestra->save();
+                $control = 1;
+            }
+
+            if($control>0){
                 $this->Analiticas->adicional=1;
                 $this->Analiticas->update();
             }
@@ -276,7 +510,7 @@ class Form extends Component
          }
         catch (\Exception $e) {
             DB::rollback();
-            $this->alert('warning', 'Ocurrió un error al agregar la Analitica');
+            $this->alert('warning', 'Ocurrió un error al agregar la Analitica'.$e->getMessage());
             return $e->getMessage();
         }
 
@@ -302,7 +536,7 @@ class Form extends Component
             }
 
             $this->Analiticas->archivo = null;
-            $this->Analiticass->update();
+            $this->Analiticas->update();
         }
         $this->reset('AnaliticaTmp');
         $this->alert('success', 'Informe digitalizado eliminado con exito');

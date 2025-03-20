@@ -175,10 +175,11 @@
                                 <th>Fecha Atención</th>
                                 <th>Identidad</th>
                                 <th>Paciente</th>
-                                <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
-                                <th>Resultado</th>
-                                <th>Usuario Resultado</th>
+                                <th>Resultado Analítica</th>
+                                <th>Técnico procesa</th>
+                                <th>Responsable CRN</th>
+                                <th>Resultado Final</th>
                                 <th>Fecha Validación</th>
                                 <th>Acciones</th>
                             </tr>
@@ -188,7 +189,7 @@
                                 <tr>
                                     @forelse ($postanalitica->analitica as $objPos)
                                         @if($objPos->codigo_secuencial==1)
-                                        <?php  $codigo = $objPos->codigo_calidad; ?>
+                                        <?php  $codigo = $objPos->codigo_calidad; if($objPos->usuarior_id>0){ $tecnico = $objPos->usuarior->name;}else{ $tecnico=''; } if($objPos->resultado_id>0){ $restec = $objPos->resultado->descripcion; }else{ $restec=''; }?>
                                         @endif
                                     @empty
                                     @endforelse
@@ -214,23 +215,27 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->crns->descripcion }}</span>
-                                    </td>
-                                    <td>
-                                        <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->evento->simplificado }}</span>
                                     </td>
                                     <td>
-                                        @if($postanalitica->resultado_id>0)
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->resultado->descripcion }}</span>
-                                        @else
-                                        @endif
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $restec }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $tecnico }}</span>
                                     </td>
                                     <td>
                                         @if($postanalitica->usuarior_id>0)
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->usuarior->name }}</span>
+                                        @else
+                                        @endif
+                                    </td>
+                                    <td>
+                                        @if($postanalitica->resultado_id>0)
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $postanalitica->resultado->descripcion }}</span>
                                         @else
                                         @endif
                                     </td>
@@ -241,7 +246,7 @@
                                     <td align="center">
                                         @if($postanalitica->usuarior_id==0)
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
-                                            <a href="{{ route('postanalitica.edit', $postanalitica) }}" class="navi-link">
+                                                <a href="{{ route('postanalitica.edit', $postanalitica) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="ace-icon fa fa-tag" style="color:lightblue"
                                                         title="Validar"></i>
@@ -249,14 +254,6 @@
                                             </a>
                                         </i>
                                         @endif
-                                        <i class="navi-item" data-toggle="modal" data-target="_self">
-                                            <a href="{{ route('postanalitica.show', $postanalitica) }}" class="navi-link">
-                                                <span class="navi-icon">
-                                                    <i class="ace-icon fa fa-eye" style="color:rgb(122, 122, 122)"
-                                                        title="Mostrar_Detalles"></i>
-                                                </span>
-                                            </a>
-                                        </i>
                                         @if($postanalitica->usuarior_id>0)
                                         <i class="navi-item">
                                             <a href="/informefinal/informep/{{ $postanalitica->id }}" target="_blank" class="navi-link">

@@ -15,6 +15,7 @@ $( function () {
                 d.direccion = $('#filterDireccion').val();
                 d.item = $('#filterItem').val();
                 d.programa = $('#filterPrograma').val();
+                //d.subactividad = $('#filterTipoSub').val();
             }
         },
         columns: [
@@ -23,7 +24,8 @@ $( function () {
             { data: 'obj_operativo', name: 'obj_operativo' },
             { data: 'act_operativa', name: 'act_operativa' },
             { data: 'sub_actividad', name: 'sub_actividad' },
-            { data: 'proceso', name: 'proceso' },
+            { data: 'proceso',  name: 'proceso' },
+            { data: 'tipo_sub', name: 'tipo_sub' },
             { data: 'monto',  name: 'monto', render: $.fn.dataTable.render.number(',', '.', 2, '$') }, // Formato con separadores
             { data: 'numero', name: 'numero' },
             { data: 'fecha',  name: 'fecha' },
@@ -35,7 +37,8 @@ $( function () {
                         'O': 'badge-success text-bg-success',
                         'R': 'badge-warning text-bg-warning',
                         'C': 'badge-info text-bg-info',
-                        'S': 'badge-info text-bg-info'
+                        'S': 'badge-info text-bg-info',
+                        'X': 'badge-danger text-bg-danger'
                     }[data] || 'badge-secondary';
     
                     let estadoBadge = {
@@ -43,7 +46,8 @@ $( function () {
                         'O': 'Aprobado',
                         'R': 'Rechazado',
                         'C': 'Corregido',
-                        'S': 'Solicitado'
+                        'S': 'Solicitado',
+                        'X': 'Eliminación POA'
                     }[data] || 'badge-secondary';
     
                     return `<div class='center'><span class='badge ${badgeClass}'>${estadoBadge}</span></div>`;
@@ -64,9 +68,6 @@ $( function () {
                             <a id="btnVisualizaPOA" data-id_editar="${full.id}" title="Editar registro" class="show-tooltip mr-1">
                                 <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
-                            <a id="btnEliminarCerti" data-id_borrar="${full.id}" title="Eliminar certificación" class="red show-tooltip ml-1" data-title="Eliminar certificación">
-                                <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
-                            </a>
                         </div>`;
                     } else if (full.estado == 'R') {
                         array = `
@@ -75,7 +76,30 @@ $( function () {
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
                         </div>`;
-                    } else {
+                    } else if (full.estado === 'A' && full.proceso === 'Convenio') {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                            <a id="btnConvenio" data-id_convenio="${full.id}" title="Validar Convenio" class="show-tooltip">
+                                <i class="font-22 fadeIn animated bi bi-file-earmark-medical text-dark"></i>
+                            </a>
+                        </div>`;
+                    } else if (full.estado === 'X') {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" title="Editar registro" class="show-tooltip mr-1">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
+                            </a>
+                            <a id="btnEliminarCerti" data-id_borrar="${full.id}" data-motivo="${full.motivo}" title="Eliminar certificación" class="red show-tooltip mr-1" data-title="Eliminar certificación">
+                                <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
+                            </a>
+                        </div>`;
+                    } else if (full.estado === 'S') {
                         array = `
                         <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
@@ -85,12 +109,22 @@ $( function () {
                                 <i class="font-22 fadeIn animated bi bi-pen"></i>
                             </a>
                         </div>`;
+                    } else {
+                        array = `
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+                            <!-- <a id="btnEditarPlan" data-id_editar="${full.id}" title="Revisión" class="show-tooltip">
+                                <i class="font-22 fadeIn animated bi bi-pen"></i>
+                            </a> -->
+                        </div>`;
                     }
                     return array;
                 }
             },
         ],
-        order: [[8, 'desc']],
+        order: [[9, 'desc']],
         language: {
             "emptyTable": "No hay información",
             "info": "Mostrando _START_ a _END_ de _TOTAL_ Entradas",
@@ -113,14 +147,14 @@ $( function () {
         footerCallback: function (row, data, start, end, display) {
             var api = this.api();
             var total = api
-                .column(6, { page: 'current' }) // Seleccionar la columna de montos
+                .column(7, { page: 'current' }) // Seleccionar la columna de montos
                 .data()
                 .reduce(function (a, b) {
                     return parseFloat(a) + parseFloat(b);
                 }, 0);
     
             // Actualizar el pie de tabla
-            $(api.column(6).footer()).html('$' + total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
+            $(api.column(7).footer()).html('$' + total.toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }));
         }
     });
     
@@ -155,6 +189,17 @@ $(function(){
     });
     /* REDIRECCIONA A LA VISUALIZACION DE LA ACTIVIDAD */
 
+
+    /* ABRE EL MODAL DE CONVENIO */
+    $(document).on('click', '#btnConvenio', function(){
+        let id_planificacion = $(this).data('id_convenio');
+
+        $('#id_convenio').val(id_planificacion);
+        $('#btConvenio').click();
+
+    });
+    /* ABRE EL MODAL DE CONVENIO */
+
 })
 
 
@@ -162,6 +207,99 @@ $(function(){
 
 //CÓDIGO PARA BOTÓN DE BORRAR
 $(function(){
+
+
+
+    $(document).on('click', '#btnGuardarConvenio', function(){
+
+        let id_POA = $('#id_convenio').val();
+        let estadoConv = $('#estadoConv').val();
+        let justifica = $('#justifica').val();
+
+        if(estadoConv === '0'){
+
+            Swal.fire({
+                icon: 'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text: 'Debe de seleccionar (SI/NO)',
+                showConfirmButton: true,
+            });
+
+        }else if(justifica === ''){
+
+            Swal.fire({
+                icon: 'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text: 'Debe de agregar una justificación',
+                showConfirmButton: true,
+            });
+
+        }else{
+
+            $.ajax({
+
+                type: 'POST',
+                //url: '{{ route("encuesta.saveEncuesta") }}',
+                url: '/planificacion/cerrarConvenio',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                data: {
+                    'id':        id_POA,
+                    'estado':    estadoConv,
+                    'justifica': justifica,
+                },
+                success: function(response) {
+    
+                    //console.log(response.data['id_chat'])
+                    if(response.data){
+    
+                        if(response['data'] == true){
+                            Swal.fire({
+                                icon: 'success',
+                                type: 'success',
+                                title: 'CoreInspi',
+                                text: response['message'],
+                                showConfirmButton: true,
+                            }).then((result) => {
+                                if (result.value == true) {
+                                    table.ajax.reload(); //actualiza la tabla
+                                    $('#btnCerrarConvenio').click();
+                                }
+                            });
+    
+                        }else{
+                            Swal.fire({
+                                icon: 'error',
+                                type:  'error',
+                                title: 'CoreInspi',
+                                text: response['message'],
+                                showConfirmButton: true,
+                            });
+                        }
+                    }
+                },
+                error: function(error) {
+                    Swal.fire({
+                        icon:  'success',
+                        title: 'CoreInspi',
+                        type:  'success',
+                        text:   error,
+                        showConfirmButton: true,
+                    });
+                }
+            });
+
+
+        }
+
+
+    });
+
+
+
     $(document).on('click', '#btnEliminarPOA', function(){
         //alert('funciona');
 
@@ -496,11 +634,14 @@ $(document).ready(function() {
         //alert('funciona');
 
         let id_POA = $(this).data('id_borrar');
+        let motivo = $(this).data('motivo');
 
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
+            title: 'CoreInspi',
+            html: `<p><strong>Seguro quiere anular esta Certificación?</strong></p>
+                    <textarea class="swal2-textarea" readonly disabled>${motivo}</textarea>`,
             text: 'Seguro quiere anular esta Certificación.',
             showConfirmButton: true,
             showCancelButton: true,
@@ -527,7 +668,7 @@ $(document).ready(function() {
                                 Swal.fire({
                                     icon: 'success',
                                     type: 'success',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 }).then((result) => {
@@ -540,7 +681,7 @@ $(document).ready(function() {
                                 Swal.fire({
                                     icon: 'error',
                                     type:  'error',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 });
@@ -550,7 +691,7 @@ $(document).ready(function() {
                     error: function(error) {
                         Swal.fire({
                             icon:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             type:  'success',
                             text:   error,
                             showConfirmButton: true,
@@ -566,7 +707,8 @@ $(document).ready(function() {
     // Generar el reporte EXCEL para POA
     $(document).on('click', '#btnGenerateExcel', function() {
 
-        var filterEstado    = $('#filterEstado').val();
+        //var filterEstado    = $('#filterEstado').val();
+        var filterAnio    = $('#filterAnio').val();
         var filterDireccion = $('#filterDireccion').val();
         var filterItem      = $('#filterItem').val();
         var filterPrograma  = $('#filterPrograma').val();
@@ -575,7 +717,7 @@ $(document).ready(function() {
             type: 'GET',
             url: '/planificacion/reportPOAExcel',
             data: {
-                filterEstado       : filterEstado,
+                filterAnio         : filterAnio,
                 filterDireccion    : filterDireccion,
                 filterItem         : filterItem,
                 filterPrograma     : filterPrograma,

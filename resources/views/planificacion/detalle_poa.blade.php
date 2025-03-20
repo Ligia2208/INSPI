@@ -37,22 +37,6 @@
                     <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar Excel</button>
                 </div>
 
-                <div class="col-md-2">
-                    <label class="form-label fs-6">&nbsp;</label>
-                    <button class="btn btn-primary form-control" onclick="prueba()">Suma</button>
-                </div>
-
-                <input type="number" value="0" class="form-control" name="valor1" id="valor1" >
-                <input type="number" value="0" class="form-control" name="valor2" id="valor2" >
-
-                <div class="col-md-2">
-                    <label class="form-label fs-6">&nbsp;</label>
-                    <button class="btn btn-primary form-control" onclick="prueba2()">Mostrar Texto</button>
-
-                </div>
-
-                <input type="text" class="form-control" name="text1" id="text1" >
-
                 <div class="col-md-4 d-flex align-items-center justify-content-center">
                     <h2 class="text-success"> <i class="bi bi-layer-forward"></i> Total Items: </h2> <h1 class="ml-2">{{$sumaMontos}}</h1>
                 </div>
@@ -136,7 +120,7 @@
                                     <th>Act. Operativa</th>
                                     <th>Sub Actividad</th>
                                     <th>Item</th>
-                                    <th>Total/Item</th>
+                                    <!-- <th>Total/Item</th> -->
                                     <th>Total</th>
                                     <th>Ene</th>
                                     <th>Feb</th>
@@ -161,7 +145,7 @@
                                     <th>Total</th>
                                     <th></th>
                                     <th></th>
-                                    <th></th>
+                                    <!-- <th></th> -->
                                     <th></th>
                                     <th></th>
                                     <th></th>
@@ -372,5 +356,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.5')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_detalle.js?v0.0.6')}}"></script>
 @endpush

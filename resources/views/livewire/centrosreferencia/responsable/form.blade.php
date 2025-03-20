@@ -128,4 +128,24 @@
             </div>
         </div>
     </div>
+    @push('footer')
+        <script src="{{ asset('assets/plugins/custom/bfi/bfi.js') }}"></script>
+        <script src="{{ asset('assets') }}/js/pages/crud/forms/widgets/bootstrap-datepicker.js"></script>
+        <script>
+            function app() {
+                return {
+                    removeFile(functionRemove, fileId) {
+                        @this.call(functionRemove);
+                        bfi_clear('#'+fileId);
+                    },
+                }
+            }
+            Livewire.on('renderJs', function(){
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+            });
+        </script>
+    @endpush
 </div>

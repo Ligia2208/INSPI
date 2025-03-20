@@ -145,6 +145,51 @@
 
 </div>
 
+
+
+<a id="btnModalValida" data-toggle="modal" data-target="#addValidarReforma" >looooool</a>
+
+<div class="modal fade" id="addValidarReforma" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Validar Reforma</h5>
+                <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Aquí se mostrarán los datos traidos desde el controlador -->
+                <div id="modalContent">
+                    <!-- Aquí se mostrarán los datos -->
+                    <div class="row">
+
+                        <input type="hidden" id="id_reforma" name="id_reforma" class="form-control" required="" autofocus="" value="">
+                        <input type="hidden" id="estadoR" name="estadoR" class="form-control" required="" autofocus="" value="">
+
+                        <div class="col-md-12 mt-2">
+                            <label for="comentario" class="form-label fs-6">Comentario de Validación</label>
+                            <!-- Input para ingresar el nombre manualmente -->
+                            <textarea id="comentario" name="comentario" class="form-control" placeholder="Ingrese nombre de usuario" rows="6"></textarea>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="btnValidaReforma">Validar</button>
+                <button type="button" class="btn btn-secondary" id="btnCerrarModalReforma" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
 @endsection
 
 <script>
@@ -168,5 +213,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_reforma.js?v0.0.13')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_reforma.js?v0.0.16')}}"></script>
 @endpush

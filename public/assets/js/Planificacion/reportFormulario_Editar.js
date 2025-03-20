@@ -46,14 +46,16 @@ $(document).ready(function () {
 
 
             },
-          
-            
-            error: function (_xhr, _status, error) {
+            error: function (xhr, status, error) {
                 console.error("Error en la solicitud AJAX:", error);
-                
-                debugger;  // Pausa el código aquí
+
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: 'Error en la solicitud. Intente de nuevo.',
+                    confirmButtonText: 'Aceptar'
+                });
             }
-            
         });
 
     });
@@ -64,6 +66,5 @@ $(document).ready(function () {
         $('#apellido').val('');
         $('#correo').val('');
         $('#telefono').val('');
-
     }
 });

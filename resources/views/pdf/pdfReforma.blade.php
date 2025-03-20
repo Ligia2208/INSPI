@@ -189,6 +189,10 @@
                 <th style="text-align: center; vertical-align: middle;" colspan="5">Justificación del área requirente:</th>
                 <td colspan="18">{{$atributos->justificacion_area}}</td>
             </tr>
+            <tr>
+                <th style="text-align: center; vertical-align: middle;" colspan="5">Justificación/Observación de la Dirección de Planificación:</th>
+                <td colspan="18">{{$comentario}}</td>
+            </tr>
         </tbody>
     </table> <br>
 

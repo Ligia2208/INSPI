@@ -57,13 +57,12 @@ class Index extends Component
         $crns = [];
         $eventos = [];
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
-
         $mresultados = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->pluck('preanalitica_id')->toArray();
 
 
         //$count = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->count();
-        $analiticapac = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->distinct('preanalitica_id')->pluck('preanalitica_id')->toArray();
-        $analiticas = Preanalitica::whereIn('id',$analiticapac);
+        $analiticapac = Analitica::where('estado','=','A')->where('usuarior_id','>',0)->where('usuariop_id','=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->distinct('preanalitica_id')->pluck('preanalitica_id')->toArray();
+        $analiticas = Preanalitica::where('validado','=','N')->whereIn('id',$analiticapac);
         $count = $analiticas->count();
 
         if($this->searchm){
@@ -103,7 +102,7 @@ class Index extends Component
         if($this->claboratorios){
             $analiticas = $analiticas->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
             $count = $analiticas->count();
-            $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
         }
 
         if($this->ceventos){
@@ -119,7 +118,7 @@ class Index extends Component
                         $this->fechafin='';
                     }
                     if($this->controlf==1){
-                        $analiticas = $analiticas->where('fecha_toma_muestra', '>=', $this->fechainicio)->where('fecha_toma_muestra','<=',$this->fechafin);
+                        $analiticas = $analiticas->where('fecha_toma_primera', '>=', $this->fechainicio)->where('fecha_toma_primera','<=',$this->fechafin);
                         $count = $analiticas->count();
 
                     }

@@ -105,7 +105,7 @@
                                     </div>
                                     <label class="col-1 col-form-label">Código de Muestra:</label>
                                     <div class="col-2" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->anio_registro }} - {{ str_pad($objAn->codigo_muestra, 6, "0", STR_PAD_LEFT) }} - {{ str_pad($objAn->codigo_secuencial, 2, "0", STR_PAD_LEFT) }}</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->codigo_calidad }}</span>
                                     </div>
                                     <label class="col-2 col-form-label">Fecha recepción:</label>
                                     <div class="col-2" style="align:left">

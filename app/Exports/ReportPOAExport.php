@@ -18,7 +18,7 @@ class ReportPOAExport implements FromView, WithEvents
 
     public function view(): View
     {
-        return view('exports.reportPOA', [
+        return view('exports.reportCertificaPOA', [
             'actividades' => $this->data
         ]);
     }
@@ -30,8 +30,8 @@ class ReportPOAExport implements FromView, WithEvents
                 $sheet = $event->sheet->getDelegate();
 
                 // Columnas a modificar
-                $columnas = ['A', 'B', 'C', 'D', 'F'];
-                $columnas2 = ['M', 'N'];
+                $columnas = ['A', 'B', 'C',];
+                $columnas2 = ['E', 'N'];
 
                 foreach ($columnas as $columna) {
                     // Aplicar "Ajustar Texto"
@@ -45,7 +45,7 @@ class ReportPOAExport implements FromView, WithEvents
                 $sheet->getColumnDimension('L')->setWidth(15);
 
                 foreach ($columnas2 as $columna2) {
-                    $sheet->getColumnDimension($columna2)->setWidth(17);
+                    $sheet->getColumnDimension($columna2)->setWidth(60);
                 }
                 
             },

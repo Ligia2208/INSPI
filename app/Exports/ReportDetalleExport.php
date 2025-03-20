@@ -41,6 +41,8 @@ class ReportDetalleExport implements FromView, WithEvents
                     // Establecer el ancho de columna
                     $sheet->getColumnDimension($columna)->setWidth(57);
                 }
+
+                $sheet->getColumnDimension('AB')->setWidth(18);
             },
         ];
     }

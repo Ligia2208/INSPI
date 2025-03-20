@@ -447,5 +447,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.9')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_planificacion.js?v0.0.10')}}"></script>
 @endpush

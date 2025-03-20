@@ -99,7 +99,7 @@
                                     @enderror
                                 </div>
                                 <div class="form-group col-md-2">
-                                    <label>Tipología IS<span class="text-danger"></span></label>
+                                    <label>Clasificación IS<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -107,11 +107,11 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Preanaliticas.institucion_tipologia"
+                                            wire:model.defer="Preanaliticas.institucion_clasificacion"
                                             wire:ignore
                                             type="text"
                                             required readonly
-                                            class="form-control form-control-solid @error('Preanaliticas.institucion_tipologia') is-invalid @enderror"
+                                            class="form-control form-control-solid @error('Preanaliticas.institucion_clasificacion') is-invalid @enderror"
                                             placeholder="Ej: Centro de Salud Tipo A" />
                                     </div>
                                     @error('Preanaliticas.institucion_tipologia')

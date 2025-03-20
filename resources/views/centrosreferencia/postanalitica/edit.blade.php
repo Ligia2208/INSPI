@@ -2,7 +2,7 @@
 
 @extends('layouts.main')
 
-@section('title', 'Editar Resultado Muestra: '.$postanalitica->id)
+@section('title', 'Editar Resultado Caso: '.$postanalitica->id)
 
 @section('content')
     <!--begin::Bread-->

@@ -53,6 +53,8 @@ $( function () {
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
                         array = '<div class="text-center"><span class="badge badge-info text-bg-info">Corregido</span>';
+                    }else if(full.estado == 'D'){
+                        array = '<div class="text-center"><span class="badge badge-danger text-bg-danger">Eliminado</span>';
                     }else{
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                     }
@@ -78,7 +80,21 @@ $( function () {
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
 
-                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip" data-title="Ver Reforma">
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
+                            </a>
+
+                        </div>
+                        `;
+                    }else if(full.estado == 'D'){
+                        array =`
+                        <div class="hidden-sm hidden-xs action-buttons d-flex justify-content-center align-items-center">
+
+                            <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
                                 <i class="font-22 fadeIn bi bi-eye" ></i>
                             </a>
 
@@ -96,7 +112,7 @@ $( function () {
                                 <i class="font-22 bi bi-filetype-pdf"></i>
                             </a>
 
-                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip" data-title="Ver Reforma">
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
                                 <i class="font-22 fadeIn bi bi-eye" ></i>
                             </a>
 
@@ -108,6 +124,11 @@ $( function () {
                             <a id="btnComentarioRef" data-id_comentario="${full.id_reforma}" title="Comentarios" class="red show-tooltip" data-title="Comentarios">
                                 <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
                             </a>
+
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
+                            </a>
+
                         </div>
                         `;
                     }else{
@@ -164,11 +185,31 @@ $( function () {
     });
 
 
-    /* VALIDAR LOS CAMBIOS EN LA REFORMA */
+    /* ABRE EL MODAL PARA VALIDAR LA REFORMA */
     $(document).on('click', '#btnValidarReforma', function(){
 
         var id_reforma = $(this).data('id_reforma');
         var estado     = $(this).data('estado');
+
+        //guarda en el modal
+        $('#id_reforma').val(id_reforma);
+        $('#estadoR').val(estado);
+
+        //click al boton
+        $('#btnModalValida').click();
+
+    });
+    /* ABRE EL MODAL PARA VALIDAR LA REFORMA */
+    
+
+
+
+    /* VALIDAR LOS CAMBIOS EN LA REFORMA */
+    $(document).on('click', '#btnValidaReforma', function(){
+
+        let id_reforma = $('#id_reforma').val();
+        let estado     = $('#estadoR').val();
+        let comentario = $('#comentario').val();
 
         Swal.fire({
             icon: 'warning',
@@ -192,7 +233,7 @@ $( function () {
                     data: {
                         id_reforma:    id_reforma,
                         estadoReforma: estado,
-                        justificacion: 'La reforma fue aplicada a la planificación',
+                        justificacion: comentario,
                     }, 
                     cache: false,
                     success: function(res){
@@ -200,6 +241,7 @@ $( function () {
                         if(res.valor){
 
                             table.ajax.reload();
+                            $('#btnCerrarModalReforma').click();
 
                             Swal.fire({
                                 icon: 'success',
