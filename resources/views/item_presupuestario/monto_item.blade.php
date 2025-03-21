@@ -246,6 +246,35 @@
 
     </hr>
 
+
+    <div class="container2 mt-5">
+        <div class="card p-4">
+            <h2>Objetivo Operativo</h2>
+            <div class="row p-2 card-body">
+
+                <div class="col-md-6 mt-2">
+                    <label for="objetivo_operativo" class="form-label fs-6">Dirección</label>
+                    <select id="objetivo_operativo" name="objetivo_operativo" class="form-control single-select" required>
+                        <option value="" disabled selected>Seleccione un objetivo operativo</option>
+
+                        <option value="1">Objetivo Operativo 1</option>
+                        <option value="2">Objetivo Operativo 2</option>
+
+
+                    </select>
+                    <button type="button" id="guardar_objetivo" class="btn btn-success mt-3">Guardar</button>
+                </div>
+
+                <div class="col-md-6 mt-2">
+                    <label for="agregar_operativo" class="form-label fs-6">Agregar Objetivo Operativo</label>
+                    <input type="text" id="agregar_operativo" name="agregar_operativo" class="form-control" required>
+                    <button type="button" id="agregar_operativo" class="btn btn-primary mt-3">Agregar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     @if(!$proestado)
     <div class="container2 mt-5">
         <div class="card p-4">
