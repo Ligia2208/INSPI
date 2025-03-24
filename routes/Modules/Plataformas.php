@@ -10,6 +10,7 @@ use App\Http\Controllers\Plataformas\Anamnesis\AnamnesisController;
 use App\Http\Controllers\Plataformas\Constante\ConstanteController;
 use App\Http\Controllers\CentrosReferencia\Preanalitica\PreanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Preanaliticatoxico\PreanaliticatoxicoController;
+use App\Http\Controllers\CentrosReferencia\Preanaliticamico\PreanaliticamicoController;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxico\AnaliticatoxicoController;
@@ -74,6 +75,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Preanalitica
         Route::resource('preanaliticastoxico', PreanaliticatoxicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticatoxico');
+
+        //CRNs Plataformas Preanalitica Micologia
+        Route::resource('preanaliticasmico', PreanaliticamicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticamico');
 
         //CRNs Plataformas Resultados
         Route::resource('resultados', ResultadoController::class)->parameters(['resultados' => 'resultado'])->names('resultado');

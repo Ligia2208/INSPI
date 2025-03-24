@@ -1,8 +1,6 @@
-
-
 @extends('layouts.main')
 
-@section('title', 'Editar Preanalitica Muestra: '.$preanalitica->codigo_muestra)
+@section('title', 'Nuevo Preanalitica')
 
 @section('content')
     <!--begin::Bread-->
@@ -10,7 +8,7 @@
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <div class="d-flex align-items-center flex-wrap mr-1">
                 <div class="d-flex align-items-baseline mr-5">
-                    <a class="text-dark" href="{{ route('preanalitica.index') }}"><h5 class="text-dark font-weight-bold my-2 mr-5">Resultados</h5></a>
+                    <a class="text-dark" href="{{ route('preanaliticamico.index') }}"><h5 class="text-dark font-weight-bold my-2 mr-5">Preanaliticas</h5></a>
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
                         <li class="breadcrumb-item active">
                             <a href="#" class="text-muted">@yield('title')</a>
@@ -23,7 +21,11 @@
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <div class="d-flex flex-column-fluid">
-            @livewire('centrosreferencia.preanalitica.form', ['Preanalitica' => $preanalitica, 'method' => 'update'], key($preanalitica->id))
+            <div class="container-fluid">
+                <div class="row">
+                    @livewire('centrosreferencia.preanaliticamico.form', ['Preanaliticas' => $preanalitica, 'method' => 'store'])
+                </div>
+            </div>
         </div>
     </div>
 @endsection
