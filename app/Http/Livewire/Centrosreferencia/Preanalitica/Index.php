@@ -162,7 +162,7 @@ class Index extends Component
         $hoja->setCellValue('V1','Estado');
         $hoja->setCellValue('W1','F. Recepción');
         $hoja->setCellValue('X1','F. Registro');
-
+        $hoja->setCellValue('Z1','Usuario Registro');
 
         $fila = 2;
         $i = 0;
@@ -297,6 +297,7 @@ class Index extends Component
             $hoja->setCellValue('V'.$fila,$data[$i]->estado_muestra);
             $hoja->setCellValue('W'.$fila,$data[$i]->fecha_recepcion);
             $hoja->setCellValue('X'.$fila,$data[$i]->fecha_registro);
+            $hoja->setCellValue('Z'.$fila,$data[$i]->usuario_recepcion);
             $fila = $fila + 1;
             $i = $i + 1;
         }
