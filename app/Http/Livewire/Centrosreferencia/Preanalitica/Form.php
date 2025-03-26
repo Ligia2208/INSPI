@@ -508,6 +508,8 @@ class Form extends Component
         try{
             $user = auth()->user()->id;
             $fecha_anio = date("Y");
+            $this->guardarp($this->Preanaliticas,$this->Preanaliticas->evento_id);
+            /*
             if($this->Preanaliticas->evento_id==104){
                 $this->guardarp($this->Preanaliticas,155);
                 $this->guardarp($this->Preanaliticas,156);
@@ -534,6 +536,7 @@ class Form extends Component
                     }
                 }
             }
+                */
 
             DB::commit();
             $this->alert('success', 'Preanalitica agregado con éxito');
