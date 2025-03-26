@@ -155,7 +155,8 @@ class Form extends Component
 
     }
 
-   /*  public function updatedchangedInstitucion($institucion_id){
+    /*
+    public function updatedchangedInstitucion($institucion_id){
         $instSelected = Institucion::findOrFail($institucion_id);
         $this->Preanaliticastoxico->institucion_nombre = $instSelected->descripcion;
         $this->Preanaliticastoxico->institucion_clasificacion = $instSelected->clasificacion->descripcion;
@@ -974,7 +975,6 @@ class Form extends Component
             else{
                 if($this->Preanaliticastoxico->evento_id==97){
                     $codgen = $this->guardart($this->Preanaliticastoxico,97);
-
                     $this->guardardetallet($this->Preanaliticastoxico,$this->IdPreanalitica,$codgen,98);
                 }
                 else{
