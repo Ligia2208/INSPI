@@ -62,6 +62,7 @@ class Form extends Component
             'Analiticas.estado_muestra_id' => 'required|numeric',
             'Analiticas.codigo_muestra' => 'required|numeric',
             'Analiticas.codigo_secuencial' => 'required|numeric',
+            'Analiticas.evolucion' => 'required|numeric',
             'Analiticas.codigo_externo' => 'sometimes|max:25',
             'Analiticas.fecha_toma' => 'required|max:10',
             'Analiticas.anio_registro' => 'required|max:10',
@@ -328,11 +329,13 @@ class Form extends Component
         }
 
         if($method=='update'){
+            $preanalitica = Preanalitica::findOrFail($this->Analiticas->preanalitica_id);
+            $this->Analiticas->evolucion = $this->diferencia($preanalitica->fecha_sintomas,$preanalitica->fecha_recepcion);
             $config = SedeCrn::where('sedes_id','=',$this->Analiticas->sedes_id)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $this->crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
             $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
             $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
-            $this->eventos = Evento::whereIn('estado',['A','M'])->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
+            $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
 
         }
 
@@ -345,7 +348,7 @@ class Form extends Component
     }
 
     public function updatedselectedCrn($crns_id){
-        $this->eventos = Evento::whereIn('estado',['A','M'])->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->emit('renderJs');
@@ -388,6 +391,13 @@ class Form extends Component
         $this->emit('closeModal');
         return redirect()->route('analitica.index');
 
+    }
+
+    public function diferencia($fsintomas, $fregistro){
+        $datetime1 = new Datetime($fsintomas);
+        $datetime2 = new Datetime($fregistro);
+        $diff = $datetime1->diff($datetime2);
+        return $diff->days;
     }
 
     public function update(){

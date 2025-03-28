@@ -319,7 +319,7 @@
                                 </div>
                             </div>
                             <div class="form-row">
-                                <div class="form-group col-md-2">
+                                <div class="form-group col-md-1">
                                     <label>Embarazo<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -369,7 +369,7 @@
                                             type="text"
                                             required disabled
                                             class="form-control form-control-solid"
-                                            value = "{{ $preanalitica->probable_infeccion }}" >
+                                            value = "{{ $Analiticas->probable_infeccion }}" >
                                     </div>
                                 </div>
                                 <div class="form-group col-md-2">
@@ -385,6 +385,21 @@
                                             class="start_date form-control form-control-solid"
                                             value={{ $preanalitica->fecha_sintomas }} disabled
                                         />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Dias Evolución<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = "{{ $Analiticas->evolucion }}" >
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">

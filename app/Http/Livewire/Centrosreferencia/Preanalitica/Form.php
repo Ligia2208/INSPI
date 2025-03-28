@@ -141,7 +141,8 @@ class Form extends Component
             $this->Preanaliticas->quinta_id = 0;
             $this->Preanaliticas->estado_quinta_id = 0;
         }
-        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->created_at);
+        //dd($this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion));
+        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion);
 
         if($method=="update"){
             $this->Preanaliticas->identidad=$this->Preanaliticas->paciente->identidad;
