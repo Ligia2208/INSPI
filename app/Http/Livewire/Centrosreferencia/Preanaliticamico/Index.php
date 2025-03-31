@@ -50,12 +50,12 @@ class Index extends Component
 
     public function render()
     {
-        $sedes = Sede::where('estado','=','A')->whereIn('id',[1,3])->orderBy('id', 'asc')->cursor();
+        $sedes = Sede::where('estado','=','A')->whereIn('id',[1,2,3])->orderBy('id', 'asc')->cursor();
         $crns = [];
         $eventos = [];
 
         $count = Preanalitica::where('estado','=','A')->where('cdiferencial','=',0)->where('campliada','=',0)->count();
-        $preanaliticas = Preanalitica::where('estado','=','A')->where('crns_id','=',7)->where('cdiferencial','=',0)->where('campliada','=',0)->orderBy('id', 'desc');
+        $preanaliticas = Preanalitica::where('estado','=','A')->where('crns_id','=',1)->where('cdiferencial','=',0)->where('campliada','=',0)->orderBy('id', 'desc');
 
         if($this->searchc){
             $pacientes = Paciente::where(function ($query){

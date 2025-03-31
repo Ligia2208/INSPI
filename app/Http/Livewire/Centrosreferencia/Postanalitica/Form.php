@@ -81,6 +81,9 @@ class Form extends Component
         $this->Analiticas = $data;
         $this->Analiticas->codigo_muestra = str_pad($muestra, 6, "0", STR_PAD_LEFT);
         $this->method = $method;
+
+        //dd($this->Analiticas->crns_id);
+
         if($method=='update'){
             $config = SedeCrn::where('sedes_id','=',$this->Analiticas->sedes_id)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $this->crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();

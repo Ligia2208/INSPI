@@ -12,7 +12,7 @@
                 <div class="row">
                     <div class="col-xl-12">
                         <div class="my-5">
-                            <a href="{{ route('preanaliticatoxico.index') }}"
+                            <a href="{{ route('preanaliticamico.index') }}"
                                 class="navi-link py-4 {{ active('user.index') }}">
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <i aria-hidden="true" class="ki ki-bold-close icon-lg"></i>
@@ -157,6 +157,9 @@
                                     @enderror
                                 </div>
                             </div>
+
+                            <!-- <hr> 
+                            <h3 class="text-dark font-weight-bold mb-10">Datos del Paciente</h3>
                             <div class="form-row">
                                 <div class="form-group col-md-1" style="display:none">
                                     <label>Id<span class="text-danger"></span></label>
@@ -249,6 +252,7 @@
                                     </div>
                                 </div>
                             </div>
+
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label>Dirección<span class="text-danger">*</span></label>
@@ -328,7 +332,10 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
+                            </div> -->
+
+                            <hr> 
+                            <h3 class="text-dark font-weight-bold mb-10">Datos del CRN</h3>
                             <div class="form-row">
                                 <div class="form-group col-md-2">
                                     <label>Fecha de atención<span class="text-danger">*</span></label>
@@ -424,7 +431,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-8">
-                                    <label>Evento<span class="text-danger">*</span></label>
+                                    <label>Tramite<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
@@ -500,9 +507,28 @@
                             </div>
 
                             <!-- Nuevos Campos -->
+                            <hr> 
+                            <h3 class="text-dark font-weight-bold mb-10">Datos de la muestra</h3>
                             <div class="form-row">
 
-                                <div class="form-group col-md-4">
+                                <div class="form-group col-md-3">
+                                    <label>Cod. Muestra Hospitalaria<span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input wire:model.defer="Preanaliticastoxico.cod_muestra_hosp" type="text"
+                                            class="form-control form-control-solid @error('Preanaliticastoxico.cod_muestra_hosp') is-invalid @enderror"
+                                            placeholder="Ej: Cod. de Muestra Hospitalaria" />
+                                    </div>
+                                    @error('Preanaliticastoxico.cod_muestra_hosp')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
+                                <div class="form-group col-md-3">
                                     <label>Lote<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -541,261 +567,34 @@
                                     </div>
                                 </div>
 
-                            </div>
 
-
-                            <!-- CRITERIOS TECNICOS -->
-                            <hr> 
-                            <h3 class="text-dark font-weight-bold mb-10">Criterios Técnicos</h3>
-                            <div class="form-row">
-
-                                
-
-                                <div class="form-group col-md-2">
-                                    <label>Triple empaque<span class="text-danger">*</span></label>
+                                <div class="form-group col-md-4">
+                                    <label>Responsable de la Recepción<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select wire:model.defer="Preanaliticastoxico.triple_empaque"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.triple_empaque') is-invalid @enderror"
+                                        <select wire:model.defer="Preanaliticastoxico.responsable_recep"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.responsable_recep') is-invalid @enderror"
                                             data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-
-                                <div class="form-group col-md-2">
-                                    <label>N° de columnas<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.columnas"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.columnas') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> 1 </option>
-                                            <option data-subtext="" value="2"> 2 </option>
-                                            <option data-subtext="" value="3"> 3 </option>
-                                            <option data-subtext="" value="4"> 4 </option>
-                                            <option data-subtext="" value="5"> 5 </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-
-                                <div class="form-group col-md-2">
-                                    <label>Cultivos (Cepas) Puros<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.cultivos_puros"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.cultivos_puros') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group col-md-2">
-                                    <label>Crecimiento no diagnóstico<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.crecimiento"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.crecimiento') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group col-md-2">
-                                    <label>Cultivo sin líquido de condensación<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.cultivo_sin_liquido"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.cultivo_sin_liquido') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group col-md-2">
-                                    <label>Cultivo con crecimiento de 4-8 semanas<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.cultivo_crecimiento"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.cultivo_crecimiento') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
+                                                <option value="0">Selecciona un usuario</option>
+                                                @foreach ($usuarios as $usuario)
+                                                    <option data-subtext="" value="{{ $usuario->id }}">
+                                                        {{ $usuario->name }}</option>
+                                                @endforeach
+                                            </select>
+        
                                         </select>
                                     </div>
                                 </div>
 
                             </div>
-                            <!-- CRITERIOS TECNICOS -->
 
 
-
-                            <!-- CRITERIOS DOCUMENTALES -->
-                            <hr> 
-                            <h3 class="text-dark font-weight-bold mb-10">Criterios Técnicos</h3>
                             <div class="form-row">
 
-                                <div class="form-group col-md-2">
-                                    <label>Prueba de sensibilidad a Drogas<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.triple_empaque"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.triple_empaque') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-2">
-                                    <label>N° de columnas<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.columnas"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.columnas') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> 1 </option>
-                                            <option data-subtext="" value="2"> 2 </option>
-                                            <option data-subtext="" value="3"> 3 </option>
-                                            <option data-subtext="" value="4"> 4 </option>
-                                            <option data-subtext="" value="5"> 5 </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-2">
-                                    <label>Cultivos (Cepas) Puros<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.cultivos_puros"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.cultivos_puros') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-2">
-                                    <label>Crecimiento no diagnóstico<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.crecimiento"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.crecimiento') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-2">
-                                    <label>Cultivo sin líquido de condensación<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.cultivo_sin_liquido"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.cultivo_sin_liquido') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-2">
-                                    <label>Cultivo con crecimiento de 4-8 semanas<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.cultivo_crecimiento"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.cultivo_crecimiento') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un número</option>
-                                            <option data-subtext="" value="1"> SI </option>
-                                            <option data-subtext="" value="0"> NO </option>
-                                        </select>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <!-- CRITERIOS DOCUMENTALES -->
-
-                            <!-- Nuevos Campos -->
-
-                            <div class="form-row">
                                 <div class="form-group col-md-2">
                                     <label>Clase Muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -883,7 +682,159 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
+
                             </div>
+
+
+                            <!-- CRITERIOS TECNICOS -->
+                            <hr> 
+                            <h3 class="text-dark font-weight-bold mb-10">Criterios Técnicos</h3>
+                            <div class="form-row">
+
+                                <div class="form-group col-md-2">
+                                    <label>Triple empaque<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticastoxico.triple_empaque"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.triple_empaque') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona un número</option>
+                                            <option data-subtext="" value="1"> SI </option>
+                                            <option data-subtext="" value="0"> NO </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group col-md-2">
+                                    <label>N° de colonias<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticastoxico.columnas"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.columnas') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona un número</option>
+                                            <option data-subtext="" value="1"> 1 </option>
+                                            <option data-subtext="" value="2"> 2 </option>
+                                            <option data-subtext="" value="3"> 3 </option>
+                                            <option data-subtext="" value="4"> 4 </option>
+                                            <option data-subtext="" value="5"> 5 </option>
+                                            <option data-subtext="" value="6"> 6 </option>
+                                            <option data-subtext="" value="7"> 7 </option>
+                                            <option data-subtext="" value="8"> 8 </option>
+                                            <option data-subtext="" value="9"> 9 </option>
+                                            <option data-subtext="" value="10"> 10 </option>
+                                            <option data-subtext="" value="11"> 11 </option>
+                                            <option data-subtext="" value="12"> 12 </option>
+                                            <option data-subtext="" value="13"> 13 </option>
+                                            <option data-subtext="" value="14"> 14 </option>
+                                            <option data-subtext="" value="15"> 15 </option>
+                                            <option data-subtext="" value="16"> 16 </option>
+                                            <option data-subtext="" value="17"> 17 </option>
+                                            <option data-subtext="" value="18"> 18 </option>
+                                            <option data-subtext="" value="19"> 19 </option>
+                                            <option data-subtext="" value="+"> + </option>
+                                            <option data-subtext="" value="++"> ++ </option>
+                                            <option data-subtext="" value="+++"> +++ </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="form-group col-md-2">
+                                    <label>Cultivos (Cepas) Puros<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticastoxico.cultivos_puros"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.cultivos_puros') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona un número</option>
+                                            <option data-subtext="" value="1"> SI </option>
+                                            <option data-subtext="" value="0"> NO </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-md-2">
+                                    <label>Crecimiento disgónico<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticastoxico.crecimiento"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.crecimiento') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona un número</option>
+                                            <option data-subtext="" value="1"> SI </option>
+                                            <option data-subtext="" value="0"> NO </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-md-2">
+                                    <label>Cultivo sin líquido de condensación<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticastoxico.cultivo_sin_liquido"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.cultivo_sin_liquido') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona un número</option>
+                                            <option data-subtext="" value="1"> SI </option>
+                                            <option data-subtext="" value="0"> NO </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="form-group col-md-2">
+                                    <label>Cultivo crecimiento de 4-8 semanas<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticastoxico.cultivo_crecimiento"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.cultivo_crecimiento') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona un número</option>
+                                            <option data-subtext="" value="1"> SI </option>
+                                            <option data-subtext="" value="0"> NO </option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <!-- CRITERIOS TECNICOS -->
+
+
+                            <!-- Nuevos Campos -->
+
+
+                            <hr> 
+                            <h3 class="text-dark font-weight-bold mb-10">Agregar otras Muestras</h3>
                             <div class="form-row">
                                 &nbsp;&nbsp;
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">

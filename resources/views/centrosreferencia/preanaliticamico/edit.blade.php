@@ -2,7 +2,7 @@
 
 @extends('layouts.main')
 
-@section('title', 'Editar Preanalitica Muestra: '.$Preanaliticastoxico->codigo_muestra)
+@section('title', 'Editar Preanalitica Muestra: '.$Preanaliticasmico->id)
 
 @section('content')
     <!--begin::Bread-->
@@ -23,7 +23,7 @@
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <div class="d-flex flex-column-fluid">
-            @livewire('centrosreferencia.preanaliticamico.form', ['Preanaliticastoxico' => $Preanaliticastoxico, 'method' => 'update'], key($Preanaliticastoxico->id))
+            @livewire('centrosreferencia.preanaliticamico.form', ['Preanaliticastoxico' => $Preanaliticasmico, 'method' => 'update'], key($Preanaliticasmico->id))
         </div>
     </div>
 @endsection

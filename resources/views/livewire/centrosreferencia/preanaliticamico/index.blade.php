@@ -9,8 +9,6 @@
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span></span>
                 </h3>
                 <a href="{{ route('preanaliticamico.create') }}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i
-                        class="fa fa-sticky-note"></i> Agregar</a>
-                <a href="{{ route('preanaliticamico.create') }}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i
                         class="fa fa-sticky-note"></i> Agregar</a>  
             </div>
             <!--end::Header-->
@@ -222,15 +220,16 @@
                                     </td>
                                     <td align="center">
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
-                                            <a href="{{ route('preanaliticatoxico.edit', $Preanaliticastoxico) }}" class="navi-link">
+                                            <a href="{{ route('preanaliticamico.edit', $Preanaliticastoxico) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="ace-icon fa fa-pen" style="color:lightblue"
                                                         title="Validar"></i>
                                                 </span>
                                             </a>
                                         </i>
+
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
-                                            <a href="{{ route('preanaliticatoxico.show', $Preanaliticastoxico) }}" class="navi-link">
+                                            <a href="{{ route('preanaliticamico.show', $Preanaliticastoxico) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="ace-icon fa fa-eye" style="color:rgb(122, 122, 122)"
                                                         title="Mostrar"></i>
