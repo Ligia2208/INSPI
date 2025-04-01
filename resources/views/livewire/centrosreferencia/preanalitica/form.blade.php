@@ -261,7 +261,7 @@
                                             required disabled
                                             class="form-control form-control-solid"
                                             <?php
-                                            if($method = 'STORE'){
+                                            if($method = 'store'){
                                                 $anios = 0;
                                                 $meses = 0;
                                                 $dias = 0;
