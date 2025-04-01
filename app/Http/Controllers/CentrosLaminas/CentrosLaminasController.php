@@ -32,7 +32,15 @@ use App\Models\Czonal\Czonal;
 //PDF
 use Barryvdh\DomPDF\Facade as PDF;
 
+//datos de la laminas
+use App\Models\CentrosReferencia\Provincia;
+use App\Models\CentrosReferencia\Canton;
+use App\Models\CentrosReferencia\Tecnica;
+use App\Models\CentrosReferencia\Evento;
+use App\Models\CentrosReferencia\Institucion;
+use App\Models\CentrosReferencia\Responsable;
 
+use App\Models\Lamina\Lamina\Lamina;
 
 //use App\Models\Area\Area;
 use App\Models\CoreBase\Area;
@@ -50,60 +58,19 @@ class CentrosLaminasController extends Controller
 
         if(request()->ajax()) {
 
-            $estado    = request()->get('estado');
-            $direccion = request()->get('direccion');
-            $item      = request()->get('item');
-            $programa  = request()->get('programa');
-            //$subactividad  = request()->get('subactividad');
 
-            $query = Poa::select(
-                'pla_poa1.id as id',
-                'pla_poa1.departamento as coordinacion',
-                'pla_poa1.nro_poa as numero',
-                DB::raw('DATE_FORMAT(pla_poa1.updated_at, "%Y-%m-%d %H:%i:%s") as fecha'),
-                'tipo_poa.nombre as POA',
-                'objOpe.nombre as obj_operativo',
-                'actOpe.nombre as act_operativa',
-                'pro.nombre as proceso',
-                'subAct.nombre as sub_actividad',
-                'pla_poa1.estado as estado',
-                'itep.nombre as item',
-                'pla_poa1.monto',
-                'pla_poa1.monto',
-                'pla_tipo_subactividad.nombre as tipo_sub',
-                'cal.justificacion_area as motivo'
-            )
-            ->join('db_inspi_planificacion.pla_tipo_poa as tipo_poa', 'tipo_poa.id', '=', 'db_inspi_planificacion.pla_poa1.id_tipo_poa')
-            ->join('db_inspi_planificacion.pla_obj_operativo as objOpe', 'objOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_obj_operativo')
-            ->join('db_inspi_planificacion.pla_actividad_operativa as actOpe', 'actOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_actividad')
-            ->join('db_inspi_planificacion.pla_sub_actividad as subAct', 'subAct.id', '=', 'db_inspi_planificacion.pla_poa1.id_sub_actividad')
-            ->join('pla_tipo_proceso as pro', 'pro.id', '=', 'db_inspi_planificacion.pla_poa1.id_proceso')
-            ->join('db_inspi_planificacion.pla_item_presupuestario as itep', 'itep.id', '=', 'pla_poa1.id_item')
-            ->join('db_inspi_planificacion.pla_calendario as cal', 'cal.id_poa', '=', 'pla_poa1.id')
             
-            ->join('db_inspi_planificacion.pla_tipo_subactividad', 'pla_poa1.id_tipo_sub', '=', 'pla_tipo_subactividad.id')
-            ->whereNotIn('pla_poa1.estado', ['E'])
-            ->whereNotIn('pla_poa1.id_area', [17,18]);
-        
-            // **Aplicar filtros si se selecciona alguno**
 
-            /*
-            if (!empty($estado)) {
-                $query->where('pla_poa1.estado', $estado);
-            }
-        
-            if (!empty($direccion)) {
-                $query->where('pla_poa1.id_area', $direccion);
-            }
-        
-            if (!empty($item)) {
-                $query->where('pla_poa1.id_item', $item);
-            }
-
-            if (!empty($programaIds)) {
-                $query->whereIn('pla_poa1.programa', $programaIds);
-            }
-            */
+            $query = Lamina::select(
+                'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
+                'ingreso_laminas.total_laminas as total_laminas', 'ins.descripcion as instituto', 'recep.name as recepta',
+                'anali.name as analita'
+            )
+            ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
+            ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+            ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
+            ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
+            ->whereNotIn('ingreso_laminas.estado', ['A']);
         
             // **Devolver datos en formato JSON**
             return datatables()->of($query)->addIndexColumn()->make(true);
@@ -115,12 +82,84 @@ class CentrosLaminasController extends Controller
     }
 
 
-    public function crear(){
+    public function crear()
+    {
+        // Obtener todos los registros de los modelos
+        $tecnicas = Tecnica::all();
+        $eventos = Evento::all();
+        $instituciones = Institucion::select('instituciones_salud.id as id', 'instituciones_salud.descripcion as nombre', 'can.descripcion as canton')
+        ->join('inspi_crns.cantones as can', 'can.id', '=', 'instituciones_salud.canton_id')->get();
 
-        //respuesta para la vista
-        return view('lamina.crear', compact());
+        $responsables = Responsable::where('crns_id', 1)
+            ->with('usuario')
+            ->get();
+
+        
+        //dd($responsables);
+    
+        // Enviar datos a la vista
+        return view('lamina.crear', compact('tecnicas', 'eventos', 'instituciones', 'responsables'));
+    }
+
+
+    public function guardar(Request $request)
+    {
+
+        $fecha_recep   = $request->input('fecha_recep'); 
+        $centro_salud  = $request->input('centro_salud'); 
+        $responsable   = $request->input('responsable'); 
+        $analista      = $request->input('analista'); 
+        $mes_recepcion = $request->input('mes_recepcion'); 
+        $observaciones = $request->input('observaciones'); 
+
+        $laminas_empacadas       = filter_var($request->input('laminas_empacadas'), FILTER_VALIDATE_BOOLEAN);
+        $laminas_legibles        = filter_var($request->input('laminas_legibles'), FILTER_VALIDATE_BOOLEAN);
+        $laminas_sin_id          = filter_var($request->input('laminas_sin_id'), FILTER_VALIDATE_BOOLEAN);
+        $laminas_sin_aceite      = filter_var($request->input('laminas_sin_aceite'), FILTER_VALIDATE_BOOLEAN);
+        $laminas_frotis_adecuado = filter_var($request->input('laminas_frotis_adecuado'), FILTER_VALIDATE_BOOLEAN);
+        $laminas_integras        = filter_var($request->input('laminas_integras'), FILTER_VALIDATE_BOOLEAN);
+        $laminas_documentacion   = filter_var($request->input('laminas_documentacion'), FILTER_VALIDATE_BOOLEAN);
+        
+
+        $anio = $fecha_recep ? date('Y', strtotime($fecha_recep)) : null;
+        
+        // Guardar en la base de datos
+        $ingreso = new Lamina();
+        $ingreso->fecha_recep     = $fecha_recep;
+        $ingreso->id_unidad_salud = $centro_salud;
+        $ingreso->id_responsable  = $responsable;
+        $ingreso->id_analista     = $analista;
+        $ingreso->mes_recepcion   = $mes_recepcion;
+        $ingreso->observaciones   = $observaciones;
+        $ingreso->anio            = $anio;
+
+        $ingreso->id_evento       = 9;
+        $ingreso->id_tecnica      = 9;
+
+        // Asignación de valores booleanos
+        $ingreso->laminas_empacadas      = $laminas_empacadas;
+        $ingreso->laminas_legibles       = $laminas_legibles;
+        $ingreso->laminas_sin_id         = $laminas_sin_id;
+        $ingreso->laminas_sin_aceite     = $laminas_sin_aceite;
+        $ingreso->laminas_frotis_adecuado= $laminas_frotis_adecuado;
+        $ingreso->laminas_integras       = $laminas_integras;
+        $ingreso->laminas_documentacion  = $laminas_documentacion;
+
+        $ingreso->save();
+
+        if ($ingreso) {
+
+            return response()->json(['message' => 'Se ingresaron las Láminas correctamente.', 'success' => true], 200);
+
+        } else {
+
+            return response()->json(['message' => 'Error al ingresar las láminas', 'success' => false], 500);
+
+        }
+
 
     }
+    
 
 
     public function reportLamina(Request $request){
