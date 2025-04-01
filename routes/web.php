@@ -258,6 +258,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/itemPresupuestario/get_montos/{id?}', 'ItemPresupuestarioController@get_montos')->name('itemPresupuestario.get_montos');
         Route::get('/itemPresupuestario/list_items/{id?}', 'ItemPresupuestarioController@list_items')->name('itemPresupuestario.list_items');
 
+        //OBJETIVOS OPERATIVOS
+        //Route::get('/itemPresupuestario/objetivos', 'ItemPresupuestarioController@objetivos')->name('itemPresupuestario.objetivos'); 
+        Route::post('/itemPresupuestario/guardarObjetivo', 'ItemPresupuestarioController@guardarObjetivo')->name('itemPresupuestario.guardarObjetivo');
+        Route::post('/itemPresupuestario/crearObjetivo', 'ItemPresupuestarioController@crearObjetivo')->name('itemPresupuestario.crearObjetivo');
+        
     });
     /* =========================== ITEM PRESUPUESTARIO =========================== */
 
