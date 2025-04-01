@@ -252,6 +252,15 @@
                                     <td align="center">
                                         @if ($analitica->usuariop_id == 0)
                                             <i class="navi-item" data-toggle="modal" data-target="_self">
+                                                @if($analitica->crns_id == 1)
+                                                <a href="{{ route('analiticasmicolo.edit', $analitica) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="ace-icon fa fa-pen" style="color:lightblue"
+                                                            title="Editar"></i>
+                                                    </span>
+                                                </a>
+                                                @else
                                                 <a href="{{ route('analitica.edit', $analitica) }}"
                                                     class="navi-link">
                                                     <span class="navi-icon">
@@ -259,6 +268,7 @@
                                                             title="Editar"></i>
                                                     </span>
                                                 </a>
+                                                @endif
                                             </i>
                                         @endif
                                         @if ($analitica->usuarior_id == 0 && $analitica->validado == 'N')

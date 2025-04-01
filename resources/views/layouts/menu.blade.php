@@ -141,6 +141,32 @@
                 @endcan
             @endcanany
 
+
+            @canany(['preanaliticamico','analiticastoxico'])
+            <div class="my-5"></div>
+                <li class="menu-section">
+                    <h4 class="menu-text">CRN Micobacterías</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+                @can('preanaliticamico')
+                    <li class="menu-item {{ active('preanaliticamico.*') }}">
+                        <a href="{{ route('preanaliticamico.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-cogs"></i>
+                            <span class="menu-text">Muestras - Preanalítica</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('analiticastoxico')
+                    <li class="menu-item {{ active('analiticatoxico.*') }}">
+                        <a href="{{ route('analiticatoxico.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-spinner"></i>
+                            <span class="menu-text">Analitica Resultados CRN</span>
+                        </a>
+                    </li>
+                @endcan
+            @endcanany
+
+
             @canany(['pacientes', 'resultados', 'instituciones', 'visorresultados', 'resultadosmsp', 'resultadoscrn', 'resultadosgerencial',
                 'preanalitica', 'postanaliticas', 'analiticas'])
                 <div class="my-5"></div>
