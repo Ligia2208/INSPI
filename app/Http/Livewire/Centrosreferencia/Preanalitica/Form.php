@@ -74,7 +74,7 @@ class Form extends Component
             'Preanaliticas.paciente_ubicacion' => 'sometimes|max:150',
             'Preanaliticas.paciente_nacionalidad' => 'sometimes|max:150',
             'Preanaliticas.fecha_recepcion' => 'required|max:10',
-            'Preanaliticas.fecha_atencion' => 'required|max:10',
+            'Preanaliticas.fecha_atencion' => 'sometimes|max:10',
             'Preanaliticas.quien_notifica' => 'required|max:80',
             'Preanaliticas.probable_infeccion' => 'sometimes|max:200',
             'Preanaliticas.fecha_sintomas' => 'required|max:10',
@@ -141,7 +141,8 @@ class Form extends Component
             $this->Preanaliticas->quinta_id = 0;
             $this->Preanaliticas->estado_quinta_id = 0;
         }
-        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->created_at);
+        //dd($this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion));
+        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion);
 
         if($method=="update"){
             $this->Preanaliticas->identidad=$this->Preanaliticas->paciente->identidad;
@@ -508,6 +509,8 @@ class Form extends Component
         try{
             $user = auth()->user()->id;
             $fecha_anio = date("Y");
+            $this->guardarp($this->Preanaliticas,$this->Preanaliticas->evento_id);
+            /*
             if($this->Preanaliticas->evento_id==104){
                 $this->guardarp($this->Preanaliticas,155);
                 $this->guardarp($this->Preanaliticas,156);
@@ -534,6 +537,7 @@ class Form extends Component
                     }
                 }
             }
+                */
 
             DB::commit();
             $this->alert('success', 'Preanalitica agregado con éxito');

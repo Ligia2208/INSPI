@@ -180,6 +180,8 @@
                                 <th>Crn-Laboratorio</th>
                                 <th>Evento</th>
                                 <th>Muestras Recibidas</th>
+                                <th>Usuario registro</th>
+                                <th>Fecha registro</th>
                                 <th> Acciones </th>
                             </tr>
                         </thead>
@@ -217,6 +219,14 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($preanalitica->primera_id>0) 1.-{{ $preanalitica->primera->descripcion }} @endif @if($preanalitica->segunda_id>0) <br> 2.-{{ $preanalitica->segunda->descripcion }} @endif @if($preanalitica->tercera_id>0) <br> 3.-{{ $preanalitica->tercera->descripcion }} @endif @if($preanalitica->cuarta_id>0) <br> 4.-{{ $preanalitica->cuarta->descripcion }} @endif @if($preanalitica->quinta_id>0) <br> 5.-{{ $preanalitica->quinta->descripcion }} @endif</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $preanalitica->usuariot->name }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $preanalitica->created_at }}</span>
                                     </td>
                                     <td align="center">
                                         <i class="navi-item" data-toggle="modal" data-target="_self">

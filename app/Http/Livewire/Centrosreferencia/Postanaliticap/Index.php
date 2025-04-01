@@ -102,7 +102,7 @@ class Index extends Component
         if($this->claboratorios){
             $analiticas = $analiticas->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
             $count = $analiticas->count();
-            $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
         }
 
         if($this->ceventos){

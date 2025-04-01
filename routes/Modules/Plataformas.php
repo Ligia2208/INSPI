@@ -10,9 +10,11 @@ use App\Http\Controllers\Plataformas\Anamnesis\AnamnesisController;
 use App\Http\Controllers\Plataformas\Constante\ConstanteController;
 use App\Http\Controllers\CentrosReferencia\Preanalitica\PreanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Preanaliticatoxico\PreanaliticatoxicoController;
+use App\Http\Controllers\CentrosReferencia\Preanaliticamico\PreanaliticamicoController;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxico\AnaliticatoxicoController;
+use App\Http\Controllers\CentrosReferencia\Analiticamicolo\AnaliticamicoloController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxicop\AnaliticatoxicopController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapController;
@@ -75,6 +77,9 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Preanalitica
         Route::resource('preanaliticastoxico', PreanaliticatoxicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticatoxico');
 
+        //CRNs Plataformas Preanalitica Micologia
+        Route::resource('preanaliticasmico', PreanaliticamicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticamico');
+
         //CRNs Plataformas Resultados
         Route::resource('resultados', ResultadoController::class)->parameters(['resultados' => 'resultado'])->names('resultado');
 
@@ -98,6 +103,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Toxicología Analitica de Resultados Pendientes
         Route::resource('analiticastoxicop', AnaliticatoxicopController::class)->parameters(['analiticastoxico' => 'analiticatoxico'])->names('analiticatoxicop');
+
+        //CRNs Micología Analitica de Resultados Pendientes
+        Route::resource('analiticasmicolo', AnaliticamicoloController::class)->parameters(['analiticasmicolo' => 'analiticasmicolo'])->names('analiticasmicolo');
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');

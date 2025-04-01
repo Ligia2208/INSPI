@@ -181,7 +181,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Apellidos Paciente<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -198,7 +198,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Nombres Paciente<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -246,6 +246,32 @@
                                             value="Preanaliticas.paciente_fechanac" type="date"
                                             class="start_date form-control form-control-solid @error('Preanaliticas.paciente_fechanac') is-invalid @enderror"
                                             placeholder="Seleccione la fecha nacimiento" />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Edad<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            <?php
+                                            $tiempo = strtotime($Preanaliticas->paciente->fechanacimiento);
+                                            $ahora = time();
+                                            $tanios = ($ahora-$tiempo)/(60*60*24*365.25);
+                                            $tmeses = ($ahora-$tiempo)/(60*60*24*30.44);
+                                            $tdias = ($ahora-$tiempo)/(60*60*24);
+                                            $anios = floor($tanios);
+                                            $meses = floor($tmeses) - $anios*12;
+                                            $mdias = floor($tdias) - $anios*365.25 - $meses*30.44;
+                                            $dias = floor($mdias);
+                                            ?>
+                                            value = "{{ $anios }} años {{ $meses }} meses {{  $dias }} días" >
                                     </div>
                                 </div>
                             </div>
@@ -331,7 +357,7 @@
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-2">
-                                    <label>Fecha de atención<span class="text-danger">*</span></label>
+                                    <label>Fecha de atención<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
