@@ -405,6 +405,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas', 'CentrosLaminasController@index')->name('laminas'); //vista principal
         Route::get('/laminas/crear', 'CentrosLaminasController@crear')->name('laminas.crear');
         Route::post('/laminas/guardar', 'CentrosLaminasController@guardar')->name('laminas.guardar');
+        Route::get('/laminas/reporte', 'CentrosLaminasController@reporte')->name('laminas.reporte');
+
 
     });
     /* =========================== LAMINAS =========================== */

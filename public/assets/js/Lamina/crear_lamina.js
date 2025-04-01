@@ -30,6 +30,7 @@ $( function () {
         let analista       = $('#analista').val();
         let mesRecepcion   = $('#mes_recepcion').val();
         let observaciones  = $('#Observaciones').val();
+        let total_laminas  = $('#total_laminas').val();
     
         // Validación de campos
         if (centroSalud == 0) {
@@ -40,6 +41,9 @@ $( function () {
             return;
         } else if (analista == 0) {
             Swal.fire({ icon: 'warning', title: 'SoftInspi', text: 'Debe seleccionar un Analista.', showConfirmButton: true });
+            return;
+        } else if (total_laminas == 0 || total_laminas == '') {
+            Swal.fire({ icon: 'warning', title: 'SoftInspi', text: 'Debe ingresar un número de Láminas.', showConfirmButton: true });
             return;
         }
     
@@ -67,6 +71,7 @@ $( function () {
                         'analista':      analista,
                         'mes_recepcion': mesRecepcion,
                         'observaciones': observaciones,
+                        'total_laminas': total_laminas,
                         ...datosRadio // Agregamos los valores de los radios
                     },
                     success: function(response) {
@@ -230,8 +235,24 @@ $( function () {
     /* ==================== MODAL SOLICITAR POA ==================== */
 
 
+    /* PARA QUE SOLO INGRESEN NUMEROS */
+    document.getElementById('total_laminas').addEventListener('input', function (e) {
+        let value = this.value.replace(/[^0-9]/g, ''); // Filtra solo números
+        this.value = value;
+        
+        if (value === '') {
+            this.classList.add('is-invalid');
+        } else {
+            this.classList.remove('is-invalid');
+            this.classList.add('is-valid');
+        }
+    });
+    /* PARA QUE SOLO INGRESEN NUMEROS */
 
 
 });
+
+
+
 
 //===============================================================================================

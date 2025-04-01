@@ -77,33 +77,34 @@
     </table><br>
  
     <table class="letra2" style="width: 100%; border-collapse: collapse; font-size: 12px; border: 1px solid black;">
-        <tbody>
-            <tr>
-                <td>Fecha de Recepción de Láminas:</td>
-                <td></td>
-                <td>Nombre del Laboratorio Supervisado:</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Total de Láminas Recibidas:</td>
-                <td></td>
-                <td>Procedencia:</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Responsable de Recepción:</td>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <td>Analista (encargado de Control de Calidad):</td>
-                <td colspan="3"></td>
-            </tr>
-            <tr>
-                <td>Mes supervisado:</td>
-                <td colspan="3"></td>
-            </tr>
+    <tbody>
+        <tr>
+            <td>Fecha de Recepción de Láminas:</td>
+            <td>{{ $fechaRecepcion }}</td>
+            <td>Nombre del Laboratorio Supervisado:</td>
+            <td>{{ $nombreLab }}</td>
+        </tr>
+        <tr>
+            <td>Total de Láminas Recibidas:</td>
+            <td>{{ $totalLaminas }}</td>
+            <td>Procedencia:</td>
+            <td>{{ $procedencia }}</td>
+        </tr>
+        <tr>
+            <td>Responsable de Recepción:</td>
+            <td colspan="3">{{ $responsable }}</td>
+        </tr>
+        <tr>
+            <td>Analista (encargado de Control de Calidad):</td>
+            <td colspan="3">{{ $analista }}</td>
+        </tr>
+        <tr>
+            <td>Mes supervisado:</td>
+            <td colspan="3">{{ $mesSupervisado }}</td>
+        </tr>
         </tbody>
     </table>
+
 
     <!----------------------------------------------------------------------------------------------------------------------------------------------->
     <table class="tabla-inferior">
@@ -117,56 +118,53 @@
         <tbody>
             <tr>
                 <td>Láminas empacadas en cajas de láminas porta objetos y separadas entre ellas</td>
-                <td></td>
-                <td></td>
+                <td>{{ $laminas_empacadas ? '✔' : '' }}</td>
+                <td>{{ !$laminas_empacadas ? '✘' : '' }}</td>
             </tr>
             <tr>
                 <td>Láminas con información legible y enumeradas en forma consecutiva</td>
-                <td></td>
-                <td></td>
+                <td>{{ $laminas_legibles ? '✔' : '' }}</td>
+                <td>{{ !$laminas_legibles ? '✘' : '' }}</td>
             </tr>
             <tr>
                 <td>Las Láminas sin identificación de su resultado</td>
-                <td></td>
-                <td></td>
+                <td>{{ $laminas_sin_id ? '✔' : '' }}</td>
+                <td>{{ !$laminas_sin_id ? '✘' : '' }}</td>
             </tr>
             <tr>
                 <td>Láminas sin exceso de aceite de inmersión</td>
-                <td></td>
-                <td></td>
+                <td>{{ $laminas_sin_aceite ? '✔' : '' }}</td>
+                <td>{{ !$laminas_sin_aceite ? '✘' : '' }}</td>
             </tr>
             <tr>
                 <td>Láminas con frotis adecuado (tinción y dimensiones establecidas en el Manual de Baciloscopía)</td>
-                <td></td>
-                <td></td>
+                <td>{{ $laminas_frotis_adecuado ? '✔' : '' }}</td>
+                <td>{{ !$laminas_frotis_adecuado ? '✘' : '' }}</td>
             </tr>
             <tr>
-                <td>Láminas integras sin rajaduras que afecten al frotis</td>
-                <td></td>
-                <td></td>
+                <td>Láminas íntegras sin rajaduras que afecten al frotis</td>
+                <td>{{ $laminas_integras ? '✔' : '' }}</td>
+                <td>{{ !$laminas_integras ? '✘' : '' }}</td>
             </tr>
             <tr>
                 <td>Láminas con documentación respectiva (listado con el número y resultado de cada lámina)</td>
-                <td></td>
-                <td></td>
+                <td>{{ $laminas_documentacion ? '✔' : '' }}</td>
+                <td>{{ !$laminas_documentacion ? '✘' : '' }}</td>
             </tr>
         </tbody>
     </table>
 
-    <br><br>
-
     <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
         <tr>
-            <td style="border: 1px solid black; padding: 10px; vertical-align: top;" colspan="2">
+            <td style="border: 1px solid black; padding: 10px;" colspan="2">
                 <strong>Observaciones:</strong><br><br>
-                {{-- Espacio en blanco para que el analista escriba a mano --}}
-                <div style="height: 100px;"></div>
+                {{ $observaciones }}
             </td>
         </tr>
         <tr>
             <td style="border: 1px solid black; padding: 10px; width: 70%;">
                 <strong>Realizado por:</strong><br><br>
-                <div style="height: 50px;"></div>
+                {{ $realizadoPor }}
             </td>
             <td style="border: 1px solid black; padding: 10px; width: 30%;">
                 <strong>Fecha:</strong><br><br>
@@ -174,7 +172,5 @@
             </td>
         </tr>
     </table>
-
-
 
 </body>

@@ -85,6 +85,12 @@
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
+                            <div class="col-md-4 mt-2">
+                                <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
+                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
 
 
                         </div>
