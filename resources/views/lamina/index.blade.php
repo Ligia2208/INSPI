@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="col-md-2 d-flex">
-                    <button id="btnGeneratePDF" class="btn btn-primary w-100">Generar PDF</button>
+                    <button id="btnGenerarPDF" class="btn btn-primary w-100">Generar PDF</button>
                 </div>
             </div>
 
