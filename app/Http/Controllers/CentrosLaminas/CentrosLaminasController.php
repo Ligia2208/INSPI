@@ -110,7 +110,7 @@ class CentrosLaminasController extends Controller
         }
 
         //respuesta para la vista
-        return view('lamina.index', compact(1));
+        return view('lamina.index');
 
     }
 
@@ -118,8 +118,34 @@ class CentrosLaminasController extends Controller
     public function crear(){
 
         //respuesta para la vista
-        return view('lamina.crear', compact(1));
+        return view('lamina.crear', compact());
 
+    }
+
+
+    public function reportLamina(Request $request){
+
+        $id               = $request->input('id');
+        $fechaRecepcion   = $request->input('fechaRecepcion');
+        $totalLaminas     = $request->input('totalLaminas');
+        $responsable      = $request->input('responsable');
+        $analista         = $request->input('analista');
+        $nombreLab        = $request->input('nombreLaboratorio');
+        $procedencia      = $request->input('procedencia');
+        $mesSupervisado   = $request->input('mesSupervisado');
+
+        return \PDF::loadView('pdf.pdfLamina', [
+        'id'               => $id,
+        'fechaRecepcion'   => $fechaRecepcion,
+        'totalLaminas'     => $totalLaminas,
+        'responsable'      => $responsable,
+        'analista'         => $analista,
+        'nombreLab'        => $nombreLab,
+        'procedencia'      => $procedencia,
+        'mesSupervisado'   => $mesSupervisado
+        ])
+        ->setPaper('A4', 'landscape')
+        ->download('report_láminas.pdf');
     }
 
 
