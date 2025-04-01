@@ -33,7 +33,7 @@
                 <div class="card-head">
                     <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
                         <div class="lh-1">
-                            <h1 class="h3 mb-0 text-white lh-1">Plan Operativo Anual</h1>
+                            <h1 class="h3 mb-0 text-white lh-1">Datos Generales</h1>
                             <input type="hidden" id="id_laboratorio" name="id_laboratorio" class="form-control" required="" autofocus="" value="">
                         </div>
                     </div>
@@ -45,7 +45,7 @@
 
                             <div class="col-md-4">
                                 <label for="fecha_recep" class="form-label fs-6">Fecha de Recepción</label>
-                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required="" autofocus="" value="" disabled>
+                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -53,7 +53,9 @@
                                 <label for="centro_salud" class="form-label fs-6">Nombre del Laboratorio Supervisado</label>
                                 <select id="centro_salud" name="centro_salud" class="form-control single-select" required>
                                     <option value="0">Seleccione un Centro de Salud</option>
-
+                                    @foreach($instituciones as $institucion)
+                                    <option value="{{$institucion->id}}">{{$institucion->nombre}} - {{ $institucion->canton }}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -61,16 +63,19 @@
                                 <label for="responsable" class="form-label fs-6">Responsable Recepción</label>
                                 <select id="responsable" name="responsable" class="form-control single-select" required>
                                     <option value="0">Seleccione un Responsable</option>
-
+                                    @foreach($responsables as $responsable)
+                                    <option value="{{$responsable->usuario_id}}">{{$responsable->descripcion}}</option>
+                                    @endforeach
                                 </select>
                             </div>
-
 
                             <div class="col-md-6 mt-2">
                                 <label for="analista" class="form-label fs-6">Analista(Encargado de Control de Calidad)</label>
                                 <select id="analista" name="analista" class="form-control single-select" required>
                                     <option value="0">Seleccione un Responsable</option>
-
+                                    @foreach($responsables as $responsable)
+                                    <option value="{{$responsable->usuario_id}}">{{$responsable->descripcion}}</option>
+                                    @endforeach
                                 </select>
                             </div>
 
@@ -86,82 +91,118 @@
                     </div>
                 </div>
 
-                <div class="card-body">
-
-                    <div class="row p-2">
-
-                        <div class="col-md-12">
-                            <label><strong>1. Láminas empacadas en cajas de láminas portaobjetos y separadas entre ellas</strong></label>
-                            <div>
-                                <input type="radio" name="laminas_empacadas" value="si" required> Sí
-                                <input type="radio" name="laminas_empacadas" value="no"> No
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <label><strong>2. Láminas con información legible y enumeradas en forma consecutiva</strong></label>
-                            <div>
-                                <input type="radio" name="laminas_legibles" value="si" required> Sí
-                                <input type="radio" name="laminas_legibles" value="no"> No
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <label><strong>3. Las láminas sin identificación de su resultado</strong></label>
-                            <div>
-                                <input type="radio" name="laminas_sin_id" value="si" required> Sí
-                                <input type="radio" name="laminas_sin_id" value="no"> No
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <label><strong>4. Láminas sin exceso de aceite de inmersión</strong></label>
-                            <div>
-                                <input type="radio" name="laminas_sin_aceite" value="si" required> Sí
-                                <input type="radio" name="laminas_sin_aceite" value="no"> No
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <label><strong>5. Láminas con frotis adecuado (tinción y dimensiones estables en el manual de baciloscopía)</strong></label>
-                            <div>
-                                <input type="radio" name="laminas_frotis_adecuado" value="si" required> Sí
-                                <input type="radio" name="laminas_frotis_adecuado" value="no"> No
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <label><strong>6. Láminas íntegras sin rajaduras que afecten al frotis</strong></label>
-                            <div>
-                                <input type="radio" name="laminas_integras" value="si" required> Sí
-                                <input type="radio" name="laminas_integras" value="no"> No
-                            </div>
-                        </div>
-
-                        <div class="col-md-12">
-                            <label><strong>7. Láminas con documentación respectiva (listado con el número y resultado de cada lámina)</strong></label>
-                            <div>
-                                <input type="radio" name="laminas_documentacion" value="si" required> Sí
-                                <input type="radio" name="laminas_documentacion" value="no"> No
-                            </div>
-                        </div>
-
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Evaluación de Láminas</h5>
                     </div>
+                    <div class="card-body">
+                        <div class="row gy-3">
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">1. Láminas empacadas en cajas de láminas portaobjetos y separadas entre ellas</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_empacadas" value="true" required>
+                                    <label class="form-check-label">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_empacadas" value="false">
+                                    <label class="form-check-label">No</label>
+                                </div>
+                            </div>
 
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">2. Láminas con información legible y enumeradas en forma consecutiva</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_legibles" value="true" required>
+                                    <label class="form-check-label">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_legibles" value="false">
+                                    <label class="form-check-label">No</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">3. Las láminas sin identificación de su resultado</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_sin_id" value="true" required>
+                                    <label class="form-check-label">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_sin_id" value="false">
+                                    <label class="form-check-label">No</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">4. Láminas sin exceso de aceite de inmersión</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_sin_aceite" value="true" required>
+                                    <label class="form-check-label">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_sin_aceite" value="false">
+                                    <label class="form-check-label">No</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">5. Láminas con frotis adecuado (tinción y dimensiones estables en el manual de baciloscopía)</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_frotis_adecuado" value="true" required>
+                                    <label class="form-check-label">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_frotis_adecuado" value="false">
+                                    <label class="form-check-label">No</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">6. Láminas íntegras sin rajaduras que afecten al frotis</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_integras" value="true" required>
+                                    <label class="form-check-label">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_integras" value="false">
+                                    <label class="form-check-label">No</label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <label class="form-label fw-bold">7. Láminas con documentación respectiva (listado con el número y resultado de cada lámina)</label>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_documentacion" value="true" required>
+                                    <label class="form-check-label">Sí</label>
+                                </div>
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="laminas_documentacion" value="false">
+                                    <label class="form-check-label">No</label>
+                                </div>
+                            </div>
+
+                            <hr>
+
+                            <div class="col-md-12 mt-5">
+                                <label class="form-label fw-bold"><strong>Observaciones</strong></label>
+                                <textarea class="form-control" name="observaciones" rows="3" placeholder="Escribe aquí cualquier observación..."></textarea>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
+
             </div>
 
 
 
 
 
-            <div class="col-lg-12 d-flex align-items-center justify-content-center">
-                <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="guardarPlanificacion()" style="margin-right: 2%">
+            <div class="col-lg-12 d-flex align-items-center justify-content-center mt-5">
+                <a class="col-2 btn btn-primary px-1 mb-5" type="button" id="btnGuardarSolicitud" style="margin-right: 2%">
                     <i class="bi bi-send-check"></i> Guardar
                 </a>
 
-                <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/planificacion/vistaUser'">
+                <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/laminas'">
                 <i class="bi bi-caret-left"></i> Regresar
                 </a>
             </div>
@@ -178,25 +219,6 @@
 
 @endsection
 
-<script>
-
-    function redireccionEncuesta(dato){
-
-        if(dato == 'corrida'){
-            //window.location.href = '/inventario/crearEgreso';
-            window.location.href = '/inventario/list_corrida';
-        }else if(dato == 'transferencia'){
-            window.location.href = '/inventario/transferencia';
-        }else if(dato == 'agregarUnidades'){
-            window.location.href = '/inventario/agregarUnidades';
-        }else if(dato == 'laboratorio'){
-            window.location.href = "/inventario/laboratorio";
-        }
-
-    }
-
-
-</script>
 
 @push('scripts')
 <!-- Script personalizado -->
