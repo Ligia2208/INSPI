@@ -261,6 +261,12 @@
                                             required disabled
                                             class="form-control form-control-solid"
                                             <?php
+                                            if($method = 'STORE'){
+                                                $anios = 0;
+                                                $meses = 0;
+                                                $dias = 0;
+                                            }
+                                            else{
                                             $tiempo = strtotime($Preanaliticas->paciente->fechanacimiento);
                                             $ahora = time();
                                             $tanios = ($ahora-$tiempo)/(60*60*24*365.25);
@@ -270,6 +276,7 @@
                                             $meses = floor($tmeses) - $anios*12;
                                             $mdias = floor($tdias) - $anios*365.25 - $meses*30.44;
                                             $dias = floor($mdias);
+                                            }
                                             ?>
                                             value = "{{ $anios }} años {{ $meses }} meses {{  $dias }} días" >
                                     </div>
