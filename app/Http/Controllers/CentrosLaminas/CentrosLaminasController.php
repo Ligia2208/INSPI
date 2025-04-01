@@ -58,19 +58,16 @@ class CentrosLaminasController extends Controller
 
         if(request()->ajax()) {
 
-
-            
-
             $query = Lamina::select(
                 'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
                 'ingreso_laminas.total_laminas as total_laminas', 'ins.descripcion as instituto', 'recep.name as recepta',
-                'anali.name as analita'
+                'anali.name as analita', 'ins.unicodigo as unicodigo'
             )
             ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
             ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
             ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
             ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
-            ->whereNotIn('ingreso_laminas.estado', ['A']);
+            ->where('ingreso_laminas.estado', ['A']);
         
             // **Devolver datos en formato JSON**
             return datatables()->of($query)->addIndexColumn()->make(true);
@@ -111,6 +108,7 @@ class CentrosLaminasController extends Controller
         $analista      = $request->input('analista'); 
         $mes_recepcion = $request->input('mes_recepcion'); 
         $observaciones = $request->input('observaciones'); 
+        $total_laminas = $request->input('total_laminas'); 
 
         $laminas_empacadas       = filter_var($request->input('laminas_empacadas'), FILTER_VALIDATE_BOOLEAN);
         $laminas_legibles        = filter_var($request->input('laminas_legibles'), FILTER_VALIDATE_BOOLEAN);
@@ -132,7 +130,7 @@ class CentrosLaminasController extends Controller
         $ingreso->mes_recepcion   = $mes_recepcion;
         $ingreso->observaciones   = $observaciones;
         $ingreso->anio            = $anio;
-
+        $ingreso->total_laminas   = $total_laminas;
         $ingreso->id_evento       = 9;
         $ingreso->id_tecnica      = 9;
 

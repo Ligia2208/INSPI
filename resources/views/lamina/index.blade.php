@@ -50,12 +50,14 @@
                         <table id="tblPlanificacionIndex" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>Evento</th>
-                                    <th>Tecnica</th>
                                     <th>N° US</th>
                                     <th>Unidad de salud</th>
-                                    <th>Fecha</th>
+                                    <th>Recpta</th>
+                                    <th>Analista</th>
                                     <th>Total de Láminas</th>
+                                    <th>Mes</th>
+                                    <th>Fecha</th>
+                                    <th>Opciones</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -63,12 +65,14 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>Evento</th>
-                                    <th>Tecnica</th>
                                     <th>N° US</th>
                                     <th>Unidad de salud</th>
-                                    <th>Fecha</th>
+                                    <th>Recpta</th>
+                                    <th>Analista</th>
                                     <th>Total de Láminas</th>
+                                    <th>Mes</th>
+                                    <th>Fecha</th>
+                                    <th>Opciones</th>
                                 </tr>
                             </tfoot>
 
@@ -217,6 +221,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.22')}}"></script>
-<script src="{{asset('assets/js/Planificacion/calculadora.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Lamina/index.js?v0.0.0')}}"></script>
 @endpush
