@@ -6,7 +6,7 @@ $(function(){
 
 
     $(document).on('click', '#btnGenerarPDF', function () {
-        let id             = $('#id_lamina').val(); // si estás usando ID
+        let id             = $('#id_lamina').val(); 
         let fechaRecepcion = $('#fecha_recep').val();
         let totalLaminas   = $('#total_laminas').val();
         let responsable    = $('#responsable').val();
@@ -15,7 +15,7 @@ $(function(){
         let procedencia    = $('#procedencia').val() || '---'; // opcional
         let mesSupervisado = $('#mes_recepcion').val();
         let observaciones  = $('#Observaciones').val();
-        let realizadoPor   = $('#analista option:selected').text(); // o capturado como quieras
+        let realizadoPor   = $('#analista option:selected').text(); 
     
         $.ajax({
             type: 'GET',

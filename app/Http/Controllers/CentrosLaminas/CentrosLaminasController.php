@@ -160,19 +160,10 @@ class CentrosLaminasController extends Controller
     
 
 
-    public function reportLamina(Request $request)
+    public function reporte(Request $request)
     {
         return \PDF::loadView('pdf.pdfLamina', [
-            'id'               => $request->input('id'),
-            'fechaRecepcion'   => $request->input('fechaRecepcion'),
-            'totalLaminas'     => $request->input('totalLaminas'),
-            'responsable'      => $request->input('responsable'),
-            'analista'         => $request->input('analista'),
-            'nombreLab'        => $request->input('nombreLaboratorio'),
-            'procedencia'      => $request->input('procedencia'),
-            'mesSupervisado'   => $request->input('mesSupervisado'),
-            'observaciones'    => $request->input('observaciones'),
-            'realizadoPor'     => $request->input('realizadoPor'),
+            'id'               => $request->input('id')
         ])
         ->setPaper('A4', 'landscape')
         ->download('reporte_laminas.pdf');

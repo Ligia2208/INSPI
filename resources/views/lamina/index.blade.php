@@ -52,7 +52,7 @@
                                 <tr>
                                     <th>N° US</th>
                                     <th>Unidad de salud</th>
-                                    <th>Recpta</th>
+                                    <th>Recepta</th>
                                     <th>Analista</th>
                                     <th>Total de Láminas</th>
                                     <th>Mes</th>
@@ -67,7 +67,7 @@
                                 <tr>
                                     <th>N° US</th>
                                     <th>Unidad de salud</th>
-                                    <th>Recpta</th>
+                                    <th>Recepta</th>
                                     <th>Analista</th>
                                     <th>Total de Láminas</th>
                                     <th>Mes</th>
