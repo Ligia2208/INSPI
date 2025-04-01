@@ -751,12 +751,7 @@ $(function(){
 
     });
     /* GENERAR REPORTE */
-
-
 });
-
-
-
 
 // Función para validar input numérico
 function validarInputNumerico(input) {
@@ -1154,4 +1149,94 @@ function actualizarListaItems(){
         }
     });
 
+
+    
+
 }
+$(function () {
+    // Guardar objetivo existente
+    $('#guardar_objetivo').on('click', function () {
+        const id_objetivo = $('#objetivo_operativo').val();
+        const id_direccion = $('#id_direccion').val();
+
+        if (!id_objetivo) {
+            return Swal.fire({
+                icon: 'warning',
+                title: 'SoftInspi',
+                text: 'Debe seleccionar un objetivo operativo',
+                showConfirmButton: true,
+            });
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/itemPresupuestario/guardarObjetivo',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                id_objetivo,
+                id_direccion
+            },
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'SoftInspi',
+                    text: response.message,
+                    showConfirmButton: true,
+                });
+            },
+            error: function (err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: err.responseJSON?.message || 'Error al guardar objetivo',
+                });
+            }
+        });
+    });
+
+    // Agregar nuevo objetivo
+    $('#agregar_objetivo').on('click', function () {
+        const nombre = $('#inputItem').val();
+        const id_area = $('#id_area').val();
+        const id_direccion = $('#id_direccion').val();
+
+        if (!nombre) {
+            return Swal.fire({
+                icon: 'warning',
+                title: 'SoftInspi',
+                text: 'Debe ingresar el nombre del objetivo',
+            });
+        }
+
+        $.ajax({
+            type: 'POST',
+            url: '/itemPresupuestario/crearObjetivo',
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            },
+            data: {
+                nombre,
+                id_area,
+                id_direccion
+            },
+            success: function (response) {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'SoftInspi',
+                    text: response.message,
+                }).then(() => {
+                    location.reload(); // o puedes hacer append manual al select
+                });
+            },
+            error: function (err) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error',
+                    text: err.responseJSON?.message || 'Error al crear objetivo',
+                });
+            }
+        });
+    });
+});

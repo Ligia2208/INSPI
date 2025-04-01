@@ -28,9 +28,19 @@
             <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> LISTA DE INGRESOS DE LAMINAS </h2>
             <hr/>
 
-            <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mb-2" href="{{ route('laminas.crear') }}" type="button" >
-                <i class="lni lni-circle-plus"></i> Ingresar Lámina
-            </a>
+            <div class="row mb-3"> 
+                <div class="col-md-2 d-flex me-2">
+                    <a class="btn btn-primary w-100 d-flex align-items-center justify-content-center" href="{{ route('laminas.crear') }}">
+                        <i class="lni lni-circle-plus me-1"></i> Ingresar Lámina
+                    </a>
+                </div>
+
+                <div class="col-md-2 d-flex">
+                    <button id="btnGeneratePDF" class="btn btn-primary w-100">Generar PDF</button>
+                </div>
+            </div>
+
+
 
             <div class="card">
 

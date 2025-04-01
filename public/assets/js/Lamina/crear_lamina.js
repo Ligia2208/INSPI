@@ -1,7 +1,7 @@
 $( function () {
 
     //CÓDIGO PARA BUSCAR USUARIO EN EL MODAL DE GENERAR PDF
-    $('.js-example-basic-single').select2({
+    $('.single-select').select2({
         width: '100%',
     });
 
@@ -22,96 +22,123 @@ $( function () {
 
 
     /* ==================== GUARDAR INGRESO DE LAMINAS ==================== */
-    $(document).on('click', '#btnGuardarSolicitud', function(){
-
-        let estado       = $('#estado').val();
-        let id_solicitud = $('#id_solicitud').val();
-
-        if(estado == '0'){
-
-            Swal.fire({
-                icon: 'warning',
-                type:  'warning',
-                title: 'SoftInspi',
-                text: 'Debe de Aprobar o Rechazar la solicitud para continuar.',
-                showConfirmButton: true,
-            });
-
-        }else{
-
-            let mensaje;
-            if(estado == 'aprobado'){
-                mensaje = 'La solicitud será aprobada, desea continuar?'
-            }else{
-                mensaje = 'La solicitud será rechazada, desea continuar?'
-            }
+    $(document).on('click', '#btnGuardarSolicitud', function() {
+        // Capturamos los valores de los campos
+        let fechaRecepcion = $('#fecha_recep').val();
+        let centroSalud    = $('#centro_salud').val();
+        let responsable    = $('#responsable').val();
+        let analista       = $('#analista').val();
+        let mesRecepcion   = $('#mes_recepcion').val();
+        let observaciones  = $('#Observaciones').val();
     
-            Swal.fire({
-                icon: 'warning',
-                type:  'warning',
-                title: 'SoftInspi',
-                text: mensaje,
-                showConfirmButton: true,
-                showCancelButton: true,
-            }).then((result) => {
-                if (result.value == true) {
-    
-                    $.ajax({
-    
-                        type: 'POST',
-                        url: '/planificacion/aproSolicitud',
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        },
-                        data: {
-                            'id_solicitud': id_solicitud,
-                            'estado': estado,
-                        },
-                        success: function(response) {
-    
-                            if(response.data){
-
-                                table.ajax.reload(); //actualiza la tabla
-                                document.getElementById('btnSolicitud').click();         
-
-                                Swal.fire({
-                                    icon: 'success',
-                                    type: 'success',
-                                    title: 'SoftInspi',
-                                    text: response.message,
-                                    showConfirmButton: true,
-                                });
-
-                            }else{
-
-                                Swal.fire({
-                                    icon: 'error',
-                                    type:  'error',
-                                    title: 'SoftInspi',
-                                    text: response.message,
-                                    showConfirmButton: true,
-                                });
-                                
-                            }
-                        },
-                        error: function(error) {
-                            var response = error.responseJSON;                
-                            Swal.fire({
-                                icon:  'error',
-                                title: 'SoftInspi',
-                                type:  'error',
-                                text:   response.message,
-                                showConfirmButton: true,
-                            });
-                        }
-                    });
-                }
-            });
-
+        // Validación de campos
+        if (centroSalud == 0) {
+            Swal.fire({ icon: 'warning', title: 'SoftInspi', text: 'Debe seleccionar un Centro de Salud.', showConfirmButton: true });
+            return;
+        } else if (responsable == 0) {
+            Swal.fire({ icon: 'warning', title: 'SoftInspi', text: 'Debe seleccionar un Responsable.', showConfirmButton: true });
+            return;
+        } else if (analista == 0) {
+            Swal.fire({ icon: 'warning', title: 'SoftInspi', text: 'Debe seleccionar un Analista.', showConfirmButton: true });
+            return;
         }
-
+    
+        let datosRadio = validarCalculos();
+        if (!datosRadio) return; // Si la validación falla, detenemos la ejecución
+    
+        // Mensaje de confirmación
+        Swal.fire({
+            icon: 'warning',
+            title: 'SoftInspi',
+            text: '¿Desea guardar la solicitud?',
+            showConfirmButton: true,
+            showCancelButton: true,
+        }).then((result) => {
+            if (result.value) {
+                // Realizamos la llamada AJAX
+                $.ajax({
+                    type: 'POST',
+                    url: '/laminas/guardar',  
+                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                    data: {
+                        'fecha_recep':   fechaRecepcion,
+                        'centro_salud':  centroSalud,
+                        'responsable':   responsable,
+                        'analista':      analista,
+                        'mes_recepcion': mesRecepcion,
+                        'observaciones': observaciones,
+                        ...datosRadio // Agregamos los valores de los radios
+                    },
+                    success: function(response) {
+                        Swal.fire({
+                            icon: response.success ? 'success' : 'error',
+                            title: 'SoftInspi',
+                            text: response.message,
+                            showConfirmButton: true,
+                        }).then((result) => {
+                            if (result.isConfirmed || result.isDismissed) {
+                                window.location.href = "/laminas"; 
+                            }
+                        });
+                    },
+                    
+                    error: function(error) {
+                        var response = error.responseJSON;
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'SoftInspi',
+                            text: response.message,
+                            showConfirmButton: true,
+                        });
+                    }
+                });
+            }
+        });
     });
     /* ==================== GUARDAR INGRESO DE LAMINAS ==================== */
+
+
+
+
+
+
+    function validarCalculos() {
+        let valid = true;
+        let datosRadio = {}; // Objeto para almacenar los valores de los radios
+    
+        // Lista de nombres de los radio buttons
+        const camposRadio = [
+            "laminas_empacadas",
+            "laminas_legibles",
+            "laminas_sin_id",
+            "laminas_sin_aceite",
+            "laminas_frotis_adecuado",
+            "laminas_integras",
+            "laminas_documentacion"
+        ];
+    
+        camposRadio.forEach((campo) => {
+            const seleccionado = document.querySelector(`input[name="${campo}"]:checked`);
+            if (!seleccionado) {
+                valid = false;
+                Swal.fire({
+                    icon:  'warning',
+                    title: 'CoreInspi',
+                    text:  `Por favor, selecciona una opción para: ${campo.replace(/_/g, ' ')}`,
+                    showConfirmButton: true,
+                });
+            } else {
+                datosRadio[campo] = seleccionado.value; // Guardamos el valor seleccionado
+            }
+        });
+    
+        return valid ? datosRadio : false; // Si es válido, retorna los datos; si no, retorna false
+    }
+
+
+
+
+
 
 
     /* ==================== MODAL SOLICITAR POA ==================== */
