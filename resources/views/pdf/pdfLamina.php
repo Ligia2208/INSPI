@@ -105,37 +105,6 @@
         </tbody>
     </table>
 
-    <!-- <table class="letra2" style="width: 100%; border-collapse: collapse; font-size: 12px; border: 1px solid black;">
-        <tbody>
-            <tr>
-                <td style="border: 1px solid black; padding: 5px;">Fecha de Recepción de Láminas:</td>
-                <td style="border: 1px solid black; padding: 5px;"></td>
-                <td style="border: 1px solid black; padding: 5px;">Nombre del Laboratorio Supervisado:</td>
-                <td style="border: 1px solid black; padding: 5px;"></td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black; padding: 5px;">Total de Láminas Recibidas:</td>
-                <td style="border: 1px solid black; padding: 5px;"></td>
-                <td style="border: 1px solid black; padding: 5px;">Procedencia:</td>
-                <td style="border: 1px solid black; padding: 5px;"></td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black; padding: 5px;">Responsable de Recepción:</td>
-                <td style="border: 1px solid black; padding: 5px;" colspan="3"></td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black; padding: 5px;">Analista (encargado de Control de Calidad):</td>
-                <td style="border: 1px solid black; padding: 5px;" colspan="3"></td>
-            </tr>
-            <tr>
-                <td style="border: 1px solid black; padding: 5px;">Mes supervisado:</td>
-                <td style="border: 1px solid black; padding: 5px;" colspan="3"></td>
-            </tr>
-        </tbody>
-    </table> -->
-
-
-
     <!----------------------------------------------------------------------------------------------------------------------------------------------->
     <table class="tabla-inferior">
         <thead>
@@ -183,6 +152,29 @@
             </tr>
         </tbody>
     </table>
+
+    <br><br>
+
+    <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
+        <tr>
+            <td style="border: 1px solid black; padding: 10px; vertical-align: top;" colspan="2">
+                <strong>Observaciones:</strong><br><br>
+                {{-- Espacio en blanco para que el analista escriba a mano --}}
+                <div style="height: 100px;"></div>
+            </td>
+        </tr>
+        <tr>
+            <td style="border: 1px solid black; padding: 10px; width: 70%;">
+                <strong>Realizado por:</strong><br><br>
+                <div style="height: 50px;"></div>
+            </td>
+            <td style="border: 1px solid black; padding: 10px; width: 30%;">
+                <strong>Fecha:</strong><br><br>
+                {{ date('d-m-Y') }}
+            </td>
+        </tr>
+    </table>
+
 
 
 </body>
