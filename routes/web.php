@@ -394,6 +394,16 @@ Route::middleware(['auth'])->group(function () {
     /* =========================== INVENTARIO =========================== */
 
 
+    /* =========================== LAMINAS =========================== */
+    Route::group(['namespace' => 'App\Http\Controllers\CentrosLaminas'], function(){
+
+        Route::get('/laminas', 'CentrosLaminasController@index')->name('laminas'); //vista principal
+        Route::get('/laminas/crear', 'CentrosLaminasController@crear')->name('laminas.crear');
+
+    });
+    /* =========================== LAMINAS =========================== */
+
+
 
 
     /* =========================== ENCUESTAS =========================== */
