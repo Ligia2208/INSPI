@@ -74,7 +74,7 @@ class Form extends Component
             'Preanaliticas.paciente_ubicacion' => 'sometimes|max:150',
             'Preanaliticas.paciente_nacionalidad' => 'sometimes|max:150',
             'Preanaliticas.fecha_recepcion' => 'required|max:10',
-            'Preanaliticas.fecha_atencion' => 'required|max:10',
+            'Preanaliticas.fecha_atencion' => 'sometimes|max:10',
             'Preanaliticas.quien_notifica' => 'required|max:80',
             'Preanaliticas.probable_infeccion' => 'sometimes|max:200',
             'Preanaliticas.fecha_sintomas' => 'required|max:10',

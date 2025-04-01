@@ -411,6 +411,98 @@
                     a.remove();
                 }
             }
+
+            function confirmAmpliada01(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas ampliadas de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('ampliada01', id);
+                    }
+                });
+            }
+
+            function confirmDiferencial01(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas diferenciales de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('diferencial01', id);
+                    }
+                });
+            }
+
+            function confirmDiferencial02(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas diferenciales de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('diferencial02', id);
+                    }
+                });
+            }
+
+            function confirmGeneradodif(id) {
+                swal.fire({
+                    title: "Pruebas Diferenciales",
+                    text: "Las pruebas diferenciales fueron generadas y remitidas al CRN correspondiente",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: false,
+                    confirmButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-white'>Ok, Cerrar</span>",
+                    reverseButtons: true,
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function() {
+
+                });
+            }
+
+            function confirmGeneradoamp(id) {
+                swal.fire({
+                    title: "Pruebas Ampliadas",
+                    text: "Las pruebas ampliadas fueron generadas y remitidas al CRN correspondiente",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: false,
+                    confirmButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-white'>Ok, Cerrar</span>",
+                    reverseButtons: true,
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function() {
+
+                });
+            }
         </script>
     @endsection
 </div>

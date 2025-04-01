@@ -3444,9 +3444,36 @@
                         </div>
                     </div>
                 </div>
+
+                @if ($Analiticas->resultado_id==67 && ($Analiticas->evento_id==116 || $Analiticas->evento_id==117 || $Analiticas->evento_id==118 || $Analiticas->evento_id==119 || $Analiticas->evento_id==120 || $Analiticas->evento_id==125))
+                <div class="form-row">
+                    <div class="form-group col-md-12">
+                        <label class="text-black"><b>Generación Eventos para investigación ampliada</b><span class="text-danger">*</span></label>
+                        <div class="input-group input-group-solid">
+                            <div class="input-group-prepend">
+                            <span class="input-group-text">
+                                <i class="fas fa-list"></i>
+                            </span>
+                        </div>
+                        <select
+                            wire:model.defer="Analiticas.eventosav_id"
+                            class="form-control selectpicker form-control-solid @error('Analiticas.eventosav_id') is-invalid @enderror"
+                            data-size="7"
+                            data-live-search="true"
+                            data-show-subtext="true"
+                            required multiple>
+                            <option value="">Selecciona un Evento</option>
+                            @foreach ($eventos as $objEvento)
+                                <option data-subtext="" value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+                @endif
                 <button class="d-none" type="submit"></button>
             </form>
             <!--end::Form-->
+
         </div>
         <div class="card-header" >
             <div class="card-toolbar">

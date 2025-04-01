@@ -61,7 +61,7 @@ class Form extends Component
             'Analiticas.resultado_id' => 'required|numeric',
             'Analiticas.descripcion' => 'sometimes|max:2000',
             'Analiticas.descripcion_responsable' => 'sometimes|max:2000',
-            'Analiticas.eventosav_id' => ['sometimes', 'array'],
+            
 
         ];
     }
