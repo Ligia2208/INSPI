@@ -246,8 +246,8 @@
                             <div class="col-md-6 mt-1">
                                 <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <!-- <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA" placeholder="Ingrese nombre de usuario" required> -->
-                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="ING. JOHANNA MARIELA SANCHEZ TORBAY" placeholder="Ingrese nombre de usuario" required>
+                                <!-- <input type="text" id="areaReq" name="areaReq" class="form-control" value="ING. JOHANNA MARIELA SANCHEZ TORBAY" placeholder="Ingrese nombre de usuario" required> -->
+                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
