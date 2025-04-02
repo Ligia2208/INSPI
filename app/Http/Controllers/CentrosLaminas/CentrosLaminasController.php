@@ -410,6 +410,24 @@ class CentrosLaminasController extends Controller
         return response()->json(['success' => true, 'message' => 'Resultados guardados correctamente'], 200);
     
     }
+
+
+
+    public function reporteResultadosCompleto(Request $request)
+    {
+
+        $resultados = Resultado::select('tec.descripcion as nom_tecnica', 'ins.descripcion as nom_instituto', 'resultado_laminas.tecnica_lamina',
+            'resultado_laminas.nro_laminas', 'resultado_laminas.porcentaje_laminas', 'resultado_laminas.porcentaje_acumulado', 'resultado_laminas.interpretacion')
+        ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'resultado_laminas.id_tecnica')
+        ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'resultado_laminas.id_unidad_salud')
+        ->where('resultado_laminas.estado', 'A')->get();
+
+        return \PDF::loadView('pdf.reporte_laminas.resultados_completo', [
+            'resultados' => $resultados,
+        ])
+        ->setPaper('A4', 'landscape')
+        ->download('reporte_laminas.pdf');
+    }
     
     
 

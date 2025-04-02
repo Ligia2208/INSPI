@@ -4,12 +4,11 @@ $(function(){
         width: '100%',
     });
 
-    populateYearSelect(2023);
 
 
 
-
-    $(document).on('click', '#btnGeneratePDF', function() {
+    /*
+    $(document).on('click', '#btnGenerarPDFResultados', function() {
         document.getElementById('btnModalReportPOA').click();
     });
 
@@ -25,9 +24,12 @@ $(function(){
         $('#cargo_revisa').val('');
         $('#cargo_aprueba').val('');
     });
+    */
 
     // Generar el reporte PDF
-    $(document).on('click', '#btnGenerarReportPOA', function() {
+    $(document).on('click', '#btnGenerarPDFResultados', function() {
+
+        /*
         var elaboraSelect = $('#elabora').val();
         var revisaSelect  = $('#revisa').val();
         var apruebaSelect = $('#aprueba').val();
@@ -40,6 +42,7 @@ $(function(){
         var filterSubActividad = $('#filterSubActividad').val();
 
         var id_direccion  = $('#id_direccion').val();
+
 
         if (elaboraSelect == '') {
             Swal.fire({
@@ -84,10 +87,14 @@ $(function(){
                 showConfirmButton: true,
             });
         } else {
+
+        */
             $.ajax({
                 type: 'GET',
-                url: '/planificacion/reportDetalleUser',
+                url: '/laminas/reporteResultadosCompleto',
                 data: {
+
+                    /*
                     elabora:       elaboraSelect,
                     revisa:        revisaSelect,
                     aprueba:       apruebaSelect,
@@ -99,6 +106,7 @@ $(function(){
                     filterAnio:    filterAnio,        
                     filterItem:    filterItem,        
                     filterSubActividad, filterSubActividad,
+                    */
                 },
                 xhrFields: {
                     responseType: 'blob'
@@ -108,12 +116,12 @@ $(function(){
                     var url = window.URL.createObjectURL(blob);
                     var a = document.createElement('a');
                     a.href = url;
-                    a.download = 'reporte_anual_' + filterAnio + '.pdf';
+                    a.download = 'reporte_laminas_completo_' + '.pdf';
                     document.body.appendChild(a);
                     a.click();
                     window.URL.revokeObjectURL(url);
                     a.remove();
-                    $('#addReportDetalle').modal('hide');
+                    //$('#addReportDetalle').modal('hide');
                 },
                 error: function(error) {
                     Swal.fire({
@@ -125,7 +133,7 @@ $(function(){
                     });
                 }
             });
-        }
+        /*}*/
     });
 
 
@@ -191,9 +199,6 @@ $(function(){
             }
         });
     });
-
-
-
 
 })
 
