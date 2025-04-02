@@ -6,6 +6,117 @@ $(function(){
 
     //populateYearSelect(2023);
 
+    // Generar el reporte PDF
+    $(document).on('click', '#btnGenerarPDFResultados', function() {
+
+        /*
+        var elaboraSelect = $('#elabora').val();
+        var revisaSelect  = $('#revisa').val();
+        var apruebaSelect = $('#aprueba').val();
+        var cargo_elabora = $('#cargo_elabora').val();
+        var cargo_revisa  = $('#cargo_revisa').val();
+        var cargo_aprueba = $('#cargo_aprueba').val();
+
+        var filterAnio         = $('#filterAnio').val();
+        var filterItem         = $('#filterItem').val();
+        var filterSubActividad = $('#filterSubActividad').val();
+
+        var id_direccion  = $('#id_direccion').val();
+
+
+        if (elaboraSelect == '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'CoreInspi',
+                text: 'Debe ingresar el usuario que elaboró el reporte',
+                showConfirmButton: true,
+            });
+        } else if (revisaSelect == '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'CoreInspi',
+                text: 'Debe ingresar el usuario que revisó el reporte',
+                showConfirmButton: true,
+            });
+        } else if (apruebaSelect == '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'CoreInspi',
+                text: 'Debe ingresar el usuario que aprobó el reporte',
+                showConfirmButton: true,
+            });
+        } else if (cargo_elabora == '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'CoreInspi',
+                text: 'Debe ingresar el cargo del usuario que elaboró el reporte',
+                showConfirmButton: true,
+            });
+        } else if (cargo_revisa == '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'CoreInspi',
+                text: 'Debe ingresar el cargo del usuario que revisó el reporte',
+                showConfirmButton: true,
+            });
+        } else if (cargo_aprueba == '') {
+            Swal.fire({
+                icon: 'warning',
+                title: 'CoreInspi',
+                text: 'Debe ingresar el cargo del usuario que aprobó el reporte',
+                showConfirmButton: true,
+            });
+        } else {
+
+        */
+            $.ajax({
+                type: 'GET',
+                url: '/laminas/reporteResultadosCompleto',
+                data: {
+
+                    /*
+                    elabora:       elaboraSelect,
+                    revisa:        revisaSelect,
+                    aprueba:       apruebaSelect,
+                    cargo_elabora: cargo_elabora,
+                    cargo_revisa:  cargo_revisa,
+                    cargo_aprueba: cargo_aprueba,
+                    id_direccion:  id_direccion,
+
+                    filterAnio:    filterAnio,        
+                    filterItem:    filterItem,        
+                    filterSubActividad, filterSubActividad,
+                    */
+                },
+                xhrFields: {
+                    responseType: 'blob'
+                },
+                success: function(response, status, xhr) {
+                    var blob = new Blob([response], { type: 'application/pdf' });
+                    var url = window.URL.createObjectURL(blob);
+                    var a = document.createElement('a');
+                    a.href = url;
+                    a.download = 'reporte_laminas_completo_' + '.pdf';
+                    document.body.appendChild(a);
+                    a.click();
+                    window.URL.revokeObjectURL(url);
+                    a.remove();
+                    //$('#addReportDetalle').modal('hide');
+                },
+                error: function(error) {
+                    Swal.fire({
+                        icon: 'error',
+                        type: 'error',
+                        title: 'CoreInspi',
+                        text: 'Error al generar el PDF',
+                        showConfirmButton: true,
+                    });
+                }
+            });
+        /*}*/
+    });
+
+
 
     $(document).on('click', '#btnGenerarPDF', function () {
         console.log('🟢 Click detectado');
@@ -41,9 +152,6 @@ $(function(){
             }
         });
     });
-    
-    
-    
 })
 
 
@@ -92,6 +200,13 @@ $( function () {
                                 <i class="bi bi-clipboard-check"></i>
                             </a>
 
+
+                            <a id="btnPDF_calidad" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad" data-title="Generar PDF Control Calidad">
+                                <i class="bi bi-file-earmark-pdf text-info"></i>
+                            </a>
+
+                            
+
                         </div>`;
                 }
             },
@@ -131,3 +246,43 @@ $( function () {
 //==========================================FIN VISTA DETALLE USER================================================
 
 
+
+
+
+    // Generar el reporte PDF
+    $(document).on('click', '#btnPDF_calidad', function() {
+
+        var id_lamina = $(this).data('id_lamina');
+        $.ajax({
+            type: 'GET',
+            url: '/laminas/reporte_control_calidad',
+            data: {
+                id_lamina:       id_lamina,
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, status, xhr) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_laminas_completo_' + '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+                //$('#addReportDetalle').modal('hide');
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    type: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el PDF',
+                    showConfirmButton: true,
+                });
+            }
+        });
+        
+    });
