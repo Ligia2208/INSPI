@@ -428,6 +428,121 @@ class CentrosLaminasController extends Controller
         ->setPaper('A4', 'landscape')
         ->download('reporte_laminas.pdf');
     }
+
+
+    public function reporte_control_calidad(Request $request)
+    {
+
+        $id_lamina  = $request->query('id_lamina');
+
+        $datos = Lamina::select(
+                'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
+                'ingreso_laminas.total_laminas as total_laminas', 'ins.descripcion as instituto', 'recep.name as recepta',
+                'anali.name as analita', 'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones',
+
+                'ingreso_laminas.laminas_empacadas', 'ingreso_laminas.laminas_legibles', 'ingreso_laminas.laminas_sin_id',
+                'ingreso_laminas.laminas_sin_aceite', 'ingreso_laminas.laminas_frotis_adecuado', 'ingreso_laminas.laminas_integras',
+                'ingreso_laminas.laminas_documentacion'
+            )
+            ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
+            ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+            ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
+            ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
+            ->where('ingreso_laminas.estado', ['A'])
+            ->where('ingreso_laminas.id', $id_lamina)->first();
+
+        $resultados = Resultado::select('tec.descripcion as nom_tecnica', 'ins.descripcion as nom_instituto', 'resultado_laminas.tecnica_lamina',
+            'resultado_laminas.nro_laminas', 'resultado_laminas.porcentaje_laminas', 'resultado_laminas.porcentaje_acumulado', 'resultado_laminas.interpretacion')
+            ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'resultado_laminas.id_tecnica')
+            ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'resultado_laminas.id_unidad_salud')
+            ->where('resultado_laminas.estado', 'A')
+            ->where('resultado_laminas.id_lamina', $id_lamina)->take(2)->get();
+
+        //dd($resultados);
+        // Obtener el total de registros
+        $total_registros = Desglose::where('id_lamina', $id_lamina)->count();
+
+        // Obtener el conteo de cada tipo de frotis
+        $conteos_frotis = Desglose::where('id_lamina', $id_lamina)
+            ->selectRaw('id_frotis, COUNT(*) as total')
+            ->groupBy('id_frotis')
+            ->pluck('total', 'id_frotis');
+
+        // Obtener el conteo de cada tipo de tinción
+        $conteos_tincion = Desglose::where('id_lamina', $id_lamina)
+            ->selectRaw('id_tincion, COUNT(*) as total')
+            ->groupBy('id_tincion')
+            ->pluck('total', 'id_tincion');
+
+        // Obtener el conteo de cada tipo de apariencia
+        $conteos_apariencia = Desglose::where('id_lamina', $id_lamina)
+            ->selectRaw('id_apariencia, COUNT(*) as total')
+            ->groupBy('id_apariencia')
+            ->pluck('total', 'id_apariencia');
+
+        // Obtener los nombres de frotis, tinción y apariencia desde la base de datos
+        $tipos_frotis = Frotis::pluck('nombre', 'id');
+        $tipos_tincion = Tincion::pluck('nombre', 'id');
+        $tipos_apariencia = Apariencia::pluck('nombre', 'id');
+
+        // Función para calcular el porcentaje
+        $porcentaje = fn($cantidad) => $total_registros > 0 ? ($cantidad / $total_registros) * 100 : 0;
+
+        // Función para calcular la calificación
+        $calificacion = function ($porcentaje) {
+            return $porcentaje >= 75 ? 'Bueno' :
+                ($porcentaje >= 64 ? 'Regular' : 'Deficiente');
+        };
+
+        // Construir el arreglo con los datos de frotis
+        $datos_frotis = [];
+        foreach ($tipos_frotis as $id_frotis => $nombre) {
+            $cantidad = $conteos_frotis[$id_frotis] ?? 0;
+            $porc = $porcentaje($cantidad);
+            $datos_frotis[] = [
+                'nombre'        => $nombre,
+                'cantidad'      => $cantidad,
+                'porcentaje'    => $porc,
+                'calificacion'  => $calificacion($porc)
+            ];
+        }
+
+        // Construir el arreglo con los datos de tinción
+        $datos_tincion = [];
+        foreach ($tipos_tincion as $id_tincion => $nombre) {
+            $cantidad = $conteos_tincion[$id_tincion] ?? 0;
+            $porc = $porcentaje($cantidad);
+            $datos_tincion[] = [
+                'nombre'        => $nombre,
+                'cantidad'      => $cantidad,
+                'porcentaje'    => $porc,
+                'calificacion'  => $calificacion($porc)
+            ];
+        }
+
+        // Construir el arreglo con los datos de apariencia (SIN calificación)
+        $datos_apariencia = [];
+        foreach ($tipos_apariencia as $id_apariencia => $nombre) {
+            $cantidad = $conteos_apariencia[$id_apariencia] ?? 0;
+            $porc = $porcentaje($cantidad);
+            $datos_apariencia[] = [
+                'nombre'        => $nombre,
+                'cantidad'      => $cantidad,
+                'porcentaje'    => $porc
+            ];
+        }
+
+
+        return \PDF::loadView('pdf.reporte_laminas.resultados_calidad', [
+            'resultados'       => $resultados,
+            'datos_frotis'     => $datos_frotis,
+            'datos_tincion'    => $datos_tincion,
+            'datos_apariencia' => $datos_apariencia,
+            'datos'            => $datos,
+        ])
+        ->setPaper('A4', 'portrait')
+        ->download('reporte_laminas.pdf');
+    }
     
     
 
