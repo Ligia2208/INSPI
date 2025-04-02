@@ -410,6 +410,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas/control_calidad/{id}', 'CentrosLaminasController@control_calidad')->name('laminas.control_calidad');
 
         Route::post('/laminas/resultados_laminas', 'CentrosLaminasController@resultados_laminas')->name('laminas.resultados_laminas');
+        Route::get('/laminas/reporte', 'CentrosLaminasController@reporte')->name('laminas.reporte');
+
 
     });
     /* =========================== LAMINAS =========================== */
