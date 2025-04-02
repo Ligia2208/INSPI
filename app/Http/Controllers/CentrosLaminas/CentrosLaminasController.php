@@ -159,15 +159,32 @@ class CentrosLaminasController extends Controller
     }
     
 
-
     public function reporte(Request $request)
     {
         return \PDF::loadView('pdf.pdfLamina', [
-            'id'               => $request->input('id')
+            'id'                        => $request->input('id'),
+            'fechaRecepcion'           => $request->input('fechaRecepcion'),
+            'totalLaminas'             => $request->input('totalLaminas'),
+            'responsable'              => $request->input('responsable'),
+            'analista'                 => $request->input('analista'),
+            'nombreLab'                => $request->input('nombreLaboratorio'),
+            'procedencia'              => $request->input('procedencia'),
+            'mesSupervisado'           => $request->input('mesSupervisado'),
+            'observaciones'            => $request->input('observaciones'),
+            'realizadoPor'             => $request->input('realizadoPor'),
+    
+            'laminas_empacadas'        => $request->input('laminas_empacadas'),
+            'laminas_legibles'         => $request->input('laminas_legibles'),
+            'laminas_sin_id'           => $request->input('laminas_sin_id'),
+            'laminas_sin_aceite'       => $request->input('laminas_sin_aceite'),
+            'laminas_frotis_adecuado'  => $request->input('laminas_frotis_adecuado'),
+            'laminas_integras'         => $request->input('laminas_integras'),
+            'laminas_documentacion'    => $request->input('laminas_documentacion'),
         ])
         ->setPaper('A4', 'landscape')
         ->download('reporte_laminas.pdf');
     }
+    
 
 
 }
