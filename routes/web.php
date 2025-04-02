@@ -405,6 +405,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas', 'CentrosLaminasController@index')->name('laminas'); //vista principal
         Route::get('/laminas/crear', 'CentrosLaminasController@crear')->name('laminas.crear');
         Route::post('/laminas/guardar', 'CentrosLaminasController@guardar')->name('laminas.guardar');
+        Route::get('/laminas/agregar_laminas/{id}', 'CentrosLaminasController@agregar_laminas')->name('laminas.agregar_laminas');
+        Route::post('/laminas/guardar_laminas', 'CentrosLaminasController@guardar_laminas')->name('laminas.guardar_laminas');
+        Route::get('/laminas/control_calidad/{id}', 'CentrosLaminasController@control_calidad')->name('laminas.control_calidad');
+
+        Route::post('/laminas/resultados_laminas', 'CentrosLaminasController@resultados_laminas')->name('laminas.resultados_laminas');
 
     });
     /* =========================== LAMINAS =========================== */

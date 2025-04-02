@@ -166,12 +166,16 @@ $( function () {
                 render: function (data, type, full, meta) {
                     return `
                         <div class="action-buttons">
-                            <a id="btnPDF_ingreso" data-id_editar="${full.id}" href="javascript:void(0);" >
+                            <a id="btnPDF_ingreso" class="ml-1" data-id_editar="${full.id}" href="javascript:void(0);" title="PDF Ingreso de Láminas" data-title="PDF Ingreso de Láminas">
                                 <i class="bi bi-file-pdf"></i>
                             </a>
 
-                            <a id="btnAdd_laminas" data-id_editar="${full.id}" href="/laminas/agregar_laminas/${full.id}" >
+                            <a id="btnAdd_laminas" class="ml-1" data-id_editar="${full.id}" href="/laminas/agregar_laminas/${full.id}" title="Desglose de Láminas" data-title="Desglose de Láminas">
                                 <i class="bi bi-list-ul"></i>
+                            </a>
+
+                            <a id="btnAdd_control" class="ml-1" data-id_editar="${full.id}" href="/laminas/control_calidad/${full.id}" title="Control de Láminas" data-title="Control de Láminas">
+                                <i class="bi bi-clipboard-check"></i>
                             </a>
 
                         </div>`;
