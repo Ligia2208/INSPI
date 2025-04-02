@@ -78,7 +78,11 @@
 
                         </table>
                     </div>
+                    <!-- Campo oculto para guardar el ID seleccionado de la lámina -->
+                    <input type="hidden" id="id_lamina">
+
                 </div>
+                
             </div>
 
         </div>
@@ -218,8 +222,9 @@
 
 </script>
 
+@stack('scripts')
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/index.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Lamina/index.js?v0.0.1')}}"></script>
 @endpush
