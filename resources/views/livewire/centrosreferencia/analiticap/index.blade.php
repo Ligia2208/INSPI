@@ -272,7 +272,7 @@
                                             </i>
                                         @endif
                                         @if ($analitica->crns_id == 8 && $analitica->evento_id == 104)
-                                            @if ($analitica->resultado_id==67)
+                                            @if ($analitica->resultado_id==66 || $analitica->resultado_id==68)
                                                 @if($analitica->cdiferencial==0)
                                                     <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial01({{ $analitica->id }})">
                                                     <a href="" target="_blank" class="navi-link">
@@ -293,7 +293,7 @@
                                             @endif
                                         @endif
                                         @if ($analitica->crns_id == 8 && $analitica->evento_id == 106)
-                                            @if ($analitica->resultado_id==66 || $analitica->resultado_id==68)
+                                        @if ($analitica->resultado_id==67)
                                             @if($analitica->cdiferencial==0)
                                                 <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial02({{ $analitica->id }})">
                                                     <a href="" target="_blank" class="navi-link">
