@@ -12,65 +12,65 @@
             .no-border { border: none; }
             .underline { text-decoration: underline; }
             .italic { font-style: italic; }
-        </style>
+        </style> 
     </head>
     <body>
-
-        <table class="letra" style="width: 100%; border-collapse: collapse; border: 1px solid black; font-size: 12px; text-align: center; vertical-align: middle;">
+        <!-- ENCABEZADO -->
+        <table class="letra" style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: center; vertical-align: middle;">
             <thead>
                 <tr>
-                    <th rowspan="2" style="width: 22.5%;">
-                        <img src="img/logo_peque.png" alt="Logo" width="125" height="80">
+                    <th rowspan="3" style="width: 22.5%; text-align: center; vertical-align: middle;">
+                    <img src="img/logo_peque.png" alt="Foto" width="125" height="80">
                     </th>
-                    <th colspan="4">VERIFICACIÓN Y RECEPCIÓN DE LÁMINAS</th>
-                    <th style="width: 8%;">Código:</th>
-                    <th style="width: 10%;">F-MICOTB-001</th>          
+                    <th colspan="2">VERIFICACIÓN Y RECEPCIÓN DE LÁMINAS</th>
+                    <th style="width: 6%;">CÓDIGO</th>
+                    <th style="width: 10%;">F-MICOTB-001</th>
                 </tr>
                 <tr>
-                    <td colspan="2">
-                        <strong>MACRO-PROCESO:</strong><br>
-                        Laboratorios de Vigilancia Epidemiológica<br>
-                        y Referencia Nacional
+                    <td rowspan="2" style="width: 30%;"> 
+                        <span class="bold">MACRO-PROCESO:</span> Laboratorios de Vigilancia Epidemiológica y Referencia Nacional
                     </td>
-                    <td colspan="2">
-                        <strong>PROCESO INTERNO:</strong><br>
-                        Centro de Referencia<br>
-                        Nacional de Micobacterias
+                    <td rowspan="2" style="width: 30%;"> 
+                        <span class="bold">PROCESO INTERNO:</span> Centro de Referencia Nacional de Micobacterias
                     </td>
-                    <td><strong>Fecha de Aprobación:</strong></td>
+                    <td style="border: 1px solid black; width: 10%;"> 
+                        <span class="bold">Edición</span>
+                    </td>
+                    <td>01</td>
+                </tr>
+                <tr>
+                    <td> 
+                        <span class="bold">Fecha de Aprobación</span>
+                    </td>
                     <td>01/04/2025</td>
                 </tr>
+
             </thead>
         </table>
         <br>
-  
-        <table>
+        
+        <!-- CUERPO1 -->
+        <table class="no-border" style="width: 100%; border: 1px solid black; border-collapse: collapse;">
             <tr>
-                <td style="width: 35%;">Fecha de Recepción de Láminas:</td>
-                <td style="width: 30%;"></td>
-                <td style="width: 25%;">Nombre del <span class="underline">Laboratorio Supervisado</span>:</td>
-                <td></td>
+                <td style="width: 50%; text-align: left; border: none;">Fecha de Recepción de Láminas:</td>
+                <td style="width: 50%; text-align: left; border: none;">Nombre del <span class="underline">Laboratorio Supervisado</span>:</td>
             </tr>
             <tr>
-                <td>Total de Láminas Recibidas:</td>
-                <td></td>
-                <td>Procedencia:</td>
-                <td></td>
+                <td style="text-align: left; border: none;">Total de Láminas Recibidas:</td>
+                <td style="text-align: left; border: none;">Procedencia:</td>
             </tr>
             <tr>
-                <td>Responsable de Recepción:</td>
-                <td colspan="3"></td>
+                <td style="text-align: left; border: none;">Responsable de Recepción:</td>
+                <td colspan="1" style="border: none;"></td>
             </tr>
             <tr>
-                <td>Analista (encargado de Control de Calidad):</td>
-                <td></td>
-                <td>Mes <span class="underline">supervisado</span>:</td>
-                <td></td>
+                <td style="text-align: left; border: none;">Analista (encargado de Control de Calidad):</td>
+                <td style="text-align: left; border: none;">Mes <span class="underline">supervisado</span>:</td>
             </tr>
         </table>
-
         <br>
 
+        <!-- CUERPO2 -->
         <table>
             <thead>
                 <tr class="center bold">
@@ -89,19 +89,21 @@
                 <tr><td>Láminas con documentación respectiva (<span class="italic underline">listado con el número y resultado de cada lámina</span>)</td><td></td><td></td></tr>
             </tbody>
         </table>
-
         <br>
 
-        <table>
+        <!-- PIE -->
+        <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
             <tr>
-                <td colspan="2"><strong>Observaciones:</strong><br><br><br><br><br><br></td>
+                <td style="border-bottom: 1px solid black; text-align: left;"><strong>Observaciones:</strong><br><br><br><br><br><br></td>
             </tr>
             <tr>
-                <td style="width: 70%;"><strong>Realizado por:</strong> ____________________________</td>
+                <td style="border-bottom: 1px solid black; width: 70%; padding: 5px; text-align: left;">
+                    <strong>Realizado por:</strong> ____________________________<br><br>
+                </td>
             </tr>
         </table>
-
         <br>
+
         <div style="text-align: right; font-size: 10px;">Página 1/1</div>
 
     </body>
