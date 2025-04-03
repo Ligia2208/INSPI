@@ -119,22 +119,22 @@ $(function(){
 
 
     $(document).on('click', '#btnGenerarPDF', function () {
-        console.log('🟢 Click detectado');
+      // console.log('🟢 Click detectado');
     
         $.ajax({
             type: 'GET',
             url: '/laminas/reporte',
             xhrFields: { responseType: 'blob' },
             success: function (response) {
-                console.log('🟢 PDF recibido. Intentando abrir en nueva pestaña...');
+               // console.log('🟢 PDF recibido. Intentando abrir en nueva pestaña...');
     
                 const blob = new Blob([response], { type: 'application/pdf' });
                 const url = window.URL.createObjectURL(blob);
     
-                // Intento 1: abrir en nueva pestaña
+                // Abrir en nueva pestaña
                 const opened = window.open(url, '_blank');
                 if (!opened) {
-                    console.warn('⚠️ El navegador bloqueó la nueva pestaña');
+                    console.warn(' El navegador bloqueó la nueva pestaña');
                     Swal.fire({
                         icon: 'info',
                         title: 'Atención',
@@ -143,7 +143,7 @@ $(function(){
                 }
             },
             error: function (xhr) {
-                console.error('❌ Error AJAX:', xhr.status, xhr.responseText);
+                //console.error('❌ Error AJAX:', xhr.status, xhr.responseText);
                 Swal.fire({
                     icon: 'error',
                     title: 'Error',
@@ -286,3 +286,41 @@ $( function () {
         });
         
     });
+
+    
+    $(document).on('click', '#btnPDF_ingreso', function() {
+
+        var id_lamina = $(this).data('id_lamina');
+        $.ajax({
+            type: 'GET',
+            url: '/laminas/reporte_ingreso',
+            data: {
+                id_lamina:       id_lamina,
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, _status, _xhr) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'ingreso de laminas' + '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    type: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el PDF',
+                    showConfirmButton: true,
+                });
+            }
+        });
+        
+    });
+
