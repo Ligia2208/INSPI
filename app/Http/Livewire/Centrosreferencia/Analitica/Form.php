@@ -181,7 +181,7 @@ class Form extends Component
             'Analiticas.cimmdcuatro_bacte' => 'sometimes|numeric',
             'Analiticas.escalamdcuatrobacte_id' => 'sometimes|numeric',
 
-            'Analiticas.eventosav_id' => ['sometimes', 'array'],
+            //'Analiticas.eventosav_id' => ['sometimes', 'array'],
         ];
     }
 

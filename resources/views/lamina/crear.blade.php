@@ -228,5 +228,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/crear_lamina.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Lamina/crear_lamina.js?v0.0.1')}}"></script>
 @endpush
