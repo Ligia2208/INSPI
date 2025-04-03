@@ -57,20 +57,24 @@
             </tr>
             <tr>
                 <td style="text-align: left; border: none;">Total de Láminas Recibidas:</td>
-                <td style="text-align: left; border: none;">Procedencia:</td>
+                <td style="text-align: left; border: none;">{{ $datos->total_laminas }}</td> <!-- Total de Láminas -->
             </tr>
             <tr>
                 <td style="text-align: left; border: none;">Responsable de Recepción:</td>
-                <td colspan="1" style="border: none;"></td>
+                <td colspan="1" style="border: none;">{{ $datos->recepta ?? 'No disponible' }}</td> <!-- Responsable -->
             </tr>
             <tr>
                 <td style="text-align: left; border: none;">Analista (encargado de Control de Calidad):</td>
+                <td style="text-align: left; border: none;">{{ $datos->analita ?? 'No disponible' }}</td> <!-- Analista -->
+            </tr>
+            <tr>
                 <td style="text-align: left; border: none;">Mes <span class="underline">supervisado</span>:</td>
+                <td style="text-align: left; border: none;">{{ $datos->mes_recepcion }}</td> <!-- Mes de Recepción -->
             </tr>
         </table>
         <br>
 
-        <!-- CUERPO2 -->
+        <!-- CUERPO2: Sección de verificación -->
         <table>
             <thead>
                 <tr class="center bold">
@@ -80,13 +84,41 @@
                 </tr>
             </thead>
             <tbody>
-                <tr><td>Láminas empacadas en cajas de láminas porta objetos y separadas entre ellas</td><td></td><td></td></tr>
-                <tr><td>Láminas con información legible y enumeradas en forma consecutiva</td><td></td><td></td></tr>
-                <tr><td>Las Láminas sin identificación de su resultado</td><td></td><td></td></tr>
-                <tr><td>Láminas sin exceso de aceite de inmersión</td><td></td><td></td></tr>
-                <tr><td>Láminas con frotis adecuado (tinción y dimensiones establecidas en el Manual de Baciloscopía)</td><td></td><td></td></tr>
-                <tr><td>Láminas íntegras sin rajaduras que afecten al frotis</td><td></td><td></td></tr>
-                <tr><td>Láminas con documentación respectiva (<span class="italic underline">listado con el número y resultado de cada lámina</span>)</td><td></td><td></td></tr>
+                <tr>
+                    <td>Láminas empacadas en cajas de láminas porta objetos y separadas entre ellas</td>
+                    <td>{{ $datos->laminas_empacadas ? 'X' : '' }}</td>
+                    <td>{{ !$datos->laminas_empacadas ? 'X' : '' }}</td>
+                </tr>
+                <tr>
+                    <td>Láminas con información legible y enumeradas en forma consecutiva</td>
+                    <td>{{ $datos->laminas_legibles ? 'X' : '' }}</td>
+                    <td>{{ !$datos->laminas_legibles ? 'X' : '' }}</td>
+                </tr>
+                <tr>
+                    <td>Las Láminas sin identificación de su resultado</td>
+                    <td>{{ $datos->laminas_sin_id ? 'X' : '' }}</td>
+                    <td>{{ !$datos->laminas_sin_id ? 'X' : '' }}</td>
+                </tr>
+                <tr>
+                    <td>Láminas sin exceso de aceite de inmersión</td>
+                    <td>{{ $datos->laminas_sin_aceite ? 'X' : '' }}</td>
+                    <td>{{ !$datos->laminas_sin_aceite ? 'X' : '' }}</td>
+                </tr>
+                <tr>
+                    <td>Láminas con frotis adecuado (tinción y dimensiones establecidas en el Manual de Baciloscopía)</td>
+                    <td>{{ $datos->laminas_frotis_adecuado ? 'X' : '' }}</td>
+                    <td>{{ !$datos->laminas_frotis_adecuado ? 'X' : '' }}</td>
+                </tr>
+                <tr>
+                    <td>Láminas íntegras sin rajaduras que afecten al frotis</td>
+                    <td>{{ $datos->laminas_integras ? 'X' : '' }}</td>
+                    <td>{{ !$datos->laminas_integras ? 'X' : '' }}</td>
+                </tr>
+                <tr>
+                    <td>Láminas con documentación respectiva (<span class="italic underline">listado con el número y resultado de cada lámina</span>)</td>
+                    <td>{{ $datos->laminas_documentacion ? 'X' : '' }}</td>
+                    <td>{{ !$datos->laminas_documentacion ? 'X' : '' }}</td>
+                </tr>
             </tbody>
         </table>
         <br>
@@ -94,7 +126,7 @@
         <!-- PIE -->
         <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
             <tr>
-                <td style="border-bottom: 1px solid black; text-align: left;"><strong>Observaciones:</strong><br><br><br><br><br><br></td>
+                <td style="border-bottom: 1px solid black; text-align: left;"><strong>Observaciones:</strong><br>{{ $datos->observaciones }}</td>
             </tr>
             <tr>
                 <td style="border-bottom: 1px solid black; width: 70%; padding: 5px; text-align: left;">

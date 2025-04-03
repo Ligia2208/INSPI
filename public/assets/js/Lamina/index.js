@@ -290,7 +290,7 @@ $( function () {
     
     $(document).on('click', '#btnPDF_ingreso', function() {
 
-        var id_lamina = $(this).data('id_lamina');
+        var id_lamina = $(this).data ('id_editar');
         $.ajax({
             type: 'GET',
             url: '/laminas/reporte_ingreso',

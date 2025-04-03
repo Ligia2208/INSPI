@@ -408,11 +408,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas/agregar_laminas/{id}', 'CentrosLaminasController@agregar_laminas')->name('laminas.agregar_laminas');
         Route::post('/laminas/guardar_laminas', 'CentrosLaminasController@guardar_laminas')->name('laminas.guardar_laminas');
         Route::get('/laminas/control_calidad/{id}', 'CentrosLaminasController@control_calidad')->name('laminas.control_calidad');
-     //   Route::get('/laminas/ingreso/{id}', 'CentrosLaminasController@ingreso')->name('laminas.ingreso');
 
 
         Route::post('/laminas/resultados_laminas', 'CentrosLaminasController@resultados_laminas')->name('laminas.resultados_laminas');
-        Route::get('/laminas/reporte', 'CentrosLaminasController@reporte')->name('laminas.reporte');
+       // Route::get('/laminas/reporte', 'CentrosLaminasController@reporte')->name('laminas.reporte');
         Route::get('/laminas/reporteResultadosCompleto', 'CentrosLaminasController@reporteResultadosCompleto')->name('laminas.reporteResultadosCompleto');
         Route::get('/laminas/reporte_control_calidad', 'CentrosLaminasController@reporte_control_calidad')->name('laminas.reporte_control_calidad');
         Route::get('/laminas/reporte_ingreso', 'CentrosLaminasController@reporte_ingreso')->name('laminas.reporte_ingreso');
