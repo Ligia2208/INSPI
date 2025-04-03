@@ -29,7 +29,7 @@ $( function () {
         let responsable    = $('#responsable').val();
         let analista       = $('#analista').val();
         let mesRecepcion   = $('#mes_recepcion').val();
-        let observaciones  = $('#Observaciones').val();
+        let observaciones  = $('#observaciones').val();
         let total_laminas  = $('#total_laminas').val();
     
         // Validación de campos
