@@ -40,7 +40,14 @@ use App\Models\CentrosReferencia\Evento;
 use App\Models\CentrosReferencia\Institucion;
 use App\Models\CentrosReferencia\Responsable;
 
+
 use App\Models\Lamina\Lamina\Lamina;
+use App\Models\Lamina\Tincion\Tincion;
+use App\Models\Lamina\Apariencia\Apariencia;
+use App\Models\Lamina\Desglose\Desglose;
+use App\Models\Lamina\Frotis\Frotis;
+use App\Models\Lamina\Resultado\Resultado;
+
 
 //use App\Models\Area\Area;
 use App\Models\CoreBase\Area;
