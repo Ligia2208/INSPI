@@ -149,8 +149,6 @@ $( function () {
                 data: null,
                 render: function (data, type, full, meta) {
 
-                    if(full.tiene_desglose){}
-
                     return `
 
                         <div class="action-buttons">
