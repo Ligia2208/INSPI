@@ -122,7 +122,7 @@
         <!-- PIE -->
         <table style="width: 100%; border-collapse: collapse; font-size: 12px;">
             <tr>
-                <td style="border-bottom: 1px solid black; text-align: left;"><strong>Observaciones:</strong><br>{{ $datos->observaciones }}</td>
+                <td style="border-bottom: 1px solid black; text-align: left;"><strong>Observaciones:</strong><br><br><br>{{ $datos->observaciones }}</td>
             </tr>
             <tr>
                 <td style="border-bottom: 1px solid black; width: 70%; padding: 5px; text-align: left;">
