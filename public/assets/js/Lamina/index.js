@@ -116,45 +116,7 @@ $(function(){
         /*}*/
     });
 
-
-
-    $(document).on('click', '#btnGenerarPDF', function () {
-      // console.log('🟢 Click detectado');
-    
-        $.ajax({
-            type: 'GET',
-            url: '/laminas/reporte',
-            xhrFields: { responseType: 'blob' },
-            success: function (response) {
-               // console.log('🟢 PDF recibido. Intentando abrir en nueva pestaña...');
-    
-                const blob = new Blob([response], { type: 'application/pdf' });
-                const url = window.URL.createObjectURL(blob);
-    
-                // Abrir en nueva pestaña
-                const opened = window.open(url, '_blank');
-                if (!opened) {
-                    console.warn(' El navegador bloqueó la nueva pestaña');
-                    Swal.fire({
-                        icon: 'info',
-                        title: 'Atención',
-                        text: 'El navegador bloqueó la apertura del PDF. Permite pop-ups o descárgalo manualmente.',
-                    });
-                }
-            },
-            error: function (xhr) {
-                //console.error('❌ Error AJAX:', xhr.status, xhr.responseText);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'No se pudo generar el PDF',
-                });
-            }
-        });
-    });
 })
-
-
 
 //==========================================VISTA DETALLE USER================================================
 
@@ -186,27 +148,30 @@ $( function () {
             {
                 data: null,
                 render: function (data, type, full, meta) {
+
                     return `
+
                         <div class="action-buttons">
-                            <a id="btnPDF_ingreso" class="ml-1" data-id_editar="${full.id}" href="javascript:void(0);" title="PDF Ingreso de Láminas" data-title="PDF Ingreso de Láminas">
-                                <i class="bi bi-file-pdf"></i>
+                            <a id="btnPDF_ingreso" class="ml-1" data-id_editar="${full.id}" href="javascript:void(0);" title="Generar PDF Ingreso de Láminas" data-title="Generar PDF Ingreso de Láminas">
+                                <i class="bi bi-file-earmark-pdf text-success"></i>
+                            </a>
+
+                            <a id="btnPDF_desglose" class="ml-1" data-id_editar="${full.id}" title="Generar PDF Desglose de Láminas" data-title="Generar PDF Desglose de Láminas">
+                                <i class="bi bi-file-earmark-pdf text-danger"></i>
                             </a>
 
                             <a id="btnAdd_laminas" class="ml-1" data-id_editar="${full.id}" href="/laminas/agregar_laminas/${full.id}" title="Desglose de Láminas" data-title="Desglose de Láminas">
-                                <i class="bi bi-list-ul"></i>
+                                <i class="bi bi-list-ul text-dark""></i>
                             </a>
 
                             <a id="btnAdd_control" class="ml-1" data-id_editar="${full.id}" href="/laminas/control_calidad/${full.id}" title="Control de Láminas" data-title="Control de Láminas">
-                                <i class="bi bi-clipboard-check"></i>
+                                <i class="bi bi-clipboard-check text-dark"></i>
                             </a>
 
 
                             <a id="btnPDF_calidad" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad" data-title="Generar PDF Control Calidad">
                                 <i class="bi bi-file-earmark-pdf text-info"></i>
                             </a>
-
-                            
-
                         </div>`;
                 }
             },
@@ -244,11 +209,6 @@ $( function () {
 });
 
 //==========================================FIN VISTA DETALLE USER================================================
-
-
-
-
-
     // Generar el reporte PDF
     $(document).on('click', '#btnPDF_calidad', function() {
 
@@ -323,4 +283,44 @@ $( function () {
         });
         
     });
+
+
+
+    $(document).on('click', '#btnPDF_desglose', function() {
+
+        var id_lamina = $(this).data ('id_editar');
+        $.ajax({
+            type: 'GET',
+            url: '/laminas/reporte_desglose',
+            data: {
+                id_lamina:       id_lamina,
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, _status, _xhr) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'desglose de lamina' + '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    type: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el PDF',
+                    showConfirmButton: true,
+                });
+            }
+        });
+        
+    });
+
+
 

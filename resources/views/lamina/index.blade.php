@@ -36,10 +36,6 @@
                 </div>
 
                 <div class="col-md-2 d-flex">
-                    <button id="btnGenerarPDF" class="btn btn-primary w-100">Generar PDF</button>
-                </div>
-
-                <div class="col-md-2 d-flex">
                     <button id="btnGenerarPDFResultados" class="btn btn-dark w-100"><i class="bi bi-filetype-pdf"></i>Generar PDF Resultados</button>
                 </div>
 

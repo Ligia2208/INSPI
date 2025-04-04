@@ -165,36 +165,6 @@ class CentrosLaminasController extends Controller
 
     }
     
-    //PDF
-   /* public function reporte(Request $request)
-    {
-        return \PDF::loadView('pdf.pdfLamina', [
-            'id'                       => $request->input('id'),
-            'fechaRecepcion'           => $request->input('fechaRecepcion'),
-            'totalLaminas'             => $request->input('totalLaminas'),
-            'responsable'              => $request->input('responsable'),
-            'analista'                 => $request->input('analista'),
-            'nombreLab'                => $request->input('nombreLaboratorio'),
-            'procedencia'              => $request->input('procedencia'),
-            'mesSupervisado'           => $request->input('mesSupervisado'),
-            'observaciones'            => $request->input('observaciones'),
-            'realizadoPor'             => $request->input('realizadoPor'),
-    
-            'laminas_empacadas'        => $request->input('laminas_empacadas'),
-            'laminas_legibles'         => $request->input('laminas_legibles'),
-            'laminas_sin_id'           => $request->input('laminas_sin_id'),
-            'laminas_sin_aceite'       => $request->input('laminas_sin_aceite'),
-            'laminas_frotis_adecuado'  => $request->input('laminas_frotis_adecuado'),
-            'laminas_integras'         => $request->input('laminas_integras'),
-            'laminas_documentacion'    => $request->input('laminas_documentacion'),
-        ])
-        ->setPaper('A4', 'landscape')
-        ->download('reporte_laminas.pdf');
-    }*/
-    
-
-
-
 
     public function agregar_laminas($id_ingreso){
 
@@ -223,8 +193,6 @@ class CentrosLaminasController extends Controller
     }
 
 
-
-
     public function guardar_laminas(Request $request){
 
         $datos = $request->input('datos');
@@ -243,7 +211,6 @@ class CentrosLaminasController extends Controller
         // Retornar una respuesta de éxito
         return response()->json(['success' => true, 'message' => 'Desglose guardados correctamente'], 200);
     }
-
 
 
     public function control_calidad($id_ingreso){
@@ -355,8 +322,7 @@ class CentrosLaminasController extends Controller
 
     }
 
-
-
+    
     public function resultados_laminas(Request $request){
 
         $totalLaminas  = $request->input('totalLaminas');
@@ -412,8 +378,6 @@ class CentrosLaminasController extends Controller
         return response()->json(['success' => true, 'message' => 'Resultados guardados correctamente'], 200);
     
     }
-
-
 
     public function reporteResultadosCompleto(Request $request)
     {
@@ -546,6 +510,7 @@ class CentrosLaminasController extends Controller
         ->download('reporte_laminas.pdf');
     }
     
+
     public function reporte_ingreso (Request $request)
     {
         $id_lamina  = $request->query('id_lamina');
@@ -575,6 +540,24 @@ class CentrosLaminasController extends Controller
             ])
             ->setPaper('A4', 'landscape')
             ->download('ingreso_laminas_'.$id_lamina.'.pdf');
+        } catch (\Exception $e) {
+            return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function reporte_desglose (Request $request)
+    {
+        $id_lamina  = $request->query('id_lamina');
+
+        //dd($datos);       
+
+        try {
+            // Intentar generar el PDF
+            return \PDF::loadView('pdf.pdfLamina_desglose', [
+                //'datos'  => $datos,
+            ])
+            ->setPaper('A4', 'portrait')
+            ->download('desglose_laminas_'.$id_lamina.'.pdf');
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
         }
