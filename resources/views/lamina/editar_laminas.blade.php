@@ -189,7 +189,7 @@
 
                             <div class="col-md-12 mt-5">
                                 <label class="form-label fw-bold"><strong>Observaciones</strong></label>
-                                <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Escribe aquí cualquier observación..."> {{$datos->observaciones}} </textarea>
+                                <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Escribe aquí cualquier observación..." disabled> {{$datos->observaciones}} </textarea>
                             </div>
                         </div>
                     </div>
@@ -214,6 +214,56 @@
                             </thead>
                             <tbody id="tabla_body">
                                 <!-- Agregar más filas según sea necesario -->
+                                @foreach($datos_desglose as $index => $desglose)
+
+                                <tr>
+                                    <td><input type="hidden" name="id_{{$index}}" value="{{$desglose->id}}"><input type="text" name="num_lamina_{{$index}}" class="form-control num-lamina" required value="{{$desglose->nro_lamina}}"></td>
+                                    <td><input type="text" name="lectura_{{$index}}" class="form-control" value="{{$desglose->lectura}}"></td>
+                                    <!-- Apariencia Select -->
+                                    <td>
+                                        <select name="apariencia_{{$index}}" class="form-control single-select">
+                                            <option value="">Selecciona Apariencia</option>
+                                            @foreach($tipos_apariencia as $apariencia)
+                                            @if($apariencia->id == $desglose->id_apariencia)
+                                            <option value="{{$apariencia->id}}" selected>{{$apariencia->nombre}}</option>
+                                            @else
+                                            <option value="{{$apariencia->id}}">{{$apariencia->nombre}}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </td>
+
+                                    <!-- Frotis Select -->
+                                    <td>
+                                        <select name="frotis_{{$index}}" class="form-control single-select">
+                                            <option value="">Selecciona Frotis</option>
+                                            @foreach($tipos_frotis as $froti)
+                                            @if($froti->id == $desglose->id_frotis)
+                                            <option value="{{$froti->id}}" selected>{{$froti->nombre}}</option>
+                                            @else
+                                            <option value="{{$froti->id}}">{{$froti->nombre}}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </td>
+
+                                    <!-- Tinción Select -->
+                                    <td>
+                                        <select name="tincion_{{$index}}" class="form-control single-select">
+                                            <option value="">Selecciona Tinción</option>
+                                            @foreach($tipos_tincion as $tincion)
+                                            @if($tincion->id == $desglose->id_tincion)
+                                            <option value="{{$tincion->id}}" selected>{{$tincion->nombre}}</option>
+                                            @else
+                                            <option value="{{$tincion->id}}">{{$tincion->nombre}}</option>
+                                            @endif
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                @endforeach
+
                             </tbody>
                         </table>
 
@@ -253,5 +303,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/agregar_lamina.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Lamina/editar_desglose_lamina.js?v0.0.0')}}"></script>
 @endpush
