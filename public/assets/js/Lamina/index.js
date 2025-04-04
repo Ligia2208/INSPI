@@ -187,8 +187,6 @@ $( function () {
                 data: null,
                 render: function (data, type, full, meta) {
 
-                    if(full.tiene_desglose){}
-
                     return `
                         <div class="action-buttons">
                             <a id="btnPDF_ingreso" class="ml-1" data-id_editar="${full.id}" href="javascript:void(0);" title="PDF Ingreso de Láminas" data-title="PDF Ingreso de Láminas">
