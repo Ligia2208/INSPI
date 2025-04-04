@@ -405,8 +405,14 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas', 'CentrosLaminasController@index')->name('laminas'); //vista principal
         Route::get('/laminas/crear', 'CentrosLaminasController@crear')->name('laminas.crear');
         Route::post('/laminas/guardar', 'CentrosLaminasController@guardar')->name('laminas.guardar');
+        Route::get('/laminas/editar/{id_ingreso}', 'CentrosLaminasController@editar')->name('laminas.editar');
+        Route::post('/laminas/guardar_edicion', 'CentrosLaminasController@guardar_edicion')->name('laminas.guardar_edicion');
+        Route::post('/laminas/eliminar', 'CentrosLaminasController@eliminar')->name('laminas.eliminar');
         Route::get('/laminas/agregar_laminas/{id}', 'CentrosLaminasController@agregar_laminas')->name('laminas.agregar_laminas');
+        Route::get('/laminas/editar_laminas/{id}', 'CentrosLaminasController@editar_laminas')->name('laminas.editar_laminas');
         Route::post('/laminas/guardar_laminas', 'CentrosLaminasController@guardar_laminas')->name('laminas.guardar_laminas');
+        Route::post('/laminas/guardar_laminas_editadas', 'CentrosLaminasController@guardar_laminas_editadas')->name('laminas.guardar_laminas_editadas');
+        Route::post('/laminas/eliminar_desglose', 'CentrosLaminasController@eliminar_desglose')->name('laminas.eliminar_desglose');
         Route::get('/laminas/control_calidad/{id}', 'CentrosLaminasController@control_calidad')->name('laminas.control_calidad');
 
 

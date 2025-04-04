@@ -59,7 +59,13 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-6 mt-2">
+                            <div class="col-md-4 mt-2">
+                                <label for="director_us" class="form-label fs-6">Director de la Unidad</label>
+                                <input type="text" id="director_us" name="director_us" class="form-control" required placeholder="Nombre del Director">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
                                 <label for="responsable" class="form-label fs-6">Responsable Recepción</label>
                                 <select id="responsable" name="responsable" class="form-control single-select" required>
                                     <option value="0">Seleccione un Responsable</option>
@@ -69,7 +75,7 @@
                                 </select>
                             </div>
 
-                            <div class="col-md-6 mt-2">
+                            <div class="col-md-4 mt-2">
                                 <label for="analista" class="form-label fs-6">Analista(Encargado de Control de Calidad)</label>
                                 <select id="analista" name="analista" class="form-control single-select" required>
                                     <option value="0">Seleccione un Responsable</option>
@@ -86,8 +92,14 @@
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
+                                <label for="total_laminas" class="form-label fs-6">Total de Láminas a Supervisar</label>
                                 <input type="number" id="total_laminas" name="total_laminas" class="form-control" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
+                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -228,5 +240,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/crear_lamina.js?v0.0.1')}}"></script>
+<script src="{{asset('assets/js/Lamina/crear_lamina.js?v0.0.2')}}"></script>
 @endpush

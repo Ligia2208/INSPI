@@ -16,6 +16,8 @@ class Lamina extends Model
         'fecha_recep',
         'anio',
         'total_laminas',
+        'total_laminas_recib',
+        'director_us',
         'observaciones',
         'laminas_empacadas',
         'laminas_legibles',
