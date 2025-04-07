@@ -1,7 +1,7 @@
 
 @extends('layouts.main')
 
-@section('title', 'Crear Planificación')
+@section('title', 'Ingreso de Laminas')
 
 <!-- DataTables CSS -->
 @push('styles')
@@ -54,7 +54,7 @@
                                 <select id="centro_salud" name="centro_salud" class="form-control single-select" required>
                                     <option value="0">Seleccione un Centro de Salud</option>
                                     @foreach($instituciones as $institucion)
-                                    <option value="{{$institucion->id}}">{{$institucion->nombre}} - {{ $institucion->canton }}</option>
+                                    <option value="{{$institucion->id}}" >{{$institucion->nombre}} - {{ $institucion->canton }}</option>
                                     @endforeach
                                 </select>
                             </div>
