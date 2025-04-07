@@ -178,16 +178,16 @@ $( function () {
                                     : ``
                             }
                             <a id="btnPDF_desglose" class="ml-1" data-id_editar="${full.id}" title="Generar PDF Desglose de Láminas" data-title="Generar PDF Desglose de Láminas">
-                                <i class="bi bi-file-earmark-pdf text-danger"></i>
+                                <i class="bi bi-file-earmark-pdf icon-desglose"></i>
                             </a>
 
                             <a id="btnAdd_control" class="ml-1" data-id_editar="${full.id}" href="/laminas/control_calidad/${full.id}" title="Control de Láminas" data-title="Control de Láminas">
-                                <i class="bi bi-clipboard-check text-dark"></i>
+                                <i class="bi bi-clipboard-check icon-resultados"></i>
                             </a>
 
 
                             <a id="btnPDF_calidad" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad" data-title="Generar PDF Control Calidad">
-                                <i class="bi bi-file-earmark-pdf text-info"></i>
+                                <i class="bi bi-file-earmark-pdf icon-resultados"></i>
                             </a>
                         </div>`;
                 }
