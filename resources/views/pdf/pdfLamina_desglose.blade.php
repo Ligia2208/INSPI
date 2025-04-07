@@ -156,7 +156,7 @@
 
                 <tr>
                     <td colspan="3" style="padding: 8px; vertical-align: top; text-align: left;">
-                        <b>LÁMINAS RECIBIDAS:</b><br>
+                        <b>LÁMINAS RECIBIDAS:</b> {{$datos->total_laminas_recib}}<br>
                         <b>LÁMINAS SUPERVISADAS:</b> {{$datos->total_laminas}}<br>
                     </td>
                 </tr>

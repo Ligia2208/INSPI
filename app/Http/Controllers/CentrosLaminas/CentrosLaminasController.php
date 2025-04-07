@@ -779,8 +779,8 @@ class CentrosLaminasController extends Controller
             //dd($datos);       
             $datos = Lamina::select(
                 'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
-                'ingreso_laminas.total_laminas as total_laminas', 'ins.descripcion as instituto', 'recep.name as recepta',
-                'ins.unicodigo as unicodigo',
+                'ingreso_laminas.total_laminas as total_laminas', 'ingreso_laminas.total_laminas_recib','ins.descripcion as instituto', 'recep.name as recepta',
+                'ins.unicodigo as unicodigo', 
 
                 'ingreso_laminas.laminas_empacadas', 'ingreso_laminas.laminas_legibles', 'ingreso_laminas.laminas_sin_id',
                 'ingreso_laminas.laminas_sin_aceite', 'ingreso_laminas.laminas_frotis_adecuado', 'ingreso_laminas.laminas_integras',
