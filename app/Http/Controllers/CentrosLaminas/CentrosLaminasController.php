@@ -775,13 +775,101 @@ class CentrosLaminasController extends Controller
     public function reporte_desglose (Request $request)
     {
         $id_lamina  = $request->query('id_lamina');
+            
+            //dd($datos);       
+            $datos = Lamina::select(
+                'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
+                'ingreso_laminas.total_laminas as total_laminas', 'ins.descripcion as instituto', 'recep.name as recepta',
+                'ins.unicodigo as unicodigo',
 
-        //dd($datos);       
+                'ingreso_laminas.laminas_empacadas', 'ingreso_laminas.laminas_legibles', 'ingreso_laminas.laminas_sin_id',
+                'ingreso_laminas.laminas_sin_aceite', 'ingreso_laminas.laminas_frotis_adecuado', 'ingreso_laminas.laminas_integras',
+                'ingreso_laminas.laminas_documentacion'
+            )
+            ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
+            ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+            ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
+            ->where('ingreso_laminas.estado', ['A'])
+            ->where('ingreso_laminas.id', $id_lamina)->first();
+           
+            $laminas = DB::table('inspi_crns.desglose_lamina as desglose')
+            ->select(
+                'desglose.nro_lamina','desglose.lectura', 'apariencia.nombre as apariencia_nombre',
+                'frotis.nombre as frotis_nombre','tincion.nombre as tincion_nombre'
+            )
+            ->join('inspi_crns.apariencia_microscopica as apariencia', 'apariencia.id', '=', 'desglose.id_apariencia')
+            ->join('inspi_crns.calidad_frotis as frotis', 'frotis.id', '=', 'desglose.id_frotis')
+            ->join('inspi_crns.calidad_tincion as tincion', 'tincion.id', '=', 'desglose.id_tincion')
+            ->where('desglose.id_lamina', $id_lamina)
+            ->get();
+        
+
+            // Obtener el total de registros
+            $total_registros = Desglose::where('id_lamina', $id_lamina)->count();
+
+            // Obtener el conteo de cada tipo de frotis
+            $conteos_frotis = Desglose::where('id_lamina', $id_lamina)
+                ->selectRaw('id_frotis, COUNT(*) as total')
+                ->groupBy('id_frotis')
+                ->pluck('total', 'id_frotis');
+
+            // Obtener el conteo de cada tipo de tinción
+            $conteos_tincion = Desglose::where('id_lamina', $id_lamina)
+                ->selectRaw('id_tincion, COUNT(*) as total')
+                ->groupBy('id_tincion')
+                ->pluck('total', 'id_tincion');
+
+            // Obtener el conteo de cada tipo de apariencia
+            $conteos_apariencia = Desglose::where('id_lamina', $id_lamina)
+                ->selectRaw('id_apariencia, COUNT(*) as total')
+                ->groupBy('id_apariencia')
+                ->pluck('total', 'id_apariencia');
+
+            // Obtener los nombres de frotis, tinción y apariencia desde la base de datos
+            $tipos_frotis = Frotis::pluck('nombre', 'id');
+            $tipos_tincion = Tincion::pluck('nombre', 'id');
+            $tipos_apariencia = Apariencia::pluck('nombre', 'id');
+
+            // Construir el arreglo con los datos de frotis
+            $datos_frotis = [];
+            foreach ($tipos_frotis as $id_frotis => $nombre) {
+                $cantidad = $conteos_frotis[$id_frotis] ?? 0;
+                $datos_frotis[] = [
+                    'nombre'        => $nombre,
+                    'cantidad'      => $cantidad,
+                ];
+            }
+
+            // Construir el arreglo con los datos de tinción
+            $datos_tincion = [];
+            foreach ($tipos_tincion as $id_tincion => $nombre) {
+                $cantidad = $conteos_tincion[$id_tincion] ?? 0;
+                $datos_tincion[] = [
+                    'nombre'        => $nombre,
+                    'cantidad'      => $cantidad,
+
+                ];
+            }
+
+            // Construir el arreglo con los datos de apariencia (SIN calificación)
+            $datos_apariencia = [];
+            foreach ($tipos_apariencia as $id_apariencia => $nombre) {
+                $cantidad = $conteos_apariencia[$id_apariencia] ?? 0;
+                $datos_apariencia[] = [
+                    'nombre'        => $nombre,
+                    'cantidad'      => $cantidad,
+
+                ];
+            }
 
         try {
             // Intentar generar el PDF
             return \PDF::loadView('pdf.pdfLamina_desglose', [
-                //'datos'  => $datos,
+                'datos'           => $datos,
+                'datos_apariencia'=> $datos_apariencia,
+                'datos_frotis'    => $datos_frotis,
+                'datos_tincion'   => $datos_tincion,
+                'laminas'         => $laminas,
             ])
             ->setPaper('A4', 'portrait')
             ->download('desglose_laminas_'.$id_lamina.'.pdf');
