@@ -74,12 +74,12 @@
 
     <span class="letra"><strong>Fecha: </strong>{{ date('d/m/Y') }}</span> <br>
     <span class="letra"><strong>Nombre de la Unidad: </strong>{{$datos->instituto}}</span> <br>
-    <span class="letra"><strong>Director de la Unidad: </strong> </span> <br>
+    <span class="letra"><strong>Director de la Unidad: </strong> {{$datos->director_us}} </span> <br>
     <span class="letra"><strong>Responsable: </strong></span> <br>
     <span class="letra"><strong>Analista: </strong>{{$datos->analita}}</span> <br>
     <span class="letra"><strong>Informe de la supervisión realizada a las láminas enviadas por UD. con fecha: </strong>{{$datos->fecha_recep}}</span> <br>
     <span class="letra"><strong>Mes: </strong>{{$datos->mes_recepcion}}</span> <br>
-    <span class="letra"><strong>Total de láminas Enviadas: </strong></span> <br>
+    <span class="letra"><strong>Total de láminas Enviadas: </strong> {{$datos->total_laminas_recib}} </span> <br>
     <span class="letra"><strong>Total de Láminas Supervisadas: </strong>{{$datos->total_laminas}}</span> <br>
 
     <div style="text-align: center;">

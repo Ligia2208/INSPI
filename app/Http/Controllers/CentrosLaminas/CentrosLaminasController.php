@@ -635,12 +635,14 @@ class CentrosLaminasController extends Controller
 
                 'ingreso_laminas.laminas_empacadas', 'ingreso_laminas.laminas_legibles', 'ingreso_laminas.laminas_sin_id',
                 'ingreso_laminas.laminas_sin_aceite', 'ingreso_laminas.laminas_frotis_adecuado', 'ingreso_laminas.laminas_integras',
-                'ingreso_laminas.laminas_documentacion'
+                'ingreso_laminas.laminas_documentacion', 'can.descripcion as procedencia', 'ingreso_laminas.total_laminas_recib',
+                'ingreso_laminas.director_us'
             )
             ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
             ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
             ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
             ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
+            ->join('inspi_crns.cantones as can', 'can.id', '=', 'ins.canton_id')
             ->where('ingreso_laminas.estado', ['A'])
             ->where('ingreso_laminas.id', $id_lamina)->first();
 
@@ -749,12 +751,13 @@ class CentrosLaminasController extends Controller
 
                 'ingreso_laminas.laminas_empacadas', 'ingreso_laminas.laminas_legibles', 'ingreso_laminas.laminas_sin_id',
                 'ingreso_laminas.laminas_sin_aceite', 'ingreso_laminas.laminas_frotis_adecuado', 'ingreso_laminas.laminas_integras',
-                'ingreso_laminas.laminas_documentacion'
+                'ingreso_laminas.laminas_documentacion', 'ingreso_laminas.total_laminas_recib', 'can.descripcion as procedencia'
             )
             ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
             ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
             ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
-            ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
+            ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista') 
+            ->join('inspi_crns.cantones as can', 'can.id', '=', 'ins.canton_id')
             ->where('ingreso_laminas.estado', ['A'])
             ->where('ingreso_laminas.id', $id_lamina)->first();
 
