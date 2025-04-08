@@ -20,6 +20,9 @@ use App\Models\CentrosReferencia\Muestra;
 use App\Models\CentrosReferencia\Clase;
 use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Generacioncodigos;
+use App\Models\CentrosReferencia\Tiporechazomuestra;
+use App\Models\CentrosReferencia\Responsable;
+use App\Models\CentrosReferencia\Motivo;
 use App\Models\CoreBase\Nacionalidad;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -80,36 +83,52 @@ class Form extends Component
             'Preanaliticastoxico.quien_notifica' => 'required|max:80',
             'Preanaliticastoxico.probable_infeccion' => 'sometimes|max:200',
 
-
             'Preanaliticastoxico.sedes_id' => 'required|numeric',
             'Preanaliticastoxico.crns_id' => 'required|numeric',
             'Preanaliticastoxico.evento_id' => 'required|numeric',
+            'Preanaliticastoxico.motivo_id' => 'required|numeric',
+            'Preanaliticastoxico.tecnico_id' => 'required|numeric',
 
             'Preanaliticastoxico.primera_id' => 'required|numeric',
             'Preanaliticastoxico.clase_primera_id' => 'required|numeric',
             'Preanaliticastoxico.fecha_toma_primera' => 'required|max:10',
+            'Preanaliticastoxico.hora_toma_primera' => 'sometimes|max:10',
             'Preanaliticastoxico.estado_primera_id' => 'required|numeric',
+            'Preanaliticastoxico.rechazo_primera_id' => 'sometimes|numeric',
             'Preanaliticastoxico.observacion_primera' => 'sometimes|max:200',
+
             'Preanaliticastoxico.segunda_id' => 'sometimes|numeric',
             'Preanaliticastoxico.clase_segunda_id' => 'sometimes|numeric',
             'Preanaliticastoxico.fecha_toma_segunda' => 'sometimes|max:10',
+            'Preanaliticastoxico.hora_toma_segunda' => 'sometimes|max:10',
             'Preanaliticastoxico.estado_segunda_id' => 'sometimes|numeric',
+            'Preanaliticastoxico.rechazo_segunda_id' => 'sometimes|numeric',
             'Preanaliticastoxico.observacion_segunda' => 'sometimes|max:200',
+
             'Preanaliticastoxico.tercera_id' => 'sometimes|numeric',
             'Preanaliticastoxico.clase_tercera_id' => 'sometimes|numeric',
             'Preanaliticastoxico.fecha_toma_tercera' => 'sometimes|max:10',
+            'Preanaliticastoxico.hora_toma_tercera' => 'sometimes|max:10',
             'Preanaliticastoxico.estado_tercera_id' => 'sometimes|numeric',
+            'Preanaliticastoxico.rechazo_tercera_id' => 'sometimes|numeric',
             'Preanaliticastoxico.observacion_tercera' => 'sometimes|max:200',
+
             'Preanaliticastoxico.cuarta_id' => 'sometimes|numeric',
             'Preanaliticastoxico.clase_cuarta_id' => 'sometimes|numeric',
             'Preanaliticastoxico.fecha_toma_cuarta' => 'sometimes|max:10',
+            'Preanaliticastoxico.hora_toma_cuarta' => 'sometimes|max:10',
             'Preanaliticastoxico.estado_cuarta_id' => 'sometimes|numeric',
+            'Preanaliticastoxico.rechazo_cuarta_id' => 'sometimes|numeric',
             'Preanaliticastoxico.observacion_cuarta' => 'sometimes|max:200',
+
             'Preanaliticastoxico.quinta_id' => 'sometimes|numeric',
             'Preanaliticastoxico.clase_quinta_id' => 'sometimes|numeric',
             'Preanaliticastoxico.fecha_toma_quinta' => 'sometimes|max:10',
+            'Preanaliticastoxico.hora_toma_quinta' => 'sometimes|max:10',
             'Preanaliticastoxico.estado_quinta_id' => 'sometimes|numeric',
+            'Preanaliticastoxico.rechazo_quinta_id' => 'sometimes|numeric',
             'Preanaliticastoxico.observacion_quinta' => 'sometimes|max:200',
+
         ];
     }
 
@@ -117,27 +136,38 @@ class Form extends Component
         $this->Preanaliticastoxico = $Preanaliticastoxico;
         $this->method = $method;
 
+        if($this->Preanaliticastoxico->primera_id == 0){
+            $this->Preanaliticastoxico->clase_primera_id = 0;
+            $this->Preanaliticastoxico->primera_id = 0;
+            $this->Preanaliticastoxico->estado_primera_id = 0;
+            $this->Preanaliticastoxico->rechazo_primera_id = 0;
+        }
         if($this->Preanaliticastoxico->segunda_id == 0){
             $this->Preanaliticastoxico->clase_segunda_id = 0;
             $this->Preanaliticastoxico->segunda_id = 0;
             $this->Preanaliticastoxico->estado_segunda_id = 0;
+            $this->Preanaliticastoxico->rechazo_segunda_id = 0;
         }
         if($this->Preanaliticastoxico->tercera_id == 0){
             $this->Preanaliticastoxico->clase_tercera_id = 0;
             $this->Preanaliticastoxico->tercera_id = 0;
             $this->Preanaliticastoxico->estado_tercera_id = 0;
+            $this->Preanaliticastoxico->rechazo_tercera_id = 0;
         }
         if($this->Preanaliticastoxico->cuarta_id == 0){
             $this->Preanaliticastoxico->clase_cuarta_id = 0;
             $this->Preanaliticastoxico->cuarta_id = 0;
             $this->Preanaliticastoxico->estado_cuarta_id = 0;
+            $this->Preanaliticastoxico->rechazo_cuarta_id = 0;
         }
         if($this->Preanaliticastoxico->quinta_id == 0){
             $this->Preanaliticastoxico->clase_quinta_id = 0;
             $this->Preanaliticastoxico->quinta_id = 0;
             $this->Preanaliticastoxico->estado_quinta_id = 0;
+            $this->Preanaliticastoxico->rechazo_quinta_id = 0;
         }
-        $this->Preanaliticastoxico->evolucion = $this->diferencia($this->Preanaliticastoxico->fecha_sintomas,$this->Preanaliticastoxico->created_at);
+        //dd($this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion));
+        $this->Preanaliticastoxico->evolucion = $this->diferencia($this->Preanaliticastoxico->fecha_sintomas,$this->Preanaliticastoxico->fecha_recepcion);
 
         if($method=="update"){
             $this->Preanaliticastoxico->identidad=$this->Preanaliticastoxico->paciente->identidad;
@@ -155,7 +185,7 @@ class Form extends Component
 
     }
 
-    /*
+
     public function updatedchangedInstitucion($institucion_id){
         $instSelected = Institucion::findOrFail($institucion_id);
         $this->Preanaliticastoxico->institucion_nombre = $instSelected->descripcion;
@@ -209,7 +239,7 @@ class Form extends Component
             $this->Preanaliticastoxico->paciente_nacionalidad = 0;
         }
         $this->emit('renderJs');
-    } */
+    }
 
     public function render(){
 
@@ -222,21 +252,11 @@ class Form extends Component
         $nacionalidades = Nacionalidad::where('estado','=',1)->orderBy('id','asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id','asc')->cursor();
         $pacientes = Paciente::where('estado','=','A')->orderBy('id','asc')->cursor();
+        $rechazos = Tiporechazomuestra::where('estado','=','A')->orderBy('id','asc')->cursor();
+        $tecnicos = Responsable::where('estado','=','A')->where('crns_id','=',7)->where('tipo_id','=',1)->orderBy('id','asc')->cursor();
+        $motivos = Motivo::where('estado','=','A')->where('crns_id','=',7)->orderBy('id','asc')->cursor();
         $this->emit('renderJs');
-        return view('livewire.centrosreferencia.preanaliticatoxico.form', compact('sedes','sexos','pacientes','muestras','instituciones','estados','nacionalidades','cantonprov','clases'));
-    }
-
-    public function updatedselectedSede($sede_id){
-        $config = SedeCrn::where('estado','=','A')->where('crns_id','=',7)->where('sedes_id','=',$sede_id)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
-        $this->crns = Crn::where('estado','=','A')->whereIn('id',$config)->orderBy('id', 'asc')->get();
-        $this->emit('renderJs');
-    }
-
-    public function updatedselectedCrn($crns_id){
-        $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
-        $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
-        $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
-        $this->emit('renderJs');
+        return view('livewire.centrosreferencia.preanaliticatoxico.form', compact('sedes','sexos','pacientes','muestras','instituciones','estados','nacionalidades','cantonprov','clases','rechazos','tecnicos','motivos'));
     }
 
     public function guardart(Preanaliticatoxico $pa, $ev){
@@ -300,12 +320,18 @@ class Form extends Component
         $newToma->nombre_laboratorio = $pa->nombre_laboratorio;
         $newToma->sedes_id = $pa->sedes_id;
         $newToma->crns_id = $pa->crns_id;
+        $newToma->motivo_id = $pa->motivo_id;
+        $newToma->tecnico_id = $pa->tecnico_id;
 
         $newToma->evento_id = $ev;
         if($pa->primera_id>0){
             $newToma->clase_primera_id = $pa->clase_primera_id;
             $newToma->primera_id = $pa->primera_id;
             $newToma->fecha_toma_primera = $pa->fecha_toma_primera;
+            $newToma->hora_toma_primera = $pa->hora_toma_primera;
+            $newToma->estado_primera_id = $pa->estado_primera_id;
+            $newToma->rechazo_primera_id = $pa->rechazo_primera_id;
+            $newToma->observacion_primera = $pa->observacion_primera;
         }
         else{
             $newToma->primera_id = 0;
@@ -314,6 +340,10 @@ class Form extends Component
             $newToma->clase_segunda_id = $pa->clase_segunda_id;
             $newToma->segunda_id = $pa->segunda_id;
             $newToma->fecha_toma_segunda = $pa->fecha_toma_segunda;
+            $newToma->hora_toma_segunda = $pa->hora_toma_segunda;
+            $newToma->estado_segunda_id = $pa->estado_segunda_id;
+            $newToma->rechazo_segunda_id = $pa->rechazo_segunda_id;
+            $newToma->observacion_segunda = $pa->observacion_segunda;
         }
         else{
             $newToma->segunda_id = 0;
@@ -322,6 +352,10 @@ class Form extends Component
             $newToma->clase_tercera_id = $pa->clase_tercera_id;
             $newToma->tercera_id = $pa->tercera_id;
             $newToma->fecha_toma_tercera = $pa->fecha_toma_tercera;
+            $newToma->hora_toma_tercera = $pa->hora_toma_tercera;
+            $newToma->estado_tercera_id = $pa->estado_tercera_id;
+            $newToma->rechazo_tercera_id = $pa->rechazo_tercera_id;
+            $newToma->observacion_tercera = $pa->observacion_tercera;
         }
         else{
             $newToma->tercera_id = 0;
@@ -330,6 +364,10 @@ class Form extends Component
             $newToma->clase_cuarta_id = $pa->clase_cuarta_id;
             $newToma->cuarta_id = $pa->cuarta_id;
             $newToma->fecha_toma_cuarta = $pa->fecha_toma_cuarta;
+            $newToma->hora_toma_cuarta = $pa->hora_toma_cuarta;
+            $newToma->estado_cuarta_id = $pa->estado_cuarta_id;
+            $newToma->rechazo_cuarta_id = $pa->rechazo_cuarta_id;
+            $newToma->observacion_cuarta = $pa->observacion_cuarta;
         }
         else{
             $newToma->cuarta_id = 0;
@@ -338,6 +376,10 @@ class Form extends Component
             $newToma->clase_quinta_id = $pa->clase_quinta_id;
             $newToma->quinta_id = $pa->quinta_id;
             $newToma->fecha_toma_quinta = $pa->fecha_toma_quinta;
+            $newToma->hora_toma_quinta = $pa->hora_toma_quinta;
+            $newToma->estado_quinta_id = $pa->estado_quinta_id;
+            $newToma->rechazo_quinta_id = $pa->rechazo_quinta_id;
+            $newToma->observacion_quinta = $pa->observacion_quinta;
         }
         else{
             $newToma->quinta_id = 0;
@@ -351,6 +393,7 @@ class Form extends Component
         $this->savePreanalitica();
         $newToma->archivo = $pa->archivo;
         $newToma->save();
+
         $this->IdPreanalitica = $newToma->id;
         $tipogenera = $this->tipo_generacion($pa->sedes_id,$pa->crns_id);
         if($tipogenera==1){
@@ -374,7 +417,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_primera_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_primera;
+            $newMuestra->hora_toma = $pa->hora_toma_primera;
             $newMuestra->estado_muestra_id = $pa->estado_primera_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_primera_id;
             $newMuestra->observacion_muestra = $pa->observacion_primera;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->codigo_secuencial = 1;
@@ -395,7 +440,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_segunda_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_segunda;
+            $newMuestra->hora_toma = $pa->hora_toma_segunda;
             $newMuestra->estado_muestra_id = $pa->estado_segunda_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_segunda_id;
             $newMuestra->observacion_muestra = $pa->observacion_segunda;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->codigo_secuencial = 2;
@@ -416,7 +463,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_tercera_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_tercera;
+            $newMuestra->hora_toma = $pa->hora_toma_tercera;
             $newMuestra->estado_muestra_id = $pa->estado_tercera_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_tercera_id;
             $newMuestra->observacion_muestra = $pa->observacion_tercera;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->codigo_secuencial = 3;
@@ -437,7 +486,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_cuarta_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_cuarta;
+            $newMuestra->hora_toma = $pa->hora_toma_cuarta;
             $newMuestra->estado_muestra_id = $pa->estado_cuarta_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_cuarta_id;
             $newMuestra->observacion_muestra = $pa->observacion_cuarta;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->codigo_secuencial = 4;
@@ -458,7 +509,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_quinta_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_quinta;
+            $newMuestra->hora_toma = $pa->hora_toma_quinta;
             $newMuestra->estado_muestra_id = $pa->estado_quinta_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_quinta_id;
             $newMuestra->observacion_muestra = $pa->observacion_quinta;
             $newMuestra->codigo_muestra = $codigo;
             $newMuestra->codigo_secuencial = 5;
@@ -531,12 +584,18 @@ class Form extends Component
         $newToma->nombre_laboratorio = $pa->nombre_laboratorio;
         $newToma->sedes_id = $pa->sedes_id;
         $newToma->crns_id = $pa->crns_id;
+        $newToma->motivo_id = $pa->motivo_id;
+        $newToma->tecnico_id = $pa->tecnico_id;
 
         $newToma->evento_id = $ev;
         if($pa->primera_id>0){
             $newToma->clase_primera_id = $pa->clase_primera_id;
             $newToma->primera_id = $pa->primera_id;
             $newToma->fecha_toma_primera = $pa->fecha_toma_primera;
+            $newToma->hora_toma_primera = $pa->hora_toma_primera;
+            $newToma->estado_primera_id = $pa->estado_primera_id;
+            $newToma->rechazo_primera_id = $pa->rechazo_primera_id;
+            $newToma->observacion_primera = $pa->observacion_primera;
         }
         else{
             $newToma->primera_id = 0;
@@ -545,6 +604,10 @@ class Form extends Component
             $newToma->clase_segunda_id = $pa->clase_segunda_id;
             $newToma->segunda_id = $pa->segunda_id;
             $newToma->fecha_toma_segunda = $pa->fecha_toma_segunda;
+            $newToma->hora_toma_segunda = $pa->hora_toma_segunda;
+            $newToma->estado_segunda_id = $pa->estado_segunda_id;
+            $newToma->rechazo_segunda_id = $pa->rechazo_segunda_id;
+            $newToma->observacion_segunda = $pa->observacion_segunda;
         }
         else{
             $newToma->segunda_id = 0;
@@ -553,6 +616,10 @@ class Form extends Component
             $newToma->clase_tercera_id = $pa->clase_tercera_id;
             $newToma->tercera_id = $pa->tercera_id;
             $newToma->fecha_toma_tercera = $pa->fecha_toma_tercera;
+            $newToma->hora_toma_tercera = $pa->hora_toma_tercera;
+            $newToma->estado_tercera_id = $pa->estado_tercera_id;
+            $newToma->rechazo_tercera_id = $pa->rechazo_tercera_id;
+            $newToma->observacion_tercera = $pa->observacion_tercera;
         }
         else{
             $newToma->tercera_id = 0;
@@ -561,6 +628,10 @@ class Form extends Component
             $newToma->clase_cuarta_id = $pa->clase_cuarta_id;
             $newToma->cuarta_id = $pa->cuarta_id;
             $newToma->fecha_toma_cuarta = $pa->fecha_toma_cuarta;
+            $newToma->hora_toma_cuarta = $pa->hora_toma_cuarta;
+            $newToma->estado_cuarta_id = $pa->estado_cuarta_id;
+            $newToma->rechazo_cuarta_id = $pa->rechazo_cuarta_id;
+            $newToma->observacion_cuarta = $pa->observacion_cuarta;
         }
         else{
             $newToma->cuarta_id = 0;
@@ -569,6 +640,10 @@ class Form extends Component
             $newToma->clase_quinta_id = $pa->clase_quinta_id;
             $newToma->quinta_id = $pa->quinta_id;
             $newToma->fecha_toma_quinta = $pa->fecha_toma_quinta;
+            $newToma->hora_toma_quinta = $pa->hora_toma_quinta;
+            $newToma->estado_quinta_id = $pa->estado_quinta_id;
+            $newToma->rechazo_quinta_id = $pa->rechazo_quinta_id;
+            $newToma->observacion_quinta = $pa->observacion_quinta;
         }
         else{
             $newToma->quinta_id = 0;
@@ -600,7 +675,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_primera_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_primera;
+            $newMuestra->hora_toma = $pa->hora_toma_primera;
             $newMuestra->estado_muestra_id = $pa->estado_primera_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_primera_id;
             $newMuestra->observacion_muestra = $pa->observacion_primera;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
@@ -630,7 +707,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_segunda_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_segunda;
+            $newMuestra->hora_toma = $pa->hora_toma_segunda;
             $newMuestra->estado_muestra_id = $pa->estado_segunda_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_segunda_id;
             $newMuestra->observacion_muestra = $pa->observacion_segunda;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
@@ -659,7 +738,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_tercera_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_tercera;
+            $newMuestra->hora_toma = $pa->hora_toma_tercera;
             $newMuestra->estado_muestra_id = $pa->estado_tercera_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_tercera_id;
             $newMuestra->observacion_muestra = $pa->observacion_tercera;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
@@ -688,7 +769,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_cuarta_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_cuarta;
+            $newMuestra->hora_toma = $pa->hora_toma_cuarta;
             $newMuestra->estado_muestra_id = $pa->estado_cuarta_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_cuarta_id;
             $newMuestra->observacion_muestra = $pa->observacion_cuarta;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
@@ -717,7 +800,9 @@ class Form extends Component
             $newMuestra->clase_id = $pa->clase_quinta_id;
             $newMuestra->anio_registro = $fecha_anio;
             $newMuestra->fecha_toma = $pa->fecha_toma_quinta;
+            $newMuestra->hora_toma = $pa->hora_toma_quinta;
             $newMuestra->estado_muestra_id = $pa->estado_quinta_id;
+            $newMuestra->tipo_rechazo_muestra_id = $pa->rechazo_quinta_id;
             $newMuestra->observacion_muestra = $pa->observacion_quinta;
             $newMuestra->codigo_muestra = $codigo;
             if($tipogenera==1){
@@ -975,6 +1060,11 @@ class Form extends Component
             else{
                 if($this->Preanaliticastoxico->evento_id==97){
                     $codgen = $this->guardart($this->Preanaliticastoxico,97);
+                    $this->guardardetallet($this->Preanaliticastoxico,$this->IdPreanalitica,$codgen,173);
+                    $this->guardardetallet($this->Preanaliticastoxico,$this->IdPreanalitica,$codgen,174);
+                    $this->guardardetallet($this->Preanaliticastoxico,$this->IdPreanalitica,$codgen,175);
+                    $this->guardardetallet($this->Preanaliticastoxico,$this->IdPreanalitica,$codgen,176);
+                    $this->guardardetallet($this->Preanaliticastoxico,$this->IdPreanalitica,$codgen,177);
                     $this->guardardetallet($this->Preanaliticastoxico,$this->IdPreanalitica,$codgen,98);
                 }
                 else{

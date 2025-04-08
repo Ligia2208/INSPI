@@ -194,4 +194,15 @@ class Analitica extends Model
     {
         return $this->belongsTo(Tipoparametros::class);
     }
+
+    public function estado_muestra()
+    {
+        return $this->belongsTo(Estadomuestra::class);
+    }
+
+    public function tipo_rechazo_muestra()
+    {
+        return $this->belongsTo(Tiporechazomuestra::class);
+    }
+
 }

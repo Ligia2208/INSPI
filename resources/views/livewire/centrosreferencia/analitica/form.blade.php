@@ -419,6 +419,131 @@
                                 </div>
                             </div>
                             <div class="form-row">
+                                @if($Analiticas->evento_id==141)
+                                <div class="form-group col-md-1">
+                                    <label>Laboratorio<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            @if($preanalitica->laboratorio=='N')
+                                            value = "No"
+                                            @else
+                                            value = "Si"
+                                            @endif>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-3">
+                                    <label>Nombre Laboratorio<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid"
+                                            value = {{ $preanalitica->nombre_laboratorio }} >
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Año - Período<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticas.anio_registro"
+                                            type="text"
+                                            required disabled
+                                            class="form-control form-control-solid @error('Analiticas.anio_registro') is-invalid @enderror"
+                                            placeholder="Ej: 4A39982" />
+                                    </div>
+                                    @error('Analiticas.anio_registro')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Código Muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            value={{ str_pad($Analiticas->codigo_muestra, 6, "0", STR_PAD_LEFT) }}
+                                            class="form-control form-control-solid @error('Analiticas.codigo_muestra') is-invalid @enderror"
+                                            placeholder="Ej: 4A39982" />
+                                    </div>
+                                    @error('Analiticas.codigo_muestra')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Secuencia<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-edit"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            type="text"
+                                            required disabled
+                                            value={{ str_pad($Analiticas->codigo_secuencial, 2, "0", STR_PAD_LEFT) }}
+                                            class="form-control form-control-solid @error('Analiticas.codigo_secuencial') is-invalid @enderror"
+                                            placeholder="Ej: 4A39982" />
+                                    </div>
+                                    @error('Analiticas.codigo_secuencial')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+                                <div class="form-group col-md-2">
+                                    <label>Fecha toma de muestra<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticas.fecha_toma"
+                                            type="date"
+                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Hora toma<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-timer"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticas.hora_toma"
+                                            type="time"
+                                            class="start_date form-control form-control-solid @error('Analiticas.hora_toma') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
+                                @else
                                 <div class="form-group col-md-1">
                                     <label>Laboratorio<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -526,6 +651,7 @@
                                         />
                                     </div>
                                 </div>
+                                @endif
                             </div>
                             <div class="form-row">
                                 <div class="form-group col-md-2">
@@ -1435,8 +1561,8 @@
                                                     <div class="form-group col-md-6">
                                                         <label class="text-black"><b>Interpretación</b></label>
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.pi01_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.pi01_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1467,8 +1593,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.pi02_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.pi02_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1499,8 +1625,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.pi03_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.pi03_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1531,8 +1657,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.pi04_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.pi04_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1563,8 +1689,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.pi05_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.pi05_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1595,8 +1721,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.pi06_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.pi06_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1627,8 +1753,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.pi07_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.pi07_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1659,8 +1785,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.pi08_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.pi08_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1698,8 +1824,8 @@
                                                     <div class="form-group col-md-6">
                                                         <label class="text-black"><b>Interpretación</b></label>
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nrti01_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nrti01_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1730,8 +1856,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nrti02_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nrti02_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1762,8 +1888,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nrti03_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nrti03_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1794,8 +1920,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nrti04_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nrti04_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1826,8 +1952,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nrti05_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nrti05_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1858,8 +1984,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nrti06_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nrti06_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1890,8 +2016,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nrti07_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nrti07_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1932,8 +2058,8 @@
                                                     <div class="form-group col-md-6">
                                                         <label class="text-black"><b>Interpretación</b></label>
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nnrti01_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nnrti01_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1964,8 +2090,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nnrti02_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nnrti02_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -1996,8 +2122,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nnrti03_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nnrti03_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -2028,8 +2154,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nnrti04_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nnrti04_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -2060,8 +2186,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nnrti05_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nnrti05_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -2092,8 +2218,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.nnrti06_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.nnrti06_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -2131,8 +2257,8 @@
                                                     <div class="form-group col-md-6">
                                                         <label class="text-black"><b>Interpretación</b></label>
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.ini01_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.ini01_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -2163,8 +2289,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.ini02_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.ini02_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -2195,8 +2321,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.ini03_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.ini03_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -2227,8 +2353,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.ini04_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.ini04_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -2259,8 +2385,8 @@
                                                     </div>
                                                     <div class="form-group col-md-6">
                                                         <select
-                                                            wire:model.defer="Analiticas.unidades_id"
-                                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                                            wire:model.defer="Analiticas.ini05_id"
+                                                            class="form-control selectpicker form-control-solid @error('Analiticas.ini05_id') is-invalid @enderror"
                                                             data-size="7"
                                                             data-live-search="true"
                                                             data-show-subtext="true"
@@ -3445,31 +3571,7 @@
                     </div>
                 </div>
 
-                @if ($Analiticas->resultado_id==67 && ($Analiticas->evento_id==116 || $Analiticas->evento_id==117 || $Analiticas->evento_id==118 || $Analiticas->evento_id==119 || $Analiticas->evento_id==120 || $Analiticas->evento_id==125))
-                <div class="form-row">
-                    <div class="form-group col-md-12">
-                        <label class="text-black"><b>Generación Eventos para investigación ampliada</b><span class="text-danger">*</span></label>
-                        <div class="input-group input-group-solid">
-                            <div class="input-group-prepend">
-                            <span class="input-group-text">
-                                <i class="fas fa-list"></i>
-                            </span>
-                        </div>
-                        <select
-                            wire:model.defer="Analiticas.eventosav_id"
-                            class="form-control selectpicker form-control-solid @error('Analiticas.eventosav_id') is-invalid @enderror"
-                            data-size="7"
-                            data-live-search="true"
-                            data-show-subtext="true"
-                            required multiple>
-                            <option value="">Selecciona un Evento</option>
-                            @foreach ($eventos as $objEvento)
-                                <option data-subtext="" value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-                </div>
-                @endif
+
                 <button class="d-none" type="submit"></button>
             </form>
             <!--end::Form-->

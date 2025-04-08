@@ -16,6 +16,15 @@
                             <span class="navi-text font-size-xl">Muestras registrados</span>
                         </a>
                     </div>
+                    <div class="col-md-3 " align="center">
+                        <a href="{{ route('preanaliticacd4.index') }}"
+                            class="navi-link py-4 {{ active('preanaliticacd4.index') }}">
+                            <span class="navi-icon mr-2">
+                                <i class="fa fa-cogs fa-3x"></i>
+                            </span>
+                            <span class="navi-text font-size-xl">Muestras CD4</span>
+                        </a>
+                    </div>
                 </div>
             </div>
             <!--end::Nav-->

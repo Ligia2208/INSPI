@@ -64,6 +64,7 @@ class Form extends Component
             'Analiticas.codigo_secuencial' => 'required|numeric',
             'Analiticas.codigo_externo' => 'sometimes|max:25',
             'Analiticas.fecha_toma' => 'required|max:10',
+            'Analiticas.hora_toma' => 'sometimes|max:10',
             'Analiticas.anio_registro' => 'required|max:10',
             'Analiticas.fecha_llegada_lab' => 'required|max:10',
             'Analiticas.fecha_procesamiento' => 'required|max:10',
@@ -181,7 +182,36 @@ class Form extends Component
             'Analiticas.cimmdcuatro_bacte' => 'sometimes|numeric',
             'Analiticas.escalamdcuatrobacte_id' => 'sometimes|numeric',
 
-            'Analiticas.eventosav_id' => ['sometimes', 'array'],
+            'Analiticas.pi01_id' => 'sometimes|numeric',
+            'Analiticas.pi02_id' => 'sometimes|numeric',
+            'Analiticas.pi03_id' => 'sometimes|numeric',
+            'Analiticas.pi04_id' => 'sometimes|numeric',
+            'Analiticas.pi05_id' => 'sometimes|numeric',
+            'Analiticas.pi06_id' => 'sometimes|numeric',
+            'Analiticas.pi07_id' => 'sometimes|numeric',
+            'Analiticas.pi08_id' => 'sometimes|numeric',
+
+            'Analiticas.nrti01_id' => 'sometimes|numeric',
+            'Analiticas.nrti02_id' => 'sometimes|numeric',
+            'Analiticas.nrti03_id' => 'sometimes|numeric',
+            'Analiticas.nrti04_id' => 'sometimes|numeric',
+            'Analiticas.nrti05_id' => 'sometimes|numeric',
+            'Analiticas.nrti06_id' => 'sometimes|numeric',
+            'Analiticas.nrti07_id' => 'sometimes|numeric',
+
+            'Analiticas.nnrti01_id' => 'sometimes|numeric',
+            'Analiticas.nnrti02_id' => 'sometimes|numeric',
+            'Analiticas.nnrti03_id' => 'sometimes|numeric',
+            'Analiticas.nnrti04_id' => 'sometimes|numeric',
+            'Analiticas.nnrti05_id' => 'sometimes|numeric',
+            'Analiticas.nnrti06_id' => 'sometimes|numeric',
+
+            'Analiticas.ini01_id' => 'sometimes|numeric',
+            'Analiticas.ini02_id' => 'sometimes|numeric',
+            'Analiticas.ini03_id' => 'sometimes|numeric',
+            'Analiticas.ini04_id' => 'sometimes|numeric',
+            'Analiticas.ini05_id' => 'sometimes|numeric',
+
         ];
     }
 
