@@ -405,7 +405,24 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas', 'CentrosLaminasController@index')->name('laminas'); //vista principal
         Route::get('/laminas/crear', 'CentrosLaminasController@crear')->name('laminas.crear');
         Route::post('/laminas/guardar', 'CentrosLaminasController@guardar')->name('laminas.guardar');
-        Route::get('/laminas/reporte', 'CentrosLaminasController@reporte')->name('laminas.reporte');
+        Route::get('/laminas/editar/{id_ingreso}', 'CentrosLaminasController@editar')->name('laminas.editar');
+        Route::post('/laminas/guardar_edicion', 'CentrosLaminasController@guardar_edicion')->name('laminas.guardar_edicion');
+        Route::post('/laminas/eliminar', 'CentrosLaminasController@eliminar')->name('laminas.eliminar');
+        Route::get('/laminas/agregar_laminas/{id}', 'CentrosLaminasController@agregar_laminas')->name('laminas.agregar_laminas');
+        Route::get('/laminas/editar_laminas/{id}', 'CentrosLaminasController@editar_laminas')->name('laminas.editar_laminas');
+        Route::post('/laminas/guardar_laminas', 'CentrosLaminasController@guardar_laminas')->name('laminas.guardar_laminas');
+        Route::post('/laminas/guardar_laminas_editadas', 'CentrosLaminasController@guardar_laminas_editadas')->name('laminas.guardar_laminas_editadas');
+        Route::post('/laminas/eliminar_desglose', 'CentrosLaminasController@eliminar_desglose')->name('laminas.eliminar_desglose');
+        Route::get('/laminas/control_calidad/{id}', 'CentrosLaminasController@control_calidad')->name('laminas.control_calidad');
+
+
+        Route::post('/laminas/resultados_laminas', 'CentrosLaminasController@resultados_laminas')->name('laminas.resultados_laminas');
+        Route::get('/laminas/reporteResultadosCompleto', 'CentrosLaminasController@reporteResultadosCompleto')->name('laminas.reporteResultadosCompleto');
+        Route::get('/laminas/reporte_control_calidad', 'CentrosLaminasController@reporte_control_calidad')->name('laminas.reporte_control_calidad');
+        Route::get('/laminas/reporte_ingreso', 'CentrosLaminasController@reporte_ingreso')->name('laminas.reporte_ingreso');
+        Route::get('/laminas/reporte_desglose', 'CentrosLaminasController@reporte_desglose')->name('laminas.reporte_desglose');
+
+
 
 
     });

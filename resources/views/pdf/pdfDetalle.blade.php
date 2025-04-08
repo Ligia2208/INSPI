@@ -52,7 +52,7 @@
 
 <body>
 
-<table class="letra" style="width: 100%; border-collapse: collapse; border: 1px solid black; font-size: 12px; text-align: center; vertical-align: middle;">
+    <table class="letra" style="width: 100%; border-collapse: collapse; border: 1px solid black; font-size: 12px; text-align: center; vertical-align: middle;">
         <thead>
             <tr>
                 <th rowspan="3" style="width: 22.5%; text-align: center; vertical-align: middle;">

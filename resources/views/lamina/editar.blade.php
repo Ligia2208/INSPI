@@ -1,7 +1,7 @@
 
 @extends('layouts.main')
 
-@section('title', 'Ingreso de Laminas')
+@section('title', 'Editar Ingreso Láminas')
 
 <!-- DataTables CSS -->
 @push('styles')
@@ -14,7 +14,7 @@
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <div class="d-flex align-items-center flex-wrap mr-1">
             <div class="d-flex align-items-baseline mr-5">
-                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Ingresar Láminas</h5></a>
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Editar Ingresar Láminas</h5></a>
             </div>
         </div>
     </div>
@@ -34,7 +34,7 @@
                     <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
                         <div class="lh-1">
                             <h1 class="h3 mb-0 text-white lh-1">Datos Generales</h1>
-                            <input type="hidden" id="id_laboratorio" name="id_laboratorio" class="form-control" required="" autofocus="" value="">
+                            <input type="hidden" id="id_ingreso" name="id_ingreso" class="form-control" required="" autofocus="" value="{{$datos->id}}">
                         </div>
                     </div>
                 </div> 
@@ -45,7 +45,7 @@
 
                             <div class="col-md-4">
                                 <label for="fecha_recep" class="form-label fs-6">Fecha de Recepción</label>
-                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}" disabled>
+                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="{{$datos->fecha_recep}}" disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -54,14 +54,19 @@
                                 <select id="centro_salud" name="centro_salud" class="form-control single-select" required>
                                     <option value="0">Seleccione un Centro de Salud</option>
                                     @foreach($instituciones as $institucion)
+                                    @if($institucion->id == $datos->id_unidad)
+                                    <option value="{{$institucion->id}}" selected >{{$institucion->nombre}} - {{ $institucion->canton }}</option>
+                                    @else
                                     <option value="{{$institucion->id}}" >{{$institucion->nombre}} - {{ $institucion->canton }}</option>
+                                    @endif
                                     @endforeach
+
                                 </select>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="director_us" class="form-label fs-6">Director de la Unidad</label>
-                                <input type="text" id="director_us" name="director_us" class="form-control" required placeholder="Nombre del Director">
+                                <input type="text" id="director_us" name="director_us" class="form-control" required placeholder="Nombre del Director" value="{{$datos->director_us}}">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -70,7 +75,11 @@
                                 <select id="responsable" name="responsable" class="form-control single-select" required>
                                     <option value="0">Seleccione un Responsable</option>
                                     @foreach($responsables as $responsable)
+                                    @if($responsable->usuario_id == $datos->id_recepta)
+                                    <option value="{{$responsable->usuario_id}}" selected>{{$responsable->descripcion}}</option>
+                                    @else
                                     <option value="{{$responsable->usuario_id}}">{{$responsable->descripcion}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -80,26 +89,30 @@
                                 <select id="analista" name="analista" class="form-control single-select" required>
                                     <option value="0">Seleccione un Responsable</option>
                                     @foreach($responsables as $responsable)
+                                    @if($responsable->usuario_id == $datos->id_analita)
+                                    <option value="{{$responsable->usuario_id}}" selected>{{$responsable->descripcion}}</option>
+                                    @else
                                     <option value="{{$responsable->usuario_id}}">{{$responsable->descripcion}}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="mes_recepcion" class="form-label fs-6">Mes Supervisado</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" required disabled>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" required disabled value="{{$datos->mes_recepcion}}">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="total_laminas" class="form-label fs-6">Total de Láminas a Supervisar</label>
-                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" required>
+                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" required value="{{$datos->total_laminas}}">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
-                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required>
+                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="{{$datos->total_laminas_recib}}">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -118,11 +131,11 @@
                             <div class="col-md-12">
                                 <label class="form-label fw-bold">1. Láminas empacadas en cajas de láminas portaobjetos y separadas entre ellas</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_empacadas" value="true" required>
+                                    <input class="form-check-input" type="radio" name="laminas_empacadas" value="true" required {{ $datos->laminas_empacadas == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_empacadas" value="false">
+                                    <input class="form-check-input" type="radio" name="laminas_empacadas" value="false" {{ $datos->laminas_empacadas == 0 ? 'checked' : '' }}>
                                     <label class="form-check-label">No</label>
                                 </div>
                             </div>
@@ -130,11 +143,11 @@
                             <div class="col-md-12">
                                 <label class="form-label fw-bold">2. Láminas con información legible y enumeradas en forma consecutiva</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_legibles" value="true" required>
+                                    <input class="form-check-input" type="radio" name="laminas_legibles" value="true" required {{ $datos->laminas_legibles == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_legibles" value="false">
+                                    <input class="form-check-input" type="radio" name="laminas_legibles" value="false" {{ $datos->laminas_legibles == 0 ? 'checked' : '' }}>
                                     <label class="form-check-label">No</label>
                                 </div>
                             </div>
@@ -142,11 +155,11 @@
                             <div class="col-md-12">
                                 <label class="form-label fw-bold">3. Las láminas sin identificación de su resultado</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_sin_id" value="true" required>
+                                    <input class="form-check-input" type="radio" name="laminas_sin_id" value="true" required {{ $datos->laminas_sin_id == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_sin_id" value="false">
+                                    <input class="form-check-input" type="radio" name="laminas_sin_id" value="false" {{ $datos->laminas_sin_id == 0 ? 'checked' : '' }}>
                                     <label class="form-check-label">No</label>
                                 </div>
                             </div>
@@ -154,11 +167,11 @@
                             <div class="col-md-12">
                                 <label class="form-label fw-bold">4. Láminas sin exceso de aceite de inmersión</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_sin_aceite" value="true" required>
+                                    <input class="form-check-input" type="radio" name="laminas_sin_aceite" value="true" required {{ $datos->laminas_sin_aceite == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_sin_aceite" value="false">
+                                    <input class="form-check-input" type="radio" name="laminas_sin_aceite" value="false" {{ $datos->laminas_sin_aceite == 0 ? 'checked' : '' }}>
                                     <label class="form-check-label">No</label>
                                 </div>
                             </div>
@@ -166,11 +179,11 @@
                             <div class="col-md-12">
                                 <label class="form-label fw-bold">5. Láminas con frotis adecuado (tinción y dimensiones estables en el manual de baciloscopía)</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_frotis_adecuado" value="true" required>
+                                    <input class="form-check-input" type="radio" name="laminas_frotis_adecuado" value="true" required {{ $datos->laminas_frotis_adecuado == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_frotis_adecuado" value="false">
+                                    <input class="form-check-input" type="radio" name="laminas_frotis_adecuado" value="false" {{ $datos->laminas_frotis_adecuado == 0 ? 'checked' : '' }}>
                                     <label class="form-check-label">No</label>
                                 </div>
                             </div>
@@ -178,11 +191,11 @@
                             <div class="col-md-12">
                                 <label class="form-label fw-bold">6. Láminas íntegras sin rajaduras que afecten al frotis</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_integras" value="true" required>
+                                    <input class="form-check-input" type="radio" name="laminas_integras" value="true" required {{ $datos->laminas_integras == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_integras" value="false">
+                                    <input class="form-check-input" type="radio" name="laminas_integras" value="false" {{ $datos->laminas_integras == 0 ? 'checked' : '' }}>
                                     <label class="form-check-label">No</label>
                                 </div>
                             </div>
@@ -190,11 +203,11 @@
                             <div class="col-md-12">
                                 <label class="form-label fw-bold">7. Láminas con documentación respectiva (listado con el número y resultado de cada lámina)</label>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_documentacion" value="true" required>
+                                    <input class="form-check-input" type="radio" name="laminas_documentacion" value="true" required {{ $datos->laminas_documentacion == 1 ? 'checked' : '' }}>
                                     <label class="form-check-label">Sí</label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="laminas_documentacion" value="false">
+                                    <input class="form-check-input" type="radio" name="laminas_documentacion" value="false" {{ $datos->laminas_documentacion == 0 ? 'checked' : '' }}>
                                     <label class="form-check-label">No</label>
                                 </div>
                             </div>
@@ -203,7 +216,7 @@
 
                             <div class="col-md-12 mt-5">
                                 <label class="form-label fw-bold"><strong>Observaciones</strong></label>
-                                <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Escribe aquí cualquier observación..."></textarea>
+                                <textarea class="form-control" id="observaciones" name="observaciones" rows="3" placeholder="Escribe aquí cualquier observación...">{{$datos->observaciones}}</textarea>
                             </div>
                         </div>
                     </div>
@@ -240,5 +253,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/crear_lamina.js?v0.0.2')}}"></script>
+<script src="{{asset('assets/js/Lamina/editar_lamina.js?v0.0.0')}}"></script>
 @endpush

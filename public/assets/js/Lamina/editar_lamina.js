@@ -6,6 +6,7 @@ $( function () {
     });
 
 
+    /*
     // Obtener el mes y el año actual
     let fechaActual = new Date();
     let año = fechaActual.getFullYear();
@@ -17,6 +18,7 @@ $( function () {
 
     // Asignar el valor al input
     $("#mes_recepcion").val(`${mes} - ${año}`);
+    */
 
 
 
@@ -33,6 +35,8 @@ $( function () {
         let total_laminas  = $('#total_laminas').val();
         let director_us   = $('#director_us').val();
         let total_laminas_super = $('#total_laminas_super').val();
+
+        let id_ingreso    = $('#id_ingreso').val();
     
         // Validación de campos
         if (centroSalud == 0) {
@@ -70,9 +74,10 @@ $( function () {
                 // Realizamos la llamada AJAX
                 $.ajax({
                     type: 'POST',
-                    url: '/laminas/guardar',  
+                    url: '/laminas/guardar_edicion',  
                     headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                     data: {
+                        'id_ingreso':    id_ingreso,
                         'fecha_recep':   fechaRecepcion,
                         'centro_salud':  centroSalud,
                         'responsable':   responsable,

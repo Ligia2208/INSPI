@@ -373,3 +373,17 @@ input:checked + .slider:before {
     background-color: #d4edda !important; /* Verde claro */
 }
 
+
+
+.icon-ingreso {
+    color: #4DA6FF;
+}
+
+.icon-desglose {
+    color: #FFA726;
+}
+
+.icon-resultados {
+    color: #66BB6A;
+}
+
