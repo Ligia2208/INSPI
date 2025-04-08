@@ -305,9 +305,7 @@ class CentrosLaminasController extends Controller
         }
 
     }
-
-
-    
+  
 
     public function agregar_laminas($id_ingreso){
 
@@ -366,8 +364,6 @@ class CentrosLaminasController extends Controller
     }
 
 
-
-
     public function guardar_laminas(Request $request){
 
         $datos = $request->input('datos');
@@ -412,7 +408,6 @@ class CentrosLaminasController extends Controller
     }
 
 
-
     public function eliminar_desglose(Request $request)
     {
         $id_ingreso = $request->input('id'); 
@@ -436,8 +431,6 @@ class CentrosLaminasController extends Controller
             ], 404);
         }
     }
-    
-
 
 
     public function control_calidad($id_ingreso){
@@ -877,6 +870,43 @@ class CentrosLaminasController extends Controller
             return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
         }
     }
+
+    public function registro_muestra (Request $request)
+    {
+        //dd($datos);   
+
+        try {
+
+            return \PDF::loadView('pdf.registros.pdfRegistro_Muestra', [
+             
+            ])
+            ->setPaper('A4', 'portrait')
+            ->download('registro_muestra.pdf');
+
+        } catch (\Exception $e) {
+
+            return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
+        }
+    }
+
+    public function registro_solicitud (Request $request)
+    {
+        //dd($datos);   
+
+        try {
+
+            return \PDF::loadView('pdf.registros.pdfRegistro_Solicitud', [
+             
+            ])
+            ->setPaper('A4', 'portrait')
+            ->download('registro_solicitud.pdf');
+
+        } catch (\Exception $e) {
+
+            return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
+        }
+    }
+
 
 }
 
