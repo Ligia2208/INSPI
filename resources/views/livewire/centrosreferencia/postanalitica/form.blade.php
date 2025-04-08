@@ -401,6 +401,670 @@
                                                         </th>
                                                     </tr>
                                                 @endif
+                                                @if ($objAnalitica->pi01_id > 0)
+                                                <table id="data01" class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                                                    <thead>
+                                                        <tr class="text-uppercase">
+                                                            <th colspan="2"><center> -PI- </center></th>
+                                                            <th colspan="2"><center> -NTRI- </center></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <thead>
+                                                        <tr class="text-uppercase">
+                                                            <th><center>Medicamento</center></th>
+                                                            <th><center>Interpretación</center></th>
+                                                            <th><center>Medicamento</center></th>
+                                                            <th><center>Interpretación</center></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentopi as $objUni)
+                                                                    @if($objUni->id==57)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->pi01_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->pi01_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonrti as $objUni)
+                                                                    @if($objUni->id==65)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nrti01_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nrti01_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentopi as $objUni)
+                                                                    @if($objUni->id==58)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->pi02_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->pi02_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonrti as $objUni)
+                                                                    @if($objUni->id==66)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nrti02_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nrti02_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentopi as $objUni)
+                                                                    @if($objUni->id==59)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->pi03_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->pi03_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonrti as $objUni)
+                                                                    @if($objUni->id==67)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nrti03_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nrti03_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentopi as $objUni)
+                                                                    @if($objUni->id==60)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->pi04_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->pi04_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonrti as $objUni)
+                                                                    @if($objUni->id==68)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nrti04_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nrti04_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentopi as $objUni)
+                                                                    @if($objUni->id==61)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->pi05_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->pi05_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonrti as $objUni)
+                                                                    @if($objUni->id==69)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nrti05_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nrti05_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentopi as $objUni)
+                                                                    @if($objUni->id==62)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->pi06_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->pi06_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonrti as $objUni)
+                                                                    @if($objUni->id==70)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nrti06_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nrti06_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentopi as $objUni)
+                                                                    @if($objUni->id==63)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->pi07_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->pi07_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonrti as $objUni)
+                                                                    @if($objUni->id==71)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nrti07_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nrti07_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentopi as $objUni)
+                                                                    @if($objUni->id==64)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->pi08_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->pi08_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                <table id="data01" class="table table-head-custom table-head-bg table-borderless table-vertical-center">
+                                                    <thead>
+                                                        <tr class="text-uppercase">
+                                                            <th colspan="2"><center> -NNTRI- </center></th>
+                                                            <th colspan="2"><center> -INI- </center></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <thead>
+                                                        <tr class="text-uppercase">
+                                                            <th><center>Medicamento</center></th>
+                                                            <th><center>Interpretación</center></th>
+                                                            <th><center>Medicamento</center></th>
+                                                            <th><center>Interpretación</center></th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonnrti as $objUni)
+                                                                    @if($objUni->id==72)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nnrti01_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nnrti01_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentoini as $objUni)
+                                                                    @if($objUni->id==78)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->ini01_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->ini01_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonnrti as $objUni)
+                                                                    @if($objUni->id==73)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nnrti02_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nnrti02_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentoini as $objUni)
+                                                                    @if($objUni->id==79)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->ini02_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->ini02_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonnrti as $objUni)
+                                                                    @if($objUni->id==74)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nnrti03_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nnrti03_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentoini as $objUni)
+                                                                    @if($objUni->id==80)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->ini03_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->ini03_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonnrti as $objUni)
+                                                                    @if($objUni->id==75)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nnrti04_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nnrti04_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentoini as $objUni)
+                                                                    @if($objUni->id==81)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->ini04_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->ini04_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonnrti as $objUni)
+                                                                    @if($objUni->id==76)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nnrti05_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nnrti05_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentoini as $objUni)
+                                                                    @if($objUni->id==82)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->ini05_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->ini05_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <select class="form-control selectpicker form-control-solid"
+                                                                    required disabled>
+                                                                    @foreach ($medicamentonnrti as $objUni)
+                                                                    @if($objUni->id==77)
+                                                                    <option data-subtext="" value="{{ $objUni->id }}" selected="true">{{ $objUni->descripcion }}</option>
+                                                                    @endif
+                                                                    @endforeach
+                                                                </select>
+                                                            </td>
+                                                            <td align="center">
+                                                                <span class="text-dark-50 font-weight-bolder d-block font-size-lg">
+                                                                    @if ($objAnalitica->nnrti06_id == 1)
+                                                                        Sensible
+                                                                    @else
+                                                                        @if ($objAnalitica->nnrti06_id == 2)
+                                                                            Resistencia Intermedia
+                                                                        @else
+                                                                            Resistencia Alta
+                                                                        @endif
+                                                                    @endif
+                                                                </span>
+                                                            </td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                                @endif
                                             @endif
                                             @if ($objAnalitica->crns_id == 3)
                                                 @if ($objAnalitica->identificado != '')

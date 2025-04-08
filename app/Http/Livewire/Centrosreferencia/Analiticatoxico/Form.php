@@ -64,6 +64,7 @@ class Form extends Component
             'Analiticastoxico.codigo_secuencial' => 'required|numeric',
             'Analiticastoxico.codigo_externo' => 'sometimes|max:25',
             'Analiticastoxico.fecha_toma' => 'required|max:10',
+            'Analiticastoxico.hora_toma' => 'required|max:10',
             'Analiticastoxico.anio_registro' => 'required|max:10',
             'Analiticastoxico.fecha_llegada_lab' => 'required|max:10',
             'Analiticastoxico.fecha_procesamiento' => 'required|max:10',

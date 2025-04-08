@@ -18,6 +18,7 @@ use App\Models\CentrosReferencia\Tecnica;
 use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Unidades;
 use App\Models\CentrosReferencia\Clase;
+use App\Models\CentrosReferencia\Tipoparametros;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
@@ -126,7 +127,11 @@ class Form extends Component
         $estados = Estadomuestra::orderBy('id', 'asc')->cursor();
         $unidades = Unidades::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id', 'asc')->cursor();
-        return view('livewire.centrosreferencia.postanalitica.form', compact('sedes','muestras','detalles','data','estados','unidades','clases'));
+        $medicamentopi = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-PI')->orderBy('id','asc')->cursor();
+        $medicamentonrti = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-NRTI')->orderBy('id','asc')->cursor();
+        $medicamentonnrti = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-NNRTI')->orderBy('id','asc')->cursor();
+        $medicamentoini = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-INI')->orderBy('id','asc')->cursor();
+        return view('livewire.centrosreferencia.postanalitica.form', compact('sedes','muestras','detalles','data','estados','unidades','clases','medicamentopi','medicamentonrti','medicamentonnrti','medicamentoini'));
     }
 
     public function store(){

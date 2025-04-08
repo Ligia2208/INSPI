@@ -11,6 +11,7 @@ use App\Http\Controllers\Plataformas\Constante\ConstanteController;
 use App\Http\Controllers\CentrosReferencia\Preanalitica\PreanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Preanaliticatoxico\PreanaliticatoxicoController;
 use App\Http\Controllers\CentrosReferencia\Preanaliticamico\PreanaliticamicoController;
+use App\Http\Controllers\CentrosReferencia\Preanaliticacd4\Preanaliticacd4Controller;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxico\AnaliticatoxicoController;
@@ -80,6 +81,9 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Preanalitica Micologia
         Route::resource('preanaliticasmico', PreanaliticamicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticamico');
 
+        //CRNs Plataformas Preanalitica CD4
+        Route::resource('preanaliticascd4', Preanaliticacd4Controller::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticacd4');
+
         //CRNs Plataformas Resultados
         Route::resource('resultados', ResultadoController::class)->parameters(['resultados' => 'resultado'])->names('resultado');
 
@@ -122,6 +126,8 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Resultados
         Route::resource('georefresultadosgerencial', GeorefResultadosgerencialController::class)->parameters(['resultados' => 'resultado'])->names('georefresultadogerencial');
 
+        Route::post('/importar',[Preanaliticacd4Controller::class,
+            'importar'])->name('importar');
 
         //CRNs Plataformas Resultados
         Route::resource('visorresultados', VisorResultadosController::class)->parameters(['resultados' => 'resultado'])->names('visorresultado');

@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', $Preanaliticastoxico->id)
+@section('title', $preanalitica->id)
 
 @section('content')
     <!--begin::Bread-->
@@ -8,7 +8,7 @@
         <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
             <div class="d-flex align-items-center flex-wrap mr-1">
                 <div class="d-flex align-items-baseline mr-5">
-                    <a class="text-dark" href="{{ route('preanaliticatoxico.index') }}">
+                    <a class="text-dark" href="{{ route('preanaliticacd4.index') }}">
                         <h5 class="text-dark font-weight-bold my-2 mr-5">Consulta de muestras generadas</h5>
                     </a>
                     <ul class="breadcrumb breadcrumb-transparent breadcrumb-dot font-weight-bold p-0 my-2 font-size-sm">
@@ -35,7 +35,7 @@
                                 <!--start::Toolbar-->
                                 <div class="d-flex justify-content-end">
                                     <i class="navi-item" data-toggle="modal" data-target="_self">
-                                        <a href="{{ route('preanaliticatoxico.index') }}" class="navi-link">
+                                        <a href="{{ route('preanaliticacd4.index') }}" class="navi-link">
                                             <span class="navi-icon">
                                                 <i class="ki ki-bold-close icon-lg" style="color:rgb(255, 0, 0)"
                                                     title="Cerrar/Regresar"></i>
@@ -52,38 +52,38 @@
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Institución de Salud:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->instituciones->descripcion }} - ({{ $Preanaliticastoxico->instituciones->clasificacion->descripcion }} - {{ $Preanaliticastoxico->instituciones->nivel->descripcion }} - {{ $Preanaliticastoxico->instituciones->tipologia->descripcion }})</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $preanalitica->instituciones->descripcion }} - ({{ $preanalitica->instituciones->clasificacion->descripcion }} - {{ $preanalitica->instituciones->nivel->descripcion }} - {{ $preanalitica->instituciones->tipologia->descripcion }})</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Paciente:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->paciente->identidad }} - ({{ $Preanaliticastoxico->paciente->apellidos }} {{ $Preanaliticastoxico->paciente->nombres }})</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $preanalitica->paciente->identidad }} - ({{ $preanalitica->paciente->apellidos }} {{ $preanalitica->paciente->nombres }})</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Enviado a:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->sedes->descripcion }} - {{ $Preanaliticastoxico->crns->descripcion }}</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $preanalitica->sedes->descripcion }} - {{ $preanalitica->crns->descripcion }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Evento Solicitado:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->evento->descripcion }}</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $preanalitica->evento->descripcion }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Fecha Registro:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->created_at }}</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $preanalitica->created_at }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Usuario Registro:</label>
                                     <div class="col-9" style="align:left">
                                         <span class="form-control-plaintext">
-                                            <span class="font-weight-bolder">{{ $Preanaliticastoxico->usuariot->name }}</span>
+                                            <span class="font-weight-bolder">{{ $preanalitica->usuariot->name }}</span>
                                         </span>
                                     </div>
                                 </div>
@@ -94,37 +94,24 @@
                             <hr>
                             <div class="card-body py-4">
                                 @forelse ($analitica as $objAn)
-                                @if($objAn->tipo_rechazo_muestra_id>0)
-                                    <div class="form-group row my-2" style="background-color: rgb(201, 170, 170)">
-                                @else
-                                    <div class="form-group row my-2">
-                                @endif
+                                <div class="form-group row my-2">
                                     <label class="col-1 col-form-label">Clase:</label>
                                     <div class="col-1" style="align:left">
                                         <span class="form-control-plaintext font-weight-bolder">{{ $objAn->clase->descripcion }}</span>
                                     </div>
                                     <label class="col-1 col-form-label">Tipo de Muestra:</label>
-                                    <div class="col-1" style="align:left">
+                                    <div class="col-2" style="align:left">
                                         <span class="form-control-plaintext font-weight-bolder">{{ $objAn->muestra->descripcion }}</span>
                                     </div>
                                     <label class="col-1 col-form-label">Código de Muestra:</label>
                                     <div class="col-2" style="align:left">
                                         <span class="form-control-plaintext font-weight-bolder">{{ $objAn->codigo_calidad }}</span>
                                     </div>
-                                    <label class="col-1 col-form-label">Fecha - Hora toma:</label>
-                                    <div class="col-1" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->fecha_toma }} / {{ $objAn->hora_toma }}</span>
-                                    </div>
-                                    <label class="col-1 col-form-label">Estado:</label>
+                                    <label class="col-2 col-form-label">Fecha recepción:</label>
                                     <div class="col-2" style="align:left">
-                                        @if($objAn->estado_muestra_id==1)
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->estado_muestra->descripcion }}</span>
-                                        @else
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->tipo_rechazo_muestra->descripcion }}</span>
-                                        @endif
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->created_at }}</span>
                                     </div>
                                 </div>
-
                                 @empty
                                 <!--begin::Col-->
                                 <div class="col-12">

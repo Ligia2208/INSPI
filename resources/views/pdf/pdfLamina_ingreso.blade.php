@@ -52,20 +52,20 @@
         <!-- CUERPO1 -->
         <table class="no-border" style="width: 100%; border: 1px solid black; border-collapse: collapse;">
             <tr>
-                <td style="width: 50%; text-align: left; border: none;">Fecha de Recepción de Láminas: {{$datos->fecha_recep}}</td>
-                <td style="width: 50%; text-align: left; border: none;">Nombre del <span class="underline">Laboratorio Supervisado</span>: {{$datos->instituto}}</td>
+                <td style="width: 50%; text-align: left; border: none;"><strong>Fecha de Recepción de Láminas:</strong> {{$datos->fecha_recep}}</td>
+                <td style="width: 50%; text-align: left; border: none;"><strong>Nombre del <span class="underline">Laboratorio Supervisado</span>:</strong> {{$datos->instituto}}</td>
             </tr>
             <tr>
-                <td style="text-align: left; border: none;">Total de Láminas Recibidas: {{ $datos->total_laminas }}</td>
-                <td style="text-align: left; border: none;">Procedencia:</td>
+                <td style="text-align: left; border: none;"><strong>Total de Láminas Recibidas:</strong> {{ $datos->total_laminas_recib }}</td>
+                <td style="text-align: left; border: none;"><strong>Procedencia:</strong> {{$datos->procedencia}} </td>
             </tr>
             <tr>
-                <td style="text-align: left; border: none;">Responsable de Recepción: {{ $datos->recepta ?? 'No disponible' }}</td>
+                <td style="text-align: left; border: none;"><strong>Responsable de Recepción:</strong> {{ $datos->recepta ?? 'No disponible' }}</td>
                 <td colspan="1" style="border: none;"></td>
             </tr>
             <tr>
-                <td style="text-align: left; border: none;">Analista (encargado de Control de Calidad): {{ $datos->analita ?? 'No disponible' }}</td>
-                <td style="text-align: left; border: none;">Mes <span class="underline">supervisado</span>: {{ $datos->mes_recepcion }}</td>
+                <td style="text-align: left; border: none;"><strong>Analista (encargado de Control de Calidad):</strong> {{ $datos->analita ?? 'No disponible' }}</td>
+                <td style="text-align: left; border: none;"><strong>Mes <span class="underline">supervisado</span>:</strong> {{ $datos->mes_recepcion }}</td>
             </tr>
         </table>
         <br>

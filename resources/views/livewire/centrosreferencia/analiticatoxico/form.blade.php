@@ -391,7 +391,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-3">
+                                <div class="form-group col-md-2">
                                     <label>Fecha toma de muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -403,6 +403,22 @@
                                             wire:model.defer="Analiticastoxico.fecha_toma"
                                             type="date"
                                             class="start_date form-control form-control-solid @error('Analiticastoxico.fecha_toma') is-invalid @enderror"
+                                            placeholder="Seleccione una fecha" disabled
+                                        />
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-1">
+                                    <label>Hora toma<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-timer"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticastoxico.hora_toma"
+                                            type="time"
+                                            class="start_date form-control form-control-solid @error('Analiticastoxico.hora_toma') is-invalid @enderror"
                                             placeholder="Seleccione una fecha" disabled
                                         />
                                     </div>

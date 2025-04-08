@@ -229,6 +229,16 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $preanalitica->created_at }}</span>
                                     </td>
                                     <td align="center">
+                                        @if($preanalitica->crns_id==7)
+                                        <i class="navi-item" data-toggle="modal" data-target="_self">
+                                            <a href="{{ route('preanalitica.show', $preanalitica) }}" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-eye" style="color:rgb(122, 122, 122)"
+                                                        title="Mostrar"></i>
+                                                </span>
+                                            </a>
+                                        </i>
+                                        @else
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
                                             <a href="{{ route('preanalitica.edit', $preanalitica) }}" class="navi-link">
                                                 <span class="navi-icon">
@@ -270,6 +280,7 @@
                                             </span>
                                             </a>
                                         </i>
+                                        @endif
                                         @endif
                                     </td>
                                 </tr>

@@ -94,22 +94,34 @@
                             <hr>
                             <div class="card-body py-4">
                                 @forelse ($analitica as $objAn)
-                                <div class="form-group row my-2">
+                                @if($objAn->tipo_rechazo_muestra_id>0)
+                                    <div class="form-group row my-2" style="background-color: rgb(201, 170, 170)">
+                                @else
+                                    <div class="form-group row my-2">
+                                @endif
                                     <label class="col-1 col-form-label">Clase:</label>
                                     <div class="col-1" style="align:left">
                                         <span class="form-control-plaintext font-weight-bolder">{{ $objAn->clase->descripcion }}</span>
                                     </div>
                                     <label class="col-1 col-form-label">Tipo de Muestra:</label>
-                                    <div class="col-2" style="align:left">
+                                    <div class="col-1" style="align:left">
                                         <span class="form-control-plaintext font-weight-bolder">{{ $objAn->muestra->descripcion }}</span>
                                     </div>
                                     <label class="col-1 col-form-label">Código de Muestra:</label>
                                     <div class="col-2" style="align:left">
                                         <span class="form-control-plaintext font-weight-bolder">{{ $objAn->codigo_calidad }}</span>
                                     </div>
-                                    <label class="col-2 col-form-label">Fecha recepción:</label>
+                                    <label class="col-1 col-form-label">Fecha - Hora toma:</label>
+                                    <div class="col-1" style="align:left">
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->fecha_toma }} / {{ $objAn->hora_toma }}</span>
+                                    </div>
+                                    <label class="col-1 col-form-label">Estado:</label>
                                     <div class="col-2" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->created_at }}</span>
+                                        @if($objAn->estado_muestra_id==1)
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->estado_muestra->descripcion }}</span>
+                                        @else
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $objAn->tipo_rechazo_muestra->descripcion }}</span>
+                                        @endif
                                     </div>
                                 </div>
                                 @empty

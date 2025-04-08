@@ -175,10 +175,10 @@
                                 <th>Código Muestra</th>
                                 <th>Fecha Recepción</th>
                                 <th>CRN - Laboratorio</th>
-                                <th>Evento</th>
                                 <th>Paciente</th>
-                                <th>Referencia</th>
+                                <th>Evento</th>
                                 <th>Muestra</th>
+                                <th>Técnico asignado</th>
                                 <th>Técnica</th>
                                 <th>Resultado</th>
                                 <th>Fecha Resultado</th>
@@ -203,26 +203,19 @@
                                     </td>
                                     <td>
                                         <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">({{ $analiticatoxico->preanalitica->paciente->identidad }}) {{ $analiticatoxico->preanalitica->paciente->apellidos }} {{ $analiticatoxico->preanalitica->paciente->nombres }}</span>
+                                    </td>
+                                    <td>
+                                        <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analiticatoxico->evento->simplificado }}</span>
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">({{ $analiticatoxico->preanalitica->paciente->identidad }}) {{ $analiticatoxico->preanalitica->paciente->apellidos }} {{ $analiticatoxico->preanalitica->paciente->nombres }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analiticatoxico->muestra->descripcion }}</span>
                                     </td>
-                                    @if ($analiticatoxico->codigo_externo == '')
-                                        <td>
-                                            <span
-                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ str_pad($analiticatoxico->codigo_muestra, 5, '0', STR_PAD_LEFT) }}-{{ str_pad($analiticatoxico->codigo_secuencial, 2, '0', STR_PAD_LEFT) }}</span>
-                                        </td>
-                                    @else
-                                        <td>
-                                            <span
-                                                class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $analiticatoxico->codigo_externo }}</span>
-                                        </td>
-                                    @endif
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analiticatoxico->muestra->descripcion }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analiticatoxico->preanalitica->tecnico->name }}</span>
                                     </td>
                                     <td>
                                         @if ($analiticatoxico->tecnica_id > 0)
