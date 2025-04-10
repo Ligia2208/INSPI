@@ -16,6 +16,7 @@ use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxico\AnaliticatoxicoController;
 use App\Http\Controllers\CentrosReferencia\Analiticamicolo\AnaliticamicoloController;
+use App\Http\Controllers\CentrosReferencia\Preanaliticagen\PreanaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxicop\AnaliticatoxicopController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapController;
@@ -80,6 +81,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Preanalitica Micologia
         Route::resource('preanaliticasmico', PreanaliticamicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticamico');
+
+        //CRNs Plataformas Preanalitica Gebsbio
+        Route::resource('preanaliticagen', PreanaliticagenController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticagen');
 
         //CRNs Plataformas Preanalitica CD4
         Route::resource('preanaliticascd4', Preanaliticacd4Controller::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticacd4');
