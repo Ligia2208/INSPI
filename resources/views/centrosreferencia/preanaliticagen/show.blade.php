@@ -1,6 +1,6 @@
 @extends('layouts.main')
 
-@section('title', $Preanaliticasmico->id)
+@section('title', $Preanaliticastoxico->id)
 
 @section('content')
     <!--begin::Bread-->
@@ -52,38 +52,38 @@
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Institución de Salud:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticasmico->instituciones->descripcion }} - ({{ $Preanaliticasmico->instituciones->clasificacion->descripcion }} - {{ $Preanaliticasmico->instituciones->nivel->descripcion }} - {{ $Preanaliticasmico->instituciones->tipologia->descripcion }})</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->instituciones->descripcion }} - ({{ $Preanaliticastoxico->instituciones->clasificacion->descripcion }} - {{ $Preanaliticastoxico->instituciones->nivel->descripcion }} - {{ $Preanaliticastoxico->instituciones->tipologia->descripcion }})</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Paciente:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticasmico->paciente->identidad }} - ({{ $Preanaliticasmico->paciente->apellidos }} {{ $Preanaliticasmico->paciente->nombres }})</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->paciente->identidad }} - ({{ $Preanaliticastoxico->paciente->apellidos }} {{ $Preanaliticastoxico->paciente->nombres }})</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Enviado a:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticasmico->sedes->descripcion }} - {{ $Preanaliticasmico->crns->descripcion }}</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->sedes->descripcion }} - {{ $Preanaliticastoxico->crns->descripcion }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Evento Solicitado:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticasmico->evento->descripcion }}</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->evento->descripcion }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Fecha Registro:</label>
                                     <div class="col-9" style="align:left">
-                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticasmico->created_at }}</span>
+                                        <span class="form-control-plaintext font-weight-bolder">{{ $Preanaliticastoxico->created_at }}</span>
                                     </div>
                                 </div>
                                 <div class="form-group row my-2">
                                     <label class="col-3 col-form-label">Usuario Registro:</label>
                                     <div class="col-9" style="align:left">
                                         <span class="form-control-plaintext">
-                                            <span class="font-weight-bolder">{{ $Preanaliticasmico->usuariot->name }}</span>
+                                            <span class="font-weight-bolder">{{ $Preanaliticastoxico->usuariot->name }}</span>
                                         </span>
                                     </div>
                                 </div>

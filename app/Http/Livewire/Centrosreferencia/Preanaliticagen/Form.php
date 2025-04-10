@@ -1444,6 +1444,7 @@ class Form extends Component
             $newPac->update();
             */
 
+            /*
             //se agrega los datos de mico 
             $newMico = Micobacteria::where('pre_analitica_id', $this->Preanaliticastoxico->id)->first();
             //$newMico->pre_analitica_id = $newToma->id;
@@ -1461,6 +1462,7 @@ class Form extends Component
             $newMico->responsable_recep   = $this->Preanaliticastoxico->responsable_recep;
 
             $newMico->save();
+            */
 
             $updatePre->probable_infeccion=$this->Preanaliticastoxico->probable_infeccion;
             $updatePre->fecha_sintomas=$this->Preanaliticastoxico->fecha_sintomas;
@@ -1469,6 +1471,9 @@ class Form extends Component
             $updatePre->gestacion=$this->Preanaliticastoxico->gestacion;
             $updatePre->laboratorio=$this->Preanaliticastoxico->laboratorio;
             $updatePre->nombre_laboratorio=$this->Preanaliticastoxico->nombre_laboratorio;
+
+            $updatePre->nombre_solicitante=$this->Preanaliticastoxico->nom_solicita;
+            $updatePre->correo_solicitante=$this->Preanaliticastoxico->correo;
 
             $updatePre->sedes_id=$this->Preanaliticastoxico->sedes_id;
             $updatePre->crns_id=$this->Preanaliticastoxico->crns_id;
@@ -1541,6 +1546,10 @@ class Form extends Component
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_primera_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_primera;
                     $newMuestra->codigo_muestra = $codigo;
+
+                    $newMuestra->edad=$this->Preanaliticastoxico->edad;
+                    $newMuestra->sexo=$this->Preanaliticastoxico->paciente_sexo;
+
                     $newMuestra->codigo_externo = $this->Preanaliticastoxico->cod_muestra_hosp;
                     if($tipogenera==1){
                         $newMuestra->codigo_secuencial = 1;
@@ -1564,6 +1573,8 @@ class Form extends Component
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_primera_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_primera;
                     $updateAnalitica->codigo_externo = $this->Preanaliticastoxico->cod_muestra_hosp;
+                    $updateAnalitica->edad=$this->Preanaliticastoxico->edad;
+                    $updateAnalitica->sexo=$this->Preanaliticastoxico->paciente_sexo;
                     $muestra = $updateAnalitica->codigo_muestra;
                     $updateAnalitica->codigo_secuencial = 1;
                     $updateAnalitica->update();
@@ -1587,6 +1598,8 @@ class Form extends Component
                     $newMuestra->fecha_toma = $this->Preanaliticastoxico->fecha_toma_segunda;
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_segunda_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_segunda;
+                    $newMuestra->edad=$this->Preanaliticastoxico->edad;
+                    $newMuestra->sexo=$this->Preanaliticastoxico->paciente_sexo;
                     $newMuestra->codigo_muestra = $muestra;
                     if($tipogenera==1){
                         $newMuestra->codigo_secuencial = 2;
@@ -1609,6 +1622,8 @@ class Form extends Component
                     $updateAnalitica->fecha_toma = $this->Preanaliticastoxico->fecha_toma_segunda;
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_segunda_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_segunda;
+                    $updateAnalitica->edad=$this->Preanaliticastoxico->edad;
+                    $updateAnalitica->sexo=$this->Preanaliticastoxico->paciente_sexo;
                     $updateAnalitica->codigo_muestra = $muestra;
                     $updateAnalitica->codigo_secuencial = 2;
                     $updateAnalitica->update();
@@ -1632,6 +1647,8 @@ class Form extends Component
                     $newMuestra->fecha_toma = $this->Preanaliticastoxico->fecha_toma_tercera;
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_tercera_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_tercera;
+                    $newMuestra->edad=$this->Preanaliticastoxico->edad;
+                    $newMuestra->sexo=$this->Preanaliticastoxico->paciente_sexo;
                     $newMuestra->codigo_muestra = $muestra;
                     if($tipogenera==1){
                         $newMuestra->codigo_secuencial = 3;
@@ -1654,6 +1671,8 @@ class Form extends Component
                     $updateAnalitica->fecha_toma = $this->Preanaliticastoxico->fecha_toma_tercera;
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_tercera_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_tercera;
+                    $updateAnalitica->edad=$this->Preanaliticastoxico->edad;
+                    $updateAnalitica->sexo=$this->Preanaliticastoxico->paciente_sexo;
                     $updateAnalitica->codigo_muestra = $muestra;
                     $updateAnalitica->codigo_secuencial = 3;
                     $updateAnalitica->update();
@@ -1677,6 +1696,8 @@ class Form extends Component
                     $newMuestra->fecha_toma = $this->Preanaliticastoxico->fecha_toma_cuarta;
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_cuarta_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_cuarta;
+                    $newMuestra->edad=$this->Preanaliticastoxico->edad;
+                    $newMuestra->sexo=$this->Preanaliticastoxico->paciente_sexo;
                     $newMuestra->codigo_muestra = $muestra;
                     if($tipogenera==1){
                         $newMuestra->codigo_secuencial = 4;
@@ -1699,6 +1720,8 @@ class Form extends Component
                     $updateAnalitica->fecha_toma = $this->Preanaliticastoxico->fecha_toma_cuarta;
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_cuarta_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_cuarta;
+                    $updateAnalitica->edad=$this->Preanaliticastoxico->edad;
+                    $updateAnalitica->sexo=$this->Preanaliticastoxico->paciente_sexo;
                     $updateAnalitica->codigo_muestra = $muestra;
                     $updateAnalitica->codigo_secuencial = 4;
                     $updateAnalitica->update();
@@ -1722,6 +1745,8 @@ class Form extends Component
                     $newMuestra->fecha_toma = $this->Preanaliticastoxico->fecha_toma_quinta;
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_quinta_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_quinta;
+                    $newMuestra->edad=$this->Preanaliticastoxico->edad;
+                    $newMuestra->sexo=$this->Preanaliticastoxico->paciente_sexo;
                     $newMuestra->codigo_muestra = $muestra;
                     if($tipogenera==1){
                         $newMuestra->codigo_secuencial = 5;
@@ -1744,6 +1769,8 @@ class Form extends Component
                     $updateAnalitica->fecha_toma = $this->Preanaliticastoxico->fecha_toma_quinta;
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_quinta_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_quinta;
+                    $updateAnalitica->edad=$this->Preanaliticastoxico->edad;
+                    $updateAnalitica->sexo=$this->Preanaliticastoxico->paciente_sexo;
                     $updateAnalitica->codigo_muestra = $muestra;
                     $updateAnalitica->codigo_secuencial = 5;
                     $updateAnalitica->update();
@@ -1755,9 +1782,9 @@ class Form extends Component
             $this->emit('closeModal');
 
             if($this->Preanaliticastoxico->crns_id == 1){
-                return redirect()->route('preanaliticamico.index');
+                return redirect()->route('preanaliticagen.index');
             }else{
-                return redirect()->route('preanalitica.index');
+                return redirect()->route('preanaliticagen.index');
             }
             
         }

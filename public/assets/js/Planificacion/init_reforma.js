@@ -53,7 +53,7 @@ $( function () {
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
                         array = '<div class="text-center"><span class="badge badge-info text-bg-info">Corregido</span>';
-                    }else if(full.estado == 'D'){
+                    }else if(full.estado == 'D' || full.estado == 'E'){
                         array = '<div class="text-center"><span class="badge badge-danger text-bg-danger">Eliminado</span>';
                     }else{
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';

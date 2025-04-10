@@ -25,9 +25,9 @@ class PreanaliticagenController extends Controller
         return view('centrosreferencia.preanaliticagen.create', compact('preanalitica'));
     }
 
-    public function show(Preanaliticagen $Preanaliticasmico){
-        $analitica = Analitica::where('estado','=','A')->where('preanalitica_id','=',$Preanaliticasmico->id)->get();
-        return view('centrosreferencia.preanaliticagen.show', compact('Preanaliticasmico','analitica'));
+    public function show(Preanaliticagen $Preanaliticastoxico){
+        $analitica = Analitica::where('estado','=','A')->where('preanalitica_id','=',$Preanaliticastoxico->id)->get();
+        return view('centrosreferencia.preanaliticagen.show', compact('Preanaliticastoxico','analitica'));
     }
 
     public function edit(Preanaliticagen $Preanaliticastoxico){

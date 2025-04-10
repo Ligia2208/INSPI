@@ -21,10 +21,10 @@
         <div class="d-flex flex-column-fluid">
             <div class="container-fluid">
                 <div class="row">
-                    @include('centrosreferencia.analiticamicolo.menu.index')
+                    @include('centrosreferencia.analiticagen.menu.index')
                 </div>
                 <div class="row">
-                    @livewire('centrosreferencia.analiticamicolo.index')
+                    @livewire('centrosreferencia.analiticagen.index')
                 </div>
             </div>
         </div>

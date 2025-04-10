@@ -16,6 +16,7 @@ use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxico\AnaliticatoxicoController;
 use App\Http\Controllers\CentrosReferencia\Analiticamicolo\AnaliticamicoloController;
+use App\Http\Controllers\CentrosReferencia\Analiticagen\AnaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Preanaliticagen\PreanaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxicop\AnaliticatoxicopController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
@@ -114,6 +115,10 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Micología Analitica de Resultados Pendientes
         Route::resource('analiticasmicolo', AnaliticamicoloController::class)->parameters(['analiticasmicolo' => 'analiticasmicolo'])->names('analiticasmicolo');
+
+        //CRNs Gensbio Analitica de Resultados Pendientes
+        Route::resource('analiticasgen', AnaliticagenController::class)->parameters(['analiticasgen' => 'analiticasgen'])->names('analiticasgen');
+
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');
