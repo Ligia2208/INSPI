@@ -126,6 +126,11 @@ class Index extends Component
                         $analiticas = $analiticas->where('fecha_procesamiento', '>=', $this->fechainicio)->where('fecha_procesamiento','<=',$this->fechafin);
                         $count = $analiticas->count();
                     }
+                    if($this->controlf==4){
+                        $pre = Preanalitica::where('fecha_recepcion','>=',$this->fechainicio)->where('fecha_recepcion','<=',$this->fechafin)->pluck('id')->toArray();
+                        $analiticas = $analiticas->whereIn('preanalitica_id',$pre);
+                        $count = $analiticas->count();
+                    }
                 }
                 else{
                     $this->alert('error', __('Fecha fin debe ser mayor o igual a Fecha inicio'));
