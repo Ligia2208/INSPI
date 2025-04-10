@@ -158,6 +158,22 @@
                 @endcan
             @endcanany
 
+            @canany(['preanaliticagen'])
+            <div class="my-5"></div>
+                <li class="menu-section">
+                    <h4 class="menu-text">CRN Genómica</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+                @can('preanaliticagen')
+                    <li class="menu-item {{ active('preanaliticagen.*') }}">
+                        <a href="{{ route('preanaliticagen.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-cogs"></i>
+                            <span class="menu-text">Muestras - Preanalítica</span>
+                        </a>
+                    </li>
+                @endcan
+            @endcanany
+
 
             @canany(['pacientes', 'resultados', 'instituciones', 'visorresultados', 'resultadosmsp', 'resultadoscrn', 'resultadosgerencial',
                 'preanalitica', 'postanaliticas', 'analiticas'])

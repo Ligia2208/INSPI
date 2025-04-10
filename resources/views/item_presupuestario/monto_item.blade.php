@@ -246,7 +246,7 @@
 
     </hr>
 
-    <div class="container2 mt-5">
+    <!-- <div class="container2 mt-5">
         <div class="card p-4">
             <h2>Objetivo Operativo</h2>
             <div class="row p-2 card-body">
@@ -273,7 +273,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> -->
 
     @if(!$proestado)
     <div class="container2 mt-5">

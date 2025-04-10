@@ -4,6 +4,7 @@ namespace App\Http\Controllers\CentrosReferencia\Preanaliticacd4;
 
 use App\Http\Controllers\Controller;
 use App\Models\CentrosReferencia\Preanalitica;
+use App\Models\CentrosReferencia\Pacientetemp;
 use App\Models\CentrosReferencia\Analitica;
 use Illuminate\Http\Request;
 use App\Imports\PacientesImport;
@@ -39,6 +40,14 @@ class Preanaliticacd4Controller extends Controller
 
     public function importar(Request $request){
         Excel::import(new PacientesImport,$request->file('file')->store('files'));
+        return redirect()->back();
+    }
+
+    public function eliminar(){
+        $pacs = Pacientetemp::all();
+        foreach($pacs as $p){
+            $p->delete();
+        }
         return redirect()->back();
     }
 }

@@ -8,8 +8,12 @@
                     <span class="text-muted mt-3 font-weight-bold font-size-sm">@yield('title')<span
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span></span>
                 </h3>
+                <span>
                 <a href="{{ route('preanaliticacd4.create') }}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i
                         class="fa fa-sticky-note"></i> Agregar</a>
+                        <a href="{{ route('eliminar') }}" class="btn btn-danger btn-shadow font-weight-bold mr-2 "><i
+                            class="fa fa-trash"></i> Eliminar</a>
+                </span>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -61,14 +65,16 @@
                                                         <input type="file" name="file" class="form-control form-control-solid" accept=".xlsx">
                                                     </div>
                                                     <div class="form-group col-md-4">
-                                                        <button class="btn btn-success"> Cargar </button>
+                                                        <button class="btn btn-success">Subir Archivo</button>
                                                     </div>
                                                 </div>
                                             </form>
+
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                         </div>
                     </div>
                 </div>
