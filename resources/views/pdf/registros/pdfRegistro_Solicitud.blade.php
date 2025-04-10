@@ -12,6 +12,7 @@
             .no-border { border: none; }
             .underline { text-decoration: underline; }
             .italic { font-style: italic; }
+            input { border: none; outline: none; }
         </style> 
     </head>
     <body>
@@ -51,7 +52,7 @@
     
 
         <!-- CUERPO1 -->
-        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
+        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 10px;">
             <thead>
                 <tr>
                     <th colspan="5" style="border: 1px solid #000; text-align: center; font-weight: bold;">
@@ -59,68 +60,143 @@
                     </th>
                 </tr>
                 <tr>
-                    <th colspan="5" style="border: 1px solid #000; text-align: center; font-weight: bold; background-color: #d3d3d3;">
+                    <th colspan="5" style="border: 1px solid #000; text-align: left; font-weight: bold; background-color: #d3d3d3;">
                         TIPO DE ORGANISMO
                     </th>
                 </tr>
-
             </thead>
             <tbody>
                 <tr>
-                    <td style="border: 1px solid #000;">Bacteria</td>
-                    <td style="border: 1px solid #000;">Virus</td>
-                    <td style="border: 1px solid #000;">Parásitos</td>
-                    <td style="border: 1px solid #000;">Hongos</td>
-                    <td style="border: 1px solid #000;">Otros (especifique): ___________</td>
+                    <td style="width: 20%; text-align: center; vertical-align: middle;">
+                        <label><input type="checkbox" style="vertical-align: middle;"> Bacterias</label>
+                    </td>
+                    <td style="width: 20%; text-align: center; vertical-align: middle;">
+                        <label><input type="checkbox" style="vertical-align: middle;"> Virus</label>
+                    </td>
+                    <td style="width: 20%; text-align: center; vertical-align: middle;">
+                        <label><input type="checkbox" style="vertical-align: middle;"> Parásitos</label>
+                    </td>
+                    <td style="width: 20%; text-align: center; vertical-align: middle;">
+                        <label><input type="checkbox" style="vertical-align: middle;"> Hongos</label>
+                    </td>
+                    <td style="width: 20%; text-align: center; vertical-align: middle;">
+                        <label><input type="checkbox" style="vertical-align: middle;"> Otros (especifique):</label>
+                        <input type="text" style="width: 100px; text-align: center;">
+                    </td>
                 </tr>
-            </tbody>
-        </table>
-        <table>
-
-            <thead>
                 <tr>
-                    <th colspan="4" style="border: 1px solid #000; text-align: center; font-weight: bold; background-color: #d3d3d3;">
-                        TIPO DE MUESTRAS ENTREGADAS
-                    </th>
-                </tr>
-
-            </thead>
-            <tbody>
-                <tr>
-                    <td style="border: 1px solid #000;">Muestra primaria</td>
-                    <td style="border: 1px solid #000;">Alícuota</td>
-                    <td style="border: 1px solid #000;">Cultivo</td>
-                    <td style="border: 1px solid #000;">Material genético:
-                        ADN
-                        ARN
+                    <td style="text-align: center; vertical-align: middle;">
+                        No. Muestras: <input type="text" style="width: 60px; text-align: center;">
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        No. Muestras: <input type="text" style="width: 60px; text-align: center;">
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        No. Muestras: <input type="text" style="width: 60px; text-align: center;">
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        No. Muestras: <input type="text" style="width: 60px; text-align: center;">
+                    </td>
+                    <td style="text-align: center; vertical-align: middle;">
+                        No. Muestras: <input type="text" style="width: 60px; text-align: center;">
                     </td>
                 </tr>
             </tbody>
-        </table>
-        <table>
+        </table>        
+        <!-- 2 -->
+        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 10px;">
             <thead>
                 <tr>
-                    <th colspan="4" style="border: 1px solid #000; text-align: center; font-weight: bold; background-color: #d3d3d3;">
+                    <th colspan="4" style="border: 1px solid #000; text-align: left; font-weight: bold; background-color: #d3d3d3;">
+                        TIPO DE MUESTRAS ENTREGADAS
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 25%; text-align: center; vertical-align: middle;">
+                        <label><input type="checkbox"> Muestra primaria</label>
+                    </td>
+                    <td style="width: 25%; text-align: center; vertical-align: middle;">
+                        <label><input type="checkbox"> Alícuota</label>
+                    </td>
+                    <td style="width: 25%; text-align: center; vertical-align: middle;">
+                        <label><input type="checkbox"> Cultivo</label>
+                    </td>
+                    <td style="width: 25%; text-align: center; vertical-align: middle;">
+                        Material genético:<br>
+                        <label><input type="checkbox"> ADN</label><br>
+                        <label><input type="checkbox"> ARN</label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>               
+        <!-- 3 -->
+        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 10px;">
+            <thead>
+                <tr>
+                    <th colspan="4" style="border: 1px solid #000; text-align: left; font-weight: bold; background-color: #d3d3d3;">
                         SERVICIO SOLICITADO
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td style="border: 1px solid #000;">Genotipificación de virus, bacterias, parásitos, hongos, insectos y otros organismos biológicos de importancia en salud pública.</td>
-                    <td style="border: 1px solid #000;">Genotipificación para determinación de genes de resistencia a fármacos</td>
-                    <td style="border: 1px solid #000;">  Genotipificación de biomarcadores relacionados con enfermedades no transmisibles.</td>
-                    <td style="border: 1px solid #000;"> Metagenómica. Detección simultánea de todos los microorganismos presentes en una muestra.</td>
+                    <td tyle=" width: 25%; border: 1px solid #000; text-align: left;"><span class="underline">
+                        Genotipificación de virus, bacterias, parásitos, hongos, insectos y otros organismos biológicos de importancia en salud pública.</span><br>
+                        <label><input type="checkbox"> Genoma completo</label><br>
+                        <label><input type="checkbox"> Genes especificos:</label><br><br>
+                        <label><input><span class="underline"> Detalle: </span>____________ <br> _____________________<br> _____________________</label>
+                    </td>
+                    <td style=" width: 25%; border: 1px solid #000; text-align: left;">
+                        <label><input type="checkbox"><span class="underline"> Genotipificación para determinación de genes de resistencia a fármacos</span></label>
+                    </td>
+                    <td style="width: 25%; border: 1px solid #000; text-align: left;">
+                        <label><input type="checkbox"><span class="underline"> Genotipificación de biomarcadores relacionados con enfermedades no transmisibles.</span></label><br><br>
+                        <label><input> <span class="underline">Detalle los marcadores y la enfermedad: </span> ____________ <br> _____________________ <br> _____________________</label>
+                    </td>
+                    <td style=" width: 25%; border: 1px solid #000; text-align: left;">
+                        <label><input type="checkbox"><span class="underline"> Metagenómica. Detección simultánea de todos los microorganismos presentes en una muestra.</span></label><br><br>
+                        <label><input> <span class="underline">Detalle los patógenos que se sospechan: </span> ____________ <br> _____________________ <br> _____________________</label>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 4 -->
+        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 10px;">
+            <thead>
+                <tr>
+                    <th colspan="1" style="border: 1px solid #000; text-align: left; font-weight: bold;">
+                        En caso de ser necesario, especifique los análisis bioinformáticos requeridos:
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="border: 1px solid #000; text-align: left;">
+                        <ul style="list-style-type: disc; padding-left: 20px; margin-top: 0; margin-bottom: 0;">
+                            <li style="margin-bottom: 10px;">
+                                <input type="text" style="width: 100%; border: none;">
+                            </li>
+                            <li style="margin-bottom: 10px;">
+                                <input type="text" style="width: 100%; border: none;">
+                            </li>
+                            <li style="margin-bottom: 10px;">
+                                <input type="text" style="width: 100%; border: none;">
+                            </li>
+                        </ul>
+                    </td>
                 </tr>
             </tbody>
         </table>
         <br>
+        
 
         <!-- CUERPO2 -->
-        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
+        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 10px;">
             <thead>
                 <tr>
-                    <th style="border: 1px solid #000; text-align: center; font-weight: bold; background-color: #d3d3d3;">
+                    <th style="border: 1px solid #000; text-align: left; font-weight: bold; background-color: #d3d3d3;">
                         DATOS DEL SOLICITANTE
                     </th>
                 </tr>
@@ -167,7 +243,7 @@
 
 
         <!-- INFERIOR2 -->
-        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
+        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 10px;">
             <thead>
                 <tr>
                     <th style="border: 1px solid #000; text-align: center; width: 33%;">Elaborado</th>
