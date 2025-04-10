@@ -479,6 +479,9 @@ $( function () {
         
     });
 
+
+    //==========================================REGISTROS================================================
+
     $(document).on('click', '#btnPDF_muestra', function(){
 
         console.log("Botón fue clickeado");

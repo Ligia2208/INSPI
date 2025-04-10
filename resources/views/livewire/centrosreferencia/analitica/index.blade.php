@@ -76,9 +76,10 @@
                                             <select wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha toma de muestra</option>
+                                                <option data-subtext="" value="1">Fecha recepcion</option>
                                                 <option data-subtext="" value="2">Fecha llegada al CRN</option>
                                                 <option data-subtext="" value="3">Fecha procesamiento</option>
+                                                <option data-subtext="" value="4">Fecha recepción</option>
                                             </select>
                                         </div>
                                     </div>
@@ -176,6 +177,7 @@
                                 <th>Fecha Recepción</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
+                                <th>Cédula</th>
                                 <th>Paciente</th>
                                 <th>Referencia</th>
                                 <th>Muestra</th>
@@ -207,7 +209,11 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">({{ $analitica->preanalitica->paciente->identidad }}) {{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->paciente->identidad }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
                                     </td>
                                     @if ($analitica->codigo_externo == '')
                                         <td>
