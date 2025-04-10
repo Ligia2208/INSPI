@@ -220,6 +220,7 @@
                                     </td>
                                     <td align="center">
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
+                                            
                                             <a href="{{ route('preanaliticagen.edit', $Preanaliticastoxico) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="ace-icon fa fa-pen" style="color:lightblue"

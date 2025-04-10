@@ -156,6 +156,9 @@ class Form extends Component
         
         if ($analiticaUpdate) {
             $this->Preanaliticastoxico->cod_muestra_hosp = $analiticaUpdate->codigo_externo;
+            $this->Preanaliticastoxico->edad             = $analiticaUpdate->edad;
+            $this->Preanaliticastoxico->paciente_sexo    = $analiticaUpdate->sexo;
+            
         } else {
             $this->Preanaliticastoxico->cod_muestra_hosp = null; // O algún valor por defecto
         }
@@ -189,8 +192,8 @@ class Form extends Component
             $this->updatedselectedSedep($this->Preanaliticastoxico->sedes_id);
             $this->updatedselectedCrnp($this->Preanaliticastoxico->crns_id);
 
-            if($this->Preanaliticastoxico->crns_id == 1){
-                $this->updatedchangedMicobacterias($this->Preanaliticastoxico->id);
+            if($this->Preanaliticastoxico->crns_id == 9){
+                $this->updatedchangedGensbio($this->Preanaliticastoxico);
             }
 
         }
@@ -204,9 +207,12 @@ class Form extends Component
     }
 
 
-    public function updatedchangedMicobacterias($id_pre_analitica){
-        $datosMico = Micobacteria::where('pre_analitica_id', $id_pre_analitica)->first();
+    public function updatedchangedGensbio($Preanaliticasgen){
+        //$datosMico = Micobacteria::where('pre_analitica_id', $id_pre_analitica)->first();
+        $this->Preanaliticastoxico->nom_solicita = $Preanaliticasgen->nombre_solicitante;
+        $this->Preanaliticastoxico->correo = $Preanaliticasgen->correo_solicitante;
 
+        /*
         $this->Preanaliticastoxico->nombre_lote = $datosMico->nombre_lote;
         $this->Preanaliticastoxico->n_tubos = $datosMico->n_tubos;
 
@@ -220,6 +226,7 @@ class Form extends Component
 
         //$this->Preanaliticastoxico->prueba_sensibilidad = $datosMico->prueba_sensibilidad;
         //$this->Preanaliticastoxico->tipificacion        = $datosMico->tipificacion;
+        */
     }
 
 

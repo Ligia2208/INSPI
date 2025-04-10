@@ -5,6 +5,7 @@ namespace App\Http\Controllers\CentrosReferencia\Preanaliticagen;
 use App\Http\Controllers\Controller;
 use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Preanaliticagen;
+use App\Models\CentrosReferencia\Preanaliticamico;
 use App\Models\CentrosReferencia\Analitica;
 use Illuminate\Http\Request;
 
@@ -29,8 +30,10 @@ class PreanaliticagenController extends Controller
         return view('centrosreferencia.preanaliticagen.show', compact('Preanaliticasmico','analitica'));
     }
 
-    public function edit(Preanaliticagen $Preanaliticasmico){
-        dd($Preanaliticasmico);
-        return view('centrosreferencia.preanaliticagen.edit', compact('Preanaliticasmico'));
+    public function edit(Preanaliticagen $Preanaliticastoxico){
+        //dd($Preanaliticastoxico->getKey());
+        return view('centrosreferencia.preanaliticagen.edit', compact('Preanaliticastoxico'));
     }
+
+    
 }

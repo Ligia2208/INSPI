@@ -83,7 +83,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('preanaliticasmico', PreanaliticamicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticamico');
 
         //CRNs Plataformas Preanalitica Gebsbio
-        Route::resource('preanaliticagen', PreanaliticagenController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticagen');
+        Route::resource('preanaliticagen', PreanaliticagenController::class)->parameters(['preanaliticagen' => 'Preanaliticastoxico'])->names('preanaliticagen');
 
         //CRNs Plataformas Preanalitica CD4
         Route::resource('preanaliticascd4', Preanaliticacd4Controller::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticacd4');
