@@ -181,6 +181,7 @@ class Form extends Component
             $newToma->clase_primera_id = $pa->clase_primera_id;
             $newToma->primera_id = $pa->primera_id;
             $newToma->fecha_toma_primera = $pa->fecha_toma_primera;
+            $newToma->hora_toma_primera = $pa->hora_toma_primera;
         }
         else{
             $newToma->primera_id = 0;
@@ -189,6 +190,7 @@ class Form extends Component
             $newToma->clase_segunda_id = $pa->clase_segunda_id;
             $newToma->segunda_id = $pa->segunda_id;
             $newToma->fecha_toma_segunda = $pa->fecha_toma_segunda;
+            $newToma->hora_toma_segunda = $pa->hora_toma_segunda;
         }
         else{
             $newToma->segunda_id = 0;
@@ -197,6 +199,7 @@ class Form extends Component
             $newToma->clase_tercera_id = $pa->clase_tercera_id;
             $newToma->tercera_id = $pa->tercera_id;
             $newToma->fecha_toma_tercera = $pa->fecha_toma_tercera;
+            $newToma->hora_toma_tercera = $pa->hora_toma_tercera;
         }
         else{
             $newToma->tercera_id = 0;
@@ -205,6 +208,7 @@ class Form extends Component
             $newToma->clase_cuarta_id = $pa->clase_cuarta_id;
             $newToma->cuarta_id = $pa->cuarta_id;
             $newToma->fecha_toma_cuarta = $pa->fecha_toma_cuarta;
+            $newToma->hora_toma_cuarta = $pa->hora_toma_cuarta;
         }
         else{
             $newToma->cuarta_id = 0;
@@ -213,6 +217,7 @@ class Form extends Component
             $newToma->clase_quinta_id = $pa->clase_quinta_id;
             $newToma->quinta_id = $pa->quinta_id;
             $newToma->fecha_toma_quinta = $pa->fecha_toma_quinta;
+            $newToma->hora_toma_quinta = $pa->hora_toma_quinta;
         }
         else{
             $newToma->quinta_id = 0;
@@ -427,6 +432,7 @@ class Form extends Component
                 $newToma->primera_id = 159;
                 $newToma->estado_primera_id = 1;
                 $newToma->fecha_toma_primera = $fechat;
+                $newToma->hora_toma_primera = $horat;
                 $newToma->anio_registro = $fecha_anio;
                 $newToma->usuariot_id =  $user;
                 $newToma->save();

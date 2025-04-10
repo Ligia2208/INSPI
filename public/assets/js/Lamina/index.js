@@ -291,7 +291,6 @@ $( function () {
     });
 
 
-
     //ELIMINAR DESGLOSE DE LAMINAS
     $(document).on('click', '#btnEliminarDesglose', function(){
 
@@ -358,7 +357,6 @@ $( function () {
             }
         });
     });
-
 
 });
 
@@ -445,7 +443,6 @@ $( function () {
     });
 
 
-
     $(document).on('click', '#btnPDF_desglose', function() {
 
         var id_lamina = $(this).data ('id_editar');
@@ -482,5 +479,72 @@ $( function () {
         
     });
 
+    $(document).on('click', '#btnPDF_muestra', function(){
 
+        console.log("Botón fue clickeado");
 
+        $.ajax({
+            type: 'GET',
+            url: '/laminas/resgitro_muestra',
+            data: {
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, _status, _xhr) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_muestra_' + '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            },
+            error: function(_error) {
+                Swal.fire({
+                    icon: 'error',
+                    type: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el PDF',
+                    showConfirmButton: true,
+                });
+            }
+        });
+    });
+
+    $(document).on('click', '#btnPDF_solicitud', function(){
+
+        console.log("Botón fue clickeado");
+
+        $.ajax({
+            type: 'GET',
+            url: '/laminas/registro_solicitud',
+            data: {
+            },
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, _status, _xhr) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_solicitud_' + '.pdf';
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            },
+            error: function(_error) {
+                Swal.fire({
+                    icon: 'error',
+                    type: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el PDF',
+                    showConfirmButton: true,
+                });
+            }
+        });
+    });

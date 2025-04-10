@@ -133,6 +133,9 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/importar',[Preanaliticacd4Controller::class,
             'importar'])->name('importar');
 
+        Route::get('/eliminar',[Preanaliticacd4Controller::class,
+            'eliminar'])->name('eliminar');
+
         //CRNs Plataformas Resultados
         Route::resource('visorresultados', VisorResultadosController::class)->parameters(['resultados' => 'resultado'])->names('visorresultado');
 
