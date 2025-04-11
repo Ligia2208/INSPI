@@ -263,6 +263,22 @@
                                             </a>
                                         </i>
                                         @endif
+                                        <i class="navi-item" data-toggle="modal" data-target="_self">
+                                            <a href="{{ route('preanaliticagen.registro_muestra', $Preanaliticastoxico) }}" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="bi bi-file-earmark-pdf icon-muestra" style="color: green;"
+                                                        title="Generar PDF Muestra"></i>
+                                                </span>
+                                            </a>
+                                        </i>
+                                        <i class="navi-item" data-toggle="modal" data-target="_self">
+                                            <a href="{{ route('preanaliticagen.registro_solicitud', $Preanaliticastoxico) }}" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="bi bi-file-earmark-pdf icon-solicitud" style="color: rgb(180, 31, 194);"
+                                                        title="Generar PDF Solicitud"></i>
+                                                </span>
+                                            </a>
+                                        </i>
                                     </td>
                                 </tr>
                             @empty

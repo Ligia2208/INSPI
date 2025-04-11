@@ -38,13 +38,6 @@
                 <div class="col-md-2 d-flex">
                     <button id="btnGenerarPDFResultados" class="btn btn-dark w-100"><i class="bi bi-filetype-pdf"></i>Generar PDF Resultados</button>
                 </div>
-                <div class="col-md-2 d-flex">
-                    <button id="btnPDF_muestra" class="btn btn-info w-100"><i class="bi bi-filetype-pdf"></i>Generar PDF Muestras</button>
-                </div>
-                <div class="col-md-2 d-flex">
-                    <button id="btnPDF_solicitud" class="btn btn-danger w-100"><i class="bi bi-filetype-pdf"></i>Generar PDF Solicitud</button>
-                </div>
-
             </div>
 
 

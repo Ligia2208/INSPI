@@ -428,7 +428,11 @@ Route::middleware(['auth'])->group(function () {
     });
     /* =========================== LAMINAS =========================== */
 
-
+    // GENOMICA
+    Route::group(['namespace' => 'App\Http\Controllers\CentrosReferencia\Preanaliticagen'], function () {
+        Route::get('{Preanaliticastoxico}/registro-muestra', 'PreanaliticaGenController@registro_muestra')->name('preanaliticagen.registro_muestra');
+        Route::get('{Preanaliticastoxico}/registro-solicitud', 'PreanaliticaGenController@registro_solicitud')->name('preanaliticagen.registro_solicitud');
+    });
 
 
     /* =========================== ENCUESTAS =========================== */

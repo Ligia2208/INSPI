@@ -874,43 +874,6 @@ class CentrosLaminasController extends Controller
         }
     }
 
-    public function registro_muestra (Request $request)
-    {
-        //dd($datos);   
-
-        try {
-
-            return \PDF::loadView('pdf.registros.pdfRegistro_Muestra', [
-             
-            ])
-            ->setPaper('A4', 'portrait')
-            ->download('registro_muestra.pdf');
-
-        } catch (\Exception $e) {
-
-            return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
-        }
-    }
-
-    public function registro_solicitud (Request $request)
-    {
-        //dd($datos);   
-
-        try {
-
-            return \PDF::loadView('pdf.registros.pdfRegistro_Solicitud', [
-             
-            ])
-            ->setPaper('A4', 'portrait')
-            ->download('registro_solicitud.pdf');
-
-        } catch (\Exception $e) {
-
-            return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
-        }
-    }
-
-
 }
 
 
