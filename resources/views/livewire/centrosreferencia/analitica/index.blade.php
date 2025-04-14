@@ -9,11 +9,6 @@
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span>
                         </span>
                 </h3>
-                <button class="btn btn-success font-weight-bold mr-2"
-                                onclick="exportToExcel('data', 'analiticas-data')"><i
-                                class="fa fa-file-excel" aria-hidden="true"></i>
-                                {{ __('Exportar a Excel') }}
-                            </button>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -25,7 +20,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <select wire:model="csedes" class="form-control" data-size="7"
+                                            <select id="idsede" wire:model="csedes" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="">{{ __('Seleccione una Sede') }}</option>
                                                 @foreach ($sedes as $objSede)
@@ -37,7 +32,7 @@
                                     </div>
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <select wire:model="claboratorios" class="form-control" data-size="7"
+                                            <select id="idcrn" wire:model="claboratorios" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="">{{ __('Seleccione un CRN - Laboratorio') }}
                                                 </option>
@@ -52,7 +47,7 @@
                                     </div>
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <select wire:model="ceventos" class="form-control" data-size="7"
+                                            <select id="idevn" wire:model="ceventos" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="">{{ __('Seleccione un Evento') }}</option>
                                                 @if (!is_null($eventos))
@@ -71,9 +66,18 @@
                             </div>
                             <div class="col-lg-12 col-xl-12">
                                 <div class="row align-items-center">
+                                    <div class="col-md-2 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <input wire:model="searchm" type="search" class="form-control"
+                                                placeholder="Muestra...">
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
+                                        </div>
+                                    </div>
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <select wire:model="controlf" class="form-control" data-size="7"
+                                            <select id="idtipo" wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
                                                 <option data-subtext="" value="1">Fecha recepcion</option>
@@ -83,7 +87,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 my-2 my-md-0">
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">{{ __('Inicio') }}:</label>
                                             <div class="input-group input-group-solid">
@@ -92,13 +96,13 @@
                                                         <i class="fas fa-calendar"></i>
                                                     </span>
                                                 </div>
-                                                <input wire:model="fechainicio" type="date"
+                                                <input id="idfinicio" wire:model="fechainicio" type="date"
                                                     class="form-control form-control-solid @error('fechainicio') is-invalid @enderror"
                                                     placeholder="Ej: 17/04/2024" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 my-2 my-md-0">
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">{{ __('Fin') }}:</label>
                                             <div class="input-group input-group-solid">
@@ -107,7 +111,7 @@
                                                         <i class="fas fa-calendar"></i>
                                                     </span>
                                                 </div>
-                                                <input wire:model="fechafin" type="date"
+                                                <input id="idffin" wire:model="fechafin" type="date"
                                                     class="form-control form-control-solid @error('fechafin') is-invalid @enderror"
                                                     placeholder="Ej: 27/06/2024" />
                                             </div>
@@ -122,15 +126,6 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-2 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <input wire:model="searchm" type="search" class="form-control"
-                                                placeholder="Muestra...">
-                                            <span>
-                                                <i class="flaticon2-search-1 text-muted"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 my-2 my-md-0">
-                                        <div class="input-icon">
                                             <input wire:model="searchc" type="search" class="form-control"
                                                 placeholder="Cédula...">
                                             <span>
@@ -138,7 +133,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 my-2 my-md-0">
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="input-icon">
                                             <input wire:model="searchp" type="search" class="form-control"
                                                 placeholder="Apellidos o Nombres...">
@@ -147,7 +142,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 my-2 my-md-0">
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">Mostrar:</label>
                                             <select class="form-control" wire:model="perPage">
@@ -158,6 +153,19 @@
                                                 <option value="500">500 Entradas</option>
                                                 <option value="1000">1000 Entradas</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-danger font-weight-bold mr-2"
+                                                onclick="generarExcel()"><i
+                                                    class="fa fa-file-excel" aria-hidden="true"></i>
+                                                {{ __('Generar Reporte xlsx') }}</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url('descargas/descarga_muestras.xlsx') }}"><i class="fas fa-download mr-2"></i> Descarga archivo xlsx</a>
                                         </div>
                                     </div>
                                 </div>
@@ -525,6 +533,32 @@
                     showLoaderOnConfirm: true,
                 }).then(function() {
 
+                });
+            }
+
+            function generarExcel() {
+                var idsede = document.getElementById('idsede');
+                var idcrn = document.getElementById('idcrn');
+                var idevn = document.getElementById('idevn');
+                var idtipo = document.getElementById('idtipo');
+                var idfinicio = document.getElementById('idfinicio');
+                var idffin = document.getElementById('idffin');
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se generará un archivo con formato excel con los parámetros selecionados",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-check'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('descargarExcel', idsede.value,idcrn.value,idevn.value,idtipo.value,idfinicio.value,idffin.value);
+                    }
                 });
             }
         </script>
