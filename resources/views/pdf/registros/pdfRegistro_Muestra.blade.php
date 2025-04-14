@@ -54,9 +54,9 @@
         <table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
             <thead>
                 <tr>
-                <th colspan="11" style="text-align: center; font-weight: bold; background-color: #d3d3d3;">
-                    Datos de la muestra
-                </th>
+                    <th colspan="11" style="text-align: center; font-weight: bold; background-color: #d3d3d3;">
+                        Datos de la muestra
+                    </th>
                 </tr>
                 <tr>
                     <th style="font-size: 10px;">Código de procedencia</th>
@@ -73,46 +73,49 @@
                 </tr>
             </thead>
             <tbody>
+                {{-- CRNS - Código de procedencia --}}
+                @foreach
                 <tr>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                 </tr>
+                @endforeach
+            
+                {{-- Clase de muestra - Organismo --}}
+                @foreach
+                <tr>
+                    <td ></td>
+                </tr>
+                @endforeach
+            
+                {{-- Tipo de muestra --}}
+                @foreach 
                 <tr>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
                 </tr>
+                @endforeach
+            
+                {{-- Provincias - Localidad --}}
+                @foreach
                 <tr>
                     <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                </tr>
+                @endforeach
+            
+                {{-- Instituciones de Salud --}}
+                @foreach
+                <tr>
                     <td></td>
                 </tr>
+                @endforeach
+            
+                {{-- Sexos --}}
+                @foreach($datos['sexos'] as $sexo)
+                <tr>
+                    <td>{{ $sexo->descripcion }}</td>
+                </tr>
+            @endforeach
             </tbody>
+            
         </table>
         <br>
 

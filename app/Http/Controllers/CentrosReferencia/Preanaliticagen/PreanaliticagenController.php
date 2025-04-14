@@ -8,6 +8,13 @@ use App\Models\CentrosReferencia\Preanaliticagen;
 use App\Models\CentrosReferencia\Preanaliticamico;
 use App\Models\CentrosReferencia\Analitica;
 use Illuminate\Http\Request;
+use App\Models\CentrosReferencia\Sexo;
+use App\Models\CentrosReferencia\Provincia;
+use App\Models\CentrosReferencia\Institucion;
+use App\Models\CentrosReferencia\Crn;
+
+
+
 
 class PreanaliticagenController extends Controller
 {
@@ -35,11 +42,24 @@ class PreanaliticagenController extends Controller
         return view('centrosreferencia.preanaliticagen.edit', compact('Preanaliticastoxico'));
     }
 
+
+
     public function registro_muestra(Preanaliticagen $Preanaliticastoxico)
     {
         try {
+            $datos = [
+                'crns' => Crn::select('id', 'abreviatura')->get(),
+                //'clases_muestra' => ClaseMuestra::select('id', 'descripcion')->get(),
+               // 'tipos_muestra' => TipoMuestra::select('id', 'descripcion')->get(),
+                'provincias' => Provincia::select('id', 'descripcion')->get(),
+                'instituciones_salud' => Institucion::select('id', 'descripcion')->get(),
+                'sexos' => Sexo::select('id', 'descripcion')->get(),
+            ];
+            
+        
             return \PDF::loadView('pdf.registros.pdfRegistro_Muestra', [
-                'Preanaliticastoxico' => $Preanaliticastoxico
+               // 'Preanaliticastoxico' => $Preanaliticastoxico,
+                'datos' => $datos
             ])
             ->setPaper('A4', 'portrait')
             ->download('Registro_Muestra.pdf');
@@ -47,6 +67,7 @@ class PreanaliticagenController extends Controller
             return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
         }
     }
+
 
     public function registro_solicitud(Preanaliticagen $Preanaliticastoxico)
     {
