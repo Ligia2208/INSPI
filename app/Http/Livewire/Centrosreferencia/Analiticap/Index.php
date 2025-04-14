@@ -60,11 +60,11 @@ class Index extends Component
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
 
         $count = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','>',0)->count();
-        $analiticas = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','>',0)->orderBy('codigo_calidad', 'desc');
+        $analiticasp = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','>',0)->orderBy('codigo_calidad', 'desc');
 
         if($this->searchm){
-            $analiticas = $analiticas->where('codigo_muestra', 'LIKE', "%{$this->searchm}%");
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->where('codigo_muestra', 'LIKE', "%{$this->searchm}%");
+            $count = $analiticasp->count();
 
         }
         if($this->searchc){
@@ -73,8 +73,8 @@ class Index extends Component
             })->orderBy('id', 'asc')->pluck('id')->toArray();
 
             $preanaliticas = Preanalitica::whereIn('paciente_id',$pacientes)->pluck('id')->toArray();
-            $analiticas = $analiticas->whereIn('preanalitica_id',$preanaliticas);
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->whereIn('preanalitica_id',$preanaliticas);
+            $count = $analiticasp->count();
 
         }
         if($this->searchp){
@@ -84,26 +84,26 @@ class Index extends Component
             })->orderBy('id', 'asc')->pluck('id')->toArray();
 
             $preanaliticas = Preanalitica::whereIn('paciente_id',$pacientes)->pluck('id')->toArray();
-            $analiticas = $analiticas->whereIn('preanalitica_id',$preanaliticas);
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->whereIn('preanalitica_id',$preanaliticas);
+            $count = $analiticasp->count();
 
         }
         if($this->csedes){
-            $analiticas = $analiticas->where('sedes_id', '=', $this->csedes);
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->where('sedes_id', '=', $this->csedes);
+            $count = $analiticasp->count();
             $crns_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->distinct('crns_id')->pluck('crns_id')->toArray();
             $config = SedeCrn::where('sedes_id','=',$this->csedes)->whereIn('crns_id',$crns_users)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
         }
         if($this->claboratorios){
-            $analiticas = $analiticas->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
+            $count = $analiticasp->count();
             $eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
         }
 
         if($this->ceventos){
-            $analiticas = $analiticas->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos);
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos);
+            $count = $analiticasp->count();
         }
 
         if($this->fechainicio){
@@ -114,17 +114,17 @@ class Index extends Component
                         $this->fechafin='';
                     }
                     if($this->controlf==1){
-                        $analiticas = $analiticas->where('fecha_toma', '>=', $this->fechainicio)->where('fecha_toma','<=',$this->fechafin);
-                        $count = $analiticas->count();
+                        $analiticasp = $analiticasp->where('fecha_toma', '>=', $this->fechainicio)->where('fecha_toma','<=',$this->fechafin);
+                        $count = $analiticasp->count();
 
                     }
                     if($this->controlf==2){
-                        $analiticas = $analiticas->where('fecha_llegada_lab', '>=', $this->fechainicio)->where('fecha_llegada_lab','<=',$this->fechafin);
-                        $count = $analiticas->count();
+                        $analiticasp = $analiticasp->where('fecha_llegada_lab', '>=', $this->fechainicio)->where('fecha_llegada_lab','<=',$this->fechafin);
+                        $count = $analiticasp->count();
                     }
                     if($this->controlf==3){
-                        $analiticas = $analiticas->where('fecha_procesamiento', '>=', $this->fechainicio)->where('fecha_procesamiento','<=',$this->fechafin);
-                        $count = $analiticas->count();
+                        $analiticasp = $analiticasp->where('fecha_procesamiento', '>=', $this->fechainicio)->where('fecha_procesamiento','<=',$this->fechafin);
+                        $count = $analiticasp->count();
                     }
                 }
                 else{
@@ -136,10 +136,10 @@ class Index extends Component
             }
         }
 
-        $analiticas = $analiticas->paginate($this->perPage);
+        $analiticasp = $analiticasp->paginate($this->perPage);
         $this->emit('renderJs');
 
-        return view('livewire.centrosreferencia.analiticap.index', compact('count', 'analiticas','sedes','crns','eventos'));
+        return view('livewire.centrosreferencia.analiticap.index', compact('count', 'analiticasp','sedes','crns','eventos'));
     }
 
     public function destroy($id)
@@ -384,7 +384,7 @@ class Index extends Component
                 $Analiticas->cdiferencial = $muestraorigen;
                 $Analiticas->update();
                 $objPreanalitica->cdiferencial = $muestraorigen;
-                $objPreanalitica->update(); 
+                $objPreanalitica->update();
 
             $this->alert('success', 'Solicitud de pruebas diferenciales generada con exito');
         }catch(Exception $e){

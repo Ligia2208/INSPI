@@ -432,213 +432,117 @@ class Form extends Component
     }
 
     public function update(){
-        $lista = [];
-        $user = auth()->user()->id;
+        $this->validate();
         DB::beginTransaction();
         try{
-            if($this->Analiticas->resultado_id==67 && ($this->Analiticas->evento_id==116 || $this->Analiticas->evento_id==117 || $this->Analiticas->evento_id==118 || $this->Analiticas->evento_id==119 || $this->Analiticas->evento_id==120 || $this->Analiticas->evento_id==125)){
-                $absede = Sede::findOrFail($this->Analiticas->sedes_id);
-                $abcrn = Crn::findOrFail(8);
-                $lista = $this->Analiticas->eventosav_id;
-                $total = count($lista);
-                $muestraorigen = $this->Analiticas->codigo_muestra;
-                $i=0;
-                if($total>0){
-                    while($i<$total){
-                        try{
-                            $objPreanalitica = Preanalitica::findOrFail($this->Analiticas->preanalitica->id);
-                            $newPreanalitica = new Preanalitica();
-                            $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
-                            $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
-                            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
-                            $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
-                            $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
-                            $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
-                            $newPreanalitica->embarazo = $objPreanalitica->embarazo;
-                            $newPreanalitica->gestacion = $objPreanalitica->gestacion;
-                            $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
-                            $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
-                            $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
-                            $newPreanalitica->crns_id = $objPreanalitica->crns_id;
-                            $newPreanalitica->evento_id = $lista[$i];
-                            $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
-                            $newPreanalitica->primera_id = $objPreanalitica->primera_id;
-                            $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
-                            $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
-                            $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
-                            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
-                            $newPreanalitica->campliada = $muestraorigen;
-                            $newPreanalitica->fecha_recepcion = $objPreanalitica->fecha_recepcion;
-                            $newPreanalitica->usuariot_id = $user;
-                            $newPreanalitica->save();
 
-                            $Analiticas = Analitica::where('preanalitica_id','=',$newPreanalitica->id)->first();
-                            $newAnalitica = new Analitica();
-                            $newAnalitica->preanalitica_id = $newPreanalitica->id;
-                            $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
-                            $newAnalitica->crns_id = $objPreanalitica->crns_id;
-                            $newAnalitica->evento_id = $lista[$i];
-                            $newAnalitica->muestra_id = $objPreanalitica->primera_id;
-                            $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
-                            $codigo = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,8);
-                            $newAnalitica->codigo_muestra = $codigo;
-                            $newAnalitica->codigo_secuencial = 1;
-                            $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
-                            $anio = date("Y", $fechacomoentero)-2000;
-                            $mes = date("m", $fechacomoentero);
-                            $newAnalitica->codigo_calidad = str_pad($codigo, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newAnalitica->codigo_secuencial, 2, '0', STR_PAD_LEFT);
-                            $newAnalitica->codigo_externo = 'EXANT-AMP-'.$muestraorigen;
-                            $newAnalitica->usuariot_id = $user;
-                            $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
-                            $newAnalitica->campliada = $muestraorigen;
-                            $newAnalitica->save();
+            $user = auth()->user()->id;
+            $this->Analiticas->fecha_resultado = date("Y-m-d");
+            $this->Analiticas->usuarior_id = $user;
+            $this->saveAnalitica();
+            $this->Analiticas->update();
 
-                        }
-                        catch(Exception $e){
-                            $this->alert('error',
-                                'Ocurrio un error en la generación: '.$e->getMessage(),
-                                [
-                                    'showConfirmButton' => true,
-                                    'confirmButtonText' => 'Entiendo',
-                                    'timer' => null,
-                                ]);
-                        }
-                        $i=$i+1;
-                    }
-                    $objPreanalitica->campliada=$muestraorigen;
-                    $objPreanalitica->update();
-                    $objAnaliticas = Analitica::where('preanalitica_id','=',$objPreanalitica->id)->first();
-                    $objAnaliticas->campliada=$muestraorigen;
-                    $objAnaliticas->update();
-
-                    $this->alert('success', 'Eventos para investigación ampliada generados con éxito');
-                    $this->emit('closeModal');
-                }
-                else{
-                }
-            }
-            else{
-                $control = 0;
-                $user = auth()->user()->id;
-                $this->Analiticas->fecha_resultado = date("Y-m-d");
-                $this->Analiticas->usuarior_id = $user;
-                $this->saveAnalitica();
+            if($this->Analiticas->tecnica_segunda_id>0 && $this->Analiticas->adicional==0){
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id = $this->Analiticas->preanalitica_id;
+                $newMuestra->sedes_id = $this->Analiticas->sedes_id;
+                $newMuestra->crns_id = $this->Analiticas->crns_id;
+                $newMuestra->evento_id = $this->Analiticas->evento_id;
+                $newMuestra->muestra_id = $this->Analiticas->muestra_id;
+                $newMuestra->clase_id = $this->Analiticas->clase_id;
+                $newMuestra->estado_muestra_id = $this->Analiticas->estado_muestra_id;
+                $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
+                $newMuestra->anio_registro = $this->Analiticas->anio_registro;
+                $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+1;
+                $newMuestra->codigo_externo = 'TecAdic'.$this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
+                $newMuestra->tecnica_id = $this->Analiticas->tecnica_segunda_id;
+                $newMuestra->resultado_id = $this->Analiticas->resultado_segunda_id;
+                $newMuestra->descripcion = $this->Analiticas->descripcion;
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
+                $newMuestra->fecha_llegada_lab = $this->Analiticas->fecha_llegada_lab;
+                $newMuestra->fecha_procesamiento = $this->Analiticas->fecha_procesamiento;
+                $newMuestra->usuarior_id = $user;
+                $newMuestra->archivo = $this->Analiticas->archivo;
+                $newMuestra->fecha_resultado = date("Y-m-d");
+                $newMuestra->save();
+                $this->Analiticas->adicional=1;
                 $this->Analiticas->update();
-
-                if($this->Analiticas->tecnica_segunda_id>0 && $this->Analiticas->adicional==0){
-                    $newMuestra = new Analitica();
-                    $newMuestra->preanalitica_id = $this->Analiticas->preanalitica_id;
-                    $newMuestra->sedes_id = $this->Analiticas->sedes_id;
-                    $newMuestra->crns_id = $this->Analiticas->crns_id;
-                    $newMuestra->evento_id = $this->Analiticas->evento_id;
-                    $newMuestra->muestra_id = $this->Analiticas->muestra_id;
-                    $newMuestra->clase_id = $this->Analiticas->clase_id;
-                    $newMuestra->estado_muestra_id = $this->Analiticas->estado_muestra_id;
-                    $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
-                    $newMuestra->anio_registro = $this->Analiticas->anio_registro;
-                    $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
-                    $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+1;
-                    $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticas->codigo_muestra;
-                    $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
-                    $newMuestra->tecnica_id = $this->Analiticas->tecnica_segunda_id;
-                    $newMuestra->resultado_id = $this->Analiticas->resultado_segunda_id;
-                    $newMuestra->identificado = $this->Analiticas->identificado_segunda;
-                    $newMuestra->descripcion = $this->Analiticas->descripcion;
-                    $newMuestra->usuariot_id = $user;
-                    $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
-                    $newMuestra->fecha_llegada_lab = $this->Analiticas->fecha_llegada_lab;
-                    $newMuestra->fecha_procesamiento = $this->Analiticas->fecha_procesamiento;
-                    $newMuestra->usuarior_id = $user;
-                    $newMuestra->archivo = $this->Analiticas->archivo;
-                    $newMuestra->fecha_resultado = date("Y-m-d");
-                    $newMuestra->adicional = 1;
-                    $newMuestra->save();
-                    $control = 1;
-                }
-
-                if($this->Analiticas->tecnica_tercera_id>0 && $this->Analiticas->adicional==0){
-                    $newMuestra = new Analitica();
-                    $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
-                    $newMuestra->sedes_id = $this->Analiticas->sedes_id;
-                    $newMuestra->crns_id = $this->Analiticas->crns_id;
-                    $newMuestra->evento_id = $this->Analiticas->evento_id;
-                    $newMuestra->muestra_id = $this->Analiticas->muestra_id;
-                    $newMuestra->clase_id = $this->Analiticas->clase_id;
-                    $newMuestra->anio_registro = $this->Analiticas->anio_registro;
-                    $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
-                    $newMuestra->estado_muestra_id = $this->Analiticas->estado_muestra_id;
-                    $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
-                    $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
-                    $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+2;
-                    $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticas->codigo_muestra;
-                    $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
-                    $newMuestra->tecnica_id = $this->Analiticas->tecnica_tercera_id;
-                    $newMuestra->resultado_id = $this->Analiticas->resultado_tercera_id;
-                    $newMuestra->identificado = $this->Analiticas->identificado_tercera;
-                    $newMuestra->descripcion = $this->Analiticas->descripcion;
-                    $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
-                    $newMuestra->fecha_llegada_lab = $this->Analiticas->fecha_llegada_lab;
-                    $newMuestra->fecha_procesamiento = $this->Analiticas->fecha_procesamiento;
-                    $newMuestra->usuariot_id = $user;
-                    $newMuestra->archivo = $this->Analiticas->archivo;
-                    $newMuestra->fecha_resultado = date("Y-m-d");
-                    $newMuestra->usuarior_id = $user;
-                    $newMuestra->adicional = 1;
-                    $newMuestra->save();
-                    $control = 1;
-
-                }
-
-                if($this->Analiticas->tecnica_cuarta_id>0 && $this->Analiticas->adicional==0){
-                    $newMuestra = new Analitica();
-                    $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
-                    $newMuestra->sedes_id = $this->Analiticas->sedes_id;
-                    $newMuestra->crns_id = $this->Analiticas->crns_id;
-                    $newMuestra->evento_id = $this->Analiticas->evento_id;
-                    $newMuestra->muestra_id = $this->Analiticas->muestra_id;
-                    $newMuestra->clase_id = $this->Analiticas->clase_id;
-                    $newMuestra->anio_registro = $this->Analiticas->anio_registro;
-                    $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
-                    $newMuestra->estado_muestra_id = $this->Analiticas->estado_muestra_id;
-                    $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
-                    $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
-                    $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+3;
-                    $newMuestra->codigo_externo = 'Adicional'.$this->Analiticas->codigo_muestra;
-                    $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
-                    $newMuestra->tecnica_id = $this->Analiticas->tecnica_cuarta_id;
-                    $newMuestra->resultado_id = $this->Analiticas->resultado_cuarta_id;
-                    $newMuestra->identificado = $this->Analiticas->identificado_cuarta;
-                    $newMuestra->descripcion = $this->Analiticas->descripcion;
-                    $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
-                    $newMuestra->fecha_llegada_lab = $this->Analiticas->fecha_llegada_lab;
-                    $newMuestra->fecha_procesamiento = $this->Analiticas->fecha_procesamiento;
-                    $newMuestra->usuariot_id = $user;
-                    $newMuestra->archivo = $this->Analiticas->archivo;
-                    $newMuestra->fecha_resultado = date("Y-m-d");
-                    $newMuestra->usuarior_id = $user;
-                    $newMuestra->adicional = 1;
-                    $newMuestra->save();
-                    $control = 1;
-                }
-
-                if($control>0){
-                    $this->Analiticas->adicional=1;
-                    $this->Analiticas->update();
-                }
-
             }
 
+            if($this->Analiticas->tecnica_tercera_id>0 && $this->Analiticas->adicional==0){
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
+                $newMuestra->sedes_id = $this->Analiticas->sedes_id;
+                $newMuestra->crns_id = $this->Analiticas->crns_id;
+                $newMuestra->evento_id = $this->Analiticas->evento_id;
+                $newMuestra->muestra_id = $this->Analiticas->muestra_id;
+                $newMuestra->clase_id = $this->Analiticas->clase_id;
+                $newMuestra->anio_registro = $this->Analiticas->anio_registro;
+                $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
+                $newMuestra->estado_muestra_id = $this->Analiticas->estado_muestra_id;
+                $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
+                $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+2;
+                $newMuestra->codigo_externo = 'TecAdic'.$this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
+                $newMuestra->tecnica_id = $this->Analiticas->tecnica_tercera_id;
+                $newMuestra->resultado_id = $this->Analiticas->resultado_tercera_id;
+                $newMuestra->descripcion = $this->Analiticas->descripcion;
+                $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
+                $newMuestra->fecha_llegada_lab = $this->Analiticas->fecha_llegada_lab;
+                $newMuestra->fecha_procesamiento = $this->Analiticas->fecha_procesamiento;
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->archivo = $this->Analiticas->archivo;
+                $newMuestra->fecha_resultado = date("Y-m-d");
+                $newMuestra->usuarior_id = $user;
+                $newMuestra->save();
+                $this->Analiticas->adicional=1;
+                $this->Analiticas->update();
+            }
 
+            if($this->Analiticas->tecnica_cuarta_id>0 && $this->Analiticas->adicional==0){
+                $newMuestra = new Analitica();
+                $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
+                $newMuestra->sedes_id = $this->Analiticas->sedes_id;
+                $newMuestra->crns_id = $this->Analiticas->crns_id;
+                $newMuestra->evento_id = $this->Analiticas->evento_id;
+                $newMuestra->muestra_id = $this->Analiticas->muestra_id;
+                $newMuestra->clase_id = $this->Analiticas->clase_id;
+                $newMuestra->anio_registro = $this->Analiticas->anio_registro;
+                $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
+                $newMuestra->estado_muestra_id = $this->Analiticas->estado_muestra_id;
+                $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
+                $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+3;
+                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
+                $newMuestra->tecnica_id = $this->Analiticas->tecnica_cuarta_id;
+                $newMuestra->resultado_id = $this->Analiticas->resultado_cuarta_id;
+                $newMuestra->descripcion = $this->Analiticas->descripcion;
+                $newMuestra->fecha_toma = $this->Analiticas->fecha_toma;
+                $newMuestra->fecha_llegada_lab = $this->Analiticas->fecha_llegada_lab;
+                $newMuestra->fecha_procesamiento = $this->Analiticas->fecha_procesamiento;
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->archivo = $this->Analiticas->archivo;
+                $newMuestra->fecha_resultado = date("Y-m-d");
+                $newMuestra->usuarior_id = $user;
+                $newMuestra->save();
+                $this->Analiticas->adicional=1;
+                $this->Analiticas->update();
+            }
 
             DB::commit();
             $this->alert('success', 'Analitica actualizado con éxito');
             $this->emit('renderJs');
             $this->emit('closeModal');
-            return redirect()->route('analitica.index');
+            return redirect()->route('analiticap.index');
          }
         catch (\Exception $e) {
             DB::rollback();
-            $this->alert('warning', 'Ocurrió un error al agregar la Analitica'.$e->getMessage());
+            $this->alert('warning', 'Ocurrió un error al agregar la Analitica');
             return $e->getMessage();
         }
 
