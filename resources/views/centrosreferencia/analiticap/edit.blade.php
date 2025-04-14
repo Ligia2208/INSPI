@@ -23,7 +23,7 @@
 
     <div class="content d-flex flex-column flex-column-fluid" id="kt_content">
         <div class="d-flex flex-column-fluid">
-            @livewire('centrosreferencia.analiticap.form', ['Analiticas' => $analitica, 'method' => 'update'], key($analitica->id))
+            @livewire('centrosreferencia.analiticap.form', ['Analiticasp' => $analitica, 'method' => 'update'], key($analitica->id))
         </div>
     </div>
 @endsection

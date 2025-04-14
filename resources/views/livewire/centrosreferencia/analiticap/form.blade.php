@@ -31,9 +31,9 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.sedes_id"
+                                            wire:model.defer="Analiticasp.sedes_id"
                                             wire:model="selectedSede"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.sedes_id') is-invalid @enderror"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.sedes_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -54,9 +54,9 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.crns_id"
+                                            wire:model.defer="Analiticasp.crns_id"
                                             wire:model.live="selectedCrn"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.crns_id') is-invalid @enderror"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.crns_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -71,7 +71,7 @@
                                     </div>
                                 </div>
                                 <div class="form-group col-md-3">
-                                    <label>Código Calidad: <span class="text-danger">{{ $Analiticas->codigo_calidad }}</span></label>
+                                    <label>Código Calidad: <span class="text-danger">{{ $Analiticasp->codigo_calidad }}</span></label>
                                     @if ($preanalitica->archivo != null)
                                     <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url($preanalitica->archivo) }}"><i class="fas fa-download mr-2"></i> Descargar Ficha</a>
                                     @else
@@ -89,13 +89,13 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.evento_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.evento_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.evento_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.evento_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
                                             required
-                                            @if($Analiticas->codigo_externo != '' && $Analiticas->adicional == 2)
+                                            @if($Analiticasp->codigo_externo != '' && $Analiticasp->adicional == 2)
                                                 enabled
                                             @else
                                                 disabled
@@ -118,8 +118,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.clase_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.clase_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.clase_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.clase_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -140,8 +140,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.muestra_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.evento_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.muestra_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.evento_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -162,8 +162,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.estado_muestra_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.estado_muestra_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.estado_muestra_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.estado_muestra_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -374,13 +374,13 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.anio_registro"
+                                            wire:model.defer="Analiticasp.anio_registro"
                                             type="text"
                                             required disabled
-                                            class="form-control form-control-solid @error('Analiticas.anio_registro') is-invalid @enderror"
+                                            class="form-control form-control-solid @error('Analiticasp.anio_registro') is-invalid @enderror"
                                             placeholder="Ej: 4A39982" />
                                     </div>
-                                    @error('Analiticas.anio_registro')
+                                    @error('Analiticasp.anio_registro')
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -395,11 +395,11 @@
                                         <input
                                             type="text"
                                             required disabled
-                                            value={{ str_pad($Analiticas->codigo_muestra, 6, "0", STR_PAD_LEFT) }}
-                                            class="form-control form-control-solid @error('Analiticas.codigo_muestra') is-invalid @enderror"
+                                            value={{ str_pad($Analiticasp->codigo_muestra, 6, "0", STR_PAD_LEFT) }}
+                                            class="form-control form-control-solid @error('Analiticasp.codigo_muestra') is-invalid @enderror"
                                             placeholder="Ej: 4A39982" />
                                     </div>
-                                    @error('Analiticas.codigo_muestra')
+                                    @error('Analiticasp.codigo_muestra')
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -414,11 +414,11 @@
                                         <input
                                             type="text"
                                             required disabled
-                                            value={{ str_pad($Analiticas->codigo_secuencial, 2, "0", STR_PAD_LEFT) }}
-                                            class="form-control form-control-solid @error('Analiticas.codigo_secuencial') is-invalid @enderror"
+                                            value={{ str_pad($Analiticasp->codigo_secuencial, 2, "0", STR_PAD_LEFT) }}
+                                            class="form-control form-control-solid @error('Analiticasp.codigo_secuencial') is-invalid @enderror"
                                             placeholder="Ej: 4A39982" />
                                     </div>
-                                    @error('Analiticas.codigo_secuencial')
+                                    @error('Analiticasp.codigo_secuencial')
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -431,9 +431,9 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.fecha_toma"
+                                            wire:model.defer="Analiticasp.fecha_toma"
                                             type="date"
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
+                                            class="start_date form-control form-control-solid @error('Analiticasp.fecha_toma') is-invalid @enderror"
                                             placeholder="Seleccione una fecha" disabled
                                         />
                                     </div>
@@ -451,7 +451,7 @@
                                         <input
                                             type="date"
                                             value="{{ $preanalitica->fecha_atencion }}"
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_toma') is-invalid @enderror"
+                                            class="start_date form-control form-control-solid @error('Analiticasp.fecha_toma') is-invalid @enderror"
                                             placeholder="Seleccione una fecha" disabled
                                         />
                                     </div>
@@ -465,13 +465,13 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.codigo_externo"
+                                            wire:model.defer="Analiticasp.codigo_externo"
                                             type="text"
                                             required
-                                            class="form-control form-control-solid @error('Analiticas.codigo_externo') is-invalid @enderror"
+                                            class="form-control form-control-solid @error('Analiticasp.codigo_externo') is-invalid @enderror"
                                             placeholder="Ej: 4A39982" />
                                     </div>
-                                    @error('Analiticas.codigo_externo')
+                                    @error('Analiticasp.codigo_externo')
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
@@ -484,9 +484,9 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.fecha_llegada_lab"
+                                            wire:model.defer="Analiticasp.fecha_llegada_lab"
                                             type="date" required
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_llegada_lab') is-invalid @enderror"
+                                            class="start_date form-control form-control-solid @error('Analiticasp.fecha_llegada_lab') is-invalid @enderror"
                                             placeholder="Seleccione una fecha"
                                         />
                                     </div>
@@ -500,9 +500,9 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.fecha_procesamiento"
+                                            wire:model.defer="Analiticasp.fecha_procesamiento"
                                             type="date" required
-                                            class="start_date form-control form-control-solid @error('Analiticas.fecha_procesamiento') is-invalid @enderror"
+                                            class="start_date form-control form-control-solid @error('Analiticasp.fecha_procesamiento') is-invalid @enderror"
                                             placeholder="Seleccione una fecha"
                                         />
                                     </div>
@@ -518,8 +518,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.tecnica_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.tecnica_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.tecnica_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.tecnica_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -542,8 +542,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.resultado_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.resultado_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.resultado_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.resultado_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -556,10 +556,10 @@
                                             @endif
                                         </select>
                                     </div>
-                                    @error('Analiticas.resultado_id') <div><span class="text-danger">{{ $message }}</span></div> @enderror
+                                    @error('Analiticasp.resultado_id') <div><span class="text-danger">{{ $message }}</span></div> @enderror
                                 </div>
                             </div>
-                            @if($Analiticas->crns_id==3)
+                            @if($Analiticasp->crns_id==3)
                             <div class="form-row">
                                 <div class="form-group col-md-6">
                                     <label class="text-black"><b>Agente identificado</b></label>
@@ -570,10 +570,10 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.identificado"
+                                            wire:model.defer="Analiticasp.identificado"
                                             type="text"
                                             required
-                                            class="form-control form-control-solid @error('Analiticas.identificado') is-invalid @enderror"
+                                            class="form-control form-control-solid @error('Analiticasp.identificado') is-invalid @enderror"
                                             placeholder="Ej: Otra bacteria" />
                                     </div>
                                 </div>
@@ -586,16 +586,16 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.recomendacion_bacterio"
+                                            wire:model.defer="Analiticasp.recomendacion_bacterio"
                                             type="text"
                                             required
-                                            class="form-control form-control-solid @error('Analiticas.recomendacion_bacterio') is-invalid @enderror"
+                                            class="form-control form-control-solid @error('Analiticasp.recomendacion_bacterio') is-invalid @enderror"
                                             placeholder="Ej: Realizar pruebas adicionales condicionadas" />
                                     </div>
                                 </div>
                             </div>
                             @endif
-                            @if($Analiticas->crns_id==12)
+                            @if($Analiticasp->crns_id==12)
                             <div class="form-row">
                                 <div class="form-group col-md-3">
                                     <label class="text-black"><b>Carga Viral</b></label>
@@ -606,10 +606,10 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.carga_viral"
+                                            wire:model.defer="Analiticasp.carga_viral"
                                             type="numeric"
                                             required
-                                            class="form-control form-control-solid @error('Analiticas.carga_viral') is-invalid @enderror"
+                                            class="form-control form-control-solid @error('Analiticasp.carga_viral') is-invalid @enderror"
                                             placeholder="Ej: 1287" />
                                     </div>
                                 </div>
@@ -622,8 +622,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.unidades_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.unidades_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.unidades_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.unidades_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -644,10 +644,10 @@
                                             </span>
                                         </div>
                                         <input
-                                            wire:model.defer="Analiticas.recomendacion_inmuno"
+                                            wire:model.defer="Analiticasp.recomendacion_inmuno"
                                             type="text"
                                             required
-                                            class="form-control form-control-solid @error('Analiticas.recomendacion_inmuno') is-invalid @enderror"
+                                            class="form-control form-control-solid @error('Analiticasp.recomendacion_inmuno') is-invalid @enderror"
                                             placeholder="Ej: Realizar pruebas adicionales condicionadas" />
                                     </div>
                                 </div>
@@ -663,11 +663,11 @@
                                             </span>
                                         </div>
                                         <textarea
-                                            wire:model.defer="Analiticas.descripcion"
+                                            wire:model.defer="Analiticasp.descripcion"
                                             id=""
                                             cols="30"
                                             rows="3"
-                                            class="form-control form-control-solid @error('Analiticas.descripcion') is-invalid @enderror"
+                                            class="form-control form-control-solid @error('Analiticasp.descripcion') is-invalid @enderror"
                                             placeholder="Ej: Datos relevantes a reportar"
                                             >
                                         </textarea>
@@ -684,7 +684,7 @@
                                             </span>
                                         </div>
                                         <div class="d-flex jutify-content-start mb-1" >
-                                            @if ($AnaliticaTmp || $Analiticas->archivo)
+                                            @if ($AnaliticaTmp || $Analiticasp->archivo)
                                                 <img
                                                     width="65"
                                                     src="{{ asset('assets') }}/media/svg/files/pdf.svg" alt=""
@@ -746,8 +746,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.tecnica_segunda_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.tecnica_segunda_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.tecnica_segunda_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.tecnica_segunda_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -770,8 +770,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.resultado_segunda_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.resultado_segunda_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.resultado_segunda_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.resultado_segunda_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -796,8 +796,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.tecnica_tercera_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.tecnica_tercera_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.tecnica_tercera_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.tecnica_tercera_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -820,8 +820,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.resultado_tercera_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.resultado_tercera_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.resultado_tercera_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.resultado_tercera_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -845,8 +845,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.tecnica_cuarta_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.tecnica_cuarta_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.tecnica_cuarta_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.tecnica_cuarta_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -869,8 +869,8 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model.defer="Analiticas.resultado_cuarta_id"
-                                            class="form-control selectpicker form-control-solid @error('Analiticas.resultado_cuarta_id') is-invalid @enderror"
+                                            wire:model.defer="Analiticasp.resultado_cuarta_id"
+                                            class="form-control selectpicker form-control-solid @error('Analiticasp.resultado_cuarta_id') is-invalid @enderror"
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
@@ -892,7 +892,7 @@
                 <button class="d-none" type="submit"></button>
             </form>
             <!--end::Form-->
-            
+
         </div>
         <div class="card-header" >
             <div class="card-toolbar">

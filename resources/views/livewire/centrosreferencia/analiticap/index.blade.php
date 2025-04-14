@@ -187,7 +187,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($analiticas as $analitica)
+                            @forelse ($analiticasp as $analitica)
                                 <tr>
                                     <td>
                                         <span
@@ -253,7 +253,7 @@
                                         @if ($analitica->usuariop_id == 0)
                                             <i class="navi-item" data-toggle="modal" data-target="_self">
                                                 @if($analitica->crns_id == 1)
-                                                <a href="{{ route('analiticasmicolo.edit', $analitica) }}"
+                                                <a href="{{ route('analiticamico.edit', $analitica) }}"
                                                     class="navi-link">
                                                     <span class="navi-icon">
                                                         <i class="ace-icon fa fa-pen" style="color:lightblue"
@@ -317,7 +317,7 @@
                                             @if ($analitica->evento_id==116 || $analitica->evento_id==117 || $analitica->evento_id==118 || $analitica->evento_id==119 || $analitica->evento_id==120 || $analitica->evento_id==125)
                                                 @if($analitica->campliada==0)
                                                 <i class="navi-item" data-toggle="modal" data-target="_self">
-                                                    <a href="{{ route('analitica.edit', $analitica) }}" class="navi-link">
+                                                    <a href="{{ route('analiticap.edit', $analitica) }}" class="navi-link">
                                                         <span class="navi-icon">
                                                             <i class="ace-icon fa fa-bookmark" style="color:rgb(216, 20, 20)"
                                                                 title="Generar_Ampliada"></i>
@@ -372,7 +372,7 @@
                 </div>
                 <!--end::Table-->
 
-                {{ $analiticas->links() }}
+                {{ $analiticasp->links() }}
             </div>
             <!--end::Body-->
         </div>
