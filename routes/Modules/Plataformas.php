@@ -20,6 +20,7 @@ use App\Http\Controllers\CentrosReferencia\Analiticagen\AnaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Preanaliticagen\PreanaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxicop\AnaliticatoxicopController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
+use App\Http\Controllers\CentrosReferencia\Postanaliticagen\PostanaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
@@ -122,6 +123,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');
+
+        //CRNs Plataformas Analitica de Resultados Resonsable
+        Route::resource('postanaliticasgen', PostanaliticagenController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticagen');
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticasp', PostanaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticap');

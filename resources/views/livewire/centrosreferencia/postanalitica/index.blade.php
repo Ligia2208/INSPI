@@ -245,6 +245,17 @@
                                     </td>
                                     <td align="center">
                                         @if($postanalitica->usuarior_id==0)
+                                        
+                                        @if($postanalitica->crns_id == 9)
+                                        <i class="navi-item" data-toggle="modal" data-target="_self">
+                                                <a href="{{ route('postanaliticagen.edit', $postanalitica) }}" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-tag" style="color:lightblue"
+                                                        title="Validar"></i>
+                                                </span>
+                                            </a>
+                                        </i>
+                                        @else
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
                                                 <a href="{{ route('postanalitica.edit', $postanalitica) }}" class="navi-link">
                                                 <span class="navi-icon">
@@ -253,6 +264,7 @@
                                                 </span>
                                             </a>
                                         </i>
+                                        @endif
                                         @endif
                                         @if($postanalitica->usuarior_id>0)
                                         <i class="navi-item">
