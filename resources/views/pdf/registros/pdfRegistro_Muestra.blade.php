@@ -73,49 +73,22 @@
                 </tr>
             </thead>
             <tbody>
-                {{-- CRNS - Código de procedencia --}}
-                @foreach
-                <tr>
-                    <td></td>
-                </tr>
+                @foreach ($datos as $item )
+                    <tr>
+                        <td>{{ $item->codigo_procedencia ?? '' }}</td>
+                        <td>{{ $item->organismo ?? '' }}</td>
+                        <td>{{ $item->tipo_muestra ?? '' }}</td>
+                        <td>{{ $item->fecha_colecta ?? '' }}</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>{{ $item->observaciones ?? '' }}</td>
+                    </tr>
                 @endforeach
-            
-                {{-- Clase de muestra - Organismo --}}
-                @foreach
-                <tr>
-                    <td ></td>
-                </tr>
-                @endforeach
-            
-                {{-- Tipo de muestra --}}
-                @foreach 
-                <tr>
-                    <td></td>
-                </tr>
-                @endforeach
-            
-                {{-- Provincias - Localidad --}}
-                @foreach
-                <tr>
-                    <td></td>
-                </tr>
-                @endforeach
-            
-                {{-- Instituciones de Salud --}}
-                @foreach
-                <tr>
-                    <td></td>
-                </tr>
-                @endforeach
-            
-                {{-- Sexos --}}
-                @foreach($datos['sexos'] as $sexo)
-                <tr>
-                    <td>{{ $sexo->descripcion }}</td>
-                </tr>
-            @endforeach
             </tbody>
-            
         </table>
         <br>
 

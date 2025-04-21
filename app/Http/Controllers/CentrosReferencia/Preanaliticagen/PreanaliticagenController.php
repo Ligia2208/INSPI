@@ -12,6 +12,7 @@ use App\Models\CentrosReferencia\Sexo;
 use App\Models\CentrosReferencia\Provincia;
 use App\Models\CentrosReferencia\Institucion;
 use App\Models\CentrosReferencia\Crn;
+use Illuminate\Support\Facades\DB;
 
 
 
@@ -47,22 +48,26 @@ class PreanaliticagenController extends Controller
     public function registro_muestra(Preanaliticagen $Preanaliticastoxico)
     {
         try {
-            $datos = [
-                'crns' => Crn::select('id', 'abreviatura')->get(),
-                //'clases_muestra' => ClaseMuestra::select('id', 'descripcion')->get(),
-               // 'tipos_muestra' => TipoMuestra::select('id', 'descripcion')->get(),
-                'provincias' => Provincia::select('id', 'descripcion')->get(),
-                'instituciones_salud' => Institucion::select('id', 'descripcion')->get(),
-                'sexos' => Sexo::select('id', 'descripcion')->get(),
-            ];
-            
+
+            $datos = DB::table('inspi_crns.pre_analitica as pre')
+            ->join('inspi_crns.analiticas as ana', 'ana.preanalitica_id', '=', 'pre.id')
+            ->leftJoin('inspi_crns.crns as crn', 'pre.crns_id', '=', 'crn.id')
+            ->leftJoin('inspi_crns.clase_muestra as clase', 'ana.clase_id', '=', 'clase.id')
+            ->leftJoin('inspi_crns.tipo_muestras as tipo', 'ana.muestra_id', '=', 'tipo.id')
+            ->select(
+                'crn.abreviatura as codigo_procedencia',
+                'pre.observacion_primera as observaciones',
+                'clase.descripcion as organismo',
+                'tipo.descripcion as tipo_muestra',
+                'ana.fecha_toma as fecha_colecta'
+            )
+            ->get();
         
             return \PDF::loadView('pdf.registros.pdfRegistro_Muestra', [
-               // 'Preanaliticastoxico' => $Preanaliticastoxico,
                 'datos' => $datos
             ])
             ->setPaper('A4', 'portrait')
-            ->download('Registro_Muestra.pdf');
+            ->stream('Registro_Muestra.pdf');
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
         }

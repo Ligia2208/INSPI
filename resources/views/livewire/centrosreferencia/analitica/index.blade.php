@@ -9,6 +9,7 @@
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span>
                         </span>
                 </h3>
+                <a href="{{ route('analiticacd4.index')}}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i class="fa fa-sticky-note"></i> Registrar resultados CD4</a>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -80,10 +81,8 @@
                                             <select id="idtipo" wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha recepcion</option>
-                                                <option data-subtext="" value="2">Fecha llegada al CRN</option>
-                                                <option data-subtext="" value="3">Fecha procesamiento</option>
-                                                <option data-subtext="" value="4">Fecha recepción</option>
+                                                <option data-subtext="" value="1">Fecha recepción</option>
+                                                <option data-subtext="" value="2">Fecha registro</option>
                                             </select>
                                         </div>
                                     </div>
@@ -160,12 +159,12 @@
                                             <button class="btn btn-danger font-weight-bold mr-2"
                                                 onclick="generarExcel()"><i
                                                     class="fa fa-file-excel" aria-hidden="true"></i>
-                                                {{ __('Generar Reporte xlsx') }}</button>
+                                                {{ __('Genera archivo xlsx') }}</button>
                                         </div>
                                     </div>
                                     <div class="col-md-2 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
-                                            <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url('descargas/descarga_muestras.xlsx') }}"><i class="fas fa-download mr-2"></i> Descarga archivo xlsx</a>
+                                            <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url('descargas/'.$csedes.'/'.$claboratorios.'/descarga_muestras.xlsx') }}"><i class="fas fa-download mr-2"></i> Descarga archivo</a>
                                         </div>
                                     </div>
                                 </div>

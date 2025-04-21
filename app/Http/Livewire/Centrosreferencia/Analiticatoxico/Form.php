@@ -74,7 +74,7 @@ class Form extends Component
             'Analiticastoxico.descripcion' => 'sometimes|max:2000',
             'Analiticastoxico.identificado' => 'sometimes|max:200',
             'Analiticastoxico.recomendacion_bacterio' => 'sometimes|max:200',
-            'Analiticastoxico.carga_viral' => 'sometimes|numeric',
+            'Analiticastoxico.nivel_alcohol' => 'sometimes|numeric',
             'Analiticastoxico.unidades_id' => 'sometimes|numeric',
             'Analiticastoxico.recomendacion_inmuno' => 'sometimes|max:200',
 
@@ -363,7 +363,7 @@ class Form extends Component
         $muestras = Muestra::where('estado','=','A')->orderBy('id','asc')->cursor();
         $preanalitica = Preanalitica::findOrFail($this->Analiticastoxico->preanalitica_id);
         $estados = Estadomuestra::orderBy('id', 'asc')->cursor();
-        $unidades = Unidades::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        $unidades = Unidades::where('estado','=','A')->where('crns_id','=',$this->Analiticastoxico->crns_id)->orderBy('id', 'asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $instituciones = Institucion::where('estado','=','A')->orderBy('id','asc')->cursor();
         $paramicrobianos = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antimicrobianos')->orderBy('id','asc')->cursor();
