@@ -770,7 +770,7 @@
                                                     </span>
                                                 </div>
                                                 <input wire:model.defer="Preanaliticastoxico.hora_toma_segunda"
-                                                    value="Preanaliticastoxico.hora_toma_segunda" type="date"
+                                                    value="Preanaliticastoxico.hora_toma_segunda" type="time"
                                                     class="start_date form-control form-control-solid @error('Preanaliticastoxico.hora_toma_segunda') is-invalid @enderror"
                                                     placeholder="Seleccione la hora de inicio sintomas" />
                                             </div>
@@ -895,7 +895,7 @@
                                                     </span>
                                                 </div>
                                                 <input wire:model.defer="Preanaliticastoxico.hora_toma_tercera"
-                                                    value="Preanaliticastoxico.fecha_toma_tercera" type="date"
+                                                    value="Preanaliticastoxico.fecha_toma_tercera" type="time"
                                                     class="start_date form-control form-control-solid @error('Preanaliticastoxico.hora_toma_tercera') is-invalid @enderror"
                                                     placeholder="Seleccione la hora de inicio sintomas" />
                                             </div>
@@ -1020,7 +1020,7 @@
                                                     </span>
                                                 </div>
                                                 <input wire:model.defer="Preanaliticastoxico.hora_toma_cuarta"
-                                                    value="Preanaliticastoxico.fecha_toma_cuarta" type="date"
+                                                    value="Preanaliticastoxico.fecha_toma_cuarta" type="time"
                                                     class="start_date form-control form-control-solid @error('Preanaliticastoxico.hora_toma_cuarta') is-invalid @enderror"
                                                     placeholder="Seleccione la hora de inicio sintomas" />
                                             </div>
@@ -1145,7 +1145,7 @@
                                                     </span>
                                                 </div>
                                                 <input wire:model.defer="Preanaliticastoxico.hora_toma_quinta"
-                                                    value="Preanaliticastoxico.fecha_toma_quinta" type="date"
+                                                    value="Preanaliticastoxico.fecha_toma_quinta" type="time"
                                                     class="start_date form-control form-control-solid @error('Preanaliticastoxico.hora_toma_quinta') is-invalid @enderror"
                                                     placeholder="Seleccione la hora de inicio sintomas" />
                                             </div>

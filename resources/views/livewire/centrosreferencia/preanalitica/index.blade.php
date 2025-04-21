@@ -172,7 +172,7 @@
                         class="table table-head-custom table-head-bg table-borderless table-vertical-center">
                         <thead>
                             <tr class="text-uppercase">
-                                <th>Id</th>
+                                <th>Código muestra</th>
                                 <th>Fecha Recepción</th>
                                 <th>Institución Salud</th>
                                 <th>Paciente</th>
@@ -188,9 +188,15 @@
                         <tbody>
                             @forelse ($preanaliticas as $preanalitica)
                                 <tr>
+                                    @forelse ($preanalitica->analitica as $objPos)
+                                        @if($objPos->codigo_secuencial==1)
+                                        <?php  $codigo = $objPos->codigo_calidad; if($objPos->usuarior_id>0){ $tecnico = $objPos->usuarior->name;}else{ $tecnico=''; } if($objPos->resultado_id>0){ $restec = $objPos->resultado->descripcion; }else{ $restec=''; }?>
+                                        @endif
+                                    @empty
+                                    @endforelse
                                     <td>
                                         <span
-                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $preanalitica->id }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $codigo }}</span>
                                     </td>
                                     <td>
                                         <span

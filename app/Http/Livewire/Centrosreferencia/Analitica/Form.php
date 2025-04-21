@@ -396,7 +396,7 @@ class Form extends Component
         $muestras = Muestra::where('estado','=','A')->orderBy('id','asc')->cursor();
         $preanalitica = Preanalitica::findOrFail($this->Analiticas->preanalitica_id);
         $estados = Estadomuestra::orderBy('id', 'asc')->cursor();
-        $unidades = Unidades::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        $unidades = Unidades::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $instituciones = Institucion::where('estado','=','A')->orderBy('id','asc')->cursor();
         $paramicrobianos = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antimicrobianos')->orderBy('id','asc')->cursor();

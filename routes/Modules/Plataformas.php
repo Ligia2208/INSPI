@@ -13,6 +13,7 @@ use App\Http\Controllers\CentrosReferencia\Preanaliticatoxico\Preanaliticatoxico
 use App\Http\Controllers\CentrosReferencia\Preanaliticamico\PreanaliticamicoController;
 use App\Http\Controllers\CentrosReferencia\Preanaliticacd4\Preanaliticacd4Controller;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
+use App\Http\Controllers\CentrosReferencia\Analiticacd4\Analiticacd4Controller;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxico\AnaliticatoxicoController;
 use App\Http\Controllers\CentrosReferencia\Analiticamicolo\AnaliticamicoloController;
@@ -103,6 +104,12 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Analitica de Resultados Pendientes
         Route::resource('analiticas', AnaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('analitica');
+
+        //CRNs Plataformas Analitica de Resultados Pendientes
+        Route::resource('analiticascd4', Analiticacd4Controller::class)->parameters(['analiticas' => 'analitica'])->names('analiticacd4');
+
+        Route::post('/guardar_validar_cd4',[Analiticacd4Controller::class,
+            'guardar_validar'])->name('guardar_validar_cd4');
 
         //CRNs Plataformas Analitica de Resultados Procesados
         Route::resource('analiticasp', AnaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('analiticap');

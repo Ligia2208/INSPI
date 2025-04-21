@@ -63,6 +63,11 @@ class Index extends Component
         $eventos = [];
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
 
+        $contsedes = Sede::whereIn('id',$sedes_users)->count();
+        if($contsedes==1)
+        {
+            $this->csedes=$sedes_users[0];
+        }
         $count = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','=',0)->count();
         $analiticas = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','=',0)->orderBy('codigo_calidad', 'desc');
 
@@ -98,6 +103,10 @@ class Index extends Component
             $crns_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->distinct('crns_id')->pluck('crns_id')->toArray();
             $config = SedeCrn::where('sedes_id','=',$this->csedes)->whereIn('crns_id',$crns_users)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
+            $contcrns = Crn::whereIn('id',$config)->count();
+            if($contcrns==1){
+                $this->claboratorios = $crns_users[0];
+            }
         }
         if($this->claboratorios){
             $analiticas = $analiticas->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
@@ -118,21 +127,13 @@ class Index extends Component
                         $this->fechafin='';
                     }
                     if($this->controlf==1){
-                        $analiticas = $analiticas->where('fecha_toma', '>=', $this->fechainicio)->where('fecha_toma','<=',$this->fechafin);
+                        $pre = Preanalitica::where('fecha_recepcion','>=',$this->fechainicio)->where('fecha_recepcion','<=',$this->fechafin)->pluck('id')->toArray();
+                        $analiticas = $analiticas->whereIn('preanalitica_id',$pre);
                         $count = $analiticas->count();
 
                     }
                     if($this->controlf==2){
-                        $analiticas = $analiticas->where('fecha_llegada_lab', '>=', $this->fechainicio)->where('fecha_llegada_lab','<=',$this->fechafin);
-                        $count = $analiticas->count();
-                    }
-                    if($this->controlf==3){
-                        $analiticas = $analiticas->where('fecha_procesamiento', '>=', $this->fechainicio)->where('fecha_procesamiento','<=',$this->fechafin);
-                        $count = $analiticas->count();
-                    }
-                    if($this->controlf==4){
-                        $pre = Preanalitica::where('fecha_recepcion','>=',$this->fechainicio)->where('fecha_recepcion','<=',$this->fechafin)->pluck('id')->toArray();
-                        $analiticas = $analiticas->whereIn('preanalitica_id',$pre);
+                        $analiticas = $analiticas->where('created_at', '>=', $this->fechainicio)->where('created_at','<=',$this->fechafin);
                         $count = $analiticas->count();
                     }
                 }
@@ -425,7 +426,7 @@ class Index extends Component
          header('Cache-Control: max-age=0');
 
          $writer = IOFactory::createWriter($excel,'Xlsx');
-         $writer->save(storage_path('app/public/descargas/')."descarga_muestras.xlsx");
+         $writer->save(storage_path('app/public/descargas/'.$sid.'/'.$cid.'/')."descarga_muestras.xlsx");
 
         }
         catch(IOException $e){
