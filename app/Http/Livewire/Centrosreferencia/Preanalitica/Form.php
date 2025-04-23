@@ -97,6 +97,7 @@ class Form extends Component
             'Preanaliticas.estado_primera_id' => 'required|numeric',
             'Preanaliticas.rechazo_primera_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_primera' => 'sometimes|max:200',
+
             'Preanaliticas.segunda_id' => 'sometimes|numeric',
             'Preanaliticas.clase_segunda_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_segunda' => 'sometimes|max:10',
@@ -104,6 +105,7 @@ class Form extends Component
             'Preanaliticas.estado_segunda_id' => 'sometimes|numeric',
             'Preanaliticas.rechazo_segunda_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_segunda' => 'sometimes|max:200',
+
             'Preanaliticas.tercera_id' => 'sometimes|numeric',
             'Preanaliticas.clase_tercera_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_tercera' => 'sometimes|max:10',
@@ -111,6 +113,7 @@ class Form extends Component
             'Preanaliticas.estado_tercera_id' => 'sometimes|numeric',
             'Preanaliticas.rechazo_tercera_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_tercera' => 'sometimes|max:200',
+
             'Preanaliticas.cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.clase_cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_cuarta' => 'sometimes|max:10',
@@ -118,6 +121,7 @@ class Form extends Component
             'Preanaliticas.estado_cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.rechazo_cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_cuarta' => 'sometimes|max:200',
+
             'Preanaliticas.quinta_id' => 'sometimes|numeric',
             'Preanaliticas.clase_quinta_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_quinta' => 'sometimes|max:10',
@@ -163,7 +167,7 @@ class Form extends Component
             $this->Preanaliticas->rechazo_quinta_id = 0;
         }
         //dd($this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion));
-        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion);
+        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_toma_primera);
 
         if($method=="update"){
             $this->Preanaliticas->identidad=$this->Preanaliticas->paciente->identidad;
@@ -428,7 +432,6 @@ class Form extends Component
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
         }
-
         if($pa->segunda_id>0){
             if($tipogenera==2){
                 $codigo = $this->sgte_codigomuestra($fecha_anio,$pa->sedes_id,$pa->crns_id);
