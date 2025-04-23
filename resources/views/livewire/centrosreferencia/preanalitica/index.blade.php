@@ -190,6 +190,7 @@
                             @forelse ($preanaliticas as $preanalitica)
                                 <?php $codigo = 0; ?>
                                 <tr>
+                                    <?php  $codigo = 0; ?>
                                     @forelse ($preanalitica->analitica as $objPos)
                                         
                                         @if($objPos->codigo_secuencial==1)
