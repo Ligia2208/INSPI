@@ -132,7 +132,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');
 
         //CRNs Plataformas Analitica de Resultados Resonsable
-        Route::resource('postanaliticasgen', PostanaliticagenController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticagen');
+        Route::resource('postanaliticasgen', PostanaliticagenController::class)->parameters(['postanaliticasgen' => 'postanalitica'])->names('postanaliticagen');
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticasp', PostanaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticap');

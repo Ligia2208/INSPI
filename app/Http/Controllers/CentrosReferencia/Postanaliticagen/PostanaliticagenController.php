@@ -38,7 +38,7 @@ class PostanaliticagenController extends Controller
     public function edit(Postanalitica $postanalitica){
         //dd($postanalitica);
         $muestras = Analitica::where('estado','=','A')->where('preanalitica_id','=',$postanalitica->id)->get();
-        return view('centrosreferencia.postanalitica.edit', compact('postanalitica','muestras'));
+        return view('centrosreferencia.postanaliticagen.edit', compact('postanalitica','muestras'));
     }
 
     public function informep($id){

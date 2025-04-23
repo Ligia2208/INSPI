@@ -186,11 +186,14 @@
                             </tr>
                         </thead>
                         <tbody>
+                        
                             @forelse ($preanaliticas as $preanalitica)
+                                <?php $codigo = 0; ?>
                                 <tr>
                                     @forelse ($preanalitica->analitica as $objPos)
+                                        
                                         @if($objPos->codigo_secuencial==1)
-                                        <?php  $codigo = $objPos->codigo_calidad; if($objPos->usuarior_id>0){ $tecnico = $objPos->usuarior->name;}else{ $tecnico=''; } if($objPos->resultado_id>0){ $restec = $objPos->resultado->descripcion; }else{ $restec=''; }?>
+                                        <?php $codigo = $objPos->codigo_calidad; ?>
                                         @endif
                                     @empty
                                     @endforelse

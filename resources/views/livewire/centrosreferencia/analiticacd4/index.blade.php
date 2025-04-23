@@ -142,7 +142,7 @@
                                             name = "resultados[{{ $i }}]"
                                             value={{ $analitica->carga_viral }}
                                             type="number"
-                                            max="1000"
+                                            max="10000"
                                             min="0"
                                             step=".01"
                                             size="4"

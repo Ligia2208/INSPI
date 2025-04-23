@@ -219,13 +219,28 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required >
+                                            required>
                                             <option value="">Selecciona estado muestra</option>
                                             @foreach ($estados as $objEstados)
                                                 <option data-subtext="" value="{{ $objEstados->id }}">
                                                     {{ $objEstados->descripcion }}</option>
                                             @endforeach
                                         </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-12">
+                                    <label>Otras Observaciones <span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-sticky-note"></i>
+                                            </span>
+                                        </div>
+                                        <textarea 
+                                            class="form-control form-control-solid"
+                                            placeholder="Ej: Detalles adicionales de la muestra"
+                                            rows="3">{{$preanalitica->otras_observaciones}}</textarea>
                                     </div>
                                 </div>
 

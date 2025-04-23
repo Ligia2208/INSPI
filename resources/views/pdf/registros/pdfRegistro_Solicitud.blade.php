@@ -115,7 +115,7 @@
             <tbody>
                 <tr>
                     <td style="width: 25%; text-align: center; vertical-align: middle;">
-                        <label><input type="checkbox"> Muestra primaria</label>
+                        <input type="checkbox" checked><label>Muestra Primaria</label>   
                     </td>
                     <td style="width: 25%; text-align: center; vertical-align: middle;">
                         <label><input type="checkbox"> Alícuota</label>
@@ -135,30 +135,22 @@
         <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 10px;">
             <thead>
                 <tr>
-                    <th colspan="4" style="border: 1px solid #000; text-align: left; font-weight: bold; background-color: #d3d3d3;">
+                    <th colspan="{{$cantidadEventos}}" style="border: 1px solid #000; text-align: left; font-weight: bold; background-color: #d3d3d3;">
                         SERVICIO SOLICITADO
                     </th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td tyle=" width: 25%; border: 1px solid #000; text-align: left;"><span class="underline">
-                        Genotipificación de virus, bacterias, parásitos, hongos, insectos y otros organismos biológicos de importancia en salud pública.</span><br>
-                        <label><input type="checkbox"> Genoma completo</label><br>
-                        <label><input type="checkbox"> Genes especificos:</label><br><br>
-                        <label><input><span class="underline"> Detalle: </span>____________ <br> _____________________<br> _____________________</label>
-                    </td>
-                    <td style=" width: 25%; border: 1px solid #000; text-align: left;">
-                        <label><input type="checkbox"><span class="underline"> Genotipificación para determinación de genes de resistencia a fármacos</span></label>
-                    </td>
-                    <td style="width: 25%; border: 1px solid #000; text-align: left;">
-                        <label><input type="checkbox"><span class="underline"> Genotipificación de biomarcadores relacionados con enfermedades no transmisibles.</span></label><br><br>
-                        <label><input> <span class="underline">Detalle los marcadores y la enfermedad: </span> ____________ <br> _____________________ <br> _____________________</label>
-                    </td>
-                    <td style=" width: 25%; border: 1px solid #000; text-align: left;">
-                        <label><input type="checkbox"><span class="underline"> Metagenómica. Detección simultánea de todos los microorganismos presentes en una muestra.</span></label><br><br>
-                        <label><input> <span class="underline">Detalle los patógenos que se sospechan: </span> ____________ <br> _____________________ <br> _____________________</label>
-                    </td>
+                    @foreach ($eventos as $evento)
+                        <td style="width: {{ $anchoPorEvento }}%; border: 1px solid #000; text-align: left;">                            
+                            <label>
+                                <input type="checkbox" {{ $evento->id == $datos->evento_id ? 'checked' : '' }}>
+                                {{ $evento->descripcion }}
+                            </label><br>
+                            <label><input><span class="underline">Detalle: </span>____________<br> _____________________<br> _____________________</label>
+                        </td>
+                    @endforeach
                 </tr>
             </tbody>
         </table>
@@ -174,17 +166,7 @@
             <tbody>
                 <tr>
                     <td style="border: 1px solid #000; text-align: left;">
-                        <ul style="list-style-type: disc; padding-left: 20px; margin-top: 0; margin-bottom: 0;">
-                            <li style="margin-bottom: 10px;">
-                                <input type="text" style="width: 100%; border: none;">
-                            </li>
-                            <li style="margin-bottom: 10px;">
-                                <input type="text" style="width: 100%; border: none;">
-                            </li>
-                            <li style="margin-bottom: 10px;">
-                                <input type="text" style="width: 100%; border: none;">
-                            </li>
-                        </ul>
+                        <label><input> <span class="underline">Detalle: </span> {{ $datos->otras_observaciones }} </label>
                     </td>
                 </tr>
             </tbody>
@@ -203,19 +185,19 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>Nombres y apellidos: </td>
+                    <td><strong>Nombres y apellidos:</strong> {{ $datos->solicitante }}</td>
                 </tr>
                 <tr>
-                    <td>Nombre del Centro/Laboratorio/Unidad de salud: </td>
+                    <td><strong>Nombre del Centro/Laboratorio/Unidad de salud:</strong> {{$datos->unidad_salud}}</td>
                 </tr>
                 <tr>
-                    <td>Teléfono: </td>
+                    <td><strong>Teléfono:</strong> </td>
                 </tr>
                 <tr>
-                    <td>Correo electrónico: </td>
+                    <td><strong>Correo electrónico:</strong> {{$datos->correo}}</td>
                 </tr>
                 <tr>
-                    <td>Firma: 
+                    <td><strong>Firma:</strong> 
                     <br>
                     <br>
                     </td>

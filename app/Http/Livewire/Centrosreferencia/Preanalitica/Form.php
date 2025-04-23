@@ -163,7 +163,7 @@ class Form extends Component
             $this->Preanaliticas->rechazo_quinta_id = 0;
         }
         //dd($this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion));
-        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion);
+        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_toma_primera);
 
         if($method=="update"){
             $this->Preanaliticas->identidad=$this->Preanaliticas->paciente->identidad;

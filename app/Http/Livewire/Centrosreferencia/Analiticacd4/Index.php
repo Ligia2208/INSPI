@@ -32,7 +32,7 @@ class Index extends Component
     public $userPresent;
 
     //Tools
-    public $perPage = 25;
+    public $perPage = 500;
     public $searchm;
     public $searchc;
     public $searchp;
