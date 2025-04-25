@@ -180,6 +180,7 @@
                                 <th>Crn-Laboratorio</th>
                                 <th>Evento</th>
                                 <th>Muestras Recibidas</th>
+                                <th>Ingresa por</th>
                                 <th>Usuario registro</th>
                                 <th>Fecha registro</th>
                                 <th> Acciones </th>
@@ -226,6 +227,10 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($preanalitica->primera_id>0) 1.-{{ $preanalitica->primera->descripcion }} @endif @if($preanalitica->segunda_id>0) <br> 2.-{{ $preanalitica->segunda->descripcion }} @endif @if($preanalitica->tercera_id>0) <br> 3.-{{ $preanalitica->tercera->descripcion }} @endif @if($preanalitica->cuarta_id>0) <br> 4.-{{ $preanalitica->cuarta->descripcion }} @endif @if($preanalitica->quinta_id>0) <br> 5.-{{ $preanalitica->quinta->descripcion }} @endif</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($preanalitica->ingresa_por==1) Sede Central - Guayaquil @endif @if($preanalitica->ingresa_por==2) CZ6 - Cuenca @endif @if($preanalitica->ingresa_por==3) CZ9 - Quito @endif @if($preanalitica->ingresa_por==4) OFTEC - Tena @endif</span>
                                     </td>
                                     <td>
                                         <span

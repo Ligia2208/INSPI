@@ -20,6 +20,7 @@ use App\Models\CentrosReferencia\Clase;
 use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Generacioncodigos;
 use App\Models\CentrosReferencia\Tiporechazomuestra;
+use App\Models\CentrosReferencia\Responsable;
 use App\Models\CoreBase\Nacionalidad;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -274,6 +275,9 @@ class Form extends Component
         $absede = Sede::findOrFail($pa->sedes_id);
         $abcrn = Crn::findOrFail($pa->crns_id);
         $user = auth()->user()->id;
+        $sedeUser = Responsable::where('estado','=','A')->where('tipo_id','=',3)->where('usuario_id','=',$user)->where('vigente_hasta','=',null)->pluck('sedes_id');
+        $total = $sedeUser->count();
+
         $fecha_anio = date("Y");
         if($pa->paciente_id == 0){
             $newPac = new Paciente();
@@ -316,6 +320,12 @@ class Form extends Component
             $newToma->paciente_id = $pa->paciente_id;
         }
 
+        if($total>0){
+            $newToma->ingresa_por = $sedeUser[0];
+        }
+        else{
+            $newToma->ingresa_por = 0;
+        }
         $newToma->fecha_atencion = $pa->fecha_atencion;
         $newToma->quien_notifica = $pa->quien_notifica;
         $newToma->probable_infeccion = $pa->probable_infeccion;
