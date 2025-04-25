@@ -175,7 +175,6 @@
                                 <th>Id</th>
                                 <th>Fecha Recepción</th>
                                 <th>Institución Salud</th>
-                                <th>Paciente</th>
                                 <th>Sede</th>
                                 <th>Crn-Laboratorio</th>
                                 <th>Evento</th>
@@ -197,10 +196,6 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $Preanaliticastoxico->instituciones->descripcion }} - ({{ $Preanaliticastoxico->instituciones->clasificacion->descripcion }} - {{ $Preanaliticastoxico->instituciones->nivel->descripcion }} - {{ $Preanaliticastoxico->instituciones->tipologia->descripcion }})</span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $Preanaliticastoxico->paciente->identidad }} - ({{ $Preanaliticastoxico->paciente->apellidos }} {{ $Preanaliticastoxico->paciente->nombres }})</span>
                                     </td>
                                     <td>
                                         <span

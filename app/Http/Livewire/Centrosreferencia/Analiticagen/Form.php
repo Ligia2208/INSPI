@@ -20,7 +20,9 @@ use App\Models\CentrosReferencia\Tipoparametros;
 use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Unidades;
 
+use App\Models\CentrosReferencia\Tipo_Organismo;
 use App\Models\CentrosReferencia\Micobacteria;
+use App\Models\CentrosReferencia\Genotificacion;
 
 use App\Models\CentrosReferencia\Paciente;
 use Illuminate\Support\Facades\Auth;
@@ -54,13 +56,16 @@ class Form extends Component
     public $AnaliticaTmp;
     public $paciente = [];
     public $edad_paciente = "";
+    public $tipo = 1;
+    public $id_tipo_organismo;
+    public $OrganismoTmp = [];
 
     protected $listeners = ['render'];
 
     protected function rules()
     {
 
-        return [
+        $rules = [
             'Analiticastoxico.sedes_id' => 'required|numeric',
             'Analiticastoxico.crns_id' => 'required|numeric',
             'Analiticastoxico.muestra_id' => 'required|numeric',
@@ -186,6 +191,16 @@ class Form extends Component
             'Analiticastoxico.antibioticomdcuatrobacte_id' => 'sometimes|numeric',
             'Analiticastoxico.cimmdcuatro_bacte' => 'sometimes|numeric',
             'Analiticastoxico.escalamdcuatrobacte_id' => 'sometimes|numeric',
+            'Analiticastoxico.ct'                     => 'required|string',
+
+            'OrganismoTmp.identificacion'    => 'sometimes',
+            'OrganismoTmp.tecnica_libreria'  => 'sometimes',
+            'OrganismoTmp.q30_estado'        => 'sometimes',
+            'OrganismoTmp.secuencia_ns'      => 'sometimes',
+            'OrganismoTmp.fecha_entrega'     => 'sometimes',
+            'OrganismoTmp.otros'             => 'sometimes',
+            'OrganismoTmp.informacion'       => 'sometimes',
+            'id_tipo_organismo'              => 'sometimes',
 
             'paciente.nombres'         => 'required|string|max:255',
             'paciente.apellidos'       => 'required|string|max:255',
@@ -193,13 +208,114 @@ class Form extends Component
             'paciente.fechanacimiento' => 'required|date',
             'paciente.sexo_id'         => 'required|string|max:10',
         ];
+
+        // Solo si es tipo 5 (Micobacterias), agregamos estas reglas
+        if ($this->tipo == 5) {
+            $rules['OrganismoTmp.tecnica_libreria']  = 'required|string';
+            $rules['OrganismoTmp.q30_estado']        = 'required|string';
+            $rules['OrganismoTmp.secuencia_ns']      = 'required|string';
+            $rules['OrganismoTmp.fecha_entrega']     = 'required|string';
+            $rules['OrganismoTmp.otros']             = 'required|string';
+            $rules['OrganismoTmp.informacion']       = 'required|string';
+
+            $rules['OrganismoTmp.tipo_micobacteria'] = 'required|string';
+            $rules['OrganismoTmp.clado']             = 'required|string';
+            $rules['OrganismoTmp.linaje_sublinaje']  = 'required|string';
+        }   
+
+        if ($this->tipo == 4) {
+
+            $rules['OrganismoTmp.identificacion']    = 'required|string';
+            $rules['OrganismoTmp.clado']             = 'required|string';
+            $rules['OrganismoTmp.linaje_sublinaje']  = 'required|string';
+            $rules['OrganismoTmp.tecnica_libreria']  = 'required|string';
+            $rules['OrganismoTmp.q30_estado']        = 'required|string';
+            $rules['OrganismoTmp.secuencia_ns']      = 'required|string';
+            $rules['OrganismoTmp.fecha_entrega']     = 'required|string';
+            $rules['OrganismoTmp.otros']             = 'required|string';
+            $rules['OrganismoTmp.informacion']       = 'required|string';
+        }
+
+        if ($this->tipo == 3 || $this->tipo == 6) {
+            $rules['OrganismoTmp.identificacion']    = 'required|string';
+            $rules['OrganismoTmp.tecnica_libreria']  = 'required|string';
+            $rules['OrganismoTmp.q30_estado']        = 'required|string';
+            $rules['OrganismoTmp.secuencia_ns']      = 'required|string';
+            $rules['OrganismoTmp.fecha_entrega']     = 'required|string';
+            $rules['OrganismoTmp.otros']             = 'required|string';
+            $rules['OrganismoTmp.informacion']       = 'required|string';
+        }
+
+        if ($this->tipo == 7) {
+            $rules['OrganismoTmp.identificacion']    = 'required|string';
+            $rules['OrganismoTmp.tecnica_libreria']  = 'required|string';
+            $rules['OrganismoTmp.q30_estado']        = 'required|string';
+            $rules['OrganismoTmp.secuencia_ns']      = 'required|string';
+            $rules['OrganismoTmp.fecha_entrega']     = 'required|string';
+            $rules['OrganismoTmp.informacion']       = 'required|string';
+
+            $rules['OrganismoTmp.n_secuenciacion']   = 'required|string';
+            $rules['OrganismoTmp.identificacion']    = 'required|string';
+            $rules['OrganismoTmp.nota']              = 'required|string';
+        }
+
+        if ($this->tipo == 2) {
+            $rules['OrganismoTmp.identificacion']    = 'required|string';
+            $rules['OrganismoTmp.tecnica_libreria']  = 'required|string';
+            $rules['OrganismoTmp.q30_estado']        = 'required|string';
+            $rules['OrganismoTmp.secuencia_ns']      = 'required|string';
+            $rules['OrganismoTmp.fecha_entrega']     = 'required|string';
+            $rules['OrganismoTmp.informacion']       = 'required|string';
+
+            $rules['OrganismoTmp.n_secuenciacion']   = 'required|string';
+            $rules['OrganismoTmp.identificacion']    = 'required|string';
+        }
+
+        return $rules;
     }
+
+
+    public function withValidator($validator)
+    {
+        $validator->after(function ($validator) {
+            $this->emit('renderJs');
+        });
+    }
+    
+    public function updatedTipo($value)
+    {
+
+        // $this->OrganismoTmp->tecnica_libreria = 'AMPICONES';
+        // $this->OrganismoTmp->q30_estado = 'CUMPLE';
+        // $this->OrganismoTmp->secuencia_ns = 'CUMPLE';
+        // $this->OrganismoTmp->tipo_micobacteria = 'Tuberculosa';
+
+        $this->tipo = $value;
+        $this->emit('renderJs');
+    }
+
 
     public function mount(Analitica $Analiticasgen, $method){
         $this->Analiticastoxico = $Analiticasgen;
         $this->method = $method;
 
+        $this->OrganismoTmp = new Genotificacion();
         $preanalitica = Preanalitica::findOrFail($this->Analiticastoxico->preanalitica_id);
+
+        $this->id_tipo_organismo = 1;
+        $this->OrganismoTmp->tecnica_libreria = 'AMPICONES';
+        $this->OrganismoTmp->q30_estado = 'CUMPLE';
+        $this->OrganismoTmp->secuencia_ns = 'CUMPLE';
+        $this->OrganismoTmp->tipo_micobacteria = 'Tuberculosa';
+        
+        //$this->OrganismoTmp->clado = 'CUMPLE';
+        //$this->OrganismoTmp->linaje_sublinaje = 'CUMPLE';
+
+        $analiticaUpdate = Analitica::where('estado','=','A')
+            ->where('preanalitica_id','=',$this->Analiticastoxico->preanalitica_id)
+            ->where('anio_registro','=',$this->Analiticastoxico->anio_registro)->where('codigo_secuencial','=',1)->first();
+
+        //dd($this->Analiticastoxico);
 
         $this->paciente = [
             'id'              => $preanalitica->paciente->id,
@@ -210,7 +326,10 @@ class Form extends Component
             'sexo_id'         => $preanalitica->paciente->sexo->descripcion,
         ];
 
-        $this->edad_paciente = $this->getEdadPacienteProperty();
+        $this->Analiticastoxico->codigo_externo = $analiticaUpdate->codigo_externo;
+
+        //$this->edad_paciente = $this->getEdadPacienteProperty();
+        $this->edad_paciente = $this->Analiticastoxico->edad;
 
         if($this->Analiticastoxico->tecnica_segunda_id == 0){
             $this->Analiticastoxico->tecnica_segunda_id = 0;
@@ -359,6 +478,17 @@ class Form extends Component
             $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$this->Analiticastoxico->crns_id)->orderBy('id', 'asc')->get();
             $this->eventos = Evento::whereIn('estado',['A','M'])->where('crns_id','=',$this->Analiticastoxico->crns_id)->orderBy('id', 'asc')->get();
 
+            //carga los datos de tipo de organismos
+            $this->OrganismoTmp = Genotificacion::where('id_analitica','=',$this->Analiticastoxico->id)->first();
+            if($this->OrganismoTmp){
+                //$this->OrganismoTmp->tecnica_libreria = 'AMPICONES';
+                //$this->OrganismoTmp->q30_estado = 'CUMPLE';
+                //$this->OrganismoTmp->secuencia_ns = 'CUMPLE';
+                //$this->OrganismoTmp->tipo_micobacteria = 'Tuberculosa';
+                $this->tipo = $this->OrganismoTmp->id_organismo;
+            }
+
+
         }
 
     }
@@ -400,8 +530,10 @@ class Form extends Component
 
         $datosMico = Micobacteria::where('pre_analitica_id', $this->Analiticastoxico->preanalitica_id)->first();
 
+        $tipo_organismos = Tipo_Organismo::where('estado','=','A')->orderBy('id', 'asc')->get();
+
         return view('livewire.centrosreferencia.analiticagen.form', compact('sedes','muestras','instituciones','paramicrobianos','paradifusion','parabiograma',
-            'bacteantibioticomic','bacteantibioticokb','preanalitica','estados','unidades','clases', 'datosMico'));
+            'bacteantibioticomic','bacteantibioticokb','preanalitica','estados','unidades','clases', 'datosMico', 'tipo_organismos'));
     }
 
 
@@ -492,6 +624,10 @@ class Form extends Component
         $this->Analiticastoxico->fecha_resultado = date();
         $this->Analiticastoxico->usuarior_id = $user;
         $this->saveAnalitica();
+        $this->saveGenotificacion($this->Analiticastoxico);
+
+        //Tipo_Organismo
+        //Genotificacion
 
         $preanaliticaModel = Preanalitica::findOrFail($this->Analiticastoxico->preanalitica_id);
         $preanaliticaModel->paciente_id = $this->paciente['id'];
@@ -504,8 +640,36 @@ class Form extends Component
 
     }
 
+    public function saveGenotificacion($id_analitica, $OrganismoTmp){
+        
+        //dd($OrganismoTmp);
+
+        Genotificacion::updateOrCreate(
+            ['id_analitica' => $id_analitica], // Condición de búsqueda
+            [ // Valores a actualizar o crear
+                'id_organismo'      => $this->tipo,
+                'subtipo'           => 'Bacterias',
+                'tecnica_libreria'  => $OrganismoTmp->tecnica_libreria,
+                'q30_estado'        => $OrganismoTmp->q30_estado,
+                'secuencia_ns'      => $OrganismoTmp->secuencia_ns,
+                'fecha_entrega'     => $OrganismoTmp->fecha_entrega,
+                'otros'             => $OrganismoTmp->otros,
+                'informacion'       => $OrganismoTmp->informacion,
+                'tipo_micobacteria' => $OrganismoTmp->tipo_micobacteria,
+                'clado'             => $OrganismoTmp->clado,
+                'linaje_sublinaje'  => $OrganismoTmp->linaje_sublinaje,
+                'identificacion'    => $OrganismoTmp->identificacion,
+                'n_secuenciacion'   => $OrganismoTmp->n_secuenciacion,
+                'nota'              => $OrganismoTmp->nota,
+            ]
+        );
+        
+    }
+
     public function update(){
+        //dd($this->OrganismoTmp);
         $this->validate();
+        //$this->emit('renderJs');
         DB::beginTransaction();
         try{
             $control = 0;
@@ -516,6 +680,8 @@ class Form extends Component
             $preanaliticaModel = Preanalitica::findOrFail($this->Analiticastoxico->preanalitica_id);
             $preanaliticaModel->paciente_id = $this->paciente['id'];
             $preanaliticaModel->save();
+
+            $this->saveGenotificacion($this->Analiticastoxico->id, $this->OrganismoTmp);
 
             $this->saveAnalitica();
             $this->Analiticastoxico->update();
@@ -634,6 +800,7 @@ class Form extends Component
         }
 
     }
+
 
     public function saveAnalitica(){
         if($this->AnaliticaTmp){

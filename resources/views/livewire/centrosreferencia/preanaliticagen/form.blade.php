@@ -20,6 +20,52 @@
                             </a>
                             <h3 class="text-dark font-weight-bold mb-10">Información general</h3>
                             @include('component.error-list')
+
+                            <div class="form-row">
+                                <div class="form-group col-md-6">
+                                    <label>Sede<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticastoxico.sedes_id" wire:model="selectedSedep"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.sedes_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required disabled>
+                                            <option value="">Selecciona una Sede</option>
+                                            @foreach ($sedes as $objSed)
+                                                <option data-subtext="" value="{{ $objSed->id }}">
+                                                    {{ $objSed->descripcion }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Centro de Referencia - Laboratorio<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select
+                                            wire:model.defer="Preanaliticastoxico.crns_id"
+                                            wire:model.live="selectedCrnp"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.crns_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required disabled>
+                                            <option value="">Selecciona un CRN</option>
+                                            @if (!is_null($crns))
+                                                @foreach ($crns as $objCrn)
+                                                    <option data-subtext="" value="{{ $objCrn->id }}">
+                                                        {{ $objCrn->descripcion }}</option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
                             <div class="form-row">
                                 <div class="form-group col-md-2">
                                     <label>Fecha de Recepción<span class="text-danger">*</span></label>
@@ -77,6 +123,7 @@
                                     @enderror
                                 </div>
                             </div>
+
                             <div class="form-row">
                                 <div class="form-group col-md-4">
                                     <label>Denominación IS<span class="text-danger"></span></label>
@@ -337,7 +384,7 @@
                             <hr> 
                             <h3 class="text-dark font-weight-bold mb-10">Datos del CRN</h3>
                             <div class="form-row">
-                                <div class="form-group col-md-2">
+                                <!-- <div class="form-group col-md-2">
                                     <label>Fecha de atención<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -350,7 +397,7 @@
                                             class="start_date form-control form-control-solid @error('Preanaliticastoxico.fecha_atencion') is-invalid @enderror"
                                             placeholder="Seleccione la fecha de atención" />
                                     </div>
-                                </div>
+                                </div> -->
                                 <div class="form-group col-md-4">
                                     <label>Nombre del solicitante<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -367,7 +414,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                                <div class="form-group col-md-6">
+                                <div class="form-group col-md-4">
                                     <label>Correo<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
@@ -384,74 +431,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-6">
-                                    <label>Sede<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.sedes_id" wire:model="selectedSedep"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.sedes_id') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona una Sede</option>
-                                            @foreach ($sedes as $objSed)
-                                                <option data-subtext="" value="{{ $objSed->id }}">
-                                                    {{ $objSed->descripcion }}</option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-6">
-                                    <label>Centro de Referencia - Laboratorio<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            wire:model.defer="Preanaliticastoxico.crns_id"
-                                            wire:model.live="selectedCrnp"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.crns_id') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required value=3>
-                                            <option value="">Selecciona un CRN</option>
-                                            @if (!is_null($crns))
-                                                @foreach ($crns as $objCrn)
-                                                    <option data-subtext="" value="{{ $objCrn->id }}">
-                                                        {{ $objCrn->descripcion }}</option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="form-row">
-                                <div class="form-group col-md-8">
-                                    <label>Tramite<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select wire:model.defer="Preanaliticastoxico.evento_id"
-                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.evento_id') is-invalid @enderror"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
-                                            <option value="">Selecciona un Evento</option>
-                                            @if (!is_null($eventos))
-                                                @foreach ($eventos as $objEvento)
-                                                    <option data-subtext="{{ $objEvento->descripcion }}"
-                                                        value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}
-                                                    </option>
-                                                @endforeach
-                                            @endif
-                                        </select>
-                                    </div>
-                                </div>
+
                                 <div class="form-group col-md-4">
                                     <label>Ficha Digitalizada </label>
                                     <div class="input-group input-group-solid">
@@ -504,6 +484,51 @@
                                         @error('PreanaliticaTmp') <div><span class="text-danger">{{ $message }}</span></div> @enderror
                                     </div>
                                 </div>
+
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group col-md-8">
+                                    <label>Evento<span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-list"></i>
+                                            </span>
+                                        </div>
+                                        <select wire:model.defer="Preanaliticastoxico.evento_id"
+                                            class="form-control selectpicker form-control-solid @error('Preanaliticastoxico.evento_id') is-invalid @enderror"
+                                            data-size="7" data-live-search="true" data-show-subtext="true" required>
+                                            <option value="">Selecciona un Evento</option>
+                                            @if (!is_null($eventos))
+                                                @foreach ($eventos as $objEvento)
+                                                    <option data-subtext="{{ $objEvento->descripcion }}"
+                                                        value="{{ $objEvento->id }}">{{ $objEvento->simplificado }}
+                                                    </option>
+                                                @endforeach
+                                            @endif
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-md-4">
+                                    <label>Otras Observaciones <span class="text-danger"></span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-sticky-note"></i>
+                                            </span>
+                                        </div>
+                                        <textarea wire:model.defer="Preanaliticastoxico.otras_observaciones"
+                                            class="form-control form-control-solid @error('Preanaliticastoxico.otras_observaciones') is-invalid @enderror"
+                                            placeholder="Ej: Detalles adicionales de la muestra"
+                                            rows="3"></textarea>
+                                    </div>
+                                    @error('Preanaliticastoxico.otras_observaciones')
+                                        <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                    @enderror
+                                </div>
+
                             </div>
 
                             <!-- Nuevos Campos -->

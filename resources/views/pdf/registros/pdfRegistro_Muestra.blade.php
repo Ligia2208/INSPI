@@ -4,14 +4,20 @@
         <meta charset="UTF-8">
         <title>REGISTRO DE DATOS DE LAS MUESTRAS PARA GENOTIPIFICACIÓN</title>
         <style>
-            body { font-family: Arial, sans-serif; font-size: 12px; }
+            body { font-family: Arial, sans-serif; font-size: 8px; }
             table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid black; padding: 6px; vertical-align: top; }
+            th, td { border: 1px solid black; padding: 3px; vertical-align: top; }
             .center { text-align: center; }
             .bold { font-weight: bold; }
             .no-border { border: none; }
             .underline { text-decoration: underline; }
             .italic { font-style: italic; }
+            .letra{
+                font-size: 8px;;
+            }
+            .letra2{
+                font-size: 6px;;
+            }
         </style> 
     </head>
     <body>
@@ -51,7 +57,7 @@
     
 
         <!-- CUERPO1 -->
-        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
+        <table class="letra" style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
             <thead>
                 <tr>
                     <th colspan="11" style="text-align: center; font-weight: bold; background-color: #d3d3d3;">
@@ -76,15 +82,15 @@
                 @foreach ($datos as $item )
                     <tr>
                         <td>{{ $item->codigo_procedencia ?? '' }}</td>
-                        <td>{{ $item->organismo ?? '' }}</td>
+                        <td>{{ $item->nombre_organismo ?? '' }}</td>
                         <td>{{ $item->tipo_muestra ?? '' }}</td>
                         <td>{{ $item->fecha_colecta ?? '' }}</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
-                        <td>N/A</td>
+                        <td>{{$item->canton}}</td>
+                        <td>{{$item->institucion}}</td>
+                        <td>{{$item->sexo}}</td>
+                        <td>{{$item->edad}}</td>
+                        <td>{{$item->ct}}</td>
+                        <td>{{$item->codigo_calidad}}</td>
                         <td>{{ $item->observaciones ?? '' }}</td>
                     </tr>
                 @endforeach
@@ -94,7 +100,7 @@
 
 
         <!-- CUERPO2 -->
-        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 10px;">
+        <table class="letra2" style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
             <thead>
                 <tr>
                     <th colspan="2" style="text-align: center; font-weight: bold; background-color:rgb(107, 108, 109); color: white; padding: 5px;">
@@ -153,7 +159,7 @@
         
 
         <!-- INFERIOR -->
-        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse; font-size: 10px;">
+        <table class="letra" style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
             <thead>
                 <tr>
                 <th style="border: 1px solid #000; text-align: center; width: 30%;">Entregado por:</th>

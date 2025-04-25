@@ -184,8 +184,10 @@
                                 <th>Fecha Recepción</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
+                                @if($this->claboratorios != 9)
                                 <th>Cédula</th>
                                 <th>Paciente</th>
+                                @endif
                                 <th>Referencia</th>
                                 <th>Muestra</th>
                                 <th>Ingreso por</th>
@@ -215,6 +217,7 @@
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->evento->simplificado }}</span>
                                     </td>
+                                    @if($this->claboratorios != 9)
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->paciente->identidad }}</span>
@@ -223,6 +226,7 @@
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
                                     </td>
+                                    @endif
                                     @if ($analitica->codigo_externo == '')
                                         <td>
                                             <span
