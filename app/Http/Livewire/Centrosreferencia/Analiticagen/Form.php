@@ -58,7 +58,7 @@ class Form extends Component
     public $edad_paciente = "";
     public $tipo = 1;
     public $id_tipo_organismo;
-    public $OrganismoTmp = [];
+    public $OrganismoTmp;
 
     protected $listeners = ['render'];
 
@@ -307,6 +307,7 @@ class Form extends Component
         $this->OrganismoTmp->q30_estado = 'CUMPLE';
         $this->OrganismoTmp->secuencia_ns = 'CUMPLE';
         $this->OrganismoTmp->tipo_micobacteria = 'Tuberculosa';
+        //dd($this->OrganismoTmp);
         
         //$this->OrganismoTmp->clado = 'CUMPLE';
         //$this->OrganismoTmp->linaje_sublinaje = 'CUMPLE';
@@ -480,11 +481,8 @@ class Form extends Component
 
             //carga los datos de tipo de organismos
             $this->OrganismoTmp = Genotificacion::where('id_analitica','=',$this->Analiticastoxico->id)->first();
+            
             if($this->OrganismoTmp){
-                //$this->OrganismoTmp->tecnica_libreria = 'AMPICONES';
-                //$this->OrganismoTmp->q30_estado = 'CUMPLE';
-                //$this->OrganismoTmp->secuencia_ns = 'CUMPLE';
-                //$this->OrganismoTmp->tipo_micobacteria = 'Tuberculosa';
                 $this->tipo = $this->OrganismoTmp->id_organismo;
             }
 
@@ -640,27 +638,34 @@ class Form extends Component
 
     }
 
-    public function saveGenotificacion($id_analitica, $OrganismoTmp){
+    public function saveGenotificacion($id_analitica, $OrganismoTmp2){
         
-        //dd($OrganismoTmp);
+        
+        if (is_array($this->OrganismoTmp)) {
+            $genotificacion = new Genotificacion($this->OrganismoTmp);
+        } else {
+            $genotificacion = $this->OrganismoTmp;
+        }
+        
+        //dd($this->OrganismoTmp);
 
         Genotificacion::updateOrCreate(
             ['id_analitica' => $id_analitica], // Condición de búsqueda
             [ // Valores a actualizar o crear
                 'id_organismo'      => $this->tipo,
                 'subtipo'           => 'Bacterias',
-                'tecnica_libreria'  => $OrganismoTmp->tecnica_libreria,
-                'q30_estado'        => $OrganismoTmp->q30_estado,
-                'secuencia_ns'      => $OrganismoTmp->secuencia_ns,
-                'fecha_entrega'     => $OrganismoTmp->fecha_entrega,
-                'otros'             => $OrganismoTmp->otros,
-                'informacion'       => $OrganismoTmp->informacion,
-                'tipo_micobacteria' => $OrganismoTmp->tipo_micobacteria,
-                'clado'             => $OrganismoTmp->clado,
-                'linaje_sublinaje'  => $OrganismoTmp->linaje_sublinaje,
-                'identificacion'    => $OrganismoTmp->identificacion,
-                'n_secuenciacion'   => $OrganismoTmp->n_secuenciacion,
-                'nota'              => $OrganismoTmp->nota,
+                'tecnica_libreria'  => $genotificacion->tecnica_libreria,
+                'q30_estado'        => $genotificacion->q30_estado,
+                'secuencia_ns'      => $genotificacion->secuencia_ns,
+                'fecha_entrega'     => $genotificacion->fecha_entrega,
+                'otros'             => $genotificacion->otros,
+                'informacion'       => $genotificacion->informacion,
+                'tipo_micobacteria' => $genotificacion->tipo_micobacteria,
+                'clado'             => $genotificacion->clado,
+                'linaje_sublinaje'  => $genotificacion->linaje_sublinaje,
+                'identificacion'    => $genotificacion->identificacion,
+                'n_secuenciacion'   => $genotificacion->n_secuenciacion,
+                'nota'              => $genotificacion->nota,
             ]
         );
         

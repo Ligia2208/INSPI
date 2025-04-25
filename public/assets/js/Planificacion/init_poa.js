@@ -631,58 +631,56 @@ $(document).ready(function() {
 
 
     $(document).on('click', '#btnEliminarCerti', function(){
-        //alert('funciona');
-
         let id_POA = $(this).data('id_borrar');
         let motivo = $(this).data('motivo');
-
+    
         Swal.fire({
             icon: 'warning',
-            type:  'warning',
             title: 'CoreInspi',
-            html: `<p><strong>Seguro quiere anular esta Certificación?</strong></p>
-                    <textarea class="swal2-textarea" readonly disabled>${motivo}</textarea>`,
-            text: 'Seguro quiere anular esta Certificación.',
-            showConfirmButton: true,
+            html: `<p><strong>¿Seguro quiere anular esta Certificación?</strong></p>
+                    <textarea class="swal2-textarea" readonly disabled>${motivo}</textarea>
+                    
+                    <p class="mt-3"><strong>Motivo de la anulación:</strong></p>
+                    <textarea class="swal2-textarea mt-0" id="motivoAnulacion" placeholder="Ingrese el motivo de la anulación"></textarea>`,
             showCancelButton: true,
+            confirmButtonText: 'Aceptar',
+            cancelButtonText: 'Cancelar',
+            focusConfirm: false,
+            preConfirm: () => {
+                const motivoAnulacion = document.getElementById('motivoAnulacion').value.trim();
+                if (!motivoAnulacion) {
+                    Swal.showValidationMessage('Por favor ingrese el motivo de la anulación');
+                }
+                return motivoAnulacion; // Retornar para usarlo luego en result.value
+            },
         }).then((result) => {
-            if (result.value == true) {
-
+            if (result.isConfirmed && result.value !== '') {
                 $.ajax({
-
                     type: 'POST',
-                    //url: '{{ route("encuesta.saveEncuesta") }}',
                     url: '/planificacion/deleteCertificacion',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     data: {
                         'id': id_POA,
+                        'motivo': result.value,
                     },
                     success: function(response) {
-
-                        //console.log(response.data['id_chat'])
-                        if(response.data){
-
-                            if(response['data'] == true){
+                        if (response.data) {
+                            if (response.data === true) {
                                 Swal.fire({
                                     icon: 'success',
-                                    type: 'success',
                                     title: 'CoreInspi',
-                                    text: response['message'],
+                                    text: response.message,
                                     showConfirmButton: true,
-                                }).then((result) => {
-                                    if (result.value == true) {
-                                        $('#tblPlanificacionIndex').DataTable().ajax.reload();
-                                    }
+                                }).then(() => {
+                                    $('#tblPlanificacionIndex').DataTable().ajax.reload();
                                 });
-
-                            }else{
+                            } else {
                                 Swal.fire({
                                     icon: 'error',
-                                    type:  'error',
                                     title: 'CoreInspi',
-                                    text: response['message'],
+                                    text: response.message,
                                     showConfirmButton: true,
                                 });
                             }
@@ -690,18 +688,17 @@ $(document).ready(function() {
                     },
                     error: function(error) {
                         Swal.fire({
-                            icon:  'success',
+                            icon: 'error',
                             title: 'CoreInspi',
-                            type:  'success',
-                            text:   error,
+                            text: 'Ocurrió un error al procesar la solicitud.',
                             showConfirmButton: true,
                         });
                     }
                 });
             }
         });
-
     });
+    
 
 
     // Generar el reporte EXCEL para POA

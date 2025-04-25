@@ -166,6 +166,7 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/planificacion/crearReforma', 'PlanificacionController@crearReforma')->name('planificacion.crearReforma');
         Route::post('planificacion/saveReforma', 'PlanificacionController@saveReforma')->name('planificacion.saveReforma');
+        Route::post('planificacion/safeReforma', 'PlanificacionController@safeReforma')->name('planificacion.safeReforma');
     
         Route::get('/planificacion/editarReforma/{id}', 'PlanificacionController@editarReforma')->name('planificacion.editarReforma');
         Route::put('/planificacion/actualizarReforma/{id}', 'PlanificacionController@actualizarReforma')->name('planificacion.actualizarReforma');
@@ -430,8 +431,8 @@ Route::middleware(['auth'])->group(function () {
 
     // GENOMICA
     Route::group(['namespace' => 'App\Http\Controllers\CentrosReferencia\Preanaliticagen'], function () {
-        Route::get('{Preanaliticastoxico}/registro-muestra', 'PreanaliticaGenController@registro_muestra')->name('preanaliticagen.registro_muestra');
-        Route::get('{Preanaliticastoxico}/registro-solicitud', 'PreanaliticaGenController@registro_solicitud')->name('preanaliticagen.registro_solicitud');
+        Route::get('{Preanaliticastoxico}/registro-muestra', 'PreanaliticagenController@registro_muestra')->name('preanaliticagen.registro_muestra');
+        Route::get('{Preanaliticastoxico}/registro-solicitud', 'PreanaliticagenController@registro_solicitud')->name('preanaliticagen.registro_solicitud');
     });
 
 
