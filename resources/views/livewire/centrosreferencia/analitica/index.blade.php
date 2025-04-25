@@ -190,6 +190,7 @@
                                 @endif
                                 <th>Referencia</th>
                                 <th>Muestra</th>
+                                <th>Ingreso por</th>
                                 <th>Técnica</th>
                                 <th>Resultado</th>
                                 <th>Fecha Resultado</th>
@@ -240,6 +241,10 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->muestra->descripcion }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($analitica->preanalitica->ingresa_por==1) Sede Central - Guayaquil @endif @if($analitica->preanalitica->ingresa_por==2) CZ6 - Cuenca @endif @if($analitica->preanalitica->ingresa_por==3) CZ9 - Quito @endif @if($analitica->preanalitica->ingresa_por==4) OFTEC - Tena @endif @if($analitica->preanalitica->ingresa_por==0) Autogenerada @endif</span>
                                     </td>
                                     <td>
                                         @if ($analitica->tecnica_id > 0)
