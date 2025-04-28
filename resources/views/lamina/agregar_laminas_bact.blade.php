@@ -1,0 +1,201 @@
+
+@extends('layouts.main')
+
+@section('title', 'Desglose de Láminas')
+
+<!-- DataTables CSS -->
+@push('styles')
+<link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+@endpush
+
+@section('content')
+
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader" style="" kt-hidden-height="54">
+    <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
+        <div class="d-flex align-items-center flex-wrap mr-1">
+            <div class="d-flex align-items-baseline mr-5">
+                <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Desglose de Láminas</h5></a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="kt_content" class="content d-flex flex-column flex-column-fluid">
+
+    <div class="container2">
+        <div class="page-content mb-5">
+            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus titulo-grande"></i> Ingreso de Láminas </h2>
+
+            <hr/>
+
+            <div class="card">
+
+                <div class="card-head">
+                    <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
+                        <div class="lh-1">
+                            <h1 class="h3 mb-0 text-white lh-1">Datos Generales</h1>
+                            <input type="hidden" id="id_ingreso" name="id_ingreso" class="form-control" required="" autofocus="" value="">
+                        </div>
+                    </div>
+                </div> 
+
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row p-2">
+
+                            <div class="col-md-4">
+                                <label for="fecha_recep" class="form-label fs-6">Fecha de Recepción</label>
+                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-8">
+                                <label for="centro_salud" class="form-label fs-6">Nombre del Laboratorio Supervisado</label>
+                                <input type="text" id="centro_salud" name="centro_salud" class="form-control" required autofocus value="" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="director_us" class="form-label fs-6">Director de la Unidad</label>
+                                <input type="text" id="director_us" name="director_us" class="form-control" required placeholder="Nombre del Director" value="" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="responsable" class="form-label fs-6">Responsable Recepción</label>
+                                <input type="text" id="responsable" name="responsable" class="form-control" required autofocus value="" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="analista" class="form-label fs-6">Analista(Encargado de Control de Calidad)</label>
+                                <input type="text" id="analista" name="analista" class="form-control" required autofocus value="" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="mes_recepcion" class="form-label fs-6">Mes Supervisado</label>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="" required disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
+                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="" required disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
+                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card shadow-sm border-0">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Desglose de Láminas</h5>
+                    </div>
+                    <div class="card-body">
+
+
+                    <table class="table table-bordered text-center">
+                        <thead class="table-primary">
+                            <tr>
+                                <th colspan="4">DATOS BÁSICOS</th>
+                                <th colspan="4">RESULTADOS CONTROL DE CALIDAD</th>
+                                <th colspan="4">RESULTADOS MICROSCOPISTA</th>
+                            </tr>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Semana</th>
+                                <th>Código Micro</th>
+                                <th># Lámina</th>
+
+                                <th>Diagnóstico - Control</th>
+                                <th>Recuento - Control VIVAX</th>
+                                <th>Recuento - Control FALCIPARUM</th>
+                                <th>Presencia Fg - Control</th>
+
+                                <th>Diagnóstico - Microscopista</th>
+                                <th>Recuento - Microscopista VIVAX</th>
+                                <th>Recuento - Microscopista FALCIPARUM</th>
+                                <th>Presencia Fg - Microscopista</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabla_body">
+                            <tr>
+                                <td>
+                                    <input type="date" id="fecha_${i}" name="fecha_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>   
+                                </td>
+                                <td>
+                                    <input type="text" id="semana_${i}" name="semana_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </td>
+                                <td>
+                                    <input type="text" id="codigo_micro_${i}" name="codigo_micro_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </td>
+                                <td>
+                                    <input type="text" id="num_lamina_${i}" name="num_lamina_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </td>
+                                <td>
+                                    <select name="diagnostico_calidad_${i}" class="form-control single-select">
+                                        <option value="">Selecciona una Opción</option>
+                                        <option value="1">F - Falciparum</option>
+                                        <option value="2">N - Negativo</option>
+                                        <option value="3">Mucopurulenta</option>
+                                        <option value="4">Sanguinolenta</option>
+                                    </select>
+                                </td>                                
+
+
+                            <!-- Agregar más filas según sea necesario -->
+                        </tbody>
+                    </table>
+
+
+
+
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+
+            <div class="col-lg-12 d-flex align-items-center justify-content-center mt-5">
+                <a class="col-2 btn btn-primary px-1 mb-5" type="button" id="btnGuardarSolicitud" style="margin-right: 2%">
+                    <i class="bi bi-send-check"></i> Guardar
+                </a>
+
+                <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/laminas'">
+                <i class="bi bi-caret-left"></i> Regresar
+                </a>
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+</div>
+
+
+@endsection
+
+
+@push('scripts')
+<!-- Script personalizado -->
+<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.0')}}"></script>
+@endpush

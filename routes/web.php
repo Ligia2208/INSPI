@@ -426,6 +426,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas/resgitro_muestra', 'CentrosLaminasController@registro_muestra')->name('laminas.registro_muestra');
         Route::get('/laminas/registro_solicitud', 'CentrosLaminasController@registro_solicitud')->name('laminas.registro_solicitud');
 
+
+        //bacteriología
+        Route::get('/laminas_bacteriologia', 'CentrosLaminasController@laminas_bacteriologia')->name('laminas_bacteriologia'); 
+        Route::get('/laminas/agregar_laminas_bact', 'CentrosLaminasController@agregar_laminas_bact')->name('laminas.agregar_laminas_bact');
+
     });
     /* =========================== LAMINAS =========================== */
 

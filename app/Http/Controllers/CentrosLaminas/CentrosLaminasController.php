@@ -874,6 +874,72 @@ class CentrosLaminasController extends Controller
         }
     }
 
+
+
+
+    // ======================================= BACTERIOLOGIA =======================================
+    public function laminas_bacteriologia(Request $request){
+
+        //$estado = $request->input('estado');
+
+        if (request()->ajax()) {
+            $query = Lamina::select(
+                'ingreso_laminas.id as id',
+                'ingreso_laminas.mes_recepcion as mes_recepcion',
+                'ingreso_laminas.fecha_recep as fecha_recep',
+                'ingreso_laminas.total_laminas as total_laminas',
+                'ins.descripcion as instituto',
+                'recep.name as recepta',
+                'anali.name as analita',
+                'ins.unicodigo as unicodigo',
+                DB::raw('EXISTS (
+                    SELECT 1 FROM desglose_lamina 
+                    WHERE desglose_lamina.id_lamina = ingreso_laminas.id 
+                      AND desglose_lamina.estado = \'A\'
+                ) as tiene_desglose')
+            )
+            ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
+            ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+            ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
+            ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
+            ->where('ingreso_laminas.estado', 'A'); 
+        
+            return datatables()->of($query)->addIndexColumn()->make(true);
+        }
+
+        //respuesta para la vista
+        return view('lamina.index_bact');
+
+    }
+
+    public function agregar_laminas_bact(){
+
+        /*
+        $datos = Lamina::select(
+            'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
+            'ingreso_laminas.total_laminas as total_laminas', 'ins.descripcion as instituto', 'recep.name as recepta',
+            'anali.name as analita', 'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones',
+            'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas_recib',
+            'ingreso_laminas.laminas_empacadas', 'ingreso_laminas.laminas_legibles', 'ingreso_laminas.laminas_sin_id',
+            'ingreso_laminas.laminas_sin_aceite', 'ingreso_laminas.laminas_frotis_adecuado', 'ingreso_laminas.laminas_integras',
+            'ingreso_laminas.laminas_documentacion'
+        )
+        ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
+        ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+        ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
+        ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
+        ->where('ingreso_laminas.estado', ['A'])
+        ->where('ingreso_laminas.id', $id_ingreso)->first();
+        */
+
+        $tipos_laminas = Lamina::all();
+        $tipos_tincion = Tincion::all();
+        $tipos_apariencia = Apariencia::all();
+
+        return view('lamina.agregar_laminas_bact', compact('tipos_laminas', 'tipos_tincion', 'tipos_apariencia'));
+
+    }
+
 }
 
 

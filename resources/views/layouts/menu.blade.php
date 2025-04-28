@@ -372,6 +372,24 @@
             @endcanany
 
 
+            @canany(['laminas'])
+                <li class="menu-section">
+                    <h4 class="menu-text">Laminas Bacteriología</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+
+                @can('laminas')
+                    <li class="menu-item {{ active('laminas_bacteriologia') }}">
+                        <a href="{{ route('laminas_bacteriologia') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-list-task"></i>
+                            <span class="menu-text">Lista de Láminas</span>
+                        </a>
+                    </li>
+                @endcan
+
+            @endcanany
+
+
             @canany(['plamontoitem', 'plaactividadesitems', 'plareformauser', 'pladetalleuser'])
                 <li class="menu-section">
                     <h4 class="menu-text">Planificación</h4>

@@ -2879,6 +2879,8 @@ class PlanificacionController extends Controller
             if ($reforma->estado === 'R') {
                 // Cambiar el estado a "Corregido"
                 $reforma->estado = 'C';
+            }else if($reforma->estado === 'S'){
+                $reforma->estado = 'A';
             }
             $reforma->save();
 
@@ -4917,6 +4919,117 @@ class PlanificacionController extends Controller
         })->paginate(20);
     
         return view('planificacion.reportFormulario_Estado', compact('formularios'));
+    }
+
+
+
+
+
+
+    //bacteriología
+
+        public function index(Request $request){
+
+        $estado = $request->input('estado');
+
+        if(request()->ajax()) {
+
+            $estado    = request()->get('estado');
+            $direccion = request()->get('direccion');
+            $item      = request()->get('item');
+            $programa  = request()->get('programa');
+            //$subactividad  = request()->get('subactividad');
+
+            if ($programa) {
+                $programaIds = Programa::where('nombre', $programa)->pluck('id');
+            } else {
+                $programaIds = null;
+            }
+
+            $query = Poa::select(
+                'pla_poa1.id as id',
+                'pla_poa1.departamento as coordinacion',
+                'pla_poa1.nro_poa as numero',
+                DB::raw('DATE_FORMAT(pla_poa1.updated_at, "%Y-%m-%d %H:%i:%s") as fecha'),
+                'tipo_poa.nombre as POA',
+                'objOpe.nombre as obj_operativo',
+                'actOpe.nombre as act_operativa',
+                'pro.nombre as proceso',
+                'subAct.nombre as sub_actividad',
+                'pla_poa1.estado as estado',
+                'itep.nombre as item',
+                'pla_poa1.monto',
+                'pla_poa1.monto',
+                'pla_tipo_subactividad.nombre as tipo_sub',
+                'cal.justificacion_area as motivo'
+            )
+            ->join('db_inspi_planificacion.pla_tipo_poa as tipo_poa', 'tipo_poa.id', '=', 'db_inspi_planificacion.pla_poa1.id_tipo_poa')
+            ->join('db_inspi_planificacion.pla_obj_operativo as objOpe', 'objOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_obj_operativo')
+            ->join('db_inspi_planificacion.pla_actividad_operativa as actOpe', 'actOpe.id', '=', 'db_inspi_planificacion.pla_poa1.id_actividad')
+            ->join('db_inspi_planificacion.pla_sub_actividad as subAct', 'subAct.id', '=', 'db_inspi_planificacion.pla_poa1.id_sub_actividad')
+            ->join('pla_tipo_proceso as pro', 'pro.id', '=', 'db_inspi_planificacion.pla_poa1.id_proceso')
+            ->join('db_inspi_planificacion.pla_item_presupuestario as itep', 'itep.id', '=', 'pla_poa1.id_item')
+            ->join('db_inspi_planificacion.pla_calendario as cal', 'cal.id_poa', '=', 'pla_poa1.id')
+            
+            ->join('db_inspi_planificacion.pla_tipo_subactividad', 'pla_poa1.id_tipo_sub', '=', 'pla_tipo_subactividad.id')
+            ->whereNotIn('pla_poa1.estado', ['E']);
+            //->whereNotIn('pla_poa1.id_area', [17,18]);
+        
+            // **Aplicar filtros si se selecciona alguno**
+            if (!empty($estado)) {
+                $query->where('pla_poa1.estado', $estado);
+            }
+        
+            if (!empty($direccion)) {
+                $query->where('pla_poa1.id_area', $direccion);
+            }
+        
+            if (!empty($item)) {
+                $query->where('pla_poa1.id_item', $item);
+            }
+
+            if (!empty($programaIds)) {
+                $query->whereIn('pla_poa1.programa', $programaIds);
+            }
+
+            /*
+            if (!empty($subactividad)) {
+                $query->where('pla_poa1.id_tipo_sub', $subactividad);
+            }
+            */
+        
+            // **Devolver datos en formato JSON**
+            return datatables()->of($query)->addIndexColumn()->make(true);
+        }
+
+        $tipo_Poa = TipoPoa::where('estado', 'A')->get();
+        $obj_Operativo = ObjetivoOperativo::where('estado', 'A')->get();
+        $act_Operativa = ActividadOperativa::where('estado', 'A')->get();
+        $sub_Act   = SubActividad::where('estado', 'A')->get();
+        $tipo_subAct  = TipoSubactividad::where('estado', 'A')->get();
+        
+        //$direcciones  = Poa::select('departamento')->distinct()->get();
+
+        $totalCertificado = POA::where('estado', 'O')->whereNotIn('id_area', [17,18])->sum('monto');   
+        $totalCertificado = number_format($totalCertificado, 2);
+
+        $totalMonto = MontoDireccion::whereNotIn('id', [17,18])->sum('monto');
+        $totalMonto = number_format($totalMonto, 2);
+
+        $direcciones  = MontoDireccion::select('nombre as departamento', 'id')/*->whereNotIn('id', [17,18])*/->get();
+
+        $items = ItemPresupuestario::select('pla_item_presupuestario.*')
+            //->join('pla_items_direcciones as itemdir', 'itemdir.id_item', '=', 'pla_item_presupuestario.id')
+            ->where('pla_item_presupuestario.estado', 'A')
+            //->where('itemdir.id_direcciones', $id_direccion)
+            ->get();
+
+        $programas = Programa::select('nombre')->distinct()->get();
+
+        //respuesta para la vista
+        return view('planificacion.index', compact('tipo_Poa','obj_Operativo', 'direcciones', 'items',
+            'act_Operativa','sub_Act', 'programas', 'tipo_subAct', 'totalCertificado', 'totalMonto'));
+
     }
     
 
