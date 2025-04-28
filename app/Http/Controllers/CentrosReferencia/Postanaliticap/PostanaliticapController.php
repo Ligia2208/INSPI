@@ -267,7 +267,7 @@ class PostanaliticapController extends Controller
                     $this->fpdf->Cell(190,6,utf8_decode("Técnica Aplicada ".$muestra->antibiogramamico->descripcion),1,0,"C");
                     $this->fpdf->Ln(6);
                     $this->fpdf->Cell(75,6,utf8_decode("Antifúngico"),1,0,"C");
-                    $this->fpdf->Cell(20,6,utf8_decode("CIM"),1,0,"C");
+                    $this->fpdf->Cell(20,6,utf8_decode("CIM ug/mL"),1,0,"C");
                     $this->fpdf->Cell(55,6,utf8_decode("Difusión"),1,0,"C");
                     $this->fpdf->Cell(40,6,utf8_decode("Interpretación"),1,0,"C");
                     $this->fpdf->Ln(6);
@@ -285,6 +285,9 @@ class PostanaliticapController extends Controller
                         if($muestra->escalaunomico_id==3){
                             $this->fpdf->Cell(40,6,utf8_decode("Resistente"),1,0,"C");
                         }
+                        if($muestra->escalaunomico_id==4){
+                            $this->fpdf->Cell(40,6,utf8_decode("Punto de corte no determinado por CLSI"),1,0,"C");
+                        }
                         $this->fpdf->Ln(6);
                     }
                     if($muestra->fungicodosmico_id>0){
@@ -299,6 +302,9 @@ class PostanaliticapController extends Controller
                         }
                         if($muestra->escaladosmico_id==3){
                             $this->fpdf->Cell(40,6,utf8_decode("Resistente"),1,0,"C");
+                        }
+                        if($muestra->escalaunomico_id==4){
+                            $this->fpdf->Cell(40,6,utf8_decode("Punto de corte no determinado por CLSI"),1,0,"C");
                         }
                         $this->fpdf->Ln(6);
                     }
@@ -315,6 +321,9 @@ class PostanaliticapController extends Controller
                         if($muestra->escalatresmico_id==3){
                             $this->fpdf->Cell(40,6,utf8_decode("Resistente"),1,0,"C");
                         }
+                        if($muestra->escalaunomico_id==4){
+                            $this->fpdf->Cell(40,6,utf8_decode("Punto de corte no determinado por CLSI"),1,0,"C");
+                        }
                         $this->fpdf->Ln(6);
                     }
                     if($muestra->fungicocuatromico_id>0){
@@ -329,6 +338,9 @@ class PostanaliticapController extends Controller
                         }
                         if($muestra->escalacuatromico_id==3){
                             $this->fpdf->Cell(40,6,utf8_decode("Resistente"),1,0,"C");
+                        }
+                        if($muestra->escalaunomico_id==4){
+                            $this->fpdf->Cell(40,6,utf8_decode("Punto de corte no determinado por CLSI"),1,0,"C");
                         }
                         $this->fpdf->Ln(6);
                     }
@@ -345,6 +357,9 @@ class PostanaliticapController extends Controller
                         if($muestra->escalacincomico_id==3){
                             $this->fpdf->Cell(40,6,utf8_decode("Resistente"),1,0,"C");
                         }
+                        if($muestra->escalaunomico_id==4){
+                            $this->fpdf->Cell(40,6,utf8_decode("Punto de corte no determinado por CLSI"),1,0,"C");
+                        }
                         $this->fpdf->Ln(6);
                     }
                     if($muestra->fungicoseismico_id>0){
@@ -360,6 +375,9 @@ class PostanaliticapController extends Controller
                         if($muestra->escalaseismico_id==3){
                             $this->fpdf->Cell(40,6,utf8_decode("Resistente"),1,0,"C");
                         }
+                        if($muestra->escalaunomico_id==4){
+                            $this->fpdf->Cell(40,6,utf8_decode("Punto de corte no determinado por CLSI"),1,0,"C");
+                        }
                         $this->fpdf->Ln(6);
                     }
                     if($muestra->fungicosietemico_id>0){
@@ -374,6 +392,9 @@ class PostanaliticapController extends Controller
                         }
                         if($muestra->escalasietemico_id==3){
                             $this->fpdf->Cell(40,6,utf8_decode("Resistente"),1,0,"C");
+                        }
+                        if($muestra->escalaunomico_id==4){
+                            $this->fpdf->Cell(40,6,utf8_decode("Punto de corte no determinado por CLSI"),1,0,"C");
                         }
                         $this->fpdf->Ln(6);
                     }
