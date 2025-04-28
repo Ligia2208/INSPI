@@ -385,6 +385,8 @@ class Form extends Component
         DB::beginTransaction();
         try{
             $user = auth()->user()->id;
+            $sedeUser = Responsable::where('estado','=','A')->where('tipo_id','=',3)->where('usuario_id','=',$user)->where('vigente_hasta','=',null)->pluck('sedes_id');
+            $total = $sedeUser->count();
             $fecha_anio = date("Y");
             $absede = Sede::findOrFail(1);
             $abcrn = Crn::findOrFail(12);
@@ -421,6 +423,12 @@ class Form extends Component
                 $newToma->probable_infeccion = '';
                 $newToma->fecha_sintomas = $this->Preanaliticas->fecha_recepcion;
                 $newToma->fecha_recepcion = $this->Preanaliticas->fecha_recepcion;
+                if($total>0){
+                    $newToma->ingresa_por = $sedeUser[0];
+                }
+                else{
+                    $newToma->ingresa_por = 0;
+                }
                 $newToma->embarazo = 'N';
                 $newToma->gestacion = 0;
                 $newToma->laboratorio = 'N';
