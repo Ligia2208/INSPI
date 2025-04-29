@@ -43,8 +43,6 @@ class PreanaliticagenController extends Controller
         return view('centrosreferencia.preanaliticagen.edit', compact('Preanaliticastoxico'));
     }
 
-
-
     public function registro_muestra(Preanaliticagen $Preanaliticastoxico)
     {
         
@@ -87,7 +85,7 @@ class PreanaliticagenController extends Controller
                 'eventos' => $eventos,
             ])
             ->setPaper('A4', 'portrait')
-            ->download('Registro_Muestra.pdf');
+            ->stream('Registro_Muestra.pdf');
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
         }
@@ -121,56 +119,6 @@ class PreanaliticagenController extends Controller
             ])
             ->setPaper('A4', 'portrait')
             ->download('Registro_Solicitud.pdf');
-        } catch (\Exception $e) {
-            return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
-        }
-    }
-
-
-    public function registro_muestra_general($dato)
-    {
-        
-        try {
-
-            $datos = DB::table('inspi_crns.pre_analitica as pre')
-            ->join('inspi_crns.analiticas as ana', 'ana.preanalitica_id', '=', 'pre.id')
-            ->join('inspi_crns.crns as crn', 'pre.crns_id', '=', 'crn.id')
-            ->join('inspi_crns.clase_muestra as clase', 'ana.clase_id', '=', 'clase.id')
-            ->join('inspi_crns.tipo_muestras as tipo', 'ana.muestra_id', '=', 'tipo.id')
-            ->join('inspi_crns.genotificacion as gen', 'gen.id_analitica', '=', 'ana.id')
-            ->join('inspi_crns.tipo_organismo as org', 'org.id', '=', 'gen.id_organismo')
-            ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'pre.instituciones_id') 
-            ->join('inspi_crns.cantones as can', 'can.id', '=', 'ins.canton_id')
-            ->join('inspi_crns.sexos as sex', 'sex.id', '=', 'ana.sexo')
-            ->select(
-                'crn.abreviatura as codigo_procedencia',
-                'ana.observacion_muestra as observaciones',
-                'clase.descripcion as organismo',
-                'tipo.descripcion as tipo_muestra',
-                'ana.fecha_toma as fecha_colecta', 
-                'org.nombre as nombre_organismo',
-                'ana.codigo_calidad as codigo_calidad',
-                'ins.descripcion as institucion',
-                'can.descripcion as canton',
-                'sex.descripcion as sexo',
-                'ana.edad as edad',
-                'ana.ct as ct'
-            )
-            //->where('pre.id', $Preanaliticastoxico->id)
-            ->where('pre.estado', 'A')
-            ->where('pre.crns_id', $dato)
-            ->get();
-
-            $eventos = DB::table('inspi_crns.eventos as eve')->where('eve.crns_id', $dato)->get();
-            $cantidadEventos = $eventos->count();
-            $anchoPorEvento = 100 / ($cantidadEventos > 0 ? $cantidadEventos : 1);
-        
-            return \PDF::loadView('pdf.registros.pdfRegistro_Muestra', [
-                'datos'   => $datos, 
-                'eventos' => $eventos,
-            ])
-            ->setPaper('A4', 'portrait')
-            ->download('Registro_Muestra.pdf');
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
         }
