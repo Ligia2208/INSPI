@@ -144,6 +144,35 @@ $( function () {
     });
     /* ==================== GUARDAR INGRESO DE LAMINAS ==================== */
 
+
+    /* PARA QUE SOLO INGRESEN NUMEROS */
+    function validarSoloNumeros(input) {
+        input.addEventListener('input', function () {
+            let value = this.value.replace(/[^0-9]/g, ''); // Elimina cualquier caracter que no sea número
+            this.value = value;
+    
+            if (value === '') {
+                this.classList.remove('is-valid');
+                this.classList.add('is-invalid');
+            } else {
+                this.classList.remove('is-invalid');
+                this.classList.add('is-valid');
+            }
+        });
+    }
+    
+    // Aplicar la función a los inputs que quieres
+    const inputsNumericos = ['total_laminas', 'total_laminas_super'];
+    
+    inputsNumericos.forEach(id => {
+        const input = document.getElementById(id);
+        if (input) {
+            validarSoloNumeros(input);
+        }
+    });
+    /* PARA QUE SOLO INGRESEN NUMEROS */
+
+
 });
 
 
@@ -279,6 +308,85 @@ function capturarDatos() {
 
     return datos;
 }
+
+
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const totalLaminasInput = document.getElementById('total_laminas');
+    const tablaBody = document.getElementById('tabla_body');
+
+    totalLaminasInput.addEventListener('change', function() {
+        const total = parseInt(this.value) || 0;
+        tablaBody.innerHTML = ''; // Limpiar antes de agregar nuevas filas
+
+        for (let i = 1; i <= total; i++) {
+            const row = `
+                <tr>
+                    <td>
+                        <input type="date" id="fecha_${i}" name="fecha_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>   
+                    </td>
+                    <td>
+                        <input type="text" id="semana_${i}" name="semana_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </td>
+                    <td>
+                        <input type="text" id="codigo_micro_${i}" name="codigo_micro_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </td>
+                    <td>
+                        <input type="text" id="num_lamina_${i}" name="num_lamina_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </td>
+                    <td>
+                        <select name="diagnostico_calidad_${i}" class="form-control single-select">
+                            <option value="">Selecciona una Opción</option>
+                            <option value="1">F - Falciparum</option>
+                            <option value="2">N - Negativo</option>
+                            <option value="3">V - Vivax</option>
+                        </select>
+                    </td>  
+                    <td>
+                        <input type="text" id="recuento_control_vivax_${i}" name="recuento_control_vivax_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </td>
+                    <td>
+                        <input type="text" id="recuento_control_falciparum_${i}" name="recuento_control_falciparum_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </td>
+                    <td>
+                        <input type="text" id="presencia_control_${i}" name="presencia_control_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </td>
+                    <td>
+                        <select name="diagnostico_microscopista_${i}" class="form-control single-select">
+                            <option value="">Selecciona una Opción</option>
+                            <option value="1">F - Falciparum</option>
+                            <option value="2">N - Negativo</option>
+                            <option value="3">V - Vivax</option>
+                        </select>
+                    </td>   
+                    <td>
+                        <input type="text" id="recuento_microscopista_vivax_${i}" name="recuento_microscopista_vivax_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </td>
+                    <td>
+                        <input type="text" id="recuento_microscopista_falciparum_${i}" name="recuento_microscopista_falciparum_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </td>
+                    <td>
+                        <input type="text" id="presencia_microscopista_${i}" name="presencia_microscopista_${i}" class="form-control" required>
+                        <div class="valid-feedback">Looks good!</div>
+                    </td>
+                </tr>
+            `;
+            tablaBody.insertAdjacentHTML('beforeend', row);
+        }
+    });
+});
+
+
 
 
 //===============================================================================================

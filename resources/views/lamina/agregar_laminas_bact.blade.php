@@ -81,13 +81,13 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
-                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="" required disabled>
+                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="" required>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
-                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="" disabled>
+                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -150,10 +150,45 @@
                                         <option value="">Selecciona una Opción</option>
                                         <option value="1">F - Falciparum</option>
                                         <option value="2">N - Negativo</option>
-                                        <option value="3">Mucopurulenta</option>
-                                        <option value="4">Sanguinolenta</option>
+                                        <option value="3">V - Vivax</option>
                                     </select>
-                                </td>                                
+                                </td>  
+                                <td>
+                                    <input type="text" id="recuento_control_vivax_${i}" name="recuento_control_vivax_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </td>
+                                <td>
+                                    <input type="text" id="recuento_control_falciparum_${i}" name="recuento_control_falciparum_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>
+                                    
+                                </td>
+                                <td>
+                                    <input type="text" id="presencia_control_${i}" name="presencia_control_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </td>
+
+
+                                <td>
+                                    <select name="diagnostico_microscopista_${i}" class="form-control single-select">
+                                        <option value="">Selecciona una Opción</option>
+                                        <option value="1">F - Falciparum</option>
+                                        <option value="2">N - Negativo</option>
+                                        <option value="3">V - Vivax</option>
+                                    </select>
+                                </td>   
+                                <td>
+                                    <input type="text" id="recuento_microscopista_vivax_${i}" name="recuento_microscopista_vivax_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </td>
+                                <td>
+                                    <input type="text" id="recuento_microscopista_falciparum_${i}" name="recuento_microscopista_falciparum_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </td>
+                                <td>
+                                    <input type="text" id="presencia_control_${i}" name="presencia_control_${i}" class="form-control" required autofocus value="" disabled>
+                                    <div class="valid-feedback">Looks good!</div>
+                                </td>
+                            </tr>
 
 
                             <!-- Agregar más filas según sea necesario -->
