@@ -176,7 +176,7 @@
 
 
             @canany(['pacientes', 'resultados', 'instituciones', 'visorresultados', 'resultadosmsp', 'resultadoscrn', 'resultadosgerencial',
-                'preanalitica', 'postanaliticas', 'analiticas'])
+                'preanalitica', 'postanaliticas', 'analiticas','postanaliticasadm'])
                 <div class="my-5"></div>
                 <li class="menu-section">
                     <h4 class="menu-text">Resultados CRNs</h4>
@@ -254,6 +254,14 @@
                         </a>
                     </li>
                 @endcan
+                @can('postanaliticasadm')
+                <li class="menu-item {{ active('postanaliticaadm.*') }}">
+                    <a href="{{ route('postanaliticaadm.index') }}" class="menu-link">
+                        <i class="menu-icon text-dark fa fa-print"></i>
+                        <span class="menu-text">Impresión Resultados</span>
+                    </a>
+                </li>
+            @endcan
             @endcanany
 
             @canany(['articulos', 'actainventario', 'participantes'])
