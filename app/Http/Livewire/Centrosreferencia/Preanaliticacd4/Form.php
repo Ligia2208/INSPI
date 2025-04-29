@@ -20,6 +20,7 @@ use App\Models\CentrosReferencia\Muestra;
 use App\Models\CentrosReferencia\Clase;
 use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Generacioncodigos;
+use App\Models\CentrosReferencia\Responsable;
 use App\Models\CoreBase\Nacionalidad;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
