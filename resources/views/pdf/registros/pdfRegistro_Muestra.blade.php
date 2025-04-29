@@ -1,19 +1,28 @@
 <!DOCTYPE html>
-<html lang="es">
+<html>
     <head>
         <meta charset="UTF-8">
-        <title>REGISTRO DE DATOS DE LAS MUESTRAS PARA GENOTIPIFICACIÓN</title>
+        <title>Datos de la muestra</title>
         <style>
-            body { font-family: Arial, sans-serif; font-size: 12px; }
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid black; padding: 6px; vertical-align: top; }
-            .center { text-align: center; }
-            .bold { font-weight: bold; }
-            .no-border { border: none; }
-            .underline { text-decoration: underline; }
-            .italic { font-style: italic; }
-        </style> 
+            body {
+                font-family: DejaVu Sans, sans-serif;
+                font-size: 9px;
+            }
+            table {
+                width: 100%;
+                border: 1px solid #000;
+            }
+            th, td {
+                border: 1px solid #000;
+                padding: 2px;
+                text-align: center;
+            }
+            thead th {
+                background-color: #eeeeee;
+            }
+        </style>
     </head>
+
     <body>
         <!-- ENCABEZADO -->
         <table class="letra" style="width: 100%; border-collapse: collapse; font-size: 12px; text-align: center; vertical-align: middle;">
@@ -51,7 +60,42 @@
     
 
         <!-- CUERPO1 -->
-        <table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Organismo</th>
+                    <th>Tipo muestra</th>
+                    <th>Fecha colecta</th>
+                    <th>Localidad</th>
+                    <th>Unidad Salud</th>
+                    <th>Sexo</th>
+                    <th>Edad</th>
+                    <th>CT</th>
+                    <th>GENSBIO</th>
+                    <th>Observaciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach ($datos as $item)
+                    <tr>
+                        <td>{{ $item->codigo_procedencia ?? 'N/A' }}</td>
+                        <td>{{ $item->organismo ?? 'N/A' }}</td>
+                        <td>{{ $item->tipo_muestra ?? 'N/A' }}</td>
+                        <td>{{ $item->fecha_colecta ?? 'N/A' }}</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>N/A</td>
+                        <td>{{ $item->observaciones ?? 'N/A' }}</td>
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+          <!--<table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
             <thead>
                 <tr>
                     <th colspan="11" style="text-align: center; font-weight: bold; background-color: #d3d3d3;">
@@ -89,7 +133,7 @@
                     </tr>
                 @endforeach
             </tbody>
-        </table>
+        </table>-->
         <br>
 
 

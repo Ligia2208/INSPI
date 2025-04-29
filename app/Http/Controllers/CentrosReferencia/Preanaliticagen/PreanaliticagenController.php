@@ -43,8 +43,6 @@ class PreanaliticagenController extends Controller
         return view('centrosreferencia.preanaliticagen.edit', compact('Preanaliticastoxico'));
     }
 
-
-
     public function registro_muestra(Preanaliticagen $Preanaliticastoxico)
     {
         try {
@@ -67,7 +65,8 @@ class PreanaliticagenController extends Controller
                 'datos' => $datos
             ])
             ->setPaper('A4', 'portrait')
-            ->stream('Registro_Muestra.pdf');
+            ->download('Registro_Muestra.pdf');
+            
         } catch (\Exception $e) {
             return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
         }
@@ -86,7 +85,5 @@ class PreanaliticagenController extends Controller
             return response()->json(['error' => 'Error al generar el PDF: ' . $e->getMessage()], 500);
         }
     }
-
-
     
 }
