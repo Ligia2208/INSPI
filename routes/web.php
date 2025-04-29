@@ -430,6 +430,8 @@ Route::middleware(['auth'])->group(function () {
         //bacteriología
         Route::get('/laminas_bacteriologia', 'CentrosLaminasController@laminas_bacteriologia')->name('laminas_bacteriologia'); 
         Route::get('/laminas/agregar_laminas_bact', 'CentrosLaminasController@agregar_laminas_bact')->name('laminas.agregar_laminas_bact');
+        Route::get('/laminas/reporte_control_calidad_bact', 'CentrosLaminasController@reporte_control_calidad_bact')->name('laminas.reporte_control_calidad_bact');
+
 
     });
     /* =========================== LAMINAS =========================== */
