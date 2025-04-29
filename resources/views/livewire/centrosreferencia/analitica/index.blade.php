@@ -9,6 +9,7 @@
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span>
                         </span>
                 </h3>
+                <a href="{{ route('analiticacd4.index')}}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i class="fa fa-sticky-note"></i> Registrar resultados CD4</a>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -80,10 +81,8 @@
                                             <select id="idtipo" wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha recepcion</option>
-                                                <option data-subtext="" value="2">Fecha llegada al CRN</option>
-                                                <option data-subtext="" value="3">Fecha procesamiento</option>
-                                                <option data-subtext="" value="4">Fecha recepción</option>
+                                                <option data-subtext="" value="1">Fecha recepción</option>
+                                                <option data-subtext="" value="2">Fecha registro</option>
                                             </select>
                                         </div>
                                     </div>
@@ -160,12 +159,12 @@
                                             <button class="btn btn-danger font-weight-bold mr-2"
                                                 onclick="generarExcel()"><i
                                                     class="fa fa-file-excel" aria-hidden="true"></i>
-                                                {{ __('Generar Reporte xlsx') }}</button>
+                                                {{ __('Genera archivo xlsx') }}</button>
                                         </div>
                                     </div>
                                     <div class="col-md-2 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
-                                            <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url('descargas/descarga_muestras.xlsx') }}"><i class="fas fa-download mr-2"></i> Descarga archivo xlsx</a>
+                                            <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url('descargas/'.$csedes.'/'.$claboratorios.'/descarga_muestras.xlsx') }}"><i class="fas fa-download mr-2"></i> Descarga archivo</a>
                                         </div>
                                     </div>
                                 </div>
@@ -185,10 +184,13 @@
                                 <th>Fecha Recepción</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
+                                @if($this->claboratorios != 9)
                                 <th>Cédula</th>
                                 <th>Paciente</th>
+                                @endif
                                 <th>Referencia</th>
                                 <th>Muestra</th>
+                                <th>Ingreso por</th>
                                 <th>Técnica</th>
                                 <th>Resultado</th>
                                 <th>Fecha Resultado</th>
@@ -215,6 +217,7 @@
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->evento->simplificado }}</span>
                                     </td>
+                                    @if($this->claboratorios != 9)
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->paciente->identidad }}</span>
@@ -223,6 +226,7 @@
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
                                     </td>
+                                    @endif
                                     @if ($analitica->codigo_externo == '')
                                         <td>
                                             <span
@@ -237,6 +241,10 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->muestra->descripcion }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($analitica->preanalitica->ingresa_por==1) Sede Central - Guayaquil @endif @if($analitica->preanalitica->ingresa_por==2) CZ6 - Cuenca @endif @if($analitica->preanalitica->ingresa_por==3) CZ9 - Quito @endif @if($analitica->preanalitica->ingresa_por==4) OFTEC - Tena @endif @if($analitica->preanalitica->ingresa_por==0) Autogenerada @endif</span>
                                     </td>
                                     <td>
                                         @if ($analitica->tecnica_id > 0)

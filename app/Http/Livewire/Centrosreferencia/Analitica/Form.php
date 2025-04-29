@@ -361,7 +361,7 @@ class Form extends Component
 
         if($method=='update'){
             $preanalitica = Preanalitica::findOrFail($this->Analiticas->preanalitica_id);
-            $this->Analiticas->evolucion = $this->diferencia($preanalitica->fecha_sintomas,$preanalitica->fecha_recepcion);
+            $this->Analiticas->evolucion = $this->diferencia($preanalitica->fecha_sintomas,$preanalitica->fecha_toma_primera);
             $config = SedeCrn::where('sedes_id','=',$this->Analiticas->sedes_id)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $this->crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
             $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
@@ -396,7 +396,7 @@ class Form extends Component
         $muestras = Muestra::where('estado','=','A')->orderBy('id','asc')->cursor();
         $preanalitica = Preanalitica::findOrFail($this->Analiticas->preanalitica_id);
         $estados = Estadomuestra::orderBy('id', 'asc')->cursor();
-        $unidades = Unidades::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        $unidades = Unidades::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->cursor();
         $clases = Clase::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $instituciones = Institucion::where('estado','=','A')->orderBy('id','asc')->cursor();
         $paramicrobianos = Tipoparametros::where('estado','=','A')->where('crns_id','=',6)->where('tipo','=','Antimicrobianos')->orderBy('id','asc')->cursor();
@@ -441,8 +441,8 @@ class Form extends Component
             $this->Analiticas->usuarior_id = $user;
             $this->saveAnalitica();
             $this->Analiticas->update();
-
-            if($this->Analiticas->tecnica_segunda_id>0 && $this->Analiticas->adicional==0){
+            $cont = 0;
+            if($this->Analiticas->tecnica_segunda_id>0){
                 $newMuestra = new Analitica();
                 $newMuestra->preanalitica_id = $this->Analiticas->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticas->sedes_id;
@@ -455,7 +455,7 @@ class Form extends Component
                 $newMuestra->anio_registro = $this->Analiticas->anio_registro;
                 $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+1;
-                $newMuestra->codigo_externo = 'TecAdic'.$this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_externo = 'TecAdic01'.$this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
                 $newMuestra->tecnica_id = $this->Analiticas->tecnica_segunda_id;
                 $newMuestra->resultado_id = $this->Analiticas->resultado_segunda_id;
@@ -468,11 +468,10 @@ class Form extends Component
                 $newMuestra->archivo = $this->Analiticas->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->save();
-                $this->Analiticas->adicional=1;
-                $this->Analiticas->update();
+                $cont = $cont + 1;
             }
 
-            if($this->Analiticas->tecnica_tercera_id>0 && $this->Analiticas->adicional==0){
+            if($this->Analiticas->tecnica_tercera_id>0){
                 $newMuestra = new Analitica();
                 $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticas->sedes_id;
@@ -486,7 +485,7 @@ class Form extends Component
                 $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
                 $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+2;
-                $newMuestra->codigo_externo = 'TecAdic'.$this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_externo = 'TecAdic02'.$this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
                 $newMuestra->tecnica_id = $this->Analiticas->tecnica_tercera_id;
                 $newMuestra->resultado_id = $this->Analiticas->resultado_tercera_id;
@@ -499,11 +498,11 @@ class Form extends Component
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
                 $newMuestra->save();
-                $this->Analiticas->adicional=1;
-                $this->Analiticas->update();
+                $cont = $cont + 1;
+
             }
 
-            if($this->Analiticas->tecnica_cuarta_id>0 && $this->Analiticas->adicional==0){
+            if($this->Analiticas->tecnica_cuarta_id>0){
                 $newMuestra = new Analitica();
                 $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticas->sedes_id;
@@ -517,7 +516,7 @@ class Form extends Component
                 $newMuestra->observacion_muestra = $this->Analiticas->observacion_muestra;
                 $newMuestra->codigo_muestra = $this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_secuencial = $this->Analiticas->codigo_secuencial*10+3;
-                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticas->codigo_muestra;
+                $newMuestra->codigo_externo = 'TecAdic03'.$this->Analiticas->codigo_muestra;
                 $newMuestra->codigo_calidad = $this->Analiticas->codigo_calidad;
                 $newMuestra->tecnica_id = $this->Analiticas->tecnica_cuarta_id;
                 $newMuestra->resultado_id = $this->Analiticas->resultado_cuarta_id;
@@ -530,9 +529,12 @@ class Form extends Component
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
                 $newMuestra->save();
-                $this->Analiticas->adicional=1;
-                $this->Analiticas->update();
+                $cont = $cont + 1;
+
             }
+
+            $this->Analiticas->adicional=$cont;
+            $this->Analiticas->update();
 
             DB::commit();
             $this->alert('success', 'Analitica actualizado con éxito');

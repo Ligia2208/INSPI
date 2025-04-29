@@ -124,7 +124,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 my-2 my-md-0">
+                                    <div class="col-md-2 my-2 my-md-0">
                                         <div class="input-icon">
                                             <input wire:model="search" type="search" class="form-control"
                                                 placeholder="Apellidos o Nombres...">
@@ -133,7 +133,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-3 my-2 my-md-0">
+                                    <div class="col-md-2 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">Mostrar:</label>
                                             <select class="form-control" wire:model="perPage">
@@ -159,6 +159,14 @@
                                             <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url('descargas/descarga_muestras.xlsx') }}"><i class="fas fa-download mr-2"></i> Descarga archivo xlsx</a>
                                         </div>
                                     </div>
+
+                                    <div class="col-md-2 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <a href="{{ route('preanaliticagen.registro_muestra_general', ['dato' => 9]) }}" target="_blank" class="btn btn-primary">
+                                                Generar PDF
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -175,7 +183,6 @@
                                 <th>Id</th>
                                 <th>Fecha Recepción</th>
                                 <th>Institución Salud</th>
-                                <th>Paciente</th>
                                 <th>Sede</th>
                                 <th>Crn-Laboratorio</th>
                                 <th>Evento</th>
@@ -197,10 +204,6 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $Preanaliticastoxico->instituciones->descripcion }} - ({{ $Preanaliticastoxico->instituciones->clasificacion->descripcion }} - {{ $Preanaliticastoxico->instituciones->nivel->descripcion }} - {{ $Preanaliticastoxico->instituciones->tipologia->descripcion }})</span>
-                                    </td>
-                                    <td>
-                                        <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $Preanaliticastoxico->paciente->identidad }} - ({{ $Preanaliticastoxico->paciente->apellidos }} {{ $Preanaliticastoxico->paciente->nombres }})</span>
                                     </td>
                                     <td>
                                         <span

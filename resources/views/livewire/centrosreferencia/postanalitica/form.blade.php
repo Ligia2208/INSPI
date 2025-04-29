@@ -380,6 +380,27 @@
                                                 </td>
                                                 @endif
                                             </tr>
+                                            @if ($objAnalitica->crns_id == 7)
+                                                @if ($objAnalitica->nivel_alcohol > 0)
+                                                    <tr>
+                                                        <th colspan="9">
+                                                            Valores registrados durante el análisis técnico.
+                                                        </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th colspan="5">
+                                                            <span
+                                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">Nivel alcohol: {{ $objAnalitica->nivel_alcohol }}
+                                                                {{ $objAnalitica->unidades->descripcion }}</span>
+                                                        </th>
+                                                        <th colspan="4">
+                                                            <span
+                                                                class="text-dark-50 font-weight-bolder d-block font-size-lg">Observaciones:
+                                                                </span>
+                                                        </th>
+                                                    </tr>
+                                                @endif
+                                            @endif
                                             @if ($objAnalitica->crns_id == 12)
                                                 @if ($objAnalitica->carga_viral > 0)
                                                     <tr>

@@ -20,6 +20,7 @@ use App\Models\CentrosReferencia\Clase;
 use App\Models\CentrosReferencia\Estadomuestra;
 use App\Models\CentrosReferencia\Generacioncodigos;
 use App\Models\CentrosReferencia\Tiporechazomuestra;
+use App\Models\CentrosReferencia\Responsable;
 use App\Models\CoreBase\Nacionalidad;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -65,7 +66,7 @@ class Form extends Component
             'Preanaliticas.institucion_tipologia' => 'sometimes|max:75',
             'Preanaliticas.institucion_ubicacion' => 'sometimes|max:150',
             'Preanaliticas.paciente_id' => 'sometimes|max:10',
-            'Preanaliticas.identidad' => 'sometimes|max:10',
+            'Preanaliticas.identidad' => 'sometimes|max:13',
             'Preanaliticas.paciente_fechanac' => 'required|max:10',
             'Preanaliticas.paciente_sexo' => 'required|numeric',
             'Preanaliticas.paciente_nombres' => 'sometimes|max:75',
@@ -97,6 +98,7 @@ class Form extends Component
             'Preanaliticas.estado_primera_id' => 'required|numeric',
             'Preanaliticas.rechazo_primera_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_primera' => 'sometimes|max:200',
+
             'Preanaliticas.segunda_id' => 'sometimes|numeric',
             'Preanaliticas.clase_segunda_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_segunda' => 'sometimes|max:10',
@@ -104,6 +106,7 @@ class Form extends Component
             'Preanaliticas.estado_segunda_id' => 'sometimes|numeric',
             'Preanaliticas.rechazo_segunda_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_segunda' => 'sometimes|max:200',
+
             'Preanaliticas.tercera_id' => 'sometimes|numeric',
             'Preanaliticas.clase_tercera_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_tercera' => 'sometimes|max:10',
@@ -111,6 +114,7 @@ class Form extends Component
             'Preanaliticas.estado_tercera_id' => 'sometimes|numeric',
             'Preanaliticas.rechazo_tercera_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_tercera' => 'sometimes|max:200',
+
             'Preanaliticas.cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.clase_cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_cuarta' => 'sometimes|max:10',
@@ -118,6 +122,7 @@ class Form extends Component
             'Preanaliticas.estado_cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.rechazo_cuarta_id' => 'sometimes|numeric',
             'Preanaliticas.observacion_cuarta' => 'sometimes|max:200',
+
             'Preanaliticas.quinta_id' => 'sometimes|numeric',
             'Preanaliticas.clase_quinta_id' => 'sometimes|numeric',
             'Preanaliticas.fecha_toma_quinta' => 'sometimes|max:10',
@@ -163,7 +168,7 @@ class Form extends Component
             $this->Preanaliticas->rechazo_quinta_id = 0;
         }
         //dd($this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion));
-        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_recepcion);
+        $this->Preanaliticas->evolucion = $this->diferencia($this->Preanaliticas->fecha_sintomas,$this->Preanaliticas->fecha_toma_primera);
 
         if($method=="update"){
             $this->Preanaliticas->identidad=$this->Preanaliticas->paciente->identidad;
@@ -270,6 +275,9 @@ class Form extends Component
         $absede = Sede::findOrFail($pa->sedes_id);
         $abcrn = Crn::findOrFail($pa->crns_id);
         $user = auth()->user()->id;
+        $sedeUser = Responsable::where('estado','=','A')->where('tipo_id','=',3)->where('usuario_id','=',$user)->where('vigente_hasta','=',null)->pluck('sedes_id');
+        $total = $sedeUser->count();
+
         $fecha_anio = date("Y");
         if($pa->paciente_id == 0){
             $newPac = new Paciente();
@@ -312,6 +320,12 @@ class Form extends Component
             $newToma->paciente_id = $pa->paciente_id;
         }
 
+        if($total>0){
+            $newToma->ingresa_por = $sedeUser[0];
+        }
+        else{
+            $newToma->ingresa_por = 0;
+        }
         $newToma->fecha_atencion = $pa->fecha_atencion;
         $newToma->quien_notifica = $pa->quien_notifica;
         $newToma->probable_infeccion = $pa->probable_infeccion;
@@ -428,7 +442,6 @@ class Form extends Component
             $newMuestra->usuariot_id = $user;
             $newMuestra->save();
         }
-
         if($pa->segunda_id>0){
             if($tipogenera==2){
                 $codigo = $this->sgte_codigomuestra($fecha_anio,$pa->sedes_id,$pa->crns_id);

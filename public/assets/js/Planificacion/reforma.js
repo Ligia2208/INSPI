@@ -44,8 +44,10 @@ $( function () {
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Rechazado</span>';
                     }else if(full.estado == 'C'){
                         array = '<div class="text-center"><span class="badge badge-info text-bg-info">Corregido</span>';
+                    }else if(full.estado == 'S'){
+                        array = '<div class="text-center"><span class="badge badge-warning text-bg-danger">Guardado</span>';
                     }else if(full.estado == 'D'){
-                        array = '<div class="text-center"><span class="badge badge-danger text-bg-danger">Eliminada</span>';
+                        array = '<div class="text-center"><span class="badge badge-danger text-bg-danger">Eliminado</span>';
                     }else{
                         array = '<div class="text-center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                     }
@@ -92,6 +94,10 @@ $( function () {
                             </a>
 
                             ${btnPDF}
+
+                            <a id="btnEliminarReformaPre" data-id_borrar="${full.id_reforma}" title="Eliminar reforma" class="red show-tooltip" data-title="Eliminar reforma">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
+                            </a>
 
                         </div>
                         `;

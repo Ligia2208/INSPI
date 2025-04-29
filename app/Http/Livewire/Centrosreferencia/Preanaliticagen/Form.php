@@ -80,13 +80,14 @@ class Form extends Component
             'Preanaliticastoxico.paciente_ubicacion' => 'sometimes|max:150',
             'Preanaliticastoxico.paciente_nacionalidad' => 'sometimes|max:150',
             'Preanaliticastoxico.fecha_recepcion' => 'required|max:10',
-            'Preanaliticastoxico.fecha_atencion' => 'required|max:10',
+            //'Preanaliticastoxico.fecha_atencion' => 'required|max:10',
             //'Preanaliticastoxico.quien_notifica' => 'required|max:80',
             'Preanaliticastoxico.probable_infeccion' => 'sometimes|max:200',
 
 
             'Preanaliticastoxico.cod_muestra_hosp'    => 'sometimes|max:200',
             'Preanaliticastoxico.nom_solicita'        => 'sometimes|max:200',
+            'Preanaliticastoxico.otras_observaciones' => 'sometimes|max:5000',
             'Preanaliticastoxico.correo'              => 'sometimes|max:200',
             'Preanaliticastoxico.paciente_sexo'       => 'sometimes|max:200',
             'Preanaliticastoxico.edad'                => 'sometimes|max:200',
@@ -149,6 +150,11 @@ class Form extends Component
         $this->Preanaliticastoxico = $Preanaliticastoxico;
         $this->method = $method;
         
+        //cargamos la cede y el crn
+        $this->Preanaliticastoxico->sedes_id = 3;
+        $this->updatedselectedSedep(3);
+        $this->Preanaliticastoxico->crns_id = 9;
+        $this->updatedselectedCrnp(9);
 
         $analiticaUpdate = Analitica::where('estado','=','A')
             ->where('preanalitica_id','=',$this->Preanaliticastoxico->id)
@@ -211,6 +217,7 @@ class Form extends Component
         //$datosMico = Micobacteria::where('pre_analitica_id', $id_pre_analitica)->first();
         $this->Preanaliticastoxico->nom_solicita = $Preanaliticasgen->nombre_solicitante;
         $this->Preanaliticastoxico->correo = $Preanaliticasgen->correo_solicitante;
+        $this->Preanaliticastoxico->otras_observaciones = $Preanaliticasgen->otras_observaciones;
 
         /*
         $this->Preanaliticastoxico->nombre_lote = $datosMico->nombre_lote;
@@ -241,11 +248,6 @@ class Form extends Component
     }
 
     public function updatedselectedSedep($sede_id){
-        /*
-        $config = SedeCrn::where('sedes_id','=',$sede_id)->where('crns_id','=',1)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
-        $this->crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
-        $this->emit('renderJs');
-        */
         $config = SedeCrn::where('sedes_id', $sede_id)
                             ->where('crns_id', 9)
                             ->pluck('crns_id');
@@ -378,7 +380,7 @@ class Form extends Component
             $newToma->paciente_id = $pa->paciente_id;
         }
 
-        $newToma->fecha_atencion = $pa->fecha_atencion;
+        //$newToma->fecha_atencion = $pa->fecha_atencion;
         $newToma->quien_notifica = $pa->quien_notifica;
         $newToma->probable_infeccion = $pa->probable_infeccion;
         $newToma->fecha_sintomas = $pa->fecha_sintomas;
@@ -609,7 +611,7 @@ class Form extends Component
             $newToma->paciente_id = $pa->paciente_id;
         }
 
-        $newToma->fecha_atencion = $pa->fecha_atencion;
+        //$newToma->fecha_atencion = $pa->fecha_atencion;
         $newToma->quien_notifica = $pa->quien_notifica;
         $newToma->probable_infeccion = $pa->probable_infeccion;
         $newToma->fecha_sintomas = $pa->fecha_sintomas;
@@ -874,7 +876,7 @@ class Form extends Component
             $newToma->paciente_id = $pa->paciente_id;
         }
 
-        $newToma->fecha_atencion = $pa->fecha_atencion;
+        //$newToma->fecha_atencion = $pa->fecha_atencion;
         $newToma->quien_notifica = $pa->quien_notifica;
         $newToma->probable_infeccion = $pa->probable_infeccion;
         $newToma->fecha_sintomas = $pa->fecha_sintomas;
@@ -1099,10 +1101,11 @@ class Form extends Component
             $newToma->paciente_id = $pa->paciente_id;
         }
 
-        $newToma->nombre_solicitante = $pa->nom_solicita;
-        $newToma->correo_solicitante = $pa->correo;
+        $newToma->nombre_solicitante  = $pa->nom_solicita;
+        $newToma->otras_observaciones = $pa->otras_observaciones;
+        $newToma->correo_solicitante  = $pa->correo;
 
-        $newToma->fecha_atencion = $pa->fecha_atencion;
+        //$newToma->fecha_atencion = $pa->fecha_atencion;
         $newToma->quien_notifica = $pa->quien_notifica;
         $newToma->probable_infeccion = $pa->probable_infeccion;
         $newToma->fecha_sintomas = $pa->fecha_sintomas;
@@ -1420,7 +1423,7 @@ class Form extends Component
             $this->savePreanalitica();
             $updatePre = Preanaliticagen::findOrFail($this->Preanaliticastoxico->id);
             $updatePre->instituciones_id=$this->Preanaliticastoxico->instituciones_id;
-            $updatePre->fecha_atencion=$this->Preanaliticastoxico->fecha_atencion;
+            //$updatePre->fecha_atencion=$this->Preanaliticastoxico->fecha_atencion;
             $updatePre->quien_notifica=$this->Preanaliticastoxico->quien_notifica;
             $updatePre->paciente_id=2869;
 
@@ -1473,6 +1476,7 @@ class Form extends Component
             $updatePre->nombre_laboratorio=$this->Preanaliticastoxico->nombre_laboratorio;
 
             $updatePre->nombre_solicitante=$this->Preanaliticastoxico->nom_solicita;
+            $updatePre->otras_observaciones = $this->Preanaliticastoxico->otras_observaciones;
             $updatePre->correo_solicitante=$this->Preanaliticastoxico->correo;
 
             $updatePre->sedes_id=$this->Preanaliticastoxico->sedes_id;

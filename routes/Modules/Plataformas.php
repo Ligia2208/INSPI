@@ -13,6 +13,7 @@ use App\Http\Controllers\CentrosReferencia\Preanaliticatoxico\Preanaliticatoxico
 use App\Http\Controllers\CentrosReferencia\Preanaliticamico\PreanaliticamicoController;
 use App\Http\Controllers\CentrosReferencia\Preanaliticacd4\Preanaliticacd4Controller;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
+use App\Http\Controllers\CentrosReferencia\Analiticacd4\Analiticacd4Controller;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxico\AnaliticatoxicoController;
 use App\Http\Controllers\CentrosReferencia\Analiticamicolo\AnaliticamicoloController;
@@ -20,6 +21,7 @@ use App\Http\Controllers\CentrosReferencia\Analiticagen\AnaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Preanaliticagen\PreanaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Analiticatoxicop\AnaliticatoxicopController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
+use App\Http\Controllers\CentrosReferencia\Postanaliticagen\PostanaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
@@ -85,6 +87,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Preanalitica Gebsbio
         Route::resource('preanaliticagen', PreanaliticagenController::class)->parameters(['preanaliticagen' => 'Preanaliticastoxico'])->names('preanaliticagen');
+        Route::get('preanaliticagen/{dato}/registro-muestra-general', [PreanaliticagenController::class, 'registro_muestra_general'])
+        ->name('preanaliticagen.registro_muestra_general');
+    
 
         //CRNs Plataformas Preanalitica CD4
         Route::resource('preanaliticascd4', Preanaliticacd4Controller::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticacd4');
@@ -104,6 +109,12 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Analitica de Resultados Pendientes
         Route::resource('analiticas', AnaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('analitica');
 
+        //CRNs Plataformas Analitica de Resultados Pendientes
+        Route::resource('analiticascd4', Analiticacd4Controller::class)->parameters(['analiticas' => 'analitica'])->names('analiticacd4');
+
+        Route::post('/guardar_validar_cd4',[Analiticacd4Controller::class,
+            'guardar_validar'])->name('guardar_validar_cd4');
+
         //CRNs Plataformas Analitica de Resultados Procesados
         Route::resource('analiticasp', AnaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('analiticap');
 
@@ -122,6 +133,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');
+
+        //CRNs Plataformas Analitica de Resultados Resonsable
+        Route::resource('postanaliticasgen', PostanaliticagenController::class)->parameters(['postanaliticasgen' => 'postanalitica'])->names('postanaliticagen');
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticasp', PostanaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticap');

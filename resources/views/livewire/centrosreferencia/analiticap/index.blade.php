@@ -9,11 +9,6 @@
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span>
                         </span>
                 </h3>
-                <button class="btn btn-success font-weight-bold mr-2"
-                                onclick="exportToExcel('data', 'analiticas-data')"><i
-                                class="fa fa-file-excel" aria-hidden="true"></i>
-                                {{ __('Exportar a Excel') }}
-                            </button>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -76,7 +71,7 @@
                                             <select wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha toma de muestra</option>
+                                                <option data-subtext="" value="1">Fecha recepción</option>
                                                 <option data-subtext="" value="2">Fecha llegada al CRN</option>
                                                 <option data-subtext="" value="3">Fecha procesamiento</option>
                                             </select>
@@ -176,7 +171,9 @@
                                 <th>Fecha Recepción</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
+                                @if($this->claboratorios != 9)
                                 <th>Paciente</th>
+                                @endif
                                 <th>Referencia</th>
                                 <th>Muestra</th>
                                 <th>Técnica</th>
@@ -205,10 +202,12 @@
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->evento->simplificado }}</span>
                                     </td>
+                                    @if($this->claboratorios != 9)
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">({{ $analitica->preanalitica->paciente->identidad }}) {{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
                                     </td>
+                                    @endif
                                     @if ($analitica->codigo_externo == '')
                                         <td>
                                             <span
@@ -260,6 +259,13 @@
                                                             title="Editar"></i>
                                                     </span>
                                                 </a>
+                                                @elseif($analitica->crns_id == 9)
+                                                <a href="{{ route('analiticasgen.edit', $analitica) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="ace-icon fa fa-pen" style="color:lightblue"
+                                                            title="Editar"></i>
+                                                    </span>
                                                 @else
                                                 <a href="{{ route('analitica.edit', $analitica) }}"
                                                     class="navi-link">

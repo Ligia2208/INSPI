@@ -141,8 +141,8 @@ class PlanificacionController extends Controller
             ->join('db_inspi_planificacion.pla_calendario as cal', 'cal.id_poa', '=', 'pla_poa1.id')
             
             ->join('db_inspi_planificacion.pla_tipo_subactividad', 'pla_poa1.id_tipo_sub', '=', 'pla_tipo_subactividad.id')
-            ->whereNotIn('pla_poa1.estado', ['E'])
-            ->whereNotIn('pla_poa1.id_area', [17,18]);
+            ->whereNotIn('pla_poa1.estado', ['E']);
+            //->whereNotIn('pla_poa1.id_area', [17,18]);
         
             // **Aplicar filtros si se selecciona alguno**
             if (!empty($estado)) {
@@ -185,7 +185,7 @@ class PlanificacionController extends Controller
         $totalMonto = MontoDireccion::whereNotIn('id', [17,18])->sum('monto');
         $totalMonto = number_format($totalMonto, 2);
 
-        $direcciones  = MontoDireccion::select('nombre as departamento', 'id')->whereNotIn('id', [17,18])->get();
+        $direcciones  = MontoDireccion::select('nombre as departamento', 'id')/*->whereNotIn('id', [17,18])*/->get();
 
         $items = ItemPresupuestario::select('pla_item_presupuestario.*')
             //->join('pla_items_direcciones as itemdir', 'itemdir.id_item', '=', 'pla_item_presupuestario.id')
@@ -678,7 +678,10 @@ class PlanificacionController extends Controller
     //Eliminar certificacion del POA
     public function deleteCertificacion(Request $request)
     {
-        $fecha = date("Y-m-d");
+        $fecha  = date("Y-m-d");
+        $id_poa = $request->input('id');
+        $id_usuario = Auth::user()->id; //TRAE EL ID_USUARIO
+        $justificacionPoa = $request->input('motivo');
         $poa = Poa::find($request->id); //Busca el registro por el ID
         $calendario = Calendario::where('id_poa', $poa->id)->first();
 
@@ -689,8 +692,16 @@ class PlanificacionController extends Controller
                 'nro_poa'        => $poa->nro_poa,
                 'comentario'     => $calendario->justificacion_area,
                 'fecha_registro' => $fecha,
-                'estado_poa'     => 'Certificación Poa Eliminada'
+                'estado_poa'     => $justificacionPoa
             ]);
+
+            $datos = [
+                'id_poa'     => $id_poa,
+                'id_usuario' => $id_usuario,
+                'comentario' => $justificacionPoa,
+                'estado_planificacion' => 'Eliminado'
+            ];
+            $comentario = Comentario::create($datos);
 
             $poa->update([
                 'estado' => 'A', //Asigna el estado "E" para no mostrarlo en la tabla
@@ -1902,7 +1913,8 @@ class PlanificacionController extends Controller
                     'area.nombre as area',
                     'pla_reforma.total as total_monto'
                 )
-                ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_reforma.area_id');
+                ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_reforma.area_id')
+                ->where('pla_reforma.estado', '!=', 'S');
               
         
             // Aplicar filtros si existen
@@ -2263,6 +2275,165 @@ class PlanificacionController extends Controller
         }
     }
 
+
+
+    public function safeReforma(Request $request){
+
+        $data = $request->validate([
+            'formData'      => 'required|array', // Validar que 'datos' sea un array requerido
+            //'justificacion' => 'required|string', // Validar que 'justificacion' sea una cadena requerida
+            'justifi'       => 'required|string', // Validar que 'justificacion del área requirente' sea una cadena requerida
+            'tipo_refor'    => 'required|string'
+        ]);
+
+        $formData      = $request->input('formData');
+        //$justificacion = $data['justificacion']; // Obtener la justificación del formulario
+        $justifi       = $request['justifi']; // Obtener la justificación del área requirente del formulario
+        $tipo_refor    = $request['tipo_refor'];
+
+
+        // ========= Obtener datos de dirección usando la función del Trait(Inicio)
+        $direccionData = $this->obtenerDireccion();
+
+        if (!$direccionData) {
+            return response()->json(['error' => 'No se encontró la dirección'], 404);
+        }
+        $id_direccion = $direccionData['id_direccion'];
+        // ========= Obtener datos de dirección usando la función del Trait(Fin)
+
+        $fecha = date('Y-m-d H:i:s');
+
+        try {
+
+            $nro_reforma = $this->actualizarContadorRef($tipo_refor);
+            // Calcular el siguiente número de solicitud
+            $ultimoNroSolicitud = Reforma::max('nro_solicitud');
+            $nro_solicitud = $ultimoNroSolicitud ? $ultimoNroSolicitud + 1 : 1;
+
+            $reforma = new Reforma();
+            $reforma->nro_solicitud = $nro_solicitud;
+            $reforma->nro_reforma   = $nro_reforma;
+            $reforma->justificacion = '';
+            $reforma->justificacion_area = $justifi;
+            $reforma->area_id       = $id_direccion;
+            $reforma->estado        = 'S';
+            $reforma->tipo          = $tipo_refor;
+            $reforma->save();
+
+            $id_reforma = $reforma->id;
+
+            $contador_total = 0;
+
+            // Iterar sobre los datos recibidos para guardar cada fila en la base de datos
+            foreach ($formData as $datos) {
+
+                $id_poa = $datos['id_poa']; // Obtener el id_poa de la fila actual
+
+                //crear actividad
+                $act                = new Actividad;
+                $act->id_poa1       = $id_poa;
+                $act->id_reforma    = $id_reforma;
+                $act->estado        = $datos['estado'];
+                $act->sub_actividad = $datos['subActividad'];
+                $act->save();
+
+                $id_actividad = $act->id;
+
+                if($datos['tipo'] == 'IGUAL'){
+
+                    $calendario = new CalendarioReforma([
+                        'id_poa'       => $id_poa,
+                        'id_actividad' => $id_actividad ,
+                        'tipo'         => $datos['tipo'],
+                        'enero'        => 0,
+                        'febrero'      => 0,
+                        'marzo'        => 0,
+                        'abril'        => 0,
+                        'mayo'         => 0,
+                        'junio'        => 0,
+                        'julio'        => 0,
+                        'agosto'       => 0,
+                        'septiembre'   => 0,
+                        'octubre'      => 0,
+                        'noviembre'    => 0,
+                        'diciembre'    => 0,
+                        'total'        => 0,
+                        'estado'       => $datos['estado'],
+                        // 'estado' => 'A', // Suponiendo que 'A' es para estado activo
+                    ]);
+
+                    $contador_total = '0.00';
+
+                }else{
+
+                    $calendario = new CalendarioReforma([
+                        'id_poa'       => $id_poa,
+                        'id_actividad' => $id_actividad ,
+                        'tipo'         => $datos['tipo'],
+                        'enero'        => $datos['enero'],
+                        'febrero'      => $datos['febrero'],
+                        'marzo'        => $datos['marzo'],
+                        'abril'        => $datos['abril'],
+                        'mayo'         => $datos['mayo'],
+                        'junio'        => $datos['junio'],
+                        'julio'        => $datos['julio'],
+                        'agosto'       => $datos['agosto'],
+                        'septiembre'   => $datos['septiembre'],
+                        'octubre'      => $datos['octubre'],
+                        'noviembre'    => $datos['noviembre'],
+                        'diciembre'    => $datos['diciembre'],
+                        'total'        => $datos['total'],
+                        'estado'       => $datos['estado'],
+                        // 'estado' => 'A', // Suponiendo que 'A' es para estado activo
+                    ]);
+
+                    if($datos['tipo'] == 'AUMENTA' || $datos['tipo'] == 'AJUSTE'|| $datos['tipo'] == 'AMPLIA'){
+                        $contador_total += $datos['total'];
+                    }
+
+                }
+
+                // Guardar el calendario de reforma
+                $calendario->save();
+
+
+
+                //$poa = Poa::find($act->id_poa1);
+                /*
+                if ($poa && $poa->monto == 0) {
+                    $poa->monto = $datos['total'];
+                    $poa->save();
+                }
+                */
+
+                //si la actividad es prestada, se crea una solicitud
+                if($datos['solicitud'] == 'false'){
+
+                    $sol = new Solicitud;
+                    $sol->id_poa              = $id_poa;
+                    $sol->id_actividad        = $id_actividad;
+                    $sol->id_area_solicitante = $id_direccion;
+                    $sol->id_area_propietaria = $datos['id_area_soli'];
+                    $sol->estado_solicitud    = 'pendiente';
+                    $sol->fecha_solicitud     = $fecha;
+                    $sol->save();
+
+                }
+
+            }
+
+
+            //$reforma = Reforma::find($id_reforma);
+            $reforma->total = $contador_total;
+            $reforma->save();
+
+            // Retornar una respuesta de éxito
+            return response()->json(['message' => 'Reforma guardada correctamente', 'success' => true], 200);
+        } catch (\Exception $e) {
+            // En caso de error, retornar un mensaje de error
+            return response()->json(['message' => 'Error al guardar la reforma. '.$e->getMessage(), 'success' => false], 500);
+        }
+    }
 
 
 

@@ -13,7 +13,7 @@
                     <div class="col-xl-12">
                         <div class="my-5">
                             @include('component.error-list')
-                            <a href="{{ route('analiticasgen.index') }}" class="navi-link py-4 {{ active('user.index') }}">
+                            <a href="{{ route('analitica.index') }}" class="navi-link py-4 {{ active('user.index') }}">
 
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                     <i aria-hidden="true" class="ki ki-bold-close icon-lg"></i>
@@ -219,7 +219,7 @@
                                             data-size="7"
                                             data-live-search="true"
                                             data-show-subtext="true"
-                                            required >
+                                            required>
                                             <option value="">Selecciona estado muestra</option>
                                             @foreach ($estados as $objEstados)
                                                 <option data-subtext="" value="{{ $objEstados->id }}">
@@ -229,245 +229,28 @@
                                     </div>
                                 </div>
 
-                                <div class="form-group col-md-4">
-                                    <label>Lote<span class="text-danger"></span></label>
+                                <div class="form-group col-md-12">
+                                    <label>Otras Observaciones <span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
+                                                <i class="fas fa-sticky-note"></i>
                                             </span>
                                         </div>
-                                        <input type="text"
-                                            class="form-control form-control-solid "
-                                            placeholder="Ej: Codigo del Lote" disabled 
-                                            value="{{ $datosMico->nombre_lote }}"/>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group col-md-2">
-                                    <label>N° de tubos<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select class="form-control selectpicker form-control-solid"
-                                                data-size="7" data-live-search="true" data-show-subtext="true" required disabled>
-                                            <option value="">Selecciona un número</option>
-                                            @foreach([1, 2, 3, 4, 5] as $i)
-                                                <option value="{{ $i }}" {{ $datosMico->n_tubos == $i ? 'selected' : '' }}>
-                                                    {{ $i }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                            </div>
-
-
-                            
-                            <!-- CRITERIOS TECNICOS -->
-                            <hr> 
-                            <h3 class="text-dark font-weight-bold mb-10">Criterios Técnicos</h3>
-                            <div class="form-row">
-
-                                <div class="form-group col-md-2">
-                                    <label>Triple empaque<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select 
-                                            class="form-control selectpicker form-control-solid"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required disabled>
-                                            <option value="">Selecciona una opción</option>
-                                            @foreach([1 => 'SI', 0 => 'NO'] as $key => $value)
-                                                <option value="{{ $key }}" {{ ($datosMico->triple_empaque ?? '') == $key ? 'selected' : '' }}>
-                                                    {{ $value }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-
-
-
-                                <div class="form-group col-md-2">
-                                    <label>N° de colonias<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            class="form-control selectpicker form-control-solid"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required disabled>
-                                            <option value="">Selecciona un número</option>
-                                            @foreach([1, 2, 3, 4, 5] as $i)
-                                                <option value="{{ $i }}" {{ $datosMico->columnas == $i ? 'selected' : '' }}>
-                                                    {{ $i }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-
-
-                                <div class="form-group col-md-2">
-                                    <label>Cultivos (Cepas) Puros<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            class="form-control selectpicker form-control-solid"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required disabled>
-                                            <option value="">Selecciona un número</option>
-                                            @foreach([1 => 'SI', 0 => 'NO'] as $key => $value)
-                                                <option value="{{ $key }}" {{ ($datosMico->cultivos_puros ?? '') == $key ? 'selected' : '' }}>
-                                                    {{ $value }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group col-md-2">
-                                    <label>Crecimiento disgónico<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            class="form-control selectpicker form-control-solid"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required disabled>
-                                            <option value="">Selecciona un número</option>
-                                            @foreach([1 => 'SI', 0 => 'NO'] as $key => $value)
-                                                <option value="{{ $key }}" {{ ($datosMico->crecimiento ?? '') == $key ? 'selected' : '' }}>
-                                                    {{ $value }}
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group col-md-2">
-                                    <label>Cultivo sin líquido de condensación<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            class="form-control selectpicker form-control-solid"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required disabled>
-                                            <option value="">Selecciona un número</option>
-                                            @foreach([1 => 'SI', 0 => 'NO'] as $key => $value)
-                                                <option value="{{ $key }}" {{ ($datosMico->cultivo_sin_liquido ?? '') == $key ? 'selected' : '' }}>
-                                                    {{ $value }}
-                                                </option>
-                                            @endforeach
-
-                                        </select>
-                                    </div>
-                                </div>
-
-
-                                <div class="form-group col-md-2">
-                                    <label>Cultivo con crecimiento de 4-8 semanas<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-list"></i>
-                                            </span>
-                                        </div>
-                                        <select
-                                            class="form-control selectpicker form-control-solid"
-                                            data-size="7" data-live-search="true" data-show-subtext="true" required disabled>
-                                            <option value="">Selecciona un número</option>
-                                            @foreach([1 => 'SI', 0 => 'NO'] as $key => $value)
-                                                <option value="{{ $key }}" {{ ($datosMico->cultivo_crecimiento ?? '') == $key ? 'selected' : '' }}>
-                                                    {{ $value }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <textarea 
+                                            class="form-control form-control-solid"
+                                            placeholder="Ej: Detalles adicionales de la muestra"
+                                            rows="3">{{$preanalitica->otras_observaciones}}</textarea>
                                     </div>
                                 </div>
 
                             </div>
-                            <!-- CRITERIOS TECNICOS -->
 
 
 
                             <hr>
                             <h3 class="text-dark font-weight-bold mb-10">Datos del Paciente</h3>
                             <div class="form-row">
-                                <div class="form-group col-md-2">
-                                    <label>Cédula<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="text" 
-                                            wire:model="paciente.identidad"
-                                            wire:blur="buscarPaciente"
-                                            required 
-                                            class="form-control form-control-solid"
-                                            >
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label>Nombres Paciente<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            wire:model="paciente.nombres"
-                                            required disabled
-                                            class="form-control form-control-solid"
-                                            >
-                                    </div>
-                                </div>
-
-                                <div class="form-group col-md-2">
-                                    <label>Apellidos Paciente<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            wire:model="paciente.apellidos"
-                                            required disabled
-                                            class="form-control form-control-solid"
-                                            >
-                                    </div>
-                                </div>
 
                                 <div class="form-group col-md-2">
                                     <label>Sexo<span class="text-danger">*</span></label>
@@ -483,22 +266,6 @@
                                             required disabled
                                             class="form-control form-control-solid"
                                             >
-                                    </div>
-                                </div>
-                                <div class="form-group col-md-2">
-                                    <label>Fecha Nacimiento<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-calendar"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="date"
-                                            wire:model.defer="paciente.fechanacimiento"
-                                            class="start_date form-control form-control-solid @error('Analiticastoxico.fecha_atencion') is-invalid @enderror"
-                                            placeholder="Seleccione una fecha" disabled
-                                        />
                                     </div>
                                 </div>
 
@@ -518,25 +285,6 @@
                                     </div>
                                 </div>
 
-
-                            </div>
-
-                            <div class="form-row">
-                                <div class="form-group col-md-4">
-                                    <label>Médico Notifica<span class="text-danger">*</span></label>
-                                    <div class="input-group input-group-solid">
-                                        <div class="input-group-prepend">
-                                            <span class="input-group-text">
-                                                <i class="fas fa-edit"></i>
-                                            </span>
-                                        </div>
-                                        <input
-                                            type="text"
-                                            required disabled
-                                            class="form-control form-control-solid"
-                                            value = "{{ $preanalitica->quien_notifica }}" />
-                                    </div>
-                                </div>
                                 <div class="form-group col-md-2">
                                     <label>Año - Período<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -556,6 +304,7 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
+
                                 <div class="form-group col-md-2">
                                     <label>Código Muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -575,6 +324,8 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+
                                 <div class="form-group col-md-1">
                                     <label>Secuencia<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -594,6 +345,8 @@
                                         <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
                                     @enderror
                                 </div>
+
+
                                 <div class="form-group col-md-3">
                                     <label>Fecha toma de muestra<span class="text-danger">*</span></label>
                                     <div class="input-group input-group-solid">
@@ -610,7 +363,10 @@
                                         />
                                     </div>
                                 </div>
+
+
                             </div>
+
 
                             <hr>
                             <h3 class="text-dark font-weight-bold mb-10">Datos del procesamiento</h3>
@@ -682,6 +438,24 @@
                                         />
                                     </div>
                                 </div>
+
+                                <div class="form-group col-md-3">
+                                    <label class="text-black"><b>CT </b><span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text">
+                                                <i class="fas fa-calendar"></i>
+                                            </span>
+                                        </div>
+                                        <input
+                                            wire:model.defer="Analiticastoxico.ct"
+                                            type="text" required
+                                            class="start_date form-control form-control-solid @error('Analiticastoxico.ct') is-invalid @enderror"
+                                            placeholder="Ingrese CT"
+                                        />
+                                    </div>
+                                </div>
+
                             </div>
 
                             <div class="form-row">
@@ -2376,6 +2150,14 @@
                                 <li role="presentation" wire:ignore>
                                     <a class="btn btn-default" href="#tab-12" aria-controls="#tab-12" role="tab" data-toggle="tab">Técnicas adicionales</a>
                                 </li>
+
+                                @if($Analiticastoxico->crns_id==9)
+                                <li role="presentation" wire:ignore>
+                                    <a class="btn btn-default" href="#tab-13" aria-controls="#tab-13" role="tab" data-toggle="tab">Resultados Organismo</a>
+                                </li>
+
+                                @endif
+
                             </ul>
                             @include('component.error-list')
                             <div class="tab-content mt-5">
@@ -2661,6 +2443,647 @@
                                         </div>
                                     </div>
                                 </div>
+
+                                @if($Analiticastoxico->crns_id==9)
+                                <div role="tabpanel" class="tab-pane" id="tab-13" wire:ignore.self>
+                                    <div class="col-md-12 col-md-offset-2">
+
+                                        <div>
+
+                                            <div class="form-group">
+                                                <label for="tipo">Seleccionar tipo:</label>
+                                                <select wire:model="tipo" class="form-control">
+                                                    @foreach($tipo_organismos as $tipo_organismo)
+                                                    <option value="{{ $tipo_organismo->id }}">{{ $tipo_organismo->descripcion }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+
+                                            <div>
+                                                <strong>Tipo seleccionado: {{ $tipo }}</strong>
+                                            </div>
+
+
+                                            {{-- BACTERIAS --}}
+                                            @if($tipo == 1)
+                                                <div class="card mt-3 p-3 border" wire:key="tipo-1">
+                                                    <h5>Bacterias</h5>
+
+                                                    <div class="row mt-4">
+
+                                                        <!-- <div class="form-group col-md-12">
+                                                            <label for="tipo">Seleccionar tipo:</label>
+                                                            <select wire:model.defer="id_tipo_organismo" class="form-control" readonly>
+                                                                @foreach($tipo_organismos as $tipo_organismo)
+                                                                    @if($tipo_organismo->id ==1)
+                                                                    <option value="{{ $tipo_organismo->id }}" selected>{{ $tipo_organismo->descripcion }}</option>
+                                                                    @else
+                                                                    <option value="{{ $tipo_organismo->id }}">{{ $tipo_organismo->descripcion }}</option>
+                                                                    @endif
+                                                                @endforeach
+                                                            </select>
+                                                        </div> -->
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Identificación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.identificacion" class="form-control form-control-solid @error('OrganismoTmp.identificacion') is-invalid @enderror" placeholder="Campo ingresado en función de los hallazgos">
+                                                            @error('OrganismoTmp.identificacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Técnica de construcción de librerías</label>
+                                                            <select wire:model.defer="OrganismoTmp.tecnica_libreria" class="form-control   @error('OrganismoTmp.tecnica_libreria') is-invalid @enderror">
+                                                                <option value="AMPICONES">AMPICONES</option>
+                                                                <option value="METAGENOMICA">METAGENÓMICA</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.tecnica_libreria')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Q30 ≥ 80%</label>
+                                                            <select wire:model.defer="OrganismoTmp.q30_estado" class="form-control   @error('OrganismoTmp.q30_estado') is-invalid @enderror">
+                                                                <option value="CUMPLE">CUMPLE</option>
+                                                                <option value="NO CUMPLE">NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.q30_estado')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Secuencia con Ns ≤50%</label>
+                                                            <select wire:model.defer="OrganismoTmp.secuencia_ns" class="form-control   @error('OrganismoTmp.secuencia_ns') is-invalid @enderror">
+                                                                <option value="CUMPLE">CUMPLE</option>
+                                                                <option value="NO CUMPLE">NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.secuencia_ns')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Fecha de entrega de informe de resultados</label>
+                                                            <input type="date" wire:model.defer="OrganismoTmp.fecha_entrega" class="form-control  form-control-solid @error('OrganismoTmp.fecha_entrega') is-invalid @enderror">
+                                                            @error('OrganismoTmp.fecha_entrega')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Otros</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.otros" class="form-control form-control-solid @error('OrganismoTmp.otros') is-invalid @enderror" placeholder="Ej. Serotipo si aplica">
+                                                            @error('OrganismoTmp.otros')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Información</label>
+                                                            <textarea wire:model.defer="OrganismoTmp.informacion" class="form-control form-control-solid @error('OrganismoTmp.informacion') is-invalid @enderror" placeholder="Información adicional emitida en el informe técnico"></textarea>
+                                                            @error('OrganismoTmp.informacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                    </div>
+                                                    
+                                                </div>
+                                            @endif
+
+                                            {{-- MICOBACTERIAS --}}
+                                            @if($tipo == 5)
+                                                <div class="card mt-3 p-3 border">
+                                                    <h5>Micobacterias</h5>
+                                                    <div class="row">
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Tipo de micobacteria</label>
+                                                            <select class="form-control   @error('OrganismoTmp.tipo_micobacteria') is-invalid @enderror" wire:model.defer="OrganismoTmp.tipo_micobacteria">
+                                                                <option value="Tuberculosa">Tuberculosa</option>
+                                                                <option value="No tuberculosa">No tuberculosa</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.tipo_micobacteria')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                 
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Clado</label>
+                                                            <input type="text" class="form-control form-control-solid @error('OrganismoTmp.clado') is-invalid @enderror" wire:model.defer="OrganismoTmp.clado" placeholder="Ej. M. tuberculosis complex, M. avium complex, etc.">
+                                                            @error('OrganismoTmp.clado')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mt-2">
+                                                            <label>Linaje y sublinaje</label>
+                                                            <input type="text" class="form-control form-control-solid @error('OrganismoTmp.linaje_sublinaje') is-invalid @enderror" wire:model.defer="OrganismoTmp.linaje_sublinaje" placeholder="Ej. L4.3.4, L5.1, etc.">
+                                                            @error('OrganismoTmp.linaje_sublinaje')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mt-2">
+                                                            <label>Técnica de construcción de librerías</label>
+                                                            <select class="form-control   @error('OrganismoTmp.tecnica_libreria') is-invalid @enderror" wire:model.defer="OrganismoTmp.tecnica_libreria">
+                                                                <option value="AMPICONES">AMPICONES</option>
+                                                                <option value="AMPICONES">METAGENÓMICA</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.tecnica_libreria')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Q30 ≥ 80%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.q30_estado') is-invalid @enderror" wire:model.defer="OrganismoTmp.q30_estado">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.q30_estado')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Secuencia con Ns ≤50%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.secuencia_ns') is-invalid @enderror" wire:model.defer="OrganismoTmp.secuencia_ns">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.secuencia_ns')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Fecha de entrega de informe de resultados</label>
+                                                            <input type="date" class="form-control form-control-solid @error('OrganismoTmp.fecha_entrega') is-invalid @enderror" wire:model.defer="OrganismoTmp.fecha_entrega">
+                                                            @error('OrganismoTmp.fecha_entrega')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Otros</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.otros" class="form-control form-control-solid @error('OrganismoTmp.otros') is-invalid @enderror" placeholder="Ej. Serotipo si aplica">
+                                                            @error('OrganismoTmp.otros')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>  
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Información</label>
+                                                            <textarea class="form-control form-control-solid @error('OrganismoTmp.informacion') is-invalid @enderror" wire:model.defer="OrganismoTmp.informacion" placeholder="Información adicional emitida en el informe técnico"></textarea>
+                                                            @error('OrganismoTmp.informacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            @endif
+
+                                            {{-- HONGOS --}}
+                                            @if($tipo == 4)
+                                                <div class="card mt-3 p-3 border">
+                                                    <h5>Hongos</h5>
+                                                    <div class="row">
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Identificación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.identificacion" class="form-control form-control-solid @error('OrganismoTmp.identificacion') is-invalid @enderror" placeholder="Campo ingresado en función de los hallazgos">
+                                                            @error('OrganismoTmp.identificacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Clado</label>
+                                                            <input type="text" class="form-control form-control-solid @error('OrganismoTmp.clado') is-invalid @enderror" wire:model.defer="OrganismoTmp.clado" placeholder="Ej. M. tuberculosis complex, M. avium complex, etc.">
+                                                            @error('OrganismoTmp.clado')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mt-2">
+                                                            <label>Linaje y sublinaje</label>
+                                                            <input type="text" class="form-control form-control-solid @error('OrganismoTmp.linaje_sublinaje') is-invalid @enderror" wire:model.defer="OrganismoTmp.linaje_sublinaje" placeholder="Ej. L4.3.4, L5.1, etc.">
+                                                            @error('OrganismoTmp.linaje_sublinaje')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mt-2">
+                                                            <label>Técnica de construcción de librerías</label>
+                                                            <select class="form-control   @error('OrganismoTmp.tecnica_libreria') is-invalid @enderror" wire:model.defer="OrganismoTmp.tecnica_libreria">
+                                                                <option value="AMPICONES">AMPICONES</option>
+                                                                <option value="AMPICONES">METAGENÓMICA</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.tecnica_libreria')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Q30 ≥ 80%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.q30_estado') is-invalid @enderror" wire:model.defer="OrganismoTmp.q30_estado">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.q30_estado')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Secuencia con Ns ≤50%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.secuencia_ns') is-invalid @enderror" wire:model.defer="OrganismoTmp.secuencia_ns">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.secuencia_ns')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Fecha de entrega de informe de resultados</label>
+                                                            <input type="date" class="form-control form-control-solid @error('OrganismoTmp.fecha_entrega') is-invalid @enderror" wire:model.defer="OrganismoTmp.fecha_entrega">
+                                                            @error('OrganismoTmp.fecha_entrega')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Otros</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.otros" class="form-control form-control-solid @error('OrganismoTmp.otros') is-invalid @enderror" placeholder="Ej. Serotipo si aplica">
+                                                            @error('OrganismoTmp.otros')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>  
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Información</label>
+                                                            <textarea class="form-control form-control-solid @error('OrganismoTmp.informacion') is-invalid @enderror" wire:model.defer="OrganismoTmp.informacion" placeholder="Información adicional emitida en el informe técnico"></textarea>
+                                                            @error('OrganismoTmp.informacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            @endif
+
+
+                                            {{-- PARASITOS --}}
+                                            @if($tipo == 3)
+                                                <div class="card mt-3 p-3 border">
+                                                    <h5>Parásitos</h5>
+                                                    <div class="row">
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Identificación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.identificacion" class="form-control form-control-solid @error('OrganismoTmp.identificacion') is-invalid @enderror" placeholder="Campo ingresado en función de los hallazgos">
+                                                            @error('OrganismoTmp.identificacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mt-2">
+                                                            <label>Técnica de construcción de librerías</label>
+                                                            <select class="form-control   @error('OrganismoTmp.tecnica_libreria') is-invalid @enderror" wire:model.defer="OrganismoTmp.tecnica_libreria">
+                                                                <option value="AMPICONES">AMPICONES</option>
+                                                                <option value="AMPICONES">METAGENÓMICA</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.tecnica_libreria')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Q30 ≥ 80%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.q30_estado') is-invalid @enderror" wire:model.defer="OrganismoTmp.q30_estado">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.q30_estado')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Secuencia con Ns ≤50%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.secuencia_ns') is-invalid @enderror" wire:model.defer="OrganismoTmp.secuencia_ns">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.secuencia_ns')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Fecha de entrega de informe de resultados</label>
+                                                            <input type="date" class="form-control form-control-solid @error('OrganismoTmp.fecha_entrega') is-invalid @enderror" wire:model.defer="OrganismoTmp.fecha_entrega">
+                                                            @error('OrganismoTmp.fecha_entrega')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Otros</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.otros" class="form-control form-control-solid @error('OrganismoTmp.otros') is-invalid @enderror" placeholder="Ej. Serotipo si aplica">
+                                                            @error('OrganismoTmp.otros')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>  
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Información</label>
+                                                            <textarea class="form-control form-control-solid @error('OrganismoTmp.informacion') is-invalid @enderror" wire:model.defer="OrganismoTmp.informacion" placeholder="Información adicional emitida en el informe técnico"></textarea>
+                                                            @error('OrganismoTmp.informacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            @endif
+
+
+                                            {{-- INSECTOS --}}
+                                            @if($tipo == 6)
+                                                <div class="card mt-3 p-3 border">
+                                                    <h5>Insectos</h5>
+                                                    <div class="row">
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Identificación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.identificacion" class="form-control form-control-solid @error('OrganismoTmp.identificacion') is-invalid @enderror" placeholder="Campo ingresado en función de los hallazgos">
+                                                            @error('OrganismoTmp.identificacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mt-2">
+                                                            <label>Técnica de construcción de librerías</label>
+                                                            <select class="form-control   @error('OrganismoTmp.tecnica_libreria') is-invalid @enderror" wire:model.defer="OrganismoTmp.tecnica_libreria">
+                                                                <option value="AMPICONES">AMPICONES</option>
+                                                                <option value="AMPICONES">METAGENÓMICA</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.tecnica_libreria')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Q30 ≥ 80%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.q30_estado') is-invalid @enderror" wire:model.defer="OrganismoTmp.q30_estado">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.q30_estado')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Secuencia con Ns ≤50%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.secuencia_ns') is-invalid @enderror" wire:model.defer="OrganismoTmp.secuencia_ns">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.secuencia_ns')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-4 mt-2">
+                                                            <label>Fecha de entrega de informe de resultados</label>
+                                                            <input type="date" class="form-control form-control-solid @error('OrganismoTmp.fecha_entrega') is-invalid @enderror" wire:model.defer="OrganismoTmp.fecha_entrega">
+                                                            @error('OrganismoTmp.fecha_entrega')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Otros</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.otros" class="form-control form-control-solid @error('OrganismoTmp.otros') is-invalid @enderror" placeholder="Ej. Serotipo si aplica">
+                                                            @error('OrganismoTmp.otros')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>  
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Información</label>
+                                                            <textarea class="form-control form-control-solid @error('OrganismoTmp.informacion') is-invalid @enderror" wire:model.defer="OrganismoTmp.informacion" placeholder="Información adicional emitida en el informe técnico"></textarea>
+                                                            @error('OrganismoTmp.informacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            @endif
+
+
+                                            {{-- OTROS --}}
+                                            @if($tipo == 7)
+                                                <div class="card mt-3 p-3 border">
+                                                    <h5>Otros</h5>
+                                                    <div class="row">
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Identificación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.identificacion" class="form-control form-control-solid @error('OrganismoTmp.identificacion') is-invalid @enderror" placeholder="Campo ingresado en función de los hallazgos">
+                                                            @error('OrganismoTmp.identificacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mt-2">
+                                                            <label>Número de Secuenciación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.n_secuenciacion" class="form-control form-control-solid @error('OrganismoTmp.n_secuenciacion') is-invalid @enderror" placeholder="Ej. N° de secuenciación a la cual ingresa">
+                                                            @error('OrganismoTmp.n_secuenciacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>  
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-3 mt-2">
+                                                            <label>Técnica de construcción de librerías</label>
+                                                            <select class="form-control   @error('OrganismoTmp.tecnica_libreria') is-invalid @enderror" wire:model.defer="OrganismoTmp.tecnica_libreria">
+                                                                <option value="AMPICONES">AMPICONES</option>
+                                                                <option value="AMPICONES">METAGENÓMICA</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.tecnica_libreria')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-3 mt-2">
+                                                            <label>Q30 ≥ 80%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.q30_estado') is-invalid @enderror" wire:model.defer="OrganismoTmp.q30_estado">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.q30_estado')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-3 mt-2">
+                                                            <label>Secuencia con Ns ≤50%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.secuencia_ns') is-invalid @enderror" wire:model.defer="OrganismoTmp.secuencia_ns">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.secuencia_ns')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-3 mt-2">
+                                                            <label>Fecha de entrega de informe de resultados</label>
+                                                            <input type="date" class="form-control form-control-solid @error('OrganismoTmp.fecha_entrega') is-invalid @enderror" wire:model.defer="OrganismoTmp.fecha_entrega">
+                                                            @error('OrganismoTmp.fecha_entrega')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Información</label>
+                                                            <textarea class="form-control form-control-solid @error('OrganismoTmp.informacion') is-invalid @enderror" wire:model.defer="OrganismoTmp.informacion" placeholder="Información adicional emitida en el informe técnico"></textarea>
+                                                            @error('OrganismoTmp.informacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Identificación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.identificacion" class="form-control form-control-solid @error('OrganismoTmp.identificacion') is-invalid @enderror" placeholder="Ej. Patógeno identificado">
+                                                            @error('OrganismoTmp.identificacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>  
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Nota</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.nota" class="form-control form-control-solid @error('OrganismoTmp.nota') is-invalid @enderror" placeholder="Ej. Diagnóstico de la muestra">
+                                                            @error('OrganismoTmp.nota')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>  
+                                                            @enderror
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            @endif
+
+                                            {{-- VIRUS --}}
+                                            @if($tipo == 2)
+                                                <div class="card mt-3 p-3 border">
+                                                    <h5>Virus</h5>
+                                                    <div class="row">
+
+                                                        <div class="form-group col-md-6">
+                                                            <label>Identificación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.identificacion" class="form-control form-control-solid @error('OrganismoTmp.identificacion') is-invalid @enderror" placeholder="Campo ingresado en función de los hallazgos">
+                                                            @error('OrganismoTmp.identificacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-6 mt-2">
+                                                            <label>Número de Secuenciación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.n_secuenciacion" class="form-control form-control-solid @error('OrganismoTmp.n_secuenciacion') is-invalid @enderror" placeholder="Ej. N° de secuenciación a la cual ingresa">
+                                                            @error('OrganismoTmp.n_secuenciacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>  
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-3 mt-2">
+                                                            <label>Técnica de construcción de librerías</label>
+                                                            <select class="form-control   @error('OrganismoTmp.tecnica_libreria') is-invalid @enderror" wire:model.defer="OrganismoTmp.tecnica_libreria">
+                                                                <option value="AMPICONES">AMPICONES</option>
+                                                                <option value="AMPICONES">METAGENÓMICA</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.tecnica_libreria')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-3 mt-2">
+                                                            <label>Q30 ≥ 80%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.q30_estado') is-invalid @enderror" wire:model.defer="OrganismoTmp.q30_estado">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.q30_estado')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-3 mt-2">
+                                                            <label>Secuencia con Ns ≤50%</label>
+                                                            <select class="form-control   @error('OrganismoTmp.secuencia_ns') is-invalid @enderror" wire:model.defer="OrganismoTmp.secuencia_ns">
+                                                                <option>CUMPLE</option>
+                                                                <option>NO CUMPLE</option>
+                                                            </select>
+                                                            @error('OrganismoTmp.secuencia_ns')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-3 mt-2">
+                                                            <label>Fecha de entrega de informe de resultados</label>
+                                                            <input type="date" class="form-control form-control-solid @error('OrganismoTmp.fecha_entrega') is-invalid @enderror" wire:model.defer="OrganismoTmp.fecha_entrega">
+                                                            @error('OrganismoTmp.fecha_entrega')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Información</label>
+                                                            <textarea class="form-control form-control-solid @error('OrganismoTmp.informacion') is-invalid @enderror" wire:model.defer="OrganismoTmp.informacion" placeholder="Información adicional emitida en el informe técnico"></textarea>
+                                                            @error('OrganismoTmp.informacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>
+                                                            @enderror
+                                                        </div>
+
+                                                        <div class="form-group col-md-12 mt-2">
+                                                            <label>Identificación</label>
+                                                            <input type="text" wire:model.defer="OrganismoTmp.identificacion" class="form-control form-control-solid @error('OrganismoTmp.identificacion') is-invalid @enderror" placeholder="Ej. Patógeno identificado">
+                                                            @error('OrganismoTmp.identificacion')
+                                                                <div class="alert alert-danger mt-1 mb-1">{{ $message }}</div>  
+                                                            @enderror
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+                                            @endif
+
+                                        </div>
+
+                                    </div>
+                                </div>
+
+
+
+                                @endif
+
+
                             </div>
                         </div>
                     </div>
@@ -2702,7 +3125,30 @@
                 }
             }
 
+            
+            document.addEventListener('livewire:load', () => {
+                // Inicializar una vez
+                initSelects();
+
+                Livewire.hook('message.processed', (message, component) => {
+                    // Se ejecuta después de CUALQUIER actualización
+                    initSelects();
+                });
+            });
+
+            function initSelects() {
+                //console.log("Reinicializando selectpicker y selectpicker");
+                $('.selectpicker').selectpicker({
+                    liveSearch: true,
+                    showSubtext: true
+                });
+            }
+
+            
             Livewire.on('renderJs', function(){
+
+                //console.log("renderJs recibido");
+
                 $('.selectpicker').selectpicker({
                     liveSearch: true,
                     showSubtext: true
@@ -2714,6 +3160,7 @@
                 });
 
             });
+            
 
             function ver_ocultar() {
                 var x = document.getElementById("add_muestras");

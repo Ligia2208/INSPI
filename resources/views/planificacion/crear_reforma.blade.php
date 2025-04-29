@@ -408,6 +408,11 @@
         -->
 
             <div class="col-lg-12 d-flex align-items-center justify-content-center">
+
+                <a class="col-2 btn btn-warning px-1 mb-5" type="button" onclick="salvarReforma()" style="margin-right: 2%">
+                    <i class="bi bi-box-arrow-down"></i> Guardar Borrador
+                </a>
+
                 <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="guardarReforma()" style="margin-right: 2%">
                     <i class="bi bi-send-check"></i> Registrar
                 </a>
@@ -426,5 +431,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.25')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.26')}}"></script>
 @endpush
