@@ -2879,6 +2879,8 @@ class PlanificacionController extends Controller
             if ($reforma->estado === 'R') {
                 // Cambiar el estado a "Corregido"
                 $reforma->estado = 'C';
+            }else if($reforma->estado === 'S'){
+                $reforma->estado = 'A';
             }
             $reforma->save();
 
@@ -4918,8 +4920,6 @@ class PlanificacionController extends Controller
     
         return view('planificacion.reportFormulario_Estado', compact('formularios'));
     }
-    
-
 
 }
 
