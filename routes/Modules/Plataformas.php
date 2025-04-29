@@ -23,6 +23,7 @@ use App\Http\Controllers\CentrosReferencia\Analiticatoxicop\AnaliticatoxicopCont
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
 use App\Http\Controllers\CentrosReferencia\Postanaliticagen\PostanaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapController;
+use App\Http\Controllers\CentrosReferencia\Postanaliticaadm\PostanaliticaadmController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
 use App\Http\Controllers\CentrosReferencia\Resultadocrn\ResultadocrnController;
@@ -89,7 +90,7 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('preanaliticagen', PreanaliticagenController::class)->parameters(['preanaliticagen' => 'Preanaliticastoxico'])->names('preanaliticagen');
         Route::get('preanaliticagen/{dato}/registro-muestra-general', [PreanaliticagenController::class, 'registro_muestra_general'])
         ->name('preanaliticagen.registro_muestra_general');
-    
+
 
         //CRNs Plataformas Preanalitica CD4
         Route::resource('preanaliticascd4', Preanaliticacd4Controller::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticacd4');
@@ -140,6 +141,9 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticasp', PostanaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticap');
 
+        //CRNs Plataformas Analitica de Resultados Resonsable
+        Route::resource('postanaliticasadm', PostanaliticaadmController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticaadm');
+
         //CRNs Plataformas Resultados
         Route::resource('visorresultadoscrn', VisorResultadoscrnController::class)->parameters(['resultados' => 'resultado'])->names('visorresultadocrn');
 
@@ -162,6 +166,8 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('responsables', ResponsableController::class)->parameters(['responsables' => 'responsable'])->names('responsable');
 
         Route::get('/informefinal/informep/{id}', [PostanaliticaController::class, 'informep'])->name('informep');
+
+        Route::get('/informefinal/informeadm/{id}', [PostanaliticaadmController::class, 'informeadm'])->name('informeadm');
 
         Route::get('/informefinal/informer/{id}', [AnaliticaController::class, 'informer'])->name('informer');
 
