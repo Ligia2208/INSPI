@@ -936,9 +936,18 @@ class CentrosLaminasController extends Controller
         $tipos_tincion = Tincion::all();
         $tipos_apariencia = Apariencia::all();
 
-        return view('lamina.agregar_laminas_bact', compact('tipos_laminas', 'tipos_tincion', 'tipos_apariencia'));
+        return view('laminas.agregar_laminas_bact', compact('tipos_laminas', 'tipos_tincion', 'tipos_apariencia'));
 
     }
+
+    public function reporte_control_calidad_bact(Request $request)
+    {
+        return \PDF::loadView('pdf.pdfLamina_indirecto') 
+            ->setPaper('A4', 'portrait')
+            ->download('reporte_control calidad_bact.pdf');
+    }
+    
+    
 
 }
 

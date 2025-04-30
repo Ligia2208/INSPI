@@ -153,7 +153,7 @@ $( function () {
 
                         <div class="action-buttons">
                             <a id="btnPDF_ingreso" class="ml-1" data-id_editar="${full.id}" href="javascript:void(0);" title="PDF Ingreso de Láminas" data-title="PDF Ingreso de Láminas">
-                                <i class="bi bi-file-pdf icon-ingreso"></i>
+                                <i ></i>
                             </a>
                             <a id="" class="ml-1" data-id_editar="${full.id}" href="/laminas/editar/${full.id}" title="Editar Ingreso" data-title="Editar Ingreso">
                                 <i class="bi bi-pen icon-ingreso"></i>
@@ -188,6 +188,10 @@ $( function () {
 
                             <a id="btnPDF_calidad" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad" data-title="Generar PDF Control Calidad">
                                 <i class="bi bi-file-earmark-pdf icon-resultados"></i>
+                            </a>
+
+                            <a id="btnPDF_calidad_bact" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad Bact" data-title="Generar PDF Control Calidad Bact">
+                                <i class="bi bi-file-earmark-pdf text-danger"></i>
                             </a>
                         </div>`;
                 }
@@ -380,7 +384,7 @@ $( function () {
             xhrFields: {
                 responseType: 'blob'
             },
-            success: function(response, status, xhr) {
+            success: function(response, _status, _xhr) {
                 var blob = new Blob([response], { type: 'application/pdf' });
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
@@ -404,6 +408,40 @@ $( function () {
         });
         
     });
+
+    // Generar el reporte PDF bact
+    $(document).on('click', '#btnPDF_calidad_bact', function() {
+
+        $.ajax({
+            type: 'GET',
+            url: '/laminas/reporte_control_calidad_bact',  //
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, _status, _xhr) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_control calidad_bact.pdf'; // Nombre del archivo descargado
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    type: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el PDF',
+                    showConfirmButton: true,
+                });
+            }
+        });
+    });
+    
+    
 
     
     $(document).on('click', '#btnPDF_ingreso', function() {
