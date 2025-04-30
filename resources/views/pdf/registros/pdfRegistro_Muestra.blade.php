@@ -4,7 +4,6 @@
         <meta charset="UTF-8">
         <title>Datos de la muestra</title>
         <style>
-<<<<<<< HEAD
             body {
                 font-family: DejaVu Sans, sans-serif;
                 font-size: 9px;
@@ -22,23 +21,6 @@
                 background-color: #eeeeee;
             }
         </style>
-=======
-            body { font-family: Arial, sans-serif; font-size: 8px; }
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid black; padding: 3px; vertical-align: top; }
-            .center { text-align: center; }
-            .bold { font-weight: bold; }
-            .no-border { border: none; }
-            .underline { text-decoration: underline; }
-            .italic { font-style: italic; }
-            .letra{
-                font-size: 8px;;
-            }
-            .letra2{
-                font-size: 6px;;
-            }
-        </style> 
->>>>>>> edcad5c6c6fe28ad47f33f7475117955a532c00e
     </head>
 
     <body>
