@@ -78,7 +78,6 @@
     
 
         <!-- CUERPO1 -->
-<<<<<<< HEAD
 
         <table>
             <thead>
@@ -115,9 +114,6 @@
             </tbody>
         </table>
           <!--<table style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
-=======
-        <table class="letra" style="width: 100%; border: 1px solid #000; border-collapse: collapse;">
->>>>>>> edcad5c6c6fe28ad47f33f7475117955a532c00e
             <thead>
                 <tr>
                     <th colspan="11" style="text-align: center; font-weight: bold; background-color: #d3d3d3;">
