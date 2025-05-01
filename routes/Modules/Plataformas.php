@@ -165,7 +165,7 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Responsables Resultados
         Route::resource('responsables', ResponsableController::class)->parameters(['responsables' => 'responsable'])->names('responsable');
 
-        Route::get('/informefinal/informep/{id}', [PostanaliticaController::class, 'informep'])->name('informep');
+        Route::get('/informefinal/informep/{id}', [PostanaliticapController::class, 'informep'])->name('informep');
 
         Route::get('/informefinal/informeadm/{id}', [PostanaliticaadmController::class, 'informeadm'])->name('informeadm');
 

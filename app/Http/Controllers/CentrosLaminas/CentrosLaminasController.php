@@ -936,7 +936,7 @@ class CentrosLaminasController extends Controller
         $tipos_tincion = Tincion::all();
         $tipos_apariencia = Apariencia::all();
 
-        return view('laminas.agregar_laminas_bact', compact('tipos_laminas', 'tipos_tincion', 'tipos_apariencia'));
+        return view('lamina.agregar_laminas_bact', compact('tipos_laminas', 'tipos_tincion', 'tipos_apariencia'));
 
     }
 
