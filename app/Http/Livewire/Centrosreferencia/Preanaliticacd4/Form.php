@@ -45,6 +45,8 @@ class Form extends Component
     public $tecnicas;
     public $cantones;
     public $reportes;
+    public $selectedSedep = null;
+    public $selectedCrnp = null;
     public $selectedProvincia = null;
     public $changedInstitucion = null;
     public $PreanaliticaTmp;
@@ -105,6 +107,19 @@ class Form extends Component
 
     public function updatedselectedProvincia($provincia_id){
         $this->cantones = Canton::where('provincia_id','=',$provincia_id)->orderBy('id', 'asc')->get();
+        $this->emit('renderJs');
+    }
+
+    public function updatedselectedSedep($sede_id){
+        $config = SedeCrn::where('estado','=','A')->where('sedes_id','=',$sede_id)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
+        $this->crns = Crn::where('estado','=','A')->whereIn('id',$config)->orderBy('id', 'asc')->get();
+        $this->emit('renderJs');
+    }
+
+    public function updatedselectedCrnp($crns_id){
+        $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->emit('renderJs');
     }
 
@@ -255,7 +270,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_primera);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
@@ -285,7 +300,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_segunda);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
@@ -314,7 +329,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_tercera);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
@@ -343,7 +358,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_cuarta);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
@@ -372,7 +387,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_quinta);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
@@ -439,6 +454,7 @@ class Form extends Component
                 $newToma->evento_id = $this->Preanaliticas->evento_id;
                 $newToma->clase_primera_id = 1;
                 $newToma->primera_id = 159;
+                $newToma->primera_id = $this->Preanaliticas->primera_id;
                 $newToma->estado_primera_id = 1;
                 $newToma->fecha_toma_primera = $fechat;
                 $newToma->hora_toma_primera = $horat;

@@ -435,7 +435,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_primera);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
@@ -466,7 +466,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_segunda);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
@@ -497,7 +497,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_tercera);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
@@ -528,7 +528,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_cuarta);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);
@@ -559,7 +559,7 @@ class Form extends Component
             else{
                 $newMuestra->codigo_secuencial = $codigo;
             }
-            $fechacomoentero = strtotime($pa->fecha_toma_quinta);
+            $fechacomoentero = strtotime($pa->fecha_recepcion);
             $anio = date("Y", $fechacomoentero)-2000;
             $mes = date("m", $fechacomoentero);
             $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);

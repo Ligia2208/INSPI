@@ -222,7 +222,7 @@
                                                 <i class="fas fa-list"></i>
                                             </span>
                                         </div>
-                                        <select wire:model="Preanaliticas.sedes_id"
+                                        <select wire:model.defer="Preanaliticas.sedes_id" wire:model="selectedSedep"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.sedes_id') is-invalid @enderror"
                                             data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona una Sede</option>
@@ -242,7 +242,7 @@
                                             </span>
                                         </div>
                                         <select
-                                            wire:model="Preanaliticas.crns_id"
+                                            wire:model.defer="Preanaliticas.crns_id" wire:model="selectedCrnp"
                                             class="form-control selectpicker form-control-solid @error('Preanaliticas.crns_id') is-invalid @enderror"
                                             data-size="7" data-live-search="true" data-show-subtext="true" required>
                                             <option value="">Selecciona un CRN</option>
