@@ -26,6 +26,7 @@ use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapControll
 use App\Http\Controllers\CentrosReferencia\Postanaliticaadm\PostanaliticaadmController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
+use App\Http\Controllers\CentrosReferencia\Resultadomspindividual\ResultadomspindividualController;
 use App\Http\Controllers\CentrosReferencia\Resultadocrn\ResultadocrnController;
 use App\Http\Controllers\CentrosReferencia\Resultadogerencial\ResultadogerencialController;
 use App\Http\Controllers\CentrosReferencia\VisorResultados\VisorResultadosController;
@@ -100,6 +101,9 @@ Route::middleware(['auth'])->group(function () {
 
         //CRNs Plataformas Resultados
         Route::resource('resultadosmsp', ResultadomspController::class)->parameters(['resultados' => 'resultado'])->names('resultadomsp');
+
+        //CRNs Plataformas Resultados
+        Route::resource('resultadosmspindividual', ResultadomspindividualController::class)->parameters(['resultados' => 'resultado'])->names('resultadomspindividual');
 
         //CRNs Plataformas Resultados
         Route::resource('resultadoscrn', ResultadocrnController::class)->parameters(['resultados' => 'resultado'])->names('resultadocrn');
