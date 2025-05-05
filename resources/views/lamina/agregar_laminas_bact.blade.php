@@ -91,6 +91,39 @@
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
+                            <div class="col-md-4 mt-2">
+                                <label for="codigo" class="form-label fs-6">Código Microscopista Evaluado:</label>
+                                <input type="text" id="codigo" name="codigo" class="form-control" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="fecha_inicio" class="form-label fs-6">Fecha Inicial:</label>
+                                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="fecha_fin" class="form-label fs-6">Fecha Final:</label>
+                                <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <button id="calcular_suma">Calcular Suma</button>
+                            <input type="text" id="resultado_total" class="form-control" disabled placeholder="Total Resultado" readonly>
+                            <input type="text" id="resultado_especie" class="form-control" disabled placeholder="Total Resultado Especie"> 
+                            <input type="text" id="resultado_recuento" class="form-control" disabled placeholder="Total Resultado Recuento">
+                            <input type="text" id="resultado_recuento_total" class="form-control" disabled placeholder="Total Resultado Recuento Total">
+                            <input type="text" id="resultado_recuento_total_valor" class="form-control" disabled placeholder="Total Resultado Recuento Valor">
+                            <input type="text" id="resultado_recuento_total_especie" class="form-control" disabled placeholder="Total Resultado Recuento Especie">
+                            <input type="text" id="resultado_total_sumatoria" class="form-control" disabled placeholder="Total Resultado Sumatoria">
+                            <input type="text" id="puntuacion" class="form-control" disabled placeholder="Puntuación" readonly>
+                            <input type="text" id="interpretacion" class="form-control" disabled placeholder="Interpretacion" readonly>
+
+                            <input type="text" id="porcentajeResult" class="form-control" disabled placeholder="Porcentaje Resultado" readonly>
+                            <input type="text" id="porcentajeEspe" class="form-control" disabled placeholder="Porcentaje Especie" readonly>
+                            <input type="text" id="porcentajeRecuen" class="form-control" disabled placeholder="Porcentaje Recuento" readonly>
+                            
                         </div>
                     </div>
                 </div>
@@ -200,6 +233,11 @@
 
                     </div>
                 </div>
+
+                <div id="resultados-container" class="mt-4">
+                    <!-- Aquí se agregarán los inputs resultado dinámicamente -->
+                </div>
+
 
             </div>
 

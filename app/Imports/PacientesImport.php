@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 use PHPMailer\PHPMailer\Exception;
 use Libraries\Services\Complement;
+use Datetime;
 
 class PacientesImport implements ToModel
 {
@@ -31,15 +32,25 @@ class PacientesImport implements ToModel
             $objeto_DateTime = date($fecnew);
 
             $stu->fecha_toma = $objeto_DateTime;
-            $stu->hora_toma = $row[1];
+            if($row[1]==""){
+                $stu->hora_toma='00:00:00';
+            }
+            else{
+                $stu->hora_toma = $row[1];
+            }
             $stu->identidad = $row[2];
             $stu->apellidos = $row[3];
             $stu->nombres = $row[4];
 
-            $porciones = explode("/", $row[5]);
-            $fecnew = $porciones[2].'-'.$porciones[1].'-'.$porciones[0];
-            $objeto_DateTime = date($fecnew);
-            $stu->fechanacimiento = $objeto_DateTime;
+            if($row[5]==""){
+                $stu->fechanacimiento = date("Y-m-d");
+            }
+            else{
+                $porciones = explode("/", $row[5]);
+                $fecnew = $porciones[2].'-'.$porciones[1].'-'.$porciones[0];
+                $objeto_DateTime = date($fecnew);
+                $stu->fechanacimiento = $objeto_DateTime;
+            }
             if($booleannuevo>0){
                 $stu->id_paciente = Paciente::where('estado','=','A')->where('identidad','=',$row[2])->pluck('id')->first();
             }

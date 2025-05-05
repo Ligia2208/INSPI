@@ -222,6 +222,14 @@
                         </a>
                     </li>
                 @endcan
+                @can('resultadosmsp')
+                    <li class="menu-item {{ active('resultadomspindividual.*') }}">
+                        <a href="{{ route('resultadomspindividual.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-search"></i>
+                            <span class="menu-text">Búsqueda de casos</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('resultadosgerencial')
                     <li class="menu-item {{ active('resultadogerencial.*') }}">
                         <a href="{{ route('resultadogerencial.index') }}" class="menu-link">
@@ -255,13 +263,13 @@
                     </li>
                 @endcan
                 @can('postanaliticasadm')
-                <li class="menu-item {{ active('postanaliticaadm.*') }}">
-                    <a href="{{ route('postanaliticaadm.index') }}" class="menu-link">
-                        <i class="menu-icon text-dark fa fa-print"></i>
-                        <span class="menu-text">Impresión Resultados</span>
-                    </a>
-                </li>
-            @endcan
+                    <li class="menu-item {{ active('postanaliticaadm.*') }}">
+                        <a href="{{ route('postanaliticaadm.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-print"></i>
+                            <span class="menu-text">Impresión Resultados</span>
+                        </a>
+                    </li>
+                @endcan
             @endcanany
 
             @canany(['articulos', 'actainventario', 'participantes'])
