@@ -4,16 +4,17 @@
         <meta charset="UTF-8">
         <title>CONTROL DE CALIDAD INDIRECTO</title>
         <style>
-            body { font-family: Arial, sans-serif; font-size: 12px; }
-            table { border-collapse: collapse; width: 100%; }
-            th, td { border: 1px solid black; padding: 6px; vertical-align: top; }
-            .center { text-align: center; vertical-align: middle;}
-            .bold { font-weight: bold; }
-            .underline { text-decoration: underline; }
-            .italic { font-style: italic; }
-            .no-border, .no-border td, .no-border th { border: none !important;}
-            .hr-line {border-top: 2px solid black; padding: 0; height: 10px;}
+          body { font-family: Arial, sans-serif; font-size: 9px; /* reducido para A4 horizontal */}
+          table { border-collapse: collapse;width: 100%; }
+          th, td { border: 1px solid black; padding: 2px;text-align: center; vertical-align: middle;}
+          .no-border, .no-border td, .no-border th { border: none !important;}
+          .hr-line { border-top: 2px solid black;  padding: 0; height: 10px; }
+          .vertical-text { writing-mode: vertical-lr; /* texto de arriba hacia abajo */transform: rotate(270deg);   /* sin giro adicional */ white-space: nowrap;}
+          .bold { font-weight: bold; }
+          .underline { text-decoration: underline; }
+          .italic { font-style: italic; }
         </style>
+        
           
     </head>
     <body>
@@ -76,8 +77,57 @@
       <br>
       
       <!-- CUERPO1 -->
-      <table>
-       
+      <table style="border-collapse: collapse; font-size: 6.5px; width: 100%;" border="1">
+        <thead>
+          <tr>
+            <th colspan="4">DATOS BÁSICOS</th>
+            <th rowspan="2">Error Identificación</th>
+            <th colspan="3">CALIDAD GOTA GRUESA</th>
+            <th colspan="4">CALIDAD COLORACIÓN</th>
+            <th colspan="3">CALIDAD EXTENDIDO</th>
+            <th colspan="4">RESULTADOS CONTROL DE CALIDAD</th>
+            <th colspan="4">RESULTADOS MICROSCOPISTA</th>
+            <th rowspan="2">CÓD. LECTOR</th>
+            <th colspan="2">FECHAS</th>
+          </tr>
+          <tr>
+            <th>Fecha</th>
+            <th>Semana</th>
+            <th>Código Microscopista</th>
+            <th># Lámina</th>
+            <th>Tamaño</th>
+            <th>Ubicación</th>
+            <th>Grosor</th>
+            <th>Deshemoglobinación</th>
+            <th>Tonalidad</th>
+            <th>Precipitado</th>
+            <th>Contaminación</th>
+            <th>Tamaño</th>
+            <th>Ubicación</th>
+            <th>Extendido</th>
+            <th>Diagnóstico - Control</th>
+            <th>Recuento - Control VIVAX</th>
+            <th>Recuento - Control FALCIPARUM</th>
+            <th>Presencia Fg - Control</th>
+            <th>Diagnóstico - Microscopista</th>
+            <th>Recuento - Microscopista VIVAX</th>
+            <th>Recuento - Microscopista FALCIPARUM</th>
+            <th>Presencia Fg - Microscopista</th>
+            <th>Año</th>
+            <th>Mes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- filas de ejemplo -->
+          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>475</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>3248</td><td></td><td></td><td>V</td><td>3520</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
+          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>478</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>2160</td><td></td><td></td><td>V</td><td>2520</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
+          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>479</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>2540</td><td></td><td></td><td>V</td><td>2815</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
+          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>494</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>3216</td><td></td><td></td><td>V</td><td>2917</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
+          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>498</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>1468</td><td></td><td></td><td>V</td><td>1845</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
+          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>472</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
+          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>485</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
+          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>493</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
+        </tbody>
       </table>
       <br>
 
