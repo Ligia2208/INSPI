@@ -942,7 +942,7 @@ class CentrosLaminasController extends Controller
 
     public function reporte_control_calidad_bact(Request $request)
     {
-        return \PDF::loadView('pdf.pdfLamina_indirecto') 
+        return \PDF::loadView('pdf.indirecto.pdfLamina_indirecto') 
             ->setPaper('A4', 'portrait')
             ->download('reporte_control calidad_bact.pdf');
     }
