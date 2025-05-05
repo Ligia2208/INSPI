@@ -439,6 +439,7 @@ class Form extends Component
                 $newToma->probable_infeccion = '';
                 $newToma->fecha_sintomas = $this->Preanaliticas->fecha_recepcion;
                 $newToma->fecha_recepcion = $this->Preanaliticas->fecha_recepcion;
+                $fechar = $this->Preanaliticas->fecha_recepcion;
                 if($total>0){
                     $newToma->ingresa_por = $sedeUser[0];
                 }
@@ -450,7 +451,9 @@ class Form extends Component
                 $newToma->laboratorio = 'N';
                 $newToma->nombre_laboratorio = '';
                 $newToma->sedes_id = $this->Preanaliticas->sedes_id;
+                $absede = Sede::findOrFail($this->Preanaliticas->sedes_id);
                 $newToma->crns_id = $this->Preanaliticas->crns_id;
+                $abcrn = Crn::findOrFail($this->Preanaliticas->crns_id);
                 $newToma->evento_id = $this->Preanaliticas->evento_id;
                 $newToma->clase_primera_id = 1;
                 $newToma->primera_id = 159;
@@ -488,7 +491,7 @@ class Form extends Component
                 else{
                     $newMuestra->codigo_secuencial = $codigo;
                 }
-                $fechacomoentero = strtotime($fechat);
+                $fechacomoentero = strtotime($fechar);
                 $anio = date("Y", $fechacomoentero)-2000;
                 $mes = date("m", $fechacomoentero);
                 $newMuestra->codigo_calidad = str_pad($newMuestra->codigo_muestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad($newMuestra->codigo_secuencial, 2, '0', STR_PAD_LEFT);

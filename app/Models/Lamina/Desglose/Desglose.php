@@ -14,6 +14,19 @@ class Desglose extends Model
         'id_frotis',
         'id_tincion',
         'id_lamina',
+
+        'fecha',
+        'semana',
+        'diagnostico_control',
+        'vivax_control',
+        'falciparum_control',
+        'fg_control',
+        'diagnostico_micro',
+        'vivax_micro',
+        'falciparum_micro',
+        'mg_micro',
+        'cod_lectura',
+
         'estado',
         'created_at',
         'updated_at'

@@ -187,6 +187,7 @@
                         <tbody>
                             @forelse ($analiticas as $postanalitica)
                                 <tr>
+                                    <?php  $codigo = 0; $restec=''; $tecnico='';?>
                                     @forelse ($postanalitica->analitica as $objPos)
                                         @if($objPos->codigo_secuencial==1)
                                         <?php  $codigo = $objPos->codigo_calidad; if($objPos->usuarior_id>0){ $tecnico = $objPos->usuarior->name;}else{ $tecnico=''; } if($objPos->resultado_id>0){ $restec = $objPos->resultado->descripcion; }else{ $restec=''; }?>
