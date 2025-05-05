@@ -433,6 +433,10 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas/reporte_control_calidad_bact', 'CentrosLaminasController@reporte_control_calidad_bact')->name('laminas.reporte_control_calidad_bact');
         Route::post('/laminas/guardar_laminas_bact', 'CentrosLaminasController@guardar_laminas_bact')->name('laminas.guardar_laminas_bact');
 
+        Route::get('/laminas/reporte_control_calidad_indirecto', 'CentrosLaminasController@reporte_control_calidad_indirecto')->name('laminas.reporte_control_calidad_indirecto');
+
+
+
 
     });
     /* =========================== LAMINAS =========================== */
