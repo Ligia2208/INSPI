@@ -69,7 +69,7 @@
       
         <!-- Calificación -->
         <tr>
-          <td colspan="3" style="text-align: right; font-size: 12px; padding-top: 5px; padding-right: 80px;">
+          <td colspan="3" style="text-align: right; font-size: 10px; padding-top: 5px; padding-right: 80px;">
             Calificación: Bueno - 0; Malo - 1
           </td>
         </tr>        
