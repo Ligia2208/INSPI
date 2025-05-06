@@ -65,58 +65,52 @@ $(function () {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar una Observación.', showConfirmButton: true });
                     } else {
                         // Si todo es válido
-                        Swal.fire({ icon: 'success', title: 'CoreInspi', text: 'Formulario válido. Puede continuar.', showConfirmButton: true });
-            
-                        // Aquí puedes hacer el submit del formulario si quieres:
-                        // document.getElementById("miFormulario").submit();
+                        $.ajax({
+                            type: 'POST',
+                            url: '/laminas/guardar_laminas_bact',
+                            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                            data: {
+                                'datos': datos,
+                                //'id_ingreso': id_ingreso,
+                                'fecha_recep'         :fecha_recep        ,  
+                                'centro_salud'        :centro_salud       ,  
+                                'evento'              :evento             ,  
+                                'responsable'         :responsable        ,  
+                                'fecha_recebcion'     :fecha_recebcion    ,  
+                                'mes_recepcion'       :mes_recepcion      ,  
+                                'total_laminas'       :total_laminas      ,  
+                                'total_laminas_super' :total_laminas_super,  
+                                'codigo'              :codigo             ,  
+                                'fecha_inicio'        :fecha_inicio       ,  
+                                'fecha_fin'           :fecha_fin          ,  
+                                'observacion'         :observacion        ,  
+                            },
+                            success: function (response) {
+                                Swal.fire({
+                                    icon: response.success ? 'success' : 'error',
+                                    title: 'CoreInspi',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                }).then((result) => {
+                                    if (result.isConfirmed || result.isDismissed) {
+                                        window.location.href = "/laminas";
+                                    }
+                                });
+                            },
+
+                            error: function (error) {
+                                var response = error.responseJSON;
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'CoreInspi',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                });
+                            }
+                        });
+
                     }
 
-                    
-                    // Realizamos la llamada AJAX
-                    $.ajax({
-                        type: 'POST',
-                        url: '/laminas/guardar_laminas',
-                        headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                        data: {
-                            'datos': datos,
-                            'id_ingreso': id_ingreso,
-                            'fecha_recep'         :fecha_recep        ,  
-                            'centro_salud'        :centro_salud       ,  
-                            'evento'              :evento             ,  
-                            'responsable'         :responsable        ,  
-                            'fecha_recebcion'     :fecha_recebcion    ,  
-                            'mes_recepcion'       :mes_recepcion      ,  
-                            'total_laminas'       :total_laminas      ,  
-                            'total_laminas_super' :total_laminas_super,  
-                            'codigo'              :codigo             ,  
-                            'fecha_inicio'        :fecha_inicio       ,  
-                            'fecha_fin'           :fecha_fin          ,  
-                            'observacion'         :observacion        ,  
-                        },
-                        success: function (response) {
-                            Swal.fire({
-                                icon: response.success ? 'success' : 'error',
-                                title: 'CoreInspi',
-                                text: response.message,
-                                showConfirmButton: true,
-                            }).then((result) => {
-                                if (result.isConfirmed || result.isDismissed) {
-                                    window.location.href = "/laminas";
-                                }
-                            });
-                        },
-
-                        error: function (error) {
-                            var response = error.responseJSON;
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'SoftInspi',
-                                text: response.message,
-                                showConfirmButton: true,
-                            });
-                        }
-                    });
-                    
                 }
             });
 

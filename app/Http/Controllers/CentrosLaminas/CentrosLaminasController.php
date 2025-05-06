@@ -403,15 +403,48 @@ class CentrosLaminasController extends Controller
         $fecha_inicio        = $request->input('fecha_inicio');
         $fecha_fin           = $request->input('fecha_fin');
         $observacion         = $request->input('observacion');
+
+        $lamina = Lamina::create([
+            'id_tecnica'          => 1,
+            'id_analista'         => 195,
+            'fecha_recep'         => $fecha_recep,
+            //'id_unidad_salud'     => $centro_salud,
+            'id_unidad_salud'     => 1,
+            //'id_evento'           => $evento,
+            'id_evento'           => 1,
+            //'id_responsable'      => $responsable,
+            'id_responsable'      => 195,
+            'fecha_recebcion'     => $fecha_recebcion,
+            'mes_recepcion'       => $mes_recepcion,
+            'total_laminas'       => $total_laminas_super,
+            'total_laminas_recib' => $total_laminas,
+            'cod_microscopia'     => $codigo,
+            'fecha_ini'           => $fecha_inicio,
+            'fecha_fin'           => $fecha_fin,
+            'observaciones'       => $observacion
+        ]);
         
         foreach ($datos as $dato) {
             Desglose::create([
-                'nro_lamina' => $dato['num_lamina'],
-                'lectura' => $dato['lectura'],
-                'id_apariencia' => $dato['apariencia'],
-                'id_frotis' => $dato['frotis'], 
-                'id_tincion' => $dato['tincion'],
-                'id_lamina' => $id_ingreso,  
+                'id_lamina'           => $lamina->id,  
+                'fecha'               => $dato['fecha'],
+                'semana'              => $dato['semana'],
+                'diagnostico_control' => $dato['diagnostico_calidad'],
+                'vivax_control'       => $dato['recuento_control_vivax'] ?? 0,
+                'falciparum_control'  => $dato['recuento_control_falciparum'] ?? 0,
+                'fg_control'          => $dato['presencia_control'] ?? 0,
+                'diagnostico_micro'   => $dato['diagnostico_microscopista'],
+                'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? 0,
+                'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? 0,
+                'mg_micro'            => $dato['presencia_microscopista'] ?? 0,
+                'cod_lectura'         => $dato['codigo_micro'],
+                'nro_lamina'          => $dato['num_lamina'],
+
+                'lectura'             => '',    
+                'id_apariencia'       => 1,
+                'id_frotis'           => 1,
+                'id_tincion'          => 1,
+
             ]);
         }
         // Retornar una respuesta de éxito
