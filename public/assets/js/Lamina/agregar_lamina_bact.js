@@ -5,8 +5,6 @@ $(function () {
         width: '100%',
     });
 
-    generarFilas();
-
 
     /* ==================== GUARDAR INGRESO DE LAMINAS ==================== */
     $(document).on('click', '#btnGuardarSolicitud', function () {
@@ -17,7 +15,7 @@ $(function () {
             //console.log(capturarDatos());
 
             var datos = capturarDatos();
-            let id_ingreso = $('#id_ingreso').val();
+            //let id_ingreso = $('#id_ingreso').val();
 
             Swal.fire({
                 icon: 'warning',
@@ -27,6 +25,53 @@ $(function () {
                 showCancelButton: true,
             }).then((result) => {
                 if (result.value) {
+
+                    let fecha_recep         = document.getElementById('fecha_recep').value.trim();
+                    let centro_salud        = document.getElementById('centro_salud').value.trim();
+                    let evento              = document.querySelector('select[name="evento"]').value.trim();
+                    let responsable         = document.getElementById('responsable').value.trim();
+                    let fecha_recebcion     = document.getElementById('fecha_recebcion').value.trim();
+                    let mes_recepcion       = document.getElementById('mes_recepcion').value.trim();
+                    let total_laminas       = document.getElementById('total_laminas').value.trim();
+                    let total_laminas_super = document.getElementById('total_laminas_super').value.trim();
+                    let codigo              = document.querySelector('select[name="codigo"]').value.trim();
+                    let fecha_inicio        = document.getElementById('fecha_inicio').value.trim();
+                    let fecha_fin           = document.getElementById('fecha_fin').value.trim();
+                    let observacion         = document.getElementById('observacion').value.trim();
+            
+                    if (!fecha_recep) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha de Recepción.', showConfirmButton: true });
+                    } else if (!centro_salud) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar el nombre del Laboratorio Supervisado.', showConfirmButton: true });
+                    } else if (!evento) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe seleccionar un Evento.', showConfirmButton: true });
+                    } else if (!responsable) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar el Responsable de Recepción.', showConfirmButton: true });
+                    } else if (!fecha_recebcion) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha de Recepción de láminas.', showConfirmButton: true });
+                    } else if (!mes_recepcion) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Semana o Mes de Recepción.', showConfirmButton: true });
+                    } else if (!total_laminas) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar el Total de Láminas.', showConfirmButton: true });
+                    } else if (!total_laminas_super) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar el Total de Láminas Recibidas.', showConfirmButton: true });
+                    } else if (!codigo) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe seleccionar un Código de Microscopista.', showConfirmButton: true });
+                    } else if (!fecha_inicio) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha Inicial.', showConfirmButton: true });
+                    } else if (!fecha_fin) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha Final.', showConfirmButton: true });
+                    } else if (!observacion) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar una Observación.', showConfirmButton: true });
+                    } else {
+                        // Si todo es válido
+                        Swal.fire({ icon: 'success', title: 'CoreInspi', text: 'Formulario válido. Puede continuar.', showConfirmButton: true });
+            
+                        // Aquí puedes hacer el submit del formulario si quieres:
+                        // document.getElementById("miFormulario").submit();
+                    }
+
+                    
                     // Realizamos la llamada AJAX
                     $.ajax({
                         type: 'POST',
@@ -35,6 +80,18 @@ $(function () {
                         data: {
                             'datos': datos,
                             'id_ingreso': id_ingreso,
+                            'fecha_recep'         :fecha_recep        ,  
+                            'centro_salud'        :centro_salud       ,  
+                            'evento'              :evento             ,  
+                            'responsable'         :responsable        ,  
+                            'fecha_recebcion'     :fecha_recebcion    ,  
+                            'mes_recepcion'       :mes_recepcion      ,  
+                            'total_laminas'       :total_laminas      ,  
+                            'total_laminas_super' :total_laminas_super,  
+                            'codigo'              :codigo             ,  
+                            'fecha_inicio'        :fecha_inicio       ,  
+                            'fecha_fin'           :fecha_fin          ,  
+                            'observacion'         :observacion        ,  
                         },
                         success: function (response) {
                             Swal.fire({
@@ -59,88 +116,12 @@ $(function () {
                             });
                         }
                     });
+                    
                 }
             });
 
         }
-        /*
-        // Capturamos los valores de los campos
-        let fechaRecepcion = $('#fecha_recep').val();
-        let centroSalud    = $('#centro_salud').val();
-        let responsable    = $('#responsable').val();
-        let analista       = $('#analista').val();
-        let mesRecepcion   = $('#mes_recepcion').val();
-        let observaciones  = $('#Observaciones').val();
-        let total_laminas  = $('#total_laminas').val();
-    
-        // Validación de campos
-        if (centroSalud == 0) {
-            Swal.fire({ icon: 'warning', title: 'SoftInspi', text: 'Debe seleccionar un Centro de Salud.', showConfirmButton: true });
-            return;
-        } else if (responsable == 0) {
-            Swal.fire({ icon: 'warning', title: 'SoftInspi', text: 'Debe seleccionar un Responsable.', showConfirmButton: true });
-            return;
-        } else if (analista == 0) {
-            Swal.fire({ icon: 'warning', title: 'SoftInspi', text: 'Debe seleccionar un Analista.', showConfirmButton: true });
-            return;
-        } else if (total_laminas == 0 || total_laminas == '') {
-            Swal.fire({ icon: 'warning', title: 'SoftInspi', text: 'Debe ingresar un número de Láminas.', showConfirmButton: true });
-            return;
-        }
-    
-        let datosRadio = validarCalculos();
-        if (!datosRadio) return; // Si la validación falla, detenemos la ejecución
-    
-        // Mensaje de confirmación
-        Swal.fire({
-            icon: 'warning',
-            title: 'SoftInspi',
-            text: '¿Desea guardar la solicitud?',
-            showConfirmButton: true,
-            showCancelButton: true,
-        }).then((result) => {
-            if (result.value) {
-                // Realizamos la llamada AJAX
-                $.ajax({
-                    type: 'POST',
-                    url: '/laminas/guardar',  
-                    headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-                    data: {
-                        'fecha_recep':   fechaRecepcion,
-                        'centro_salud':  centroSalud,
-                        'responsable':   responsable,
-                        'analista':      analista,
-                        'mes_recepcion': mesRecepcion,
-                        'observaciones': observaciones,
-                        'total_laminas': total_laminas,
-                        ...datosRadio // Agregamos los valores de los radios
-                    },
-                    success: function(response) {
-                        Swal.fire({
-                            icon: response.success ? 'success' : 'error',
-                            title: 'SoftInspi',
-                            text: response.message,
-                            showConfirmButton: true,
-                        }).then((result) => {
-                            if (result.isConfirmed || result.isDismissed) {
-                                window.location.href = "/laminas"; 
-                            }
-                        });
-                    },
-                    
-                    error: function(error) {
-                        var response = error.responseJSON;
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'SoftInspi',
-                            text: response.message,
-                            showConfirmButton: true,
-                        });
-                    }
-                });
-            }
-        });
-        */
+
     });
     /* ==================== GUARDAR INGRESO DE LAMINAS ==================== */
 
@@ -177,87 +158,29 @@ $(function () {
 
 
 
-function generarFilas() {
-    let totalLaminas = document.getElementById("total_laminas").value;
-    let tablaBody = document.getElementById("tabla_body");
 
-    // Limpiar filas previas
-    tablaBody.innerHTML = "";
-
-    for (let i = 1; i <= totalLaminas; i++) {
-        let fila = `<tr>
-            <td><input type="text" name="num_lamina_${i}" class="form-control num-lamina" required></td>
-            <td><input type="text" name="lectura_${i}" class="form-control"></td>
-            <!-- Apariencia Select -->
-            <td>
-                <select name="apariencia_${i}" class="form-control single-select">
-                    <option value="">Selecciona Frotis</option>
-                    <option value="1">Saliva</option>
-                    <option value="2">Mucosa</option>
-                    <option value="3">Mucopurulenta</option>
-                    <option value="4">Sanguinolenta</option>
-                </select>
-            </td>
-
-            <!-- Frotis Select -->
-            <td>
-                <select name="frotis_${i}" class="form-control single-select">
-                    <option value="">Selecciona Frotis</option>
-                    <option value="1">Bueno</option>
-                    <option value="2">Grueso</option>
-                    <option value="3">Fino</option>
-                    <option value="4">No Homogéneo</option>
-                </select>
-            </td>
-
-            <!-- Tinción Select -->
-            <td>
-                <select name="tincion_${i}" class="form-control single-select">
-                    <option value="">Selecciona Tinción</option>
-                    <option value="1">Buena</option>
-                    <option value="2">Precipitados</option>
-                    <option value="3">Mala Decoloración</option>
-                </select>
-            </td>
-        </tr>`;
-        tablaBody.innerHTML += fila;
-    }
-
-    // Aplicar la validación a todos los campos "N° Lámina"
-    document.querySelectorAll('.num-lamina').forEach(input => {
-        input.addEventListener('input', function (e) {
-            let value = this.value.replace(/[^0-9]/g, ''); // Filtra solo números
-            this.value = value;
-
-            if (value === '') {
-                this.classList.add('is-invalid');
-            } else {
-                this.classList.remove('is-invalid');
-                this.classList.add('is-valid');
-            }
-        });
-    });
-
-    $('.single-select').select2({
-        width: '100%',
-    });
-}
-
-
-
-/* FUNCION PARA VALIDAR CAMPOS ANTES DE GUARDAR */
+/* VALIDAR CAMPOS DE CADA FILA DE LA TABLA */
 function validarCampos() {
     let valido = true;
     let mensaje = "";
 
     document.querySelectorAll("#tabla_body tr").forEach((fila, index) => {
-        let numLamina = fila.querySelector("input[name^='num_lamina_']").value.trim();
-        let lectura = fila.querySelector("input[name^='lectura_']").value.trim();
-        let apariencia = fila.querySelector("select[name^='apariencia_']").value;
-        let frotis = fila.querySelector("select[name^='frotis_']").value;
-        let tincion = fila.querySelector("select[name^='tincion_']").value;
+        let fecha = fila.querySelector(`input[name^='fecha_']`).value.trim();
+        let semana = fila.querySelector(`input[name^='semana_']`).value.trim();
+        let codigoMicro = fila.querySelector(`input[name^='codigo_micro_']`).value.trim();
+        let numLamina = fila.querySelector(`input[name^='num_lamina_']`).value.trim();
+        let diagnosticoCalidad = fila.querySelector(`select[name^='diagnostico_calidad_']`).value;
+        //let recuentoControlVivax = fila.querySelector(`input[name^='recuento_control_vivax_']`).value.trim();
+        //let recuentoControlFalciparum = fila.querySelector(`input[name^='recuento_control_falciparum_']`).value.trim();
+        //let presenciaControl = fila.querySelector(`input[name^='presencia_control_']`).value.trim();
+        let diagnosticoMicro = fila.querySelector(`select[name^='diagnostico_microscopista_']`).value;
+        //let recuentoMicroVivax = fila.querySelector(`input[name^='recuento_microscopista_vivax_']`).value.trim();
+        //let recuentoMicroFalciparum = fila.querySelector(`input[name^='recuento_microscopista_falciparum_']`).value.trim();
+        //let presenciaMicro = fila.querySelector(`input[name^='presencia_microscopista_']`).value.trim();
 
-        if (numLamina === "" || lectura === "" || !apariencia || !frotis || !tincion) {
+        if (
+            !fecha || !semana || !codigoMicro || !numLamina || !diagnosticoCalidad || !diagnosticoMicro 
+        ) {
             valido = false;
             mensaje = `Faltan datos en la fila ${index + 1}`;
             return;
@@ -277,29 +200,33 @@ function validarCampos() {
 }
 
 
-/* FUNCION PARA CAPTURAR DATOS Y ENVIARLOS AL CONTROLADOR */
+/* CAPTURAR DATOS DE LA TABLA Y ENVIARLOS */
 function capturarDatos() {
     if (!validarCampos()) return;
 
     let datos = [];
 
     document.querySelectorAll("#tabla_body tr").forEach((fila) => {
-        let numLamina = fila.querySelector("input[name^='num_lamina_']").value.trim();
-        let lectura = fila.querySelector("input[name^='lectura_']").value.trim();
-        let apariencia = fila.querySelector("select[name^='apariencia_']").value;
-        let frotis = fila.querySelector("select[name^='frotis_']").value;
-        let tincion = fila.querySelector("select[name^='tincion_']").value;
+        let obj = {
+            fecha: fila.querySelector(`input[name^='fecha_']`).value.trim(),
+            semana: fila.querySelector(`input[name^='semana_']`).value.trim(),
+            codigo_micro: fila.querySelector(`input[name^='codigo_micro_']`).value.trim(),
+            num_lamina: fila.querySelector(`input[name^='num_lamina_']`).value.trim(),
+            diagnostico_calidad: fila.querySelector(`select[name^='diagnostico_calidad_']`).value,
+            recuento_control_vivax: fila.querySelector(`input[name^='recuento_control_vivax_']`).value.trim(),
+            recuento_control_falciparum: fila.querySelector(`input[name^='recuento_control_falciparum_']`).value.trim(),
+            presencia_control: fila.querySelector(`input[name^='presencia_control_']`).value.trim(),
+            diagnostico_microscopista: fila.querySelector(`select[name^='diagnostico_microscopista_']`).value,
+            recuento_microscopista_vivax: fila.querySelector(`input[name^='recuento_microscopista_vivax_']`).value.trim(),
+            recuento_microscopista_falciparum: fila.querySelector(`input[name^='recuento_microscopista_falciparum_']`).value.trim(),
+            presencia_microscopista: fila.querySelector(`input[name^='presencia_microscopista_']`).value.trim(),
+        };
 
-        datos.push({
-            num_lamina: numLamina,
-            lectura: lectura,
-            apariencia: apariencia,
-            frotis: frotis,
-            tincion: tincion
-        });
+        datos.push(obj);
     });
 
-    console.log(datos); // Puedes enviarlo con fetch o AJAX al controlador
+    //console.log(datos); // Aquí puedes enviar con fetch o AJAX
+
     Swal.fire({
         icon: 'success',
         title: 'Datos capturados correctamente',
@@ -308,6 +235,7 @@ function capturarDatos() {
 
     return datos;
 }
+
 
 
 

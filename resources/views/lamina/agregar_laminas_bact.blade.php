@@ -45,37 +45,41 @@
 
                             <div class="col-md-4">
                                 <label for="fecha_recep" class="form-label fs-6">Fecha de Recepción</label>
-                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="" disabled>
+                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="" >
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-8">
                                 <label for="centro_salud" class="form-label fs-6">Nombre del Laboratorio Supervisado</label>
-                                <input type="text" id="centro_salud" name="centro_salud" class="form-control" required autofocus value="" disabled>
+                                <input type="text" id="centro_salud" name="centro_salud" class="form-control" required autofocus value="" >
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="director_us" class="form-label fs-6">Director de la Unidad</label>
-                                <input type="text" id="director_us" name="director_us" class="form-control" required placeholder="Nombre del Director" value="" disabled>
-                                <div class="valid-feedback">Looks good!</div>
+                                <label for="evento" class="form-label fs-6">Evento</label>
+                                <select name="evento" class="form-control single-select">
+                                    <option value="">Selecciona una Opción</option>
+                                    <option value="MALARIA">MALARIA</option>
+                                    <option value="CHAGAS">CHAGAS</option>
+                                    <option value="LESMANIASIS">LESMANIASIS</option>
+                                </select>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="responsable" class="form-label fs-6">Responsable Recepción</label>
-                                <input type="text" id="responsable" name="responsable" class="form-control" required autofocus value="" disabled>
+                                <input type="text" id="responsable" name="responsable" class="form-control" required autofocus value="">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="analista" class="form-label fs-6">Analista(Encargado de Control de Calidad)</label>
-                                <input type="text" id="analista" name="analista" class="form-control" required autofocus value="" disabled>
+                                <label for="fecha_recebcion" class="form-label fs-6">Fecha de Recepción de láminas:</label>
+                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="" required>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="mes_recepcion" class="form-label fs-6">Mes Supervisado</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="" required disabled>
+                                <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="" required>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -93,8 +97,14 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="codigo" class="form-label fs-6">Código Microscopista Evaluado:</label>
-                                <input type="text" id="codigo" name="codigo" class="form-control" value="" required>
-                                <div class="valid-feedback">Looks good!</div>
+                                <select name="codigo" id="codigo" class="form-control single-select">
+                                    <option value="">Selecciona una Opción</option>
+                                    <option value="LR1-ES">LR1-ES</option>
+                                    <option value="LR3-PA">LR3-PA</option>
+                                    <option value="LR6-MO">LR6-MO</option>
+                                    <option value="LR7-EO">LR7-EO</option>
+                                    <option value="LR8-GU">LR8-GU</option>
+                                </select>
                             </div>
 
                             <div class="col-md-4 mt-2">
@@ -108,6 +118,13 @@
                                 <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="" required>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
+
+                            <div class="col-md-12 mt-2 mb-2">
+                                <label for="observacion" class="form-label fs-6">Observación:</label>
+                                <textarea id="observacion" name="observacion" class="form-control" rows="3" required></textarea>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
 
                             <button id="calcular_suma">Calcular Suma</button>
                             <input type="text" id="resultado_total" class="form-control" disabled placeholder="Total Resultado" readonly>

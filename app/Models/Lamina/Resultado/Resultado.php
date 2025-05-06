@@ -14,6 +14,15 @@ class Resultado extends Model
         'id_lamina',
         'tecnica_lamina',
         'nro_laminas',
+
+        'laminas_positivas_con',
+        'laminas_positivas_dis',
+        'laminas_negativas_con',
+        'laminas_negativas_dis',
+        'resultado',
+        'especie',
+        'recuentos',
+
         'porcentaje_laminas',
         'porcentaje_acumulado',
         'interpretacion',

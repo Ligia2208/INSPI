@@ -17,6 +17,8 @@ class Lamina extends Model
         'anio',
         'total_laminas',
         'total_laminas_recib',
+        'laminas_positivas_rec',
+        'laminas_negativas_rec',
         'director_us',
         'observaciones',
         'laminas_empacadas',
@@ -26,6 +28,9 @@ class Lamina extends Model
         'laminas_frotis_adecuado',
         'laminas_integras',
         'laminas_documentacion',
+        'fecha_ini',
+        'fecha_fin',
+        'cod_microscopia',
         'estado',
         'created_at',
         'updated_at'

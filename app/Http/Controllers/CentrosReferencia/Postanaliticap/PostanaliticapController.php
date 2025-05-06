@@ -178,6 +178,7 @@ class PostanaliticapController extends Controller
             $fecha_resul=$muestra->fecha_resultado;
             $tecnico = $muestra->usuarior->name;
             $i++;
+
             $this->fpdf->Ln(6.5);
 
             $dataqr = utf8_decode($data->sedes->descripcion)." - ".utf8_decode($data->crns->descripcion)."\n";

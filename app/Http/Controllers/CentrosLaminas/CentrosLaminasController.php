@@ -384,6 +384,42 @@ class CentrosLaminasController extends Controller
     }
 
 
+
+    public function guardar_laminas_bact(Request $request){
+
+        $datos = $request->input('datos');
+        $id_ingreso = $request->input('id_ingreso');
+
+        //datos del ingreso de laminas
+        $fecha_recep         = $request->input('fecha_recep');
+        $centro_salud        = $request->input('centro_salud');
+        $evento              = $request->input('evento');
+        $responsable         = $request->input('responsable');
+        $fecha_recebcion     = $request->input('fecha_recebcion');
+        $mes_recepcion       = $request->input('mes_recepcion');
+        $total_laminas       = $request->input('total_laminas');
+        $total_laminas_super = $request->input('total_laminas_super');
+        $codigo              = $request->input('codigo');
+        $fecha_inicio        = $request->input('fecha_inicio');
+        $fecha_fin           = $request->input('fecha_fin');
+        $observacion         = $request->input('observacion');
+        
+        foreach ($datos as $dato) {
+            Desglose::create([
+                'nro_lamina' => $dato['num_lamina'],
+                'lectura' => $dato['lectura'],
+                'id_apariencia' => $dato['apariencia'],
+                'id_frotis' => $dato['frotis'], 
+                'id_tincion' => $dato['tincion'],
+                'id_lamina' => $id_ingreso,  
+            ]);
+        }
+        // Retornar una respuesta de éxito
+        return response()->json(['success' => true, 'message' => 'Desglose guardados correctamente'], 200);
+    }
+
+
+
     public function guardar_laminas_editadas(Request $request){
 
         $datos = $request->input('datos');
@@ -942,10 +978,19 @@ class CentrosLaminasController extends Controller
 
     public function reporte_control_calidad_bact(Request $request)
     {
-        return \PDF::loadView('pdf.pdfLamina_indirecto') 
+        return \PDF::loadView('pdf.indirecto.pdfLamina_indirecto') 
             ->setPaper('A4', 'portrait')
             ->download('reporte_control calidad_bact.pdf');
     }
+
+
+    public function reporte_control_calidad_indirecto(Request $request)
+    {
+        return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Indirecto') 
+            ->setPaper('A4', 'landscape')
+            ->download('reporte_CONTROL DE CALIDAD INDIRECTO.pdf');
+    }
+    
     
     
 

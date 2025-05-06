@@ -193,6 +193,10 @@ $( function () {
                             <a id="btnPDF_calidad_bact" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad Bact" data-title="Generar PDF Control Calidad Bact">
                                 <i class="bi bi-file-earmark-pdf text-danger"></i>
                             </a>
+
+                            <a id="btnPDF_calidad_indirecto" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad Indirecto" data-title="Generar PDF Control Calidad Indirecto">
+                                <i class="bi bi-file-earmark-pdf text-dark"></i>
+                            </a>
                         </div>`;
                 }
             },
@@ -441,7 +445,39 @@ $( function () {
         });
     });
     
-    
+
+    // Generar el reporte PDF CONTROL_CALIDAD INDIRECTO
+    $(document).on('click', '#btnPDF_calidad_indirecto', function() {
+
+        $.ajax({
+            type: 'GET',
+            url: '/laminas/reporte_control_calidad_indirecto',  //
+            xhrFields: {
+                responseType: 'blob'
+            },
+            success: function(response, _status, _xhr) {
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_CONTROL DE CALIDAD INDIRECTO.pdf'; // Nombre del archivo descargado
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                a.remove();
+            },
+            error: function(error) {
+                Swal.fire({
+                    icon: 'error',
+                    type: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el PDF',
+                    showConfirmButton: true,
+                });
+            }
+        });
+    });
+
 
     
     $(document).on('click', '#btnPDF_ingreso', function() {
