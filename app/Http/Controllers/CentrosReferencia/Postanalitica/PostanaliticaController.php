@@ -537,7 +537,7 @@ class PostanaliticaController extends Controller
         $this->fpdf->Cell(190,6.5,utf8_decode("Resultado: ".$data->resultado->descripcion),1,0,"L");
         $this->fpdf->Ln(6.5);
         $this->fpdf->SetFont('Arial', 'B', 8);
-        $this->fpdf->Cell(190,6.5,utf8_decode("Descripción del resultado encontrado:"),1,0,"L");
+        $this->fpdf->Cell(190,6.5,utf8_decode("Descripción del resultado encontradokjkjgjgkjgkjh:"),1,0,"L");
         $this->fpdf->Ln(6.5);
         if($muestra->crns_id==7){
             $this->fpdf->SetFont('Arial', '', 7);

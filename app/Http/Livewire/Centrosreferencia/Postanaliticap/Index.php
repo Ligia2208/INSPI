@@ -2,6 +2,8 @@
 
 namespace App\Http\Livewire\Centrosreferencia\Postanaliticap;
 
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
 use App\Models\CentrosReferencia\Analitica;
 use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
@@ -157,12 +159,112 @@ class Index extends Component
         return view('livewire.centrosreferencia.postanaliticap.index', compact('count', 'analiticas','sedes','crns','eventos'));
     }
 
+    public function send($id){
+
+        $message = array(
+            'message' => 'Email sended successfully',
+            'type'    => 'success'
+        );
+
+        try{
+            $pre = Preanalitica::findOrFail($id);
+            $ana = Analitica::where('preanalitica_id','=',$id)->first();
+            $sed = Sede::findOrFail($pre->sedes_id);
+            $crn = Crn::findOrFail($pre->crns_id);
+            $eve = Evento::findOrFail($pre->evento_id);
+            $mue = $ana->codigo_calidad;
+
+            $mail = new PHPMailer(true);
+            $mail->SMTPDebug = 0;
+            $mail->isSMTP();
+            $mail->Host = 'mail.cntcloud.com';
+            $mail->SMTPAuth = true;
+            $mail->Username = 'tics@inspi.gob.ec';
+            $mail->Password = 'TICs*2025..';
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_SMTPS;
+            $mail->Port=465;
+            $mail->Timeout=300;
+            $mail->setFrom('tics@inspi.gob.ec','CoreINSPI - SEViEp');
+            $mail->addAddress('ssanchez@inspi.gob.ec');
+            $mail->addAddress('lrojas@inspi.gob.ec');
+            $mail->addAddress('ldier@inspi.gob.ec');
+            $mail->Subject = 'Edición de Resultados';
+            $mail->isHTML(true);
+            $mail->CharSet = 'UTF-8';
+            $mail->Body = '<html>
+                            <body>
+                                <table border="0" width="600">
+                                    <tr>
+                                        <caption><h3>Alerta de Edición de Resultados</h3></caption>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                        <br>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                        <br>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th align="left">
+                                            Estimado Director: '.'<br><br>
+                                            El Sistema Integrado del Instituto Nacional de Investigación en Salud Pública CoreINSPI y específicamente el módulo de registro de resultados SEViEp moniterea la integridad de los datos registrados como resultados, detectando una modificación de un resultado ya registrado en fechas anteriores como lo que se detalla a continuación:<br>
+                                            <br> Sedes: '.$sed->descripcion.'<br>
+                                                    CRN: '.$crn->descripcion.'<br>
+                                                Evento: '.$eve->simplificado.'<br>
+                                                Muestra: '.$mue.'<br>
+                                            <br>
+                                            Además de esta notificación, se guardará dicho evento en el log de transacciones de la aplicación, por cuestiones de auditoría<br>
+                                            <br><br>
+
+                                            Atentamente,
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th>
+                                        <br><br>
+                                        </th>
+                                    </tr>
+                                    <tr>
+                                        <th align="center">
+                                            Gestión de Tecnologías de la Información<br> Dirección de Planificación y Gestión Estratégica
+                                        </th>
+                                    </tr>
+                                </table>
+                            </body>
+                        </html>';
+
+            $mail->send();
+
+
+        }
+        catch (Exception $e){
+
+        }
+        return redirect()->back();
+
+    }
+
     public function destroy($id)
     {
         try{
-            $Analiticas = Analitica::findOrFail($id);
-            $Analiticas->estado = 'I';
-            $Analiticas->update();
+            $preanalitica = Preanalitica::findOrFail($id);
+            $preanalitica->resultado_id = 0;
+            $preanalitica->fecha_resultado = null;
+            $preanalitica->usuarior_id = 0;
+            $preanalitica->validado = 'N';
+            $preanalitica->update();
+            $analiticas = Analitica::where('preanalitica_id','=',$id)->orderby('id','asc')->get();
+            foreach($analiticas as $objAnalitica){
+                $objAnalitica->usuariop_id = 0;
+                $objAnalitica->fecha_publicacion = null;
+                $objAnalitica->validado='N';
+                $objAnalitica->update();
+            }
+            $this->send($id);
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
             $this->alert('error',
