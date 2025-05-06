@@ -152,7 +152,7 @@ class PostanaliticapController extends Controller
         $i=0;
         $this->fpdf->Ln(6.5);
         foreach($data_muestras as $muestra){
-            
+
             //$this->fpdf->Ln(6.5);
             /* if($muestra->codigo_externo != ''){
                 $this->fpdf->Cell(34,7,utf8_decode($muestra->codigo_externo.'-'.$muestra->anio_registro),1,0,"C");
@@ -178,7 +178,7 @@ class PostanaliticapController extends Controller
             $fecha_resul=$muestra->fecha_resultado;
             $tecnico = $muestra->usuarior->name;
             $i++;
-        
+
             $this->fpdf->Ln(6.5);
 
             $dataqr = utf8_decode($data->sedes->descripcion)." - ".utf8_decode($data->crns->descripcion)."\n";
@@ -191,7 +191,7 @@ class PostanaliticapController extends Controller
 
             $this->fpdf->Image(storage_path('app/public/qrcodes/').$data->sedes_id.'-'.$data->crns_id.'-'.$data->anio_registro.'-'.$muestra->codigo_muestra.'.png',171,42,28);
 
-            
+
 
             if($muestra->crns_id==12){
                 $this->fpdf->Ln(9);

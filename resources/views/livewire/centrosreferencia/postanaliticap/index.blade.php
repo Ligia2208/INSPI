@@ -256,8 +256,18 @@
                                                 </span>
                                             </a>
                                         </i>
+
                                         @endif
                                         @if($postanalitica->usuarior_id>0)
+                                        <i class="navi-item"
+                                            onclick="event.preventDefault(); confirmDestroy({{ $postanalitica->id }})">
+                                            <a href="#" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-magic" style="color:orange"
+                                                        title="Quitar validación"></i>
+                                                </span>
+                                            </a>
+                                        </i>
                                         <i class="navi-item">
                                             <a href="/informefinal/informep/{{ $postanalitica->id }}" target="_blank" class="navi-link">
                                             <span class="navi-icon">
@@ -317,7 +327,7 @@
             function confirmDestroy(id) {
                 swal.fire({
                     title: "¿Estas seguro?",
-                    text: "No podrá recuperar este Área/Dirección y los servicios creados con este tipo se quedarán sin vinculación",
+                    text: "La validación se eliminará y se devolverá este registro a la analitica técnica del CRN",
                     icon: "warning",
                     buttonsStyling: false,
                     showCancelButton: true,
