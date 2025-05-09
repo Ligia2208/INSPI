@@ -35,7 +35,7 @@ class Form extends Component
     {
         return [
             'Pacientes.tipodocumento_id' => 'required|numeric',
-            'Pacientes.identidad' => 'required|max:13',
+            'Pacientes.identidad' => 'required|max:20',
             'Pacientes.nombres' => 'required|max:75',
             'Pacientes.apellidos' => 'required|max:75',
             'Pacientes.sexo_id' => 'required|numeric',

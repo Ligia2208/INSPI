@@ -387,3 +387,11 @@ input:checked + .slider:before {
     color: #66BB6A;
 }
 
+
+
+.resultados-flotantes {
+    position: fixed;
+    top: 0; /* Puedes ajustar esta distancia según la altura de tu header */
+    z-index: 1030; /* Asegúrate que esté por encima del resto del contenido */
+}
+

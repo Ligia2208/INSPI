@@ -64,6 +64,9 @@ $(function () {
                     } else if (!observacion) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar una Observación.', showConfirmButton: true });
                     } else {
+
+                        let resultados = obtenerResultados();
+
                         // Si todo es válido
                         $.ajax({
                             type: 'POST',
@@ -84,6 +87,7 @@ $(function () {
                                 'fecha_inicio'        :fecha_inicio       ,  
                                 'fecha_fin'           :fecha_fin          ,  
                                 'observacion'         :observacion        ,  
+                                'resultados'          : resultados,
                             },
                             success: function (response) {
                                 Swal.fire({
@@ -151,6 +155,8 @@ $(function () {
 });
 
 
+// variables globales
+const resultados = {};
 
 
 /* VALIDAR CAMPOS DE CADA FILA DE LA TABLA */
@@ -233,10 +239,635 @@ function capturarDatos() {
 
 
 
+
+/* ==================== OBTENER RESULTADOS ==================== */
+function calcularResultado(i) {
+    const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
+    const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`);
+
+    const valControl = diagControl?.value || "";
+    const valMicro = diagMicro?.value || "";
+
+    let resultado = 0;
+
+    if (valControl === "" && valMicro === "") {
+        resultado = 0;
+    } else if (valControl === "2" && valMicro === "2") {
+        resultado = 10;
+    } else if (valControl !== "2" && valMicro !== "2" && valControl !== "" && valMicro !== "") {
+        resultado = 4;
+    } else {
+        resultado = 0;
+    }
+
+    // Guardar resultado en el objeto
+    resultados[i] = resultado;
+}
+
+
+
+function calcularSumaFiltrada(areaFiltro, fechaInicio, fechaFin) {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+    let sumaTotal = 0;
+
+    for (let i = 1; i <= total; i++) {
+        const fechaElem = document.getElementById(`fecha_${i}`);
+        const semanaElem = document.getElementById(`codigo_micro_${i}`);
+        //const resultadoElem = document.getElementById(`resultado_${i}`);
+
+        if (!fechaElem || !semanaElem) continue;
+
+        const fecha = new Date(fechaElem.value);
+        const fechaIni = new Date(fechaInicio);
+        const fechaFinD = new Date(fechaFin);
+        const semana = semanaElem.value.trim();
+        const resultado = resultados[i] || 0;
+
+        // Aplicar condiciones tipo SUMAR.SI.CONJUNTO
+        if (semana === areaFiltro &&
+            fecha >= fechaIni &&
+            fecha <= fechaFinD) {
+            sumaTotal += resultado;
+        }
+    }
+
+    return sumaTotal;
+}
+
+
+function obtenerResultados() {
+    const area = document.getElementById("codigo").value; // equivalente a F9
+    const desde = document.getElementById("fecha_inicio").value; // equivalente a M9
+    const hasta = document.getElementById("fecha_fin").value; // equivalente a S9
+    let total_laminas = document.getElementById("total_laminas").value;
+
+    let resultadosEspecie = calcularResultadoEspecie();
+    calcularResultadosRecuento(resultadosEspecie); // importante: primero calcula los recuentos
+
+    
+
+    const total = calcularSumaFiltrada(area, desde, hasta);
+    const totalEspecie = calcularSumaEspecieFiltrada(area, desde, hasta, resultadosEspecie); // nuevo total
+    const totalRecuento = calcularSumaRecuentoFiltrada(area, desde, hasta); // nuevo
+
+    const totalResultados = calcularResultadoControlMicroscopia();
+    const totalValorResultados = calcularValorResultado();
+    const totalNuevoResultadoEspecie = calcularNuevoResultadoEspecie();
+
+    const totalSumatoria = calcularTotalSumatoria(resultadosEspecie); // calcular la suma total de resultados
+
+    let puntuacion = (totalSumatoria/(total_laminas*10)) * 100; // calcular puntuación
+
+    let interpretacion = interpretacionResultado(puntuacion); // llamar a la función de interpretación
+
+    let porcentajeResult = porcentajeResultado(total, totalValorResultados);
+    let porcentajeEspe = porcentajeEspecie(totalEspecie, totalNuevoResultadoEspecie);
+    let porcentajeRecuen = porcentajeRecuento(totalRecuento, totalNuevoResultadoEspecie);
+
+    console.log("resultado_total: ", total); // mostrar resultado
+    console.log("resultado_especie: ", totalEspecie);
+    console.log("resultado_recuento: ", totalRecuento); // muestra nuevo resultado
+    console.log("resultado_recuento_total: ", totalResultados);
+    console.log("resultado_recuento_total_valor: ", totalValorResultados);
+    console.log("resultado_recuento_total_especie: ", totalNuevoResultadoEspecie);
+    console.log("resultado_total_sumatoria: ", totalSumatoria);
+    console.log("puntuacion: ", puntuacion);
+    console.log("interpretacion: ", interpretacion);
+
+    console.log("porcentajeResult: ", porcentajeResult);
+    console.log("porcentajeEspe: ", porcentajeEspe);
+    console.log("porcentajeRecuen: ", porcentajeRecuen);
+
+    $('#puntuacion').val(puntuacion);
+    $('#interpretacion').val(interpretacion);
+    $('#porcentajeResult').val(porcentajeResult);
+    $('#porcentajeEspe').val(porcentajeEspe);
+    $('#porcentajeRecuen').val(porcentajeRecuen);
+
+
+
+    let resultado = contarDiagnosticos(total_laminas);
+    
+    console.log("Negativas:", resultado.negativas);
+    console.log("Positivas:", resultado.positivas);
+    console.log("Positivas Concordantes:", resultado.positivasConcordantes);
+    console.log("Positivas Discordantes:", resultado.positivasDiscordantes);
+    console.log("Negativas Concordantes:", resultado.negativasConcordantes);
+    console.log("Negativas Discordantes:", resultado.negativasDiscordantes);
+
+    return {
+        area,
+        desde,
+        hasta,
+        total_laminas,
+        total,
+        totalEspecie,
+        totalRecuento,
+        totalResultados,
+        totalValorResultados,
+        totalNuevoResultadoEspecie,
+        totalSumatoria,
+        puntuacion,
+        interpretacion,
+        porcentajeResult,
+        porcentajeEspe,
+        porcentajeRecuen,
+        //diagnosticos, 
+        resultado
+    };
+
+}
+
+
+function porcentajeResultado(numerador, denominador) {
+    if (!denominador || denominador === 0) {
+        return "";
+    }
+    return (numerador / denominador) * 100;
+}
+
+function porcentajeEspecie(numerador, denominador) {
+    if (!denominador || denominador === 0) {
+        return "";
+    }
+    return (numerador / denominador) * 100;
+}
+
+function porcentajeRecuento(numerador, denominador) {
+    if (!denominador || denominador === 0) {
+        return "";
+    }
+    return (numerador / (denominador / 2)) * 100;
+}
+
+
+
+// ========================= calcular resultados especies 
+
+function calcularResultadoEspecie() {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+
+    let resultadosEspecie = {};
+
+    for (let i = 1; i <= total; i++) {
+
+        const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
+        const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`);
+
+        const valControl = diagControl?.value.trim() || "";
+        const valMicro = diagMicro?.value.trim() || "";
+
+        let resultado = 0;
+
+        if (valControl === "" && valMicro === "") {
+            resultado = 0;
+        } else if (valControl !== "2" && valMicro !== "2") {
+            if (
+                (valControl === "4" && valMicro === "3") ||
+                (valControl === "4" && valMicro === "1") ||
+                (valControl === "1" && valMicro === "4") ||
+                (valControl === "3" && valMicro === "4")
+            ) {
+                resultado = 2;
+            } else if (valControl === valMicro) {
+                resultado = 4;
+            } else {
+                resultado = 0;
+            }
+        } else {
+            resultado = 0;
+        }
+        resultadosEspecie[i] = resultado;
+    }
+
+
+    return resultadosEspecie;
+    
+}
+
+
+function calcularSumaEspecieFiltrada(areaFiltro, fechaInicio, fechaFin, resultadosEspecie) {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+    let sumaTotal = 0;
+
+    for (let i = 1; i <= total; i++) {
+        const fechaElem = document.getElementById(`fecha_${i}`);
+        const semanaElem = document.getElementById(`codigo_micro_${i}`);
+
+        if (!fechaElem || !semanaElem || !(i in resultadosEspecie)) continue;
+
+        const fecha = new Date(fechaElem.value);
+        const fechaIni = new Date(fechaInicio);
+        const fechaFinD = new Date(fechaFin);
+        const semana = semanaElem.value.trim();
+        const resultado = parseFloat(resultadosEspecie[i]) || 0;
+
+        if (semana === areaFiltro && fecha >= fechaIni && fecha <= fechaFinD) {
+            sumaTotal += resultado;
+        }
+    }
+
+    return sumaTotal;
+}
+
+
+// ========================= calcular resultados RV
+
+function calcularResultadoRV(i, resultadosEspecie) {
+    const diagnosticoCalidad = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value.trim();
+    const diagnosticoMicroscopista = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value.trim();
+    const recuentoControlVivax = parseFloat(document.getElementById(`recuento_control_vivax_${i}`)?.value) || 0;
+    const recuentoControlFalciparum = document.getElementById(`recuento_control_falciparum_${i}`)?.value.trim();
+    const recuentoMicroscopistaVivax = parseFloat(document.getElementById(`recuento_microscopista_vivax_${i}`)?.value) || 0;
+    const recuentoMicroscopistaFalciparum = document.getElementById(`recuento_microscopista_falciparum_${i}`)?.value.trim();
+    const resultadoEspecie = parseFloat(resultadosEspecie[i]) || 0;
+
+    let total = 0;
+
+    /*
+    if (diagnosticoCalidad === "1" && diagnosticoMicroscopista === "1") {
+        total += 1;
+    }
+    */
+
+    // Ambos "V" (3) o "VF" (4) con resultado especie = 4 y Q13 >= 50
+    if (
+        resultadoEspecie === 4 &&
+        ["1", "4"].includes(diagnosticoCalidad) &&
+        ["1", "4"].includes(diagnosticoMicroscopista) &&
+        recuentoControlFalciparum >= 50
+    ){
+        const min = recuentoControlVivax - (recuentoControlVivax * 0.25);
+        const max = recuentoControlVivax + (recuentoControlVivax * 0.25);
+
+        if (recuentoMicroscopistaVivax >= min && recuentoMicroscopistaVivax <= max) {
+            total += 1;
+        }
+    }
+
+    // Ambos "V" con Q13 < 50 y U13 <= 75
+    if (
+        diagnosticoCalidad === "3" &&
+        diagnosticoMicroscopista === "3" &&
+        recuentoControlVivax < 50 &&
+        recuentoMicroscopistaVivax <= 75
+    ) {
+        total += 1;
+    }
+
+    // Ambos "VF" con Q13 < 50 y U13 <= 75
+    if (
+        diagnosticoCalidad === "4" &&
+        diagnosticoMicroscopista === "4" &&
+        recuentoControlVivax < 50 &&
+        recuentoMicroscopistaVivax <= 75
+    ) {
+        total += 1;
+    }
+
+    // Ambos "V" y recuentos de falciparum vacíos
+    if (
+        diagnosticoCalidad === "3" &&
+        diagnosticoMicroscopista === "3" &&
+        recuentoControlFalciparum === "" &&
+        recuentoMicroscopistaFalciparum === ""
+    ) {
+        total += 1;
+    }
+
+    //resultadosRV[i] = total;
+    return total; // Cambié esto para que devuelva el total directamente
+}
+
+
+
+// ========================= calcular resultados RF
+
+function calcularResultadoRF(i, resultadosEspecie) {
+
+    const diagnosticoCalidad = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value.trim();
+    const diagnosticoMicroscopista = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value.trim();
+    const recuentoControlFalciparumInput = document.getElementById(`recuento_control_falciparum_${i}`);
+    const recuentoMicroscopistaFalciparumInput = document.getElementById(`recuento_microscopista_falciparum_${i}`);
+
+    const recuentoControlFalciparum = parseFloat(recuentoControlFalciparumInput?.value) || 0;
+    const recuentoMicroscopistaFalciparum = parseFloat(recuentoMicroscopistaFalciparumInput?.value) || 0;
+
+    const recuentoControlFalciparumVacio = !recuentoControlFalciparumInput?.value;
+    const recuentoMicroscopistaFalciparumVacio = !recuentoMicroscopistaFalciparumInput?.value;
+
+    const resultadoEspecie = parseFloat(resultadosEspecie[i]) || 0;
+    let total = 0;
+
+    // Condición 1: resultadoEspecie = 4 y diagnósticos válidos con Q >= 50 y U dentro del 25%
+    if (
+        resultadoEspecie === 4 &&
+        ["1"].includes(diagnosticoCalidad) &&
+        ["1"].includes(diagnosticoMicroscopista) &&
+        recuentoControlFalciparum >= 50
+    ) {
+        const min = recuentoControlFalciparum * 0.75;
+        const max = recuentoControlFalciparum * 1.25;
+
+        if (recuentoMicroscopistaFalciparum >= min && recuentoMicroscopistaFalciparum <= max) {
+            total += 1;
+        }
+    }
+
+    // Condición 2: ambos F, Q < 50, U <= 75
+    if (
+        diagnosticoCalidad === "1" &&
+        diagnosticoMicroscopista === "1" &&
+        recuentoControlFalciparum < 50 &&
+        recuentoMicroscopistaFalciparum <= 75
+    ) {
+        total += 1;
+    }
+
+    // Condición 3: ambos VF, Q < 50, U <= 75
+    if (
+        diagnosticoCalidad === "4" &&
+        diagnosticoMicroscopista === "4" &&
+        recuentoControlFalciparum < 50 &&
+        recuentoMicroscopistaFalciparum <= 75
+    ) {
+        total += 1;
+    }
+
+    // Condición 4: ambos F y Q y U vacíos
+    if (
+        diagnosticoCalidad === "1" &&
+        diagnosticoMicroscopista === "1" &&
+        recuentoControlFalciparumVacio &&
+        recuentoMicroscopistaFalciparumVacio
+    ) {
+        total += 1;
+    }
+
+    return total;
+}
+
+
+
+
+
+const resultadosRecuento = [];
+const resultadosRecuento2 = [];
+
+function calcularResultadosRecuento(resultadosEspecie) {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+
+    for (let i = 1; i <= total; i++) {
+        const rv = calcularResultadoRV(i, resultadosEspecie); // deberías tener esta función
+        console.log('rv: ' + rv);
+        const rf = calcularResultadoRF(i, resultadosEspecie); // deberías tener esta función
+        console.log('rf: ' + rf);
+        const suma = rv + rf;
+        resultadosRecuento[i] = (suma === 2) ? 2 : suma;
+    }
+    console.log(resultadosRecuento);
+}
+
+
+
+function calcularSumaRecuentoFiltrada(areaFiltro, fechaInicio, fechaFin) {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+    let sumaTotal = 0;
+
+    for (let i = 1; i <= total; i++) {
+        const fechaElem = document.getElementById(`fecha_${i}`);
+        const areaElem = document.getElementById(`codigo_micro_${i}`);
+
+        if (!fechaElem || !areaElem || !(i in resultadosRecuento)) continue;
+
+        const fecha = new Date(fechaElem.value);
+        const fechaIni = new Date(fechaInicio);
+        const fechaFinD = new Date(fechaFin);
+        const codigo = areaElem.value.trim();
+        const resultado = parseFloat(resultadosRecuento[i]) || 0;
+
+        if (codigo === areaFiltro && fecha >= fechaIni && fecha <= fechaFinD) {
+            sumaTotal += resultado;
+        }
+    }
+
+    return sumaTotal;
+}
+
+
+
+
+
+// ========================= calcular resultados
+
+function calcularResultados1(i) {
+    const diagnosticoCalidad = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value.trim();
+
+    if (["1", "3", "4"].includes(diagnosticoCalidad)) {
+        return 1;
+    } else {
+        return "-";
+    }
+}
+
+
+function calcularResultados2(i) {
+    const diagnosticoCalidad = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value.trim();
+
+    if (["1", "3", "4"].includes(diagnosticoCalidad)) {
+        return 1;
+    } else {
+        return "-";
+    }
+}
+
+
+function calcularResultadosRecuento2() {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+
+    for (let i = 1; i <= total; i++) {
+        const result1 = calcularResultados1(i); // deberías tener esta función
+        console.log('rv: ' + result1);
+        const result2 = calcularResultados2(i); // deberías tener esta función
+        console.log('rf: ' + result2);
+        let suma = result1 + result2;
+        resultadosRecuento2[i] = (suma === 2) ? 2 : suma;
+    }
+    console.log(resultadosRecuento2);
+}
+
+
+
+// ========================= calcular resultados
+function calcularResultadoControlMicroscopia() {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+    let sumaResultados = 0;
+
+    for (let i = 1; i <= total; i++) {
+        const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
+        const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`);
+
+        const valControl = diagControl?.value || "";
+        const valMicro = diagMicro?.value || "";
+
+        // Evaluar combinaciones equivalentes a la fórmula Excel
+        if (
+            (valControl === "4" && valMicro === "3") || // VF y V
+            (valControl === "4" && valMicro === "1") || // VF y F
+            (valControl === "1" && valMicro === "4") || // F y VF
+            (valControl === "3" && valMicro === "4") || // V y VF
+            (valControl === "1" && valMicro === "3") || // F y V
+            (valControl === "3" && valMicro === "1") || // V y F
+            (valControl !== "" && valControl === valMicro) // Iguales y no vacíos
+        ) {
+            sumaResultados += 1;
+        }
+    }
+
+    return sumaResultados;
+}
+
+
+function calcularValorResultado() {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+    let sumaTotal = 0;
+
+    for (let i = 1; i <= total; i++) {
+        const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
+        const valControl = diagControl?.value || "";
+
+        if (valControl === "") {
+            sumaTotal += 0;
+        } else if (valControl === "2") { // "N - Negativo" tiene valor "2"
+            sumaTotal += 10;
+        } else {
+            sumaTotal += 4;
+        }
+    }
+
+    return sumaTotal;
+}
+
+
+function calcularNuevoResultadoEspecie() {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+    let sumaTotal = 0;
+
+    for (let i = 1; i <= total; i++) {
+        const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
+        const valControl = diagControl?.value || "";
+
+        let resultadoAnterior = 0;
+
+        // Cálculo original
+        if (valControl === "") {
+            resultadoAnterior = 0;
+        } else if (valControl === "2") { // "N - Negativo"
+            resultadoAnterior = 10;
+        } else {
+            resultadoAnterior = 4;
+        }
+
+        // Nueva fórmula: =SI(AK13=4;4;0)
+        if (resultadoAnterior === 4) {
+            sumaTotal += 4;
+        } else {
+            sumaTotal += 0;
+        }
+    }
+
+    return sumaTotal;
+}
+
+
+
+function calcularTotalSumatoria(resultadosEspecie) {
+    let total = 0;
+    let total_laminas = parseInt(document.getElementById("total_laminas").value) || 0;
+
+    // Sumar todos los valores del arreglo resultado
+    for (let i = 1; i <= total_laminas; i++) {
+        total += parseFloat(resultados[i]) || 0;
+        total += parseFloat(resultadosEspecie[i]) || 0;
+        total += parseFloat(resultadosRecuento[i]) || 0;
+    }
+    return total;
+}
+
+
+function interpretacionResultado(valor) {
+    if (valor >= 90) {
+        return "Excelente";
+    } else if (valor >= 80 && valor <= 89) {
+        return "Muy Bueno";
+    } else if (valor >= 70 && valor <= 79) {
+        return "Bueno";
+    } else {
+        return "Pobre";
+    }
+}
+
+
+
+function contarDiagnosticos(total) {
+    let totalNegativas = 0;
+    let totalPositivas = 0;
+
+    let positivasConcordantes = 0;
+    let positivasDiscordantes = 0;
+    let negativasConcordantes = 0;
+    let negativasDiscordantes = 0;
+
+    const positivos = ["1", "3", "4"];
+
+    for (let i = 1; i <= total; i++) {
+        const diagCalidad = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value;
+        const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value;
+
+        // Contar positivas y negativas (basado solo en calidad)
+        if (diagCalidad === "2") {
+            totalNegativas++;
+        } else if (diagCalidad !== "") {
+            totalPositivas++;
+        }
+
+        // Clasificaciones
+        if (positivos.includes(diagCalidad) && positivos.includes(diagMicro)) {
+            positivasConcordantes++;
+        }
+
+        if (positivos.includes(diagCalidad) && diagMicro === "2") {
+            positivasDiscordantes++;
+        }
+
+        if (diagCalidad === "2" && diagMicro === "2") {
+            negativasConcordantes++;
+        }
+
+        if (diagCalidad === "2" && positivos.includes(diagMicro)) {
+            negativasDiscordantes++;
+        }
+    }
+
+    return {
+        negativas: totalNegativas,
+        positivas: totalPositivas,
+        positivasConcordantes,
+        positivasDiscordantes,
+        negativasConcordantes,
+        negativasDiscordantes
+    };
+}
+
+
+
+
+
+
+
 document.addEventListener('DOMContentLoaded', function () {
 
-    const resultados = {};
-    const resultadosEspecie = {};
+    //const resultadosEspecie = {};
 
     const resultadosRV = {};
     const resultadosRF = {};
@@ -302,19 +933,46 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // Asociar los eventos a los selects para cálculo dinámico
         for (let i = 1; i <= total; i++) {
-            const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
-            const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`);
+            let diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
+            let diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`);
+
+            let fecha                             = document.querySelector(`[name="fecha_${i}"]`);
+            let semana                            = document.querySelector(`[name="semana_${i}"]`);
+            let codigo_micro                      = document.querySelector(`[name="codigo_micro_${i}"]`);
+            let num_lamina                        = document.querySelector(`[name="num_lamina_${i}"]`);
+
+            let recuento_control_vivax            = document.querySelector(`[name="recuento_control_vivax_${i}"]`);
+            let recuento_control_falciparum       = document.querySelector(`[name="recuento_control_falciparum_${i}"]`);
+            let presencia_control                 = document.querySelector(`[name="presencia_control_${i}"]`);
+            let recuento_microscopista_vivax      = document.querySelector(`[name="recuento_microscopista_vivax_${i}"]`);
+            let recuento_microscopista_falciparum = document.querySelector(`[name="recuento_microscopista_falciparum_${i}"]`);
+            let presencia_microscopista           = document.querySelector(`[name="presencia_microscopista_${i}"]`);
 
             if (diagControl && diagMicro) {
+
+                fecha.addEventListener("change", () => obtenerResultados());
+                semana.addEventListener("change", () => obtenerResultados());
+                codigo_micro.addEventListener("change", () => obtenerResultados());
+                num_lamina.addEventListener("change", () => obtenerResultados());
+
+                recuento_control_vivax.addEventListener("change", () => obtenerResultados());
+                recuento_control_falciparum.addEventListener("change", () => obtenerResultados());
+                presencia_control.addEventListener("change", () => obtenerResultados());
+                recuento_microscopista_vivax.addEventListener("change", () => obtenerResultados());
+                recuento_microscopista_falciparum.addEventListener("change", () => obtenerResultados());
+                presencia_microscopista.addEventListener("change", () => obtenerResultados());
+
+                diagControl.addEventListener("change", () => obtenerResultados());
+                diagMicro.addEventListener("change", () => obtenerResultados());
+
                 diagControl.addEventListener("change", () => calcularResultado(i));
                 diagMicro.addEventListener("change", () => calcularResultado(i));
 
-                diagControl.addEventListener("change", () => calcularResultadoEspecie(i));
-                diagMicro.addEventListener("change", () => calcularResultadoEspecie(i));
+                //diagControl.addEventListener("change", () => calcularResultadoEspecie(i));
+                //diagMicro.addEventListener("change", () => calcularResultadoEspecie(i));
 
-
-                diagControl.addEventListener("change", () => calcularResultadoRV(i));
-                diagMicro.addEventListener("change", () => calcularResultadoRV(i));
+                //diagControl.addEventListener("change", () => calcularResultadoRV(i));
+                //diagMicro.addEventListener("change", () => calcularResultadoRV(i));
 
                 //diagControl.addEventListener("change", () => calcularResultadoRF(i));
                 //diagMicro.addEventListener("change", () => calcularResultadoRF(i));
@@ -323,520 +981,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }
     });
-
-
-    function calcularResultado(i) {
-        const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
-        const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`);
-
-        const valControl = diagControl?.value || "";
-        const valMicro = diagMicro?.value || "";
-
-        let resultado = 0;
-
-        if (valControl === "" && valMicro === "") {
-            resultado = 0;
-        } else if (valControl === "2" && valMicro === "2") {
-            resultado = 10;
-        } else if (valControl !== "2" && valMicro !== "2" && valControl !== "" && valMicro !== "") {
-            resultado = 4;
-        } else {
-            resultado = 0;
-        }
-
-        // Guardar resultado en el objeto
-        resultados[i] = resultado;
-    }
-
-
-
-    function calcularSumaFiltrada(areaFiltro, fechaInicio, fechaFin) {
-        const total = parseInt(document.getElementById("total_laminas").value) || 0;
-        let sumaTotal = 0;
-
-        for (let i = 1; i <= total; i++) {
-            const fechaElem = document.getElementById(`fecha_${i}`);
-            const semanaElem = document.getElementById(`codigo_micro_${i}`);
-            //const resultadoElem = document.getElementById(`resultado_${i}`);
-
-            if (!fechaElem || !semanaElem) continue;
-
-            const fecha = new Date(fechaElem.value);
-            const fechaIni = new Date(fechaInicio);
-            const fechaFinD = new Date(fechaFin);
-            const semana = semanaElem.value.trim();
-            const resultado = resultados[i] || 0;
-
-            // Aplicar condiciones tipo SUMAR.SI.CONJUNTO
-            if (semana === areaFiltro &&
-                fecha >= fechaIni &&
-                fecha <= fechaFinD) {
-                sumaTotal += resultado;
-            }
-        }
-
-        return sumaTotal;
-    }
-
-
-    document.getElementById("calcular_suma").addEventListener("click", function () {
-        const area = document.getElementById("codigo").value; // equivalente a F9
-        const desde = document.getElementById("fecha_inicio").value; // equivalente a M9
-        const hasta = document.getElementById("fecha_fin").value; // equivalente a S9
-        let total_laminas = document.getElementById("total_laminas").value;
-
-        calcularResultadosRecuento(); // importante: primero calcula los recuentos
-
-        const total = calcularSumaFiltrada(area, desde, hasta);
-        const totalEspecie = calcularSumaEspecieFiltrada(area, desde, hasta); // nuevo total
-        const totalRecuento = calcularSumaRecuentoFiltrada(area, desde, hasta); // nuevo
-
-        const totalResultados = calcularResultadoControlMicroscopia();
-        const totalValorResultados = calcularValorResultado();
-        const totalNuevoResultadoEspecie = calcularNuevoResultadoEspecie();
-
-        const totalSumatoria = calcularTotalSumatoria(); // calcular la suma total de resultados
-
-        let puntuacion = (totalSumatoria/(total_laminas*10)) * 100; // calcular puntuación
-
-        let interpretacion = interpretacionResultado(puntuacion); // llamar a la función de interpretación
-
-        let porcentajeResult = porcentajeResultado(total, totalValorResultados);
-        let porcentajeEspe = porcentajeEspecie(totalEspecie, totalNuevoResultadoEspecie);
-        let porcentajeRecuen = porcentajeRecuento(totalRecuento, totalNuevoResultadoEspecie);
-
-        document.getElementById("resultado_total").value = total; // mostrar resultado
-        document.getElementById("resultado_especie").value = totalEspecie;
-        document.getElementById("resultado_recuento").value = totalRecuento; // muestra nuevo resultado
-        document.getElementById("resultado_recuento_total").value = totalResultados;
-        document.getElementById("resultado_recuento_total_valor").value = totalValorResultados;
-        document.getElementById("resultado_recuento_total_especie").value = totalNuevoResultadoEspecie;
-        document.getElementById("resultado_total_sumatoria").value = totalSumatoria;
-        document.getElementById("puntuacion").value = puntuacion;
-        document.getElementById("interpretacion").value = interpretacion;
-
-        document.getElementById("porcentajeResult").value = porcentajeResult;
-        document.getElementById("porcentajeEspe").value = porcentajeEspe;
-        document.getElementById("porcentajeRecuen").value = porcentajeRecuen;
-
-    });
-
-
-    function porcentajeResultado(numerador, denominador) {
-        if (!denominador || denominador === 0) {
-            return "";
-        }
-        return (numerador / denominador) * 100;
-    }
-
-    function porcentajeEspecie(numerador, denominador) {
-        if (!denominador || denominador === 0) {
-            return "";
-        }
-        return (numerador / denominador) * 100;
-    }
-
-    function porcentajeRecuento(numerador, denominador) {
-        if (!denominador || denominador === 0) {
-            return "";
-        }
-        return (numerador / (denominador / 2)) * 100;
-    }
     
-
-
-    // ========================= calcular resultados especies 
-
-    function calcularResultadoEspecie(i) {
-        const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
-        const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`);
-
-        const valControl = diagControl?.value.trim() || "";
-        const valMicro = diagMicro?.value.trim() || "";
-
-        let resultado = 0;
-
-        if (valControl === "" && valMicro === "") {
-            resultado = 0;
-        } else if (valControl !== "2" && valMicro !== "2") {
-            if (
-                (valControl === "4" && valMicro === "3") ||
-                (valControl === "4" && valMicro === "1") ||
-                (valControl === "1" && valMicro === "4") ||
-                (valControl === "3" && valMicro === "4")
-            ) {
-                resultado = 2;
-            } else if (valControl === valMicro) {
-                resultado = 4;
-            } else {
-                resultado = 0;
-            }
-        } else {
-            resultado = 0;
-        }
-
-        resultadosEspecie[i] = resultado;
-    }
-
-
-    function calcularSumaEspecieFiltrada(areaFiltro, fechaInicio, fechaFin) {
-        const total = parseInt(document.getElementById("total_laminas").value) || 0;
-        let sumaTotal = 0;
-
-        for (let i = 1; i <= total; i++) {
-            const fechaElem = document.getElementById(`fecha_${i}`);
-            const semanaElem = document.getElementById(`codigo_micro_${i}`);
-
-            if (!fechaElem || !semanaElem || !(i in resultadosEspecie)) continue;
-
-            const fecha = new Date(fechaElem.value);
-            const fechaIni = new Date(fechaInicio);
-            const fechaFinD = new Date(fechaFin);
-            const semana = semanaElem.value.trim();
-            const resultado = parseFloat(resultadosEspecie[i]) || 0;
-
-            if (semana === areaFiltro && fecha >= fechaIni && fecha <= fechaFinD) {
-                sumaTotal += resultado;
-            }
-        }
-
-        return sumaTotal;
-    }
-
-
-    // ========================= calcular resultados RV
-
-    function calcularResultadoRV(i) {
-        const diagnosticoCalidad = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value.trim();
-        const diagnosticoMicroscopista = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value.trim();
-        const recuentoControlVivax = parseFloat(document.getElementById(`recuento_control_vivax_${i}`)?.value) || 0;
-        const recuentoControlFalciparum = document.getElementById(`recuento_control_falciparum_${i}`)?.value.trim();
-        const recuentoMicroscopistaVivax = parseFloat(document.getElementById(`recuento_microscopista_vivax_${i}`)?.value) || 0;
-        const recuentoMicroscopistaFalciparum = document.getElementById(`recuento_microscopista_falciparum_${i}`)?.value.trim();
-        const resultadoEspecie = parseFloat(resultadosEspecie[i]) || 0;
-
-        let total = 0;
-
-        // Ambos "V" (3) o "VF" (4) con resultado especie = 4 y Q13 >= 50
-        if (
-            resultadoEspecie === 4 &&
-            ["3", "4"].includes(diagnosticoCalidad) &&
-            ["3", "4"].includes(diagnosticoMicroscopista) &&
-            recuentoControlVivax >= 50
-        ) {
-            const min = recuentoControlVivax - (recuentoControlVivax * 0.25);
-            const max = recuentoControlVivax + (recuentoControlVivax * 0.25);
-
-            if (recuentoMicroscopistaVivax >= min && recuentoMicroscopistaVivax <= max) {
-                total += 1;
-            }
-        }
-
-        // Ambos "V" con Q13 < 50 y U13 <= 75
-        if (
-            diagnosticoCalidad === "3" &&
-            diagnosticoMicroscopista === "3" &&
-            recuentoControlVivax < 50 &&
-            recuentoMicroscopistaVivax <= 75
-        ) {
-            total += 1;
-        }
-
-        // Ambos "VF" con Q13 < 50 y U13 <= 75
-        if (
-            diagnosticoCalidad === "4" &&
-            diagnosticoMicroscopista === "4" &&
-            recuentoControlVivax < 50 &&
-            recuentoMicroscopistaVivax <= 75
-        ) {
-            total += 1;
-        }
-
-        // Ambos "V" y recuentos de falciparum vacíos
-        if (
-            diagnosticoCalidad === "3" &&
-            diagnosticoMicroscopista === "3" &&
-            recuentoControlFalciparum === "" &&
-            recuentoMicroscopistaFalciparum === ""
-        ) {
-            total += 1;
-        }
-
-        //resultadosRV[i] = total;
-        return total; // Cambié esto para que devuelva el total directamente
-    }
-
-
-
-    // ========================= calcular resultados RF
-
-    function calcularResultadoRF(i) {
-
-        const diagnosticoCalidad = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value.trim();
-        const diagnosticoMicroscopista = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value.trim();
-        const recuentoControlFalciparumInput = document.getElementById(`recuento_control_falciparum_${i}`);
-        const recuentoMicroscopistaFalciparumInput = document.getElementById(`recuento_microscopista_falciparum_${i}`);
-
-        const recuentoControlFalciparum = parseFloat(recuentoControlFalciparumInput?.value) || 0;
-        const recuentoMicroscopistaFalciparum = parseFloat(recuentoMicroscopistaFalciparumInput?.value) || 0;
-
-        const recuentoControlFalciparumVacio = !recuentoControlFalciparumInput?.value;
-        const recuentoMicroscopistaFalciparumVacio = !recuentoMicroscopistaFalciparumInput?.value;
-
-        const resultadoEspecie = parseFloat(resultadosEspecie[i]) || 0;
-        let total = 0;
-
-        // Condición 1: resultadoEspecie = 4 y diagnósticos válidos con Q >= 50 y U dentro del 25%
-        if (
-            resultadoEspecie === 4 &&
-            ["1", "4"].includes(diagnosticoCalidad) &&
-            ["1", "4"].includes(diagnosticoMicroscopista) &&
-            recuentoControlFalciparum >= 50
-        ) {
-            const min = recuentoControlFalciparum * 0.75;
-            const max = recuentoControlFalciparum * 1.25;
-
-            if (recuentoMicroscopistaFalciparum >= min && recuentoMicroscopistaFalciparum <= max) {
-                total += 1;
-            }
-        }
-
-        // Condición 2: ambos F, Q < 50, U <= 75
-        if (
-            diagnosticoCalidad === "1" &&
-            diagnosticoMicroscopista === "1" &&
-            recuentoControlFalciparum < 50 &&
-            recuentoMicroscopistaFalciparum <= 75
-        ) {
-            total += 1;
-        }
-
-        // Condición 3: ambos VF, Q < 50, U <= 75
-        if (
-            diagnosticoCalidad === "4" &&
-            diagnosticoMicroscopista === "4" &&
-            recuentoControlFalciparum < 50 &&
-            recuentoMicroscopistaFalciparum <= 75
-        ) {
-            total += 1;
-        }
-
-        // Condición 4: ambos F y Q y U vacíos
-        if (
-            diagnosticoCalidad === "1" &&
-            diagnosticoMicroscopista === "1" &&
-            recuentoControlFalciparumVacio &&
-            recuentoMicroscopistaFalciparumVacio
-        ) {
-            total += 1;
-        }
-
-        return total;
-    }
-
-
-
-
-
-    const resultadosRecuento = [];
-    const resultadosRecuento2 = [];
-
-    function calcularResultadosRecuento() {
-        const total = parseInt(document.getElementById("total_laminas").value) || 0;
-
-        for (let i = 1; i <= total; i++) {
-            const rv = calcularResultadoRV(i); // deberías tener esta función
-            console.log('rv: ' + rv);
-            const rf = calcularResultadoRF(i); // deberías tener esta función
-            console.log('rf: ' + rf);
-            const suma = rv + rf;
-            resultadosRecuento[i] = (suma === 2) ? 2 : suma;
-        }
-        console.log(resultadosRecuento);
-    }
-
-
-
-    function calcularSumaRecuentoFiltrada(areaFiltro, fechaInicio, fechaFin) {
-        const total = parseInt(document.getElementById("total_laminas").value) || 0;
-        let sumaTotal = 0;
-
-        for (let i = 1; i <= total; i++) {
-            const fechaElem = document.getElementById(`fecha_${i}`);
-            const areaElem = document.getElementById(`codigo_micro_${i}`);
-
-            if (!fechaElem || !areaElem || !(i in resultadosRecuento)) continue;
-
-            const fecha = new Date(fechaElem.value);
-            const fechaIni = new Date(fechaInicio);
-            const fechaFinD = new Date(fechaFin);
-            const codigo = areaElem.value.trim();
-            const resultado = parseFloat(resultadosRecuento[i]) || 0;
-
-            if (codigo === areaFiltro && fecha >= fechaIni && fecha <= fechaFinD) {
-                sumaTotal += resultado;
-            }
-        }
-
-        return sumaTotal;
-    }
-
-
-
-
-
-    // ========================= calcular resultados
-
-    function calcularResultados1(i) {
-        const diagnosticoCalidad = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value.trim();
-
-        if (["1", "3", "4"].includes(diagnosticoCalidad)) {
-            return 1;
-        } else {
-            return "-";
-        }
-    }
-
-
-    function calcularResultados2(i) {
-        const diagnosticoCalidad = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value.trim();
-
-        if (["1", "3", "4"].includes(diagnosticoCalidad)) {
-            return 1;
-        } else {
-            return "-";
-        }
-    }
-
-
-    function calcularResultadosRecuento2() {
-        const total = parseInt(document.getElementById("total_laminas").value) || 0;
-
-        for (let i = 1; i <= total; i++) {
-            const result1 = calcularResultados1(i); // deberías tener esta función
-            console.log('rv: ' + result1);
-            const result2 = calcularResultados2(i); // deberías tener esta función
-            console.log('rf: ' + result2);
-            let suma = result1 + result2;
-            resultadosRecuento2[i] = (suma === 2) ? 2 : suma;
-        }
-        console.log(resultadosRecuento2);
-    }
-
-
-
-    // ========================= calcular resultados
-    function calcularResultadoControlMicroscopia() {
-        const total = parseInt(document.getElementById("total_laminas").value) || 0;
-        let sumaResultados = 0;
-
-        for (let i = 1; i <= total; i++) {
-            const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
-            const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`);
-
-            const valControl = diagControl?.value || "";
-            const valMicro = diagMicro?.value || "";
-
-            // Evaluar combinaciones equivalentes a la fórmula Excel
-            if (
-                (valControl === "4" && valMicro === "3") || // VF y V
-                (valControl === "4" && valMicro === "1") || // VF y F
-                (valControl === "1" && valMicro === "4") || // F y VF
-                (valControl === "3" && valMicro === "4") || // V y VF
-                (valControl === "1" && valMicro === "3") || // F y V
-                (valControl === "3" && valMicro === "1") || // V y F
-                (valControl !== "" && valControl === valMicro) // Iguales y no vacíos
-            ) {
-                sumaResultados += 1;
-            }
-        }
-
-        return sumaResultados;
-    }
-
-
-    function calcularValorResultado() {
-        const total = parseInt(document.getElementById("total_laminas").value) || 0;
-        let sumaTotal = 0;
-
-        for (let i = 1; i <= total; i++) {
-            const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
-            const valControl = diagControl?.value || "";
-
-            if (valControl === "") {
-                sumaTotal += 0;
-            } else if (valControl === "2") { // "N - Negativo" tiene valor "2"
-                sumaTotal += 10;
-            } else {
-                sumaTotal += 4;
-            }
-        }
-
-        return sumaTotal;
-    }
-
-
-    function calcularNuevoResultadoEspecie() {
-        const total = parseInt(document.getElementById("total_laminas").value) || 0;
-        let sumaTotal = 0;
-
-        for (let i = 1; i <= total; i++) {
-            const diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
-            const valControl = diagControl?.value || "";
-
-            let resultadoAnterior = 0;
-
-            // Cálculo original
-            if (valControl === "") {
-                resultadoAnterior = 0;
-            } else if (valControl === "2") { // "N - Negativo"
-                resultadoAnterior = 10;
-            } else {
-                resultadoAnterior = 4;
-            }
-
-            // Nueva fórmula: =SI(AK13=4;4;0)
-            if (resultadoAnterior === 4) {
-                sumaTotal += 4;
-            } else {
-                sumaTotal += 0;
-            }
-        }
-
-        return sumaTotal;
-    }
-
-
-
-    function calcularTotalSumatoria() {
-        let total = 0;
-        let total_laminas = parseInt(document.getElementById("total_laminas").value) || 0;
-
-        // Sumar todos los valores del arreglo resultado
-        for (let i = 1; i <= total_laminas; i++) {
-            total += parseFloat(resultados[i]) || 0;
-            total += parseFloat(resultadosEspecie[i]) || 0;
-            total += parseFloat(resultadosRecuento[i]) || 0;
-        }
-        return total;
-    }
-
-
-    function interpretacionResultado(valor) {
-        if (valor >= 90) {
-            return "Excelente";
-        } else if (valor >= 80 && valor <= 89) {
-            return "Muy Bueno";
-        } else if (valor >= 70 && valor <= 79) {
-            return "Bueno";
-        } else {
-            return "Pobre";
-        }
-    }
-    
-
-
-
 
 });
 

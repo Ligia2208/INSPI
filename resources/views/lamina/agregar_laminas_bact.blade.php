@@ -10,11 +10,33 @@
 
 @section('content')
 
-<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader" style="" kt-hidden-height="54">
+<div class="subheader py-2 py-lg-4 subheader-solid" id="kt_subheader" style="height: 95px;" kt-hidden-height="54">
     <div class="container-fluid d-flex align-items-center justify-content-between flex-wrap flex-sm-nowrap">
         <div class="d-flex align-items-center flex-wrap mr-1">
             <div class="d-flex align-items-baseline mr-5">
                 <a href="#"><h5 class="text-dark font-weight-bold my-2 mr-5">Desglose de Láminas</h5></a>
+            </div>
+            <div class="row">
+                <div class="mb-2 col-lg-2">
+                    <label for="puntuacion" class="form-label">Puntuación</label>
+                    <input type="text" id="puntuacion" class="form-control" disabled="" readonly="">
+                </div>
+                <div class="mb-2 col-lg-2">
+                    <label for="interpretacion" class="form-label">Interpretación</label>
+                    <input type="text" id="interpretacion" class="form-control" disabled="" readonly="">
+                </div>
+                <div class="mb-2 col-lg-2">
+                    <label for="porcentajeResult" class="form-label">Porcentaje Resultado</label>
+                    <input type="text" id="porcentajeResult" class="form-control" disabled="" readonly="">
+                </div>
+                <div class="mb-2 col-lg-2">
+                    <label for="porcentajeEspe" class="form-label">Porcentaje Especie</label>
+                    <input type="text" id="porcentajeEspe" class="form-control" disabled="" readonly="">
+                </div>
+                <div class="mb-2 col-lg-2">
+                    <label for="porcentajeRecuen" class="form-label">Porcentaje Recuento</label>
+                    <input type="text" id="porcentajeRecuen" class="form-control" disabled="" readonly="">
+                </div>
             </div>
         </div>
     </div>
@@ -28,7 +50,7 @@
 
             <hr/>
 
-            <div class="card">
+            <div class="card card-custom card-sticky" id="kt_page_sticky_card">
 
                 <div class="card-head">
                     <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
@@ -125,21 +147,13 @@
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-
-                            <button id="calcular_suma">Calcular Suma</button>
-                            <input type="text" id="resultado_total" class="form-control" disabled placeholder="Total Resultado" readonly>
-                            <input type="text" id="resultado_especie" class="form-control" disabled placeholder="Total Resultado Especie"> 
-                            <input type="text" id="resultado_recuento" class="form-control" disabled placeholder="Total Resultado Recuento">
-                            <input type="text" id="resultado_recuento_total" class="form-control" disabled placeholder="Total Resultado Recuento Total">
-                            <input type="text" id="resultado_recuento_total_valor" class="form-control" disabled placeholder="Total Resultado Recuento Valor">
-                            <input type="text" id="resultado_recuento_total_especie" class="form-control" disabled placeholder="Total Resultado Recuento Especie">
-                            <input type="text" id="resultado_total_sumatoria" class="form-control" disabled placeholder="Total Resultado Sumatoria">
-                            <input type="text" id="puntuacion" class="form-control" disabled placeholder="Puntuación" readonly>
-                            <input type="text" id="interpretacion" class="form-control" disabled placeholder="Interpretacion" readonly>
-
-                            <input type="text" id="porcentajeResult" class="form-control" disabled placeholder="Porcentaje Resultado" readonly>
-                            <input type="text" id="porcentajeEspe" class="form-control" disabled placeholder="Porcentaje Especie" readonly>
-                            <input type="text" id="porcentajeRecuen" class="form-control" disabled placeholder="Porcentaje Recuento" readonly>
+                            <input type="text" id="resultado_total" class="form-control" disabled placeholder="Total Resultado" hidden>
+                            <input type="text" id="resultado_especie" class="form-control" disabled placeholder="Total Resultado Especie" hidden> 
+                            <input type="text" id="resultado_recuento" class="form-control" disabled placeholder="Total Resultado Recuento" hidden>
+                            <input type="text" id="resultado_recuento_total" class="form-control" disabled placeholder="Total Resultado Recuento Total" hidden>
+                            <input type="text" id="resultado_recuento_total_valor" class="form-control" disabled placeholder="Total Resultado Recuento Valor" hidden>
+                            <input type="text" id="resultado_recuento_total_especie" class="form-control" disabled placeholder="Total Resultado Recuento Especie" hidden>
+                            <input type="text" id="resultado_total_sumatoria" class="form-control" disabled placeholder="Total Resultado Sumatoria" hidden>
                             
                         </div>
                     </div>
@@ -250,6 +264,7 @@
 
                     </div>
                 </div>
+
 
                 <div id="resultados-container" class="mt-4">
                     <!-- Aquí se agregarán los inputs resultado dinámicamente -->

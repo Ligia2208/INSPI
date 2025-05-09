@@ -404,6 +404,8 @@ class CentrosLaminasController extends Controller
         $fecha_fin           = $request->input('fecha_fin');
         $observacion         = $request->input('observacion');
 
+        $resultados          = $request->input('resultados');
+
         $lamina = Lamina::create([
             'id_tecnica'          => 1,
             'id_analista'         => 195,
@@ -421,7 +423,10 @@ class CentrosLaminasController extends Controller
             'cod_microscopia'     => $codigo,
             'fecha_ini'           => $fecha_inicio,
             'fecha_fin'           => $fecha_fin,
-            'observaciones'       => $observacion
+            'observaciones'       => $observacion,
+
+            'laminas_positivas_rec' => $resultados['resultado']['positivas'],
+            'laminas_negativas_rec' => $resultados['resultado']['negativas'],
         ]);
         
         foreach ($datos as $dato) {
@@ -447,6 +452,33 @@ class CentrosLaminasController extends Controller
 
             ]);
         }
+
+        
+        Resultado::create([
+            'id_evento'            => 1,
+            'id_tecnica'           => 1,
+            'tecnica_lamina'       => $evento,
+            'id_unidad_salud'      => 1,
+            'nro_laminas'          => $total_laminas_super, 
+
+            'interpretacion'       => $resultados['interpretacion'], // Llamar a la función
+            'id_lamina'            => $lamina->id,
+            'porcentaje_laminas'   => $resultados['puntuacion'],
+
+            'resultado'            => $resultados['porcentajeResult'],
+            'especie'              => $resultados['porcentajeEspe'],
+            'recuentos'            => $resultados['porcentajeRecuen'],
+
+            'laminas_positivas_con' => $resultados['resultado']['positivasConcordantes'],
+            'laminas_positivas_dis' => $resultados['resultado']['positivasDiscordantes'],
+            'laminas_negativas_con' => $resultados['resultado']['negativasConcordantes'],
+            'laminas_negativas_dis' => $resultados['resultado']['negativasDiscordantes'],
+
+            
+        ]);
+
+
+
         // Retornar una respuesta de éxito
         return response()->json(['success' => true, 'message' => 'Desglose guardados correctamente'], 200);
     }
