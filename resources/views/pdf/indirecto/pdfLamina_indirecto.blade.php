@@ -53,21 +53,21 @@
         <!-- CUERPO1 -->
         <table class="no-border">
             <tr>
-                <td style="border: none;"><strong>EVENTO:</strong> Ligia</td>
+                <td style="border: none;"><strong>EVENTO:</strong> </td>
             </tr>
             <tr>
-                <td style="border: none;"><strong>Fecha:</strong> {{ date('d-m-Y') }}</td>
+                <td style="border: none;"><strong>Fecha:</strong> </td>
             </tr>
             <tr>
-                <td style="border: none;"><strong>Unidad de Aseguramiento de la Calidad:</strong> IESS </td>
-                <td style="border: none;"><strong>Provincia:</strong> Los Rios</td>
-                <td style="border: none;"><strong>Cantón:</strong> Babahoyo</td>
+                <td style="border: none;"><strong>Unidad de Aseguramiento de la Calidad:</strong>  </td>
+                <td style="border: none;"><strong>Provincia:</strong>  </td>
+                <td style="border: none;"><strong>Cantón:</strong> </td>
             </tr>
             <tr>
-                <td style="border: none;"><strong>Responsable de la UAC:</strong> Nathaly</td>
+                <td style="border: none;"><strong>Responsable de la UAC:</strong> </td>
             </tr>
             <tr>
-                <td style="border: none;"><strong>Semana o mes:</strong> Abril</td>
+                <td style="border: none;"><strong>Semana o mes:</strong> </td>
             </tr>
             <tr>
                 <td style="border: none;"><strong>Fecha de recepción de láminas:</strong> {{ date('d-m-Y') }}</td>
@@ -103,14 +103,14 @@
           </thead>
           <tbody>
             <tr>
-              <td>685</td>
-              <td>60</td>
-              <td>625</td>
-              <td>122</td>
-              <td>60</td>
-              <td>0</td>
-              <td>62</td>
-              <td>0</td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
           </tbody>
         </table>
@@ -124,8 +124,8 @@
           </tr>
 
           <tr>
-            <td class="center bold" style="font-size: 16px; vertical-align: middle; height: 80px;">98%</td>
-            <td class="center" style="font-size: 16px; vertical-align: middle; height: 80px;">Excelente</td>
+            <td class="center bold" style="font-size: 16px; vertical-align: middle; height: 80px;"> </td>
+            <td class="center" style="font-size: 16px; vertical-align: middle; height: 80px;"> </td>
           </tr>
           
         </table>
@@ -138,15 +138,15 @@
           </tr>
           <tr style="height: 35px;">
             <td class="italic underline center">Resultado</td>
-            <td class="center"><strong>100.00%</strong></td>
+            <td class="center"><strong> </strong></td>
           </tr>
           <tr style="height: 35px;">
             <td class="italic underline center">Especie</td>
-            <td class="center"><strong>100.00%</strong></td>
+            <td class="center"><strong> </strong></td>
           </tr>
           <tr style="height: 35px;">
             <td class="italic underline center">Recuentos</td>
-            <td class="center"> <strong>83.90%</strong></td>
+            <td class="center"> <strong> </strong></td>
           </tr>
         </table>
         <div style="clear: both;"></div>
@@ -167,12 +167,10 @@
 
             <tr>
               <td colspan="2" style="padding-top: 20px;">
-                <strong>OBSERVACIONES / RECOMENDACIONES:</strong><br><br>
+                <strong>OBSERVACIONES / RECOMENDACIONES:</strong> <br> <br>
                 <hr style="border: 1px solid #000; margin: 12px 0;">
                 <hr style="border: 1px solid #000; margin: 12px 0;">
-                <hr style="border: 1px solid #000; margin: 12px 0;">
-                <hr style="border: 1px solid #000; margin: 12px 0;">
-                <hr style="border: 1px solid #000; margin: 12px 0;">
+               
               </td>
             </tr>
         </table>
