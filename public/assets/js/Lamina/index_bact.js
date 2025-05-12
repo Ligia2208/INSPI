@@ -393,7 +393,7 @@ $( function () {
 
         $.ajax({
             type: 'GET',
-            url: '/laminas/reporte_control_calidad_bact',  //
+            url: '/laminas/reporte_control_calidad_par',  //
             xhrFields: {
                 responseType: 'blob'
             },
@@ -402,13 +402,13 @@ $( function () {
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
                 a.href = url;
-                a.download = 'reporte_control calidad_bact.pdf'; // Nombre del archivo descargado
+                a.download = 'reporte_control calidad_par.pdf'; // Nombre del archivo descargado
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
                 a.remove();
             },
-            error: function(error) {
+            error: function(_error) {
                 Swal.fire({
                     icon: 'error',
                     type: 'error',
@@ -428,7 +428,7 @@ $( function () {
 
         $.ajax({
             type: 'GET',
-            url: '/laminas/reporte_control_calidad_indirecto/'+id_lamina,  //
+            url: '/laminas/reporte_control_calidad_indirecto'+id_lamina,  //
             xhrFields: {
                 responseType: 'blob'
             },

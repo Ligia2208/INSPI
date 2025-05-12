@@ -1287,6 +1287,9 @@ class CentrosLaminasController extends Controller
 
     public function reporte_control_calidad_par(Request $request)
     {
+
+      
+
         return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Par') 
             ->setPaper('A4', 'portrait')
             ->download('reporte_control calidad_par.pdf');
