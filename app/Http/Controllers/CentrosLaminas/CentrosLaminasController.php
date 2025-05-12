@@ -1108,82 +1108,179 @@ class CentrosLaminasController extends Controller
 
         $resultados          = $request->input('resultados');
 
-        $lamina = Lamina::create([
-            'id_tecnica'          => 1,
-            'id_analista'         => $responsable, //195,
-            'fecha_recep'         => $fecha_recep,
-            'id_unidad_salud'     => $centro_salud,
-            //'id_unidad_salud'     => 1,
-            'id_evento'           => $evento,
-            //'id_evento'           => 1,
-            'id_responsable'      => $responsable,
-            //'id_responsable'      => 195,
-            'fecha_recebcion'     => $fecha_recebcion,
-            'mes_recepcion'       => $mes_recepcion,
-            'total_laminas'       => $total_laminas_super,
-            'total_laminas_recib' => $total_laminas,
-            'cod_microscopia'     => $codigo,
-            'fecha_ini'           => $fecha_inicio,
-            'fecha_fin'           => $fecha_fin,
-            'observaciones'       => $observacion,
 
+        $lamina = Lamina::findOrFail($id_ingreso); // Busca la lámina, lanza 404 si no existe
+
+        // Actualizamos los campos
+        $lamina->update([
+            'id_tecnica'          => 1,
+            'id_analista'         => $request->input('responsable'),
+            'fecha_recep'         => $request->input('fecha_recep'),
+            'id_unidad_salud'     => $request->input('centro_salud'),
+            'id_evento'           => $request->input('evento'),
+            'id_responsable'      => $request->input('responsable'),
+            'fecha_recebcion'     => $request->input('fecha_recebcion'),
+            'mes_recepcion'       => $request->input('mes_recepcion'),
+            'total_laminas'       => $request->input('total_laminas_super'),
+            'total_laminas_recib' => $request->input('total_laminas'),
+            'cod_microscopia'     => $request->input('codigo'),
+            'fecha_ini'           => $request->input('fecha_inicio'),
+            'fecha_fin'           => $request->input('fecha_fin'),
+            'observaciones'       => $request->input('observacion'),
+    
             'laminas_positivas_rec' => $resultados['resultado']['positivas'],
             'laminas_negativas_rec' => $resultados['resultado']['negativas'],
             'id_crn'              => 3,
         ]);
         
-        foreach ($datos as $dato) {
-            Desglose::create([
-                'id_lamina'           => $lamina->id,  
-                'fecha'               => $dato['fecha'],
-                'semana'              => $dato['semana'],
-                'diagnostico_control' => $dato['diagnostico_calidad'],
-                'vivax_control'       => $dato['recuento_control_vivax'] ?? 0,
-                'falciparum_control'  => $dato['recuento_control_falciparum'] ?? 0,
-                'fg_control'          => $dato['presencia_control'] ?? 0,
-                'diagnostico_micro'   => $dato['diagnostico_microscopista'],
-                'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? 0,
-                'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? 0,
-                'mg_micro'            => $dato['presencia_microscopista'] ?? 0,
-                'cod_lectura'         => $dato['codigo_micro'],
-                'nro_lamina'          => $dato['num_lamina'],
 
-                'lectura'             => '',    
-                'id_apariencia'       => 1,
-                'id_frotis'           => 1,
-                'id_tincion'          => 1,
 
-            ]);
+        // Obtiene todos los desgloses existentes de la lámina
+        $desglosesExistentes = Desglose::where('id_lamina', $lamina->id)->get();
+
+        // Contador para recorrer los datos
+        for ($i = 0; $i < count($datos); $i++) {
+            $dato = $datos[$i];
+
+            if (isset($desglosesExistentes[$i])) {
+                // Ya existe un desglose en esta posición → actualizar
+                $desglose = $desglosesExistentes[$i];
+                $desglose->update([
+                    'fecha'               => $dato['fecha'],
+                    'semana'              => $dato['semana'],
+                    'diagnostico_control' => $dato['diagnostico_calidad'],
+                    'vivax_control'       => $dato['recuento_control_vivax'] ?? 0,
+                    'falciparum_control'  => $dato['recuento_control_falciparum'] ?? 0,
+                    'fg_control'          => $dato['presencia_control'] ?? 0,
+                    'diagnostico_micro'   => $dato['diagnostico_microscopista'],
+                    'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? 0,
+                    'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? 0,
+                    'mg_micro'            => $dato['presencia_microscopista'] ?? 0,
+                    'cod_lectura'         => $dato['codigo_micro'],
+                    'nro_lamina'          => $dato['num_lamina'],
+                    'lectura'             => '',
+                    'id_apariencia'       => 1,
+                    'id_frotis'           => 1,
+                    'id_tincion'          => 1,
+                ]);
+            } else {
+                // No existe → crear nuevo
+                Desglose::create([
+                    'id_lamina'           => $lamina->id,
+                    'fecha'               => $dato['fecha'],
+                    'semana'              => $dato['semana'],
+                    'diagnostico_control' => $dato['diagnostico_calidad'],
+                    'vivax_control'       => $dato['recuento_control_vivax'] ?? 0,
+                    'falciparum_control'  => $dato['recuento_control_falciparum'] ?? 0,
+                    'fg_control'          => $dato['presencia_control'] ?? 0,
+                    'diagnostico_micro'   => $dato['diagnostico_microscopista'],
+                    'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? 0,
+                    'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? 0,
+                    'mg_micro'            => $dato['presencia_microscopista'] ?? 0,
+                    'cod_lectura'         => $dato['codigo_micro'],
+                    'nro_lamina'          => $dato['num_lamina'],
+                    'lectura'             => '',
+                    'id_apariencia'       => 1,
+                    'id_frotis'           => 1,
+                    'id_tincion'          => 1,
+                ]);
+            }
         }
 
+        // Si hay más desgloses existentes que datos → eliminar los que sobran
+        if (count($desglosesExistentes) > count($datos)) {
+            for ($j = count($datos); $j < count($desglosesExistentes); $j++) {
+                $desglosesExistentes[$j]->delete();
+            }
+        }
+
+
+        $resultado = Resultado::where('id_lamina', $lamina->id)->first();
+
+        $dataResultado = [
+            'id_evento'             => 1,
+            'id_tecnica'            => 1,
+            'tecnica_lamina'        => $evento,
+            'id_unidad_salud'       => 1,
+            'nro_laminas'           => $total_laminas_super,
         
-        Resultado::create([
-            'id_evento'            => 1,
-            'id_tecnica'           => 1,
-            'tecnica_lamina'       => $evento,
-            'id_unidad_salud'      => 1,
-            'nro_laminas'          => $total_laminas_super, 
-
-            'interpretacion'       => $resultados['interpretacion'], // Llamar a la función
-            'id_lamina'            => $lamina->id,
-            'porcentaje_laminas'   => $resultados['puntuacion'],
-
-            'resultado'            => $resultados['porcentajeResult'],
-            'especie'              => $resultados['porcentajeEspe'],
-            'recuentos'            => $resultados['porcentajeRecuen'],
-
+            'interpretacion'        => $resultados['interpretacion'],
+            'porcentaje_laminas'    => $resultados['puntuacion'],
+            'resultado'             => $resultados['porcentajeResult'],
+            'especie'               => $resultados['porcentajeEspe'],
+            'recuentos'             => $resultados['porcentajeRecuen'],
+        
             'laminas_positivas_con' => $resultados['resultado']['positivasConcordantes'],
             'laminas_positivas_dis' => $resultados['resultado']['positivasDiscordantes'],
             'laminas_negativas_con' => $resultados['resultado']['negativasConcordantes'],
             'laminas_negativas_dis' => $resultados['resultado']['negativasDiscordantes'],
-
-            
-        ]);
-
-
+        ];
+        
+        if ($resultado) {
+            // Ya existe → actualizar
+            $resultado->update($dataResultado);
+        } else {
+            // No existe → crear nuevo
+            Resultado::create(array_merge($dataResultado, ['id_lamina' => $lamina->id]));
+        }
+        
 
         // Retornar una respuesta de éxito
-        return response()->json(['success' => true, 'message' => 'Desglose guardados correctamente'], 200);
+        return response()->json(['success' => true, 'message' => 'Desglose actualizado correctamente'], 200);
+    }
+
+
+
+
+    public function visualizar_bact($id_ingreso){
+
+        $datos = Lamina::select(
+            'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
+            'ingreso_laminas.total_laminas_recib as total_laminas_recib', DB::raw("DATE_FORMAT(ingreso_laminas.created_at, '%Y-%m-%d') as fecha_recebcion"),
+            'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones',
+            'ins.id as centro_salud', 'ingreso_laminas.id_evento as id_evento', 'ingreso_laminas.id_responsable as id_responsable',
+            'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
+            'ingreso_laminas.fecha_fin as fecha_fin'
+        )
+        ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+        ->where('ingreso_laminas.estado', ['A'])
+        ->where('ingreso_laminas.id', $id_ingreso)->first();
+
+        //falta el desglose
+        $desglose = Desglose::select('fecha', 'semana', 'diagnostico_control', 'vivax_control',
+            'falciparum_control', 'fg_control', 'diagnostico_micro', 'vivax_micro', 'falciparum_micro',
+            'mg_micro', 'cod_lectura', 'nro_lamina')
+            ->where('id_lamina', $id_ingreso)->where('estado', 'A')->get();
+
+        $eventos = Evento::select('id', 'descripcion', 'simplificado')->where('estado', 'A')->where('laminas', true)->where('crns_id', 3)->get();
+        $instituciones = Institucion::select('id', 'descripcion', 'unicodigo')->where('estado', 'A')->where('unicodigo', 'like', 'LR%')->get();
+        $responsables = Responsable::where('crns_id', 3)->with('usuario')->get();
+
+        return view('lamina.visualizar_bact', compact('datos', 'eventos', 'instituciones', 'responsables', 'desglose'));
+
+    }
+
+
+    public function eliminar_bact(Request $request)
+    {
+
+        $id_ingreso = $request->input('id'); 
+
+        $ingreso = Lamina::find($id_ingreso);
+        $ingreso->estado = 'E';
+
+        $ingreso->save();
+
+        if ($ingreso) {
+
+            return response()->json(['message' => 'Se elimino el ingreso de las Láminas correctamente.', 'data' => true], 200);
+
+        } else {
+
+            return response()->json(['message' => 'Error al eliminar el ingreso de las láminas', 'data' => false], 500);
+
+        }
+
     }
 
 
@@ -1199,11 +1296,45 @@ class CentrosLaminasController extends Controller
     }
 
 
-    public function reporte_control_calidad_indirecto(Request $request)
+    public function reporte_control_calidad_indirecto($id_lamina)
     {
-        return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Indirecto') 
+        
+        $diagnosticos = [
+            '1' => 'F - Falciparum',
+            '2' => 'N - Negativo',
+            '3' => 'V - Vivax',
+            '4' => 'V/F - Vivax/Falciparum',
+        ];
+
+        $datos = Desglose::select(
+            'fecha',
+            DB::raw('YEAR(fecha) as anio'),
+            DB::raw('MONTH(fecha) as mes'),
+            'semana',
+            'diagnostico_control',
+            'vivax_control',
+            'falciparum_control',
+            'fg_control',
+            'diagnostico_micro',
+            'vivax_micro',
+            'falciparum_micro',
+            'mg_micro',
+            'cod_lectura',
+            'nro_lamina'
+        )
+        ->where('id_lamina', $id_lamina)
+        ->where('estado', 'A')
+        ->get();
+    
+
+        //return response()->json($id_lamina);
+        return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Indirecto', 
+            [
+                'datos' => $datos, 
+                'diagnosticos' => $diagnosticos,]) 
             ->setPaper('A4', 'landscape')
             ->download('reporte_CONTROL DE CALIDAD INDIRECTO.pdf');
+        
     }
     
     
