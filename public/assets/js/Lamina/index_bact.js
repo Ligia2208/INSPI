@@ -157,6 +157,10 @@ $( function () {
                                 <i class="bi bi-pen icon-ingreso"></i>
                             </a>
 
+                            <a id="" class="ml-1" href="/laminas/visualizar_bact/${full.id}" title="Visualizar Ingreso" data-title="Visualizar Ingreso">
+                                <i class="bi bi-eye icon-ingreso"></i>
+                            </a>
+
                             <a id="btnEliminarIngreso" class="ml-1" data-id_borrar="${full.id}" title="Eliminar Ingreso" data-title="Eliminar Ingreso">
                                 <i class="bi bi-trash icon-ingreso"></i>
                             </a>
@@ -221,7 +225,7 @@ $( function () {
 
                     type: 'POST',
                     //url: '{{ route("encuesta.saveEncuesta") }}',
-                    url: '/laminas/eliminar',
+                    url: '/laminas/eliminar_bact',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
@@ -420,9 +424,11 @@ $( function () {
     // Generar el reporte PDF CONTROL_CALIDAD INDIRECTO
     $(document).on('click', '#btnPDF_calidad_indirecto', function() {
 
+        var id_lamina = $(this).data('id_lamina');
+
         $.ajax({
             type: 'GET',
-            url: '/laminas/reporte_control_calidad_indirecto',  //
+            url: '/laminas/reporte_control_calidad_indirecto/'+id_lamina,  //
             xhrFields: {
                 responseType: 'blob'
             },

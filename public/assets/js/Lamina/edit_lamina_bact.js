@@ -14,7 +14,7 @@ $(function () {
     /* ==================== GUARDAR INGRESO DE LAMINAS ==================== */
     $(document).on('click', '#btnGuardarSolicitud', function () {
 
-        
+        let id_ingreso = $('#id_ingreso').val();
 
         if (!validarCampos()) {
 
@@ -77,11 +77,11 @@ $(function () {
                         // Si todo es válido
                         $.ajax({
                             type: 'POST',
-                            url: '/laminas/guardar_laminas_bact',
+                            url: '/laminas/editar_laminas_bact',
                             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                             data: {
-                                'datos': datos,
-                                //'id_ingreso': id_ingreso,
+                                'datos'               :datos,
+                                'id_ingreso'          :id_ingreso,
                                 'fecha_recep'         :fecha_recep        ,  
                                 'centro_salud'        :centro_salud       ,  
                                 'evento'              :evento             ,  
@@ -962,6 +962,9 @@ function cargarDesgloses() {
                 `;
                 tablaBody.append(row);
             });
+
+            obtenerResultados();
+
         },
         error: function(error) {
             console.error('Error al obtener desglose:', error);
@@ -1024,4 +1027,7 @@ function ajustarFilasPorTotal() {
             tablaBody.find('tr').last().remove();
         }
     }
+
+    actualizarCodigoMicroscopista();
+
 }
