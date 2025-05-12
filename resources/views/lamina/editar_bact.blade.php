@@ -56,7 +56,7 @@
                     <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
                         <div class="lh-1">
                             <h1 class="h3 mb-0 text-white lh-1">Datos Generales</h1>
-                            <input type="hidden" id="id_ingreso" name="id_ingreso" class="form-control" required="" autofocus="" value="">
+                            <input type="hidden" id="id_ingreso" name="id_ingreso" class="form-control" required="" autofocus="" value="{{$datos->id}}">
                         </div>
                     </div>
                 </div> 
@@ -67,7 +67,7 @@
 
                             <div class="col-md-4">
                                 <label for="fecha_recep" class="form-label fs-6">Fecha de Recepción</label>
-                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="" >
+                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="{{$datos->fecha_recep}}" >
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -76,9 +76,15 @@
                                 <select name="centro_salud" class="form-control single-select" id="centro_salud" onchange="actualizarCodigoMicroscopista()">
                                     <option value="">Selecciona una Opción</option>
                                     @foreach($instituciones as $institucion)
-                                    <option value="{{ $institucion->id }}" data-unicodigo="{{ $institucion->unicodigo }}">
-                                        {{ $institucion->descripcion }}
-                                    </option>
+                                    @if($institucion->id == $datos->centro_salud)
+                                        <option value="{{ $institucion->id }}" data-unicodigo="{{ $institucion->unicodigo }}" selected>
+                                            {{ $institucion->descripcion }}
+                                        </option>
+                                    @else
+                                        <option value="{{ $institucion->id }}" data-unicodigo="{{ $institucion->unicodigo }}">
+                                            {{ $institucion->descripcion }}
+                                        </option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -88,7 +94,11 @@
                                 <select name="evento" class="form-control single-select" id="evento">
                                     <option value="">Selecciona una Opción</option>
                                     @foreach($eventos as $evento)
-                                    <option value="{{$evento->id}}">{{$evento->descripcion}}</option>
+                                        @if($evento->id == $datos->id_evento)
+                                            <option value="{{$evento->id}}" selected>{{$evento->descripcion}}</option>
+                                        @else
+                                            <option value="{{$evento->id}}">{{$evento->descripcion}}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -99,7 +109,11 @@
                                     <option value="">Selecciona una Opción</option>
                                     @foreach($responsables as $responsable)
                                         @if($responsable->usuario) {{-- Validamos que tenga usuario relacionado --}}
-                                            <option value="{{ $responsable->usuario_id }}">{{ $responsable->usuario->name }}</option>
+                                            @if($responsable->usuario_id == $datos->id_responsable)
+                                                <option value="{{ $responsable->usuario_id }}" selected>{{ $responsable->usuario->name }}</option>
+                                            @else
+                                                <option value="{{ $responsable->usuario_id }}">{{ $responsable->usuario->name }}</option>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </select>
@@ -107,48 +121,48 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="fecha_recebcion" class="form-label fs-6">Fecha de Recepción de láminas:</label>
-                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="" required>
+                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="{{$datos->fecha_recebcion}}" required> 
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="" required>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="{{$datos->mes_recepcion}}" required>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
-                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="" required>
+                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="{{$datos->total_laminas_recib}}" required> 
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
-                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="">
+                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="{{$datos->total_laminas}}">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="codigo" class="form-label fs-6">Código Microscopista Evaluado:</label>
-                                <input type="text" id="codigo" name="codigo" class="form-control" required disabled value="">
+                                <input type="text" id="codigo" name="codigo" class="form-control" required disabled value="{{$datos->unicodigo}}">
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="fecha_inicio" class="form-label fs-6">Fecha Inicial:</label>
-                                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="" required>
+                                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{$datos->fecha_ini}}" required>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="fecha_fin" class="form-label fs-6">Fecha Final:</label>
-                                <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="" required>
+                                <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="{{$datos->fecha_fin}}" required>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-12 mt-2 mb-2">
                                 <label for="observacion" class="form-label fs-6">Observación:</label>
-                                <textarea id="observacion" name="observacion" class="form-control" rows="3" required></textarea>
+                                <textarea id="observacion" name="observacion" class="form-control" rows="3" required>{{$datos->observaciones}}</textarea>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -197,7 +211,8 @@
                             </tr>
                         </thead>
                         <tbody id="tabla_body">
-                            <tr>
+
+                            <!-- <tr>
                                 <td>
                                     <input type="date" id="fecha_${i}" name="fecha_${i}" class="form-control" required autofocus value="" disabled>
                                     <div class="valid-feedback">Looks good!</div>   
@@ -257,7 +272,7 @@
                                     <input type="text" id="presencia_control_${i}" name="presencia_control_${i}" class="form-control" required autofocus value="" disabled>
                                     <div class="valid-feedback">Looks good!</div>
                                 </td>
-                            </tr>
+                            </tr> -->
 
 
                             <!-- Agregar más filas según sea necesario -->
@@ -302,10 +317,16 @@
 </div>
 
 
+
+
+
 @endsection
 
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.0')}}"></script>
+<script>
+    const desgloseData = @json($desglose);
+</script>
+<script src="{{asset('assets/js/Lamina/edit_lamina_bact.js?v0.0.0')}}"></script>
 @endpush

@@ -130,7 +130,7 @@ $( function () {
         autoWidth: false,
         lengthMenu: [8, 15, 25, 50, 100],
         ajax: {
-            url: '/laminas', // La URL que devuelve los datos en JSON
+            url: '/laminas_bacteriologia', // La URL que devuelve los datos en JSON
         },
         columnDefs: [
             //{ width: '400px', targets: 2 } // Ajusta el índice según la posición de "Obj. Operativo"
@@ -152,42 +152,13 @@ $( function () {
                     return `
 
                         <div class="action-buttons">
-                            <a id="btnPDF_ingreso" class="ml-1" data-id_editar="${full.id}" href="javascript:void(0);" title="PDF Ingreso de Láminas" data-title="PDF Ingreso de Láminas">
-                                <i ></i>
-                            </a>
-                            <a id="" class="ml-1" data-id_editar="${full.id}" href="/laminas/editar/${full.id}" title="Editar Ingreso" data-title="Editar Ingreso">
+
+                            <a id="" class="ml-1" data-id_editar="${full.id}" href="/laminas/editar_bact/${full.id}" title="Editar Ingreso" data-title="Editar Ingreso">
                                 <i class="bi bi-pen icon-ingreso"></i>
                             </a>
 
                             <a id="btnEliminarIngreso" class="ml-1" data-id_borrar="${full.id}" title="Eliminar Ingreso" data-title="Eliminar Ingreso">
                                 <i class="bi bi-trash icon-ingreso"></i>
-                            </a>
-
-                            <a id="btnAdd_laminas" class="ml-1" data-id_editar="${full.id}" href="/laminas/agregar_laminas/${full.id}" title="Desglose de Láminas" data-title="Desglose de Láminas">
-                                <i class="bi bi-list-ul icon-desglose"></i>
-                            </a>
-                            
-                            ${
-                                full.tiene_desglose
-                                    ? `<a id="btnEditar_laminas" class="ml-1" data-id_editar="${full.id}" href="/laminas/editar_laminas/${full.id}" title="Editar Desglose de Láminas" data-title="Editar Desglose de Láminas">
-                                        <i class="bi bi-pen icon-desglose"></i>
-                                    </a>
-                                    <a id="btnEliminarDesglose" class="ml-1" data-id_borrar="${full.id}" title="Eliminar Desglose de Ingreso" data-title="Eliminar Desglose de Ingreso">
-                                        <i class="bi bi-trash icon-desglose"></i>
-                                    </a>`
-                                    : ``
-                            }
-                            <a id="btnPDF_desglose" class="ml-1" data-id_editar="${full.id}" title="Generar PDF Desglose de Láminas" data-title="Generar PDF Desglose de Láminas">
-                                <i class="bi bi-file-earmark-pdf icon-desglose"></i>
-                            </a>
-
-                            <a id="btnAdd_control" class="ml-1" data-id_editar="${full.id}" href="/laminas/control_calidad/${full.id}" title="Control de Láminas" data-title="Control de Láminas">
-                                <i class="bi bi-clipboard-check icon-resultados"></i>
-                            </a>
-
-
-                            <a id="btnPDF_calidad" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad" data-title="Generar PDF Control Calidad">
-                                <i class="bi bi-file-earmark-pdf icon-resultados"></i>
                             </a>
 
                             <a id="btnPDF_calidad_bact" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad Bact" data-title="Generar PDF Control Calidad Bact">

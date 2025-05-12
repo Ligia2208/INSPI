@@ -50,7 +50,7 @@
                         <table id="tblPlanificacionIndex" class="table table-striped table-bordered" style="width:100%">
                             <thead>
                                 <tr>
-                                    <th>N° US</th>
+                                    <th>COD Microscopista</th>
                                     <th>Unidad de salud</th>
                                     <th>Recepta</th>
                                     <th>Analista</th>
@@ -65,7 +65,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th>N° US</th>
+                                    <th>COD Microscopista</th>
                                     <th>Unidad de salud</th>
                                     <th>Recepta</th>
                                     <th>Analista</th>

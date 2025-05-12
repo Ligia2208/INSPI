@@ -408,14 +408,14 @@ class CentrosLaminasController extends Controller
 
         $lamina = Lamina::create([
             'id_tecnica'          => 1,
-            'id_analista'         => 195,
+            'id_analista'         => $responsable, //195,
             'fecha_recep'         => $fecha_recep,
-            //'id_unidad_salud'     => $centro_salud,
-            'id_unidad_salud'     => 1,
-            //'id_evento'           => $evento,
-            'id_evento'           => 1,
-            //'id_responsable'      => $responsable,
-            'id_responsable'      => 195,
+            'id_unidad_salud'     => $centro_salud,
+            //'id_unidad_salud'     => 1,
+            'id_evento'           => $evento,
+            //'id_evento'           => 1,
+            'id_responsable'      => $responsable,
+            //'id_responsable'      => 195,
             'fecha_recebcion'     => $fecha_recebcion,
             'mes_recepcion'       => $mes_recepcion,
             'total_laminas'       => $total_laminas_super,
@@ -427,6 +427,7 @@ class CentrosLaminasController extends Controller
 
             'laminas_positivas_rec' => $resultados['resultado']['positivas'],
             'laminas_negativas_rec' => $resultados['resultado']['negativas'],
+            'id_crn'              => 3,
         ]);
         
         foreach ($datos as $dato) {
@@ -1003,7 +1004,8 @@ class CentrosLaminasController extends Controller
             ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
             ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
             ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
-            ->where('ingreso_laminas.estado', 'A'); 
+            ->where('ingreso_laminas.estado', 'A')
+            ->where('ingreso_laminas.id_crn', 3);
         
             return datatables()->of($query)->addIndexColumn()->make(true);
         }
@@ -1033,13 +1035,158 @@ class CentrosLaminasController extends Controller
         ->where('ingreso_laminas.id', $id_ingreso)->first();
         */
 
-        $tipos_laminas = Lamina::all();
-        $tipos_tincion = Tincion::all();
-        $tipos_apariencia = Apariencia::all();
+        $eventos = Evento::select('id', 'descripcion', 'simplificado')->where('estado', 'A')->where('laminas', true)->where('crns_id', 3)->get();
+        $instituciones = Institucion::select('id', 'descripcion', 'unicodigo')->where('estado', 'A')->where('unicodigo', 'like', 'LR%')->get();
+        $responsables = Responsable::where('crns_id', 3)->with('usuario')->get();
 
-        return view('lamina.agregar_laminas_bact', compact('tipos_laminas', 'tipos_tincion', 'tipos_apariencia'));
+        return view('lamina.agregar_laminas_bact', compact('eventos', 'instituciones', 'responsables'));
 
     }
+
+
+
+    public function editar_bact($id_ingreso){
+
+        $datos = Lamina::select(
+            'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
+            'ingreso_laminas.total_laminas_recib as total_laminas_recib', DB::raw("DATE_FORMAT(ingreso_laminas.created_at, '%Y-%m-%d') as fecha_recebcion"),
+            'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones',
+            'ins.id as centro_salud', 'ingreso_laminas.id_evento as id_evento', 'ingreso_laminas.id_responsable as id_responsable',
+            'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
+            'ingreso_laminas.fecha_fin as fecha_fin'
+        )
+        ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+        ->where('ingreso_laminas.estado', ['A'])
+        ->where('ingreso_laminas.id', $id_ingreso)->first();
+
+        //falta el desglose
+        $desglose = Desglose::select('fecha', 'semana', 'diagnostico_control', 'vivax_control',
+            'falciparum_control', 'fg_control', 'diagnostico_micro', 'vivax_micro', 'falciparum_micro',
+            'mg_micro', 'cod_lectura', 'nro_lamina')
+            ->where('id_lamina', $id_ingreso)->where('estado', 'A')->get();
+
+        $eventos = Evento::select('id', 'descripcion', 'simplificado')->where('estado', 'A')->where('laminas', true)->where('crns_id', 3)->get();
+        $instituciones = Institucion::select('id', 'descripcion', 'unicodigo')->where('estado', 'A')->where('unicodigo', 'like', 'LR%')->get();
+        $responsables = Responsable::where('crns_id', 3)->with('usuario')->get();
+
+        return view('lamina.editar_bact', compact('datos', 'eventos', 'instituciones', 'responsables', 'desglose'));
+
+    }
+
+
+    public function obtenerDesglose($id)
+    {
+        $desglose = Desglose::select('fecha', 'semana', 'diagnostico_control', 'vivax_control',
+            'falciparum_control', 'fg_control', 'diagnostico_micro', 'vivax_micro', 'falciparum_micro',
+            'mg_micro', 'cod_lectura', 'nro_lamina')
+            ->where('id_lamina', $id)
+            ->where('estado', 'A')
+            ->get();
+
+        return response()->json($desglose);
+    }
+
+
+    public function editar_laminas_bact(Request $request){
+
+        $datos = $request->input('datos');
+        $id_ingreso = $request->input('id_ingreso');
+
+        //datos del ingreso de laminas
+        $fecha_recep         = $request->input('fecha_recep');
+        $centro_salud        = $request->input('centro_salud');
+        $evento              = $request->input('evento');
+        $responsable         = $request->input('responsable');
+        $fecha_recebcion     = $request->input('fecha_recebcion');
+        $mes_recepcion       = $request->input('mes_recepcion');
+        $total_laminas       = $request->input('total_laminas');
+        $total_laminas_super = $request->input('total_laminas_super');
+        $codigo              = $request->input('codigo');
+        $fecha_inicio        = $request->input('fecha_inicio');
+        $fecha_fin           = $request->input('fecha_fin');
+        $observacion         = $request->input('observacion');
+
+        $resultados          = $request->input('resultados');
+
+        $lamina = Lamina::create([
+            'id_tecnica'          => 1,
+            'id_analista'         => $responsable, //195,
+            'fecha_recep'         => $fecha_recep,
+            'id_unidad_salud'     => $centro_salud,
+            //'id_unidad_salud'     => 1,
+            'id_evento'           => $evento,
+            //'id_evento'           => 1,
+            'id_responsable'      => $responsable,
+            //'id_responsable'      => 195,
+            'fecha_recebcion'     => $fecha_recebcion,
+            'mes_recepcion'       => $mes_recepcion,
+            'total_laminas'       => $total_laminas_super,
+            'total_laminas_recib' => $total_laminas,
+            'cod_microscopia'     => $codigo,
+            'fecha_ini'           => $fecha_inicio,
+            'fecha_fin'           => $fecha_fin,
+            'observaciones'       => $observacion,
+
+            'laminas_positivas_rec' => $resultados['resultado']['positivas'],
+            'laminas_negativas_rec' => $resultados['resultado']['negativas'],
+            'id_crn'              => 3,
+        ]);
+        
+        foreach ($datos as $dato) {
+            Desglose::create([
+                'id_lamina'           => $lamina->id,  
+                'fecha'               => $dato['fecha'],
+                'semana'              => $dato['semana'],
+                'diagnostico_control' => $dato['diagnostico_calidad'],
+                'vivax_control'       => $dato['recuento_control_vivax'] ?? 0,
+                'falciparum_control'  => $dato['recuento_control_falciparum'] ?? 0,
+                'fg_control'          => $dato['presencia_control'] ?? 0,
+                'diagnostico_micro'   => $dato['diagnostico_microscopista'],
+                'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? 0,
+                'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? 0,
+                'mg_micro'            => $dato['presencia_microscopista'] ?? 0,
+                'cod_lectura'         => $dato['codigo_micro'],
+                'nro_lamina'          => $dato['num_lamina'],
+
+                'lectura'             => '',    
+                'id_apariencia'       => 1,
+                'id_frotis'           => 1,
+                'id_tincion'          => 1,
+
+            ]);
+        }
+
+        
+        Resultado::create([
+            'id_evento'            => 1,
+            'id_tecnica'           => 1,
+            'tecnica_lamina'       => $evento,
+            'id_unidad_salud'      => 1,
+            'nro_laminas'          => $total_laminas_super, 
+
+            'interpretacion'       => $resultados['interpretacion'], // Llamar a la función
+            'id_lamina'            => $lamina->id,
+            'porcentaje_laminas'   => $resultados['puntuacion'],
+
+            'resultado'            => $resultados['porcentajeResult'],
+            'especie'              => $resultados['porcentajeEspe'],
+            'recuentos'            => $resultados['porcentajeRecuen'],
+
+            'laminas_positivas_con' => $resultados['resultado']['positivasConcordantes'],
+            'laminas_positivas_dis' => $resultados['resultado']['positivasDiscordantes'],
+            'laminas_negativas_con' => $resultados['resultado']['negativasConcordantes'],
+            'laminas_negativas_dis' => $resultados['resultado']['negativasDiscordantes'],
+
+            
+        ]);
+
+
+
+        // Retornar una respuesta de éxito
+        return response()->json(['success' => true, 'message' => 'Desglose guardados correctamente'], 200);
+    }
+
+
 
     public function reporte_control_calidad_bact(Request $request)
     {
