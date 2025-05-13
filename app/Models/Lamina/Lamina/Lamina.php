@@ -31,6 +31,7 @@ class Lamina extends Model
         'fecha_ini',
         'fecha_fin',
         'cod_microscopia',
+        'id_crn',
         'estado',
         'created_at',
         'updated_at'

@@ -69,7 +69,7 @@
       
         <!-- Calificación -->
         <tr>
-          <td colspan="3" style="text-align: right; font-size: 12px; padding-top: 5px; padding-right: 80px;">
+          <td colspan="3" style="text-align: right; font-size: 10px; padding-top: 5px; padding-right: 80px;">
             Calificación: Bueno - 0; Malo - 1
           </td>
         </tr>        
@@ -118,15 +118,38 @@
           </tr>
         </thead>
         <tbody>
-          <!-- filas de ejemplo -->
-          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>475</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>3248</td><td></td><td></td><td>V</td><td>3520</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
-          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>478</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>2160</td><td></td><td></td><td>V</td><td>2520</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
-          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>479</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>2540</td><td></td><td></td><td>V</td><td>2815</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
-          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>494</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>3216</td><td></td><td></td><td>V</td><td>2917</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
-          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>498</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>V</td><td>1468</td><td></td><td></td><td>V</td><td>1845</td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
-          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>472</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
-          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>485</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
-          <tr><td>7/4/2025</td><td>30</td><td>WT5</td><td>493</td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>N</td><td></td><td></td><td></td><td>MA</td><td>2025</td><td>4</td></tr>
+
+          @foreach ($datos as $item)
+          <tr>
+            <td>{{$item->fecha}}</td>
+            <td>{{$item->semana}}</td>
+            <td>{{$item->cod_lectura}}</td>
+            <td>{{$item->nro_lamina}}</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>{{ $diagnosticos[$item->diagnostico_control] ?? 'Sin diagnóstico' }}</td>
+            <td>{{$item->vivax_control}}</td>
+            <td>{{$item->falciparum_control}}</td>
+            <td>{{$item->fg_control}}</td>
+            <td>{{ $diagnosticos[$item->diagnostico_micro] ?? 'Sin diagnóstico' }}</td>            
+            <td>{{$item->vivax_micro}}</td>
+            <td>{{$item->falciparum_micro}}</td>
+            <td>{{$item->mg_micro}}</td>
+            <td>MA</td>
+            <td>{{$item->anio}}</td>
+            <td>{{$item->mes}}</td>
+          </tr>
+          @endforeach
+
         </tbody>
       </table>
       <br>

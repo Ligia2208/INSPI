@@ -44,9 +44,9 @@
 
 <div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
-    <div class="container2">
+    <div class="container2 mt-5">
         <div class="page-content mb-5">
-            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus titulo-grande"></i> Ingreso de Láminas </h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus titulo-grande"></i> Visualizar Control de Láminas </h2>
 
             <hr/>
 
@@ -56,7 +56,7 @@
                     <div class="d-flex align-items-center p-3 text-white bg-primary rounded shadow-sm">
                         <div class="lh-1">
                             <h1 class="h3 mb-0 text-white lh-1">Datos Generales</h1>
-                            <input type="hidden" id="id_ingreso" name="id_ingreso" class="form-control" required="" autofocus="" value="">
+                            <input type="hidden" id="id_ingreso" name="id_ingreso" class="form-control" required="" autofocus="" value="{{$datos->id}}">
                         </div>
                     </div>
                 </div> 
@@ -67,39 +67,53 @@
 
                             <div class="col-md-4">
                                 <label for="fecha_recep" class="form-label fs-6">Fecha de Recepción</label>
-                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="" >
+                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="{{$datos->fecha_recep}}" disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-8">
                                 <label for="centro_salud" class="form-label fs-6">Nombre del Laboratorio Supervisado</label>
-                                <select name="centro_salud" class="form-control single-select" id="centro_salud" onchange="actualizarCodigoMicroscopista()">
+                                <select name="centro_salud" class="form-control single-select" id="centro_salud" onchange="actualizarCodigoMicroscopista()" disabled>
                                     <option value="">Selecciona una Opción</option>
                                     @foreach($instituciones as $institucion)
-                                    <option value="{{ $institucion->id }}" data-unicodigo="{{ $institucion->unicodigo }}">
-                                        {{ $institucion->descripcion }}
-                                    </option>
+                                    @if($institucion->id == $datos->centro_salud)
+                                        <option value="{{ $institucion->id }}" data-unicodigo="{{ $institucion->unicodigo }}" selected>
+                                            {{ $institucion->descripcion }}
+                                        </option>
+                                    @else
+                                        <option value="{{ $institucion->id }}" data-unicodigo="{{ $institucion->unicodigo }}">
+                                            {{ $institucion->descripcion }}
+                                        </option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="evento" class="form-label fs-6">Evento</label>
-                                <select name="evento" class="form-control single-select" id="evento">
+                                <select name="evento" class="form-control single-select" id="evento" disabled>
                                     <option value="">Selecciona una Opción</option>
                                     @foreach($eventos as $evento)
-                                    <option value="{{$evento->id}}">{{$evento->descripcion}}</option>
+                                        @if($evento->id == $datos->id_evento)
+                                            <option value="{{$evento->id}}" selected>{{$evento->descripcion}}</option>
+                                        @else
+                                            <option value="{{$evento->id}}">{{$evento->descripcion}}</option>
+                                        @endif
                                     @endforeach
                                 </select>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="responsable" class="form-label fs-6">Responsable Recepción</label>
-                                <select name="responsable" class="form-control single-select" id="responsable">
+                                <select name="responsable" class="form-control single-select" id="responsable" disabled>
                                     <option value="">Selecciona una Opción</option>
                                     @foreach($responsables as $responsable)
                                         @if($responsable->usuario) {{-- Validamos que tenga usuario relacionado --}}
-                                            <option value="{{ $responsable->usuario_id }}">{{ $responsable->usuario->name }}</option>
+                                            @if($responsable->usuario_id == $datos->id_responsable)
+                                                <option value="{{ $responsable->usuario_id }}" selected>{{ $responsable->usuario->name }}</option>
+                                            @else
+                                                <option value="{{ $responsable->usuario_id }}">{{ $responsable->usuario->name }}</option>
+                                            @endif
                                         @endif
                                     @endforeach
                                 </select>
@@ -107,48 +121,48 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="fecha_recebcion" class="form-label fs-6">Fecha de Recepción de láminas:</label>
-                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="" required>
+                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="{{$datos->fecha_recebcion}}" required disabled> 
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="" required>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="{{$datos->mes_recepcion}}" required disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
-                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="" required>
+                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="{{$datos->total_laminas_recib}}" required disabled> 
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
-                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="">
+                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="{{$datos->total_laminas}}" disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="codigo" class="form-label fs-6">Código Microscopista Evaluado:</label>
-                                <input type="text" id="codigo" name="codigo" class="form-control" required disabled value="">
+                                <input type="text" id="codigo" name="codigo" class="form-control" required disabled value="{{$datos->unicodigo}}">
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="fecha_inicio" class="form-label fs-6">Fecha Inicial:</label>
-                                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="" required>
+                                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{$datos->fecha_ini}}" required disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="fecha_fin" class="form-label fs-6">Fecha Final:</label>
-                                <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="" required>
+                                <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="{{$datos->fecha_fin}}" required disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-12 mt-2 mb-2">
                                 <label for="observacion" class="form-label fs-6">Observación:</label>
-                                <textarea id="observacion" name="observacion" class="form-control" rows="3" required></textarea>
+                                <textarea id="observacion" name="observacion" class="form-control" rows="3" required disabled>{{$datos->observaciones}}</textarea>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -197,70 +211,7 @@
                             </tr>
                         </thead>
                         <tbody id="tabla_body">
-                            <tr>
-                                <td>
-                                    <input type="date" id="fecha_${i}" name="fecha_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>   
-                                </td>
-                                <td>
-                                    <input type="text" id="semana_${i}" name="semana_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="codigo_micro_${i}" name="codigo_micro_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="num_lamina_${i}" name="num_lamina_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <select name="diagnostico_calidad_${i}" class="form-control single-select">
-                                        <option value="">Selecciona una Opción</option>
-                                        <option value="1">F - Falciparum</option>
-                                        <option value="2">N - Negativo</option>
-                                        <option value="3">V - Vivax</option>
-                                    </select>
-                                </td>  
-                                <td>
-                                    <input type="text" id="recuento_control_vivax_${i}" name="recuento_control_vivax_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="recuento_control_falciparum_${i}" name="recuento_control_falciparum_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                    
-                                </td>
-                                <td>
-                                    <input type="text" id="presencia_control_${i}" name="presencia_control_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
 
-
-                                <td>
-                                    <select name="diagnostico_microscopista_${i}" class="form-control single-select">
-                                        <option value="">Selecciona una Opción</option>
-                                        <option value="1">F - Falciparum</option>
-                                        <option value="2">N - Negativo</option>
-                                        <option value="3">V - Vivax</option>
-                                    </select>
-                                </td>   
-                                <td>
-                                    <input type="text" id="recuento_microscopista_vivax_${i}" name="recuento_microscopista_vivax_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="recuento_microscopista_falciparum_${i}" name="recuento_microscopista_falciparum_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="presencia_control_${i}" name="presencia_control_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                            </tr>
-
-
-                            <!-- Agregar más filas según sea necesario -->
                         </tbody>
                     </table>
 
@@ -302,10 +253,16 @@
 </div>
 
 
+
+
+
 @endsection
 
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.0')}}"></script>
+<script>
+    const desgloseData = @json($desglose);
+</script>
+<script src="{{asset('assets/js/Lamina/visualizar_bact.js?v0.0.0')}}"></script>
 @endpush

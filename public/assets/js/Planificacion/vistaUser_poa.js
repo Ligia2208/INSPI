@@ -868,7 +868,7 @@ $(function(){
                     Swal.showValidationMessage('El monto debe ser mayor a 0.');
                 } else if (!/^\d+(\.\d{1,2})?$/.test(montoIngresado)) {
                     Swal.showValidationMessage('El monto solo puede tener hasta dos decimales.');
-                } else if (montoNum > (monto / 2)) {
+                } else if (montoNum > (monto * 0.98)) {
                     Swal.showValidationMessage('El monto a liquidar no puede ser mayor de la mitad del monto certificado.');
                 } else {
                     return montoNum; // Devuelve el monto validado

@@ -5,9 +5,16 @@ $(function () {
         width: '100%',
     });
 
+    $('#total_laminas').on('input', function() {
+        ajustarFilasPorTotal();
+    });
+    
 
+    cargarDesgloses();
     /* ==================== GUARDAR INGRESO DE LAMINAS ==================== */
     $(document).on('click', '#btnGuardarSolicitud', function () {
+
+        let id_ingreso = $('#id_ingreso').val();
 
         if (!validarCampos()) {
 
@@ -70,11 +77,11 @@ $(function () {
                         // Si todo es válido
                         $.ajax({
                             type: 'POST',
-                            url: '/laminas/guardar_laminas_bact',
+                            url: '/laminas/editar_laminas_bact',
                             headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                             data: {
-                                'datos': datos,
-                                //'id_ingreso': id_ingreso,
+                                'datos'               :datos,
+                                'id_ingreso'          :id_ingreso,
                                 'fecha_recep'         :fecha_recep        ,  
                                 'centro_salud'        :centro_salud       ,  
                                 'evento'              :evento             ,  
@@ -901,119 +908,126 @@ function contarDiagnosticos(total) {
 }
 
 
+function cargarDesgloses() {
+    let id_ingreso = $('#id_ingreso').val();
+
+    $.ajax({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        },
+        type: 'GET',
+        url: '/laminas/desglose/' + id_ingreso,
+        cache: false,
+        success: function(res) {
+            let tablaBody = $('#tabla_body'); // Asegúrate de tener este ID en el <tbody>
+            tablaBody.empty(); // Limpia el contenido actual
+
+            res.forEach((item, index) => {
+                let i = index + 1;
+                let row = `
+                    <tr>
+                        <td><input type="date" id="fecha_${i}" name="fecha_${i}" class="form-control" value="${item.fecha}" required></td>
+                        <td><input type="text" id="semana_${i}" name="semana_${i}" class="form-control" value="${item.semana}" required></td>
+                        <td><input type="text" id="codigo_micro_${i}" name="codigo_micro_${i}" class="form-control" value="${item.cod_lectura}" required></td>
+                        <td><input type="text" id="num_lamina_${i}" name="num_lamina_${i}" class="form-control" value="${item.nro_lamina}" required></td>
+
+                        <td>
+                            <select name="diagnostico_calidad_${i}" class="form-control single-select">
+                                <option value="">Selecciona una Opción</option>
+                                <option value="1" ${item.diagnostico_control == '1' ? 'selected' : ''}>F - Falciparum</option>
+                                <option value="2" ${item.diagnostico_control == '2' ? 'selected' : ''}>N - Negativo</option>
+                                <option value="3" ${item.diagnostico_control == '3' ? 'selected' : ''}>V - Vivax</option>
+                                <option value="4" ${item.diagnostico_control == '4' ? 'selected' : ''}>V/F - Vivax/Falciparum</option>
+                            </select>
+                        </td>
+
+                        <td><input type="text" name="recuento_control_vivax_${i}" class="form-control" value="${item.vivax_control}" required></td>
+                        <td><input type="text" name="recuento_control_falciparum_${i}" class="form-control" value="${item.falciparum_control}" required></td>
+                        <td><input type="text" name="presencia_control_${i}" class="form-control" value="${item.fg_control}" required></td>
+
+                        <td>
+                            <select name="diagnostico_microscopista_${i}" class="form-control single-select">
+                                <option value="">Selecciona una Opción</option>
+                                <option value="1" ${item.diagnostico_micro == '1' ? 'selected' : ''}>F - Falciparum</option>
+                                <option value="2" ${item.diagnostico_micro == '2' ? 'selected' : ''}>N - Negativo</option>
+                                <option value="3" ${item.diagnostico_micro == '3' ? 'selected' : ''}>V - Vivax</option>
+                                <option value="4" ${item.diagnostico_micro == '4' ? 'selected' : ''}>V/F - Vivax/Falciparum</option>
+                            </select>
+                        </td>
+
+                        <td><input type="text" name="recuento_microscopista_vivax_${i}" class="form-control" value="${item.vivax_micro}" required></td>
+                        <td><input type="text" name="recuento_microscopista_falciparum_${i}" class="form-control" value="${item.falciparum_micro}" required></td>
+                        <td><input type="text" name="presencia_microscopista_${i}" class="form-control" value="${item.mg_micro}" required></td>
+                    </tr>
+                `;
+                tablaBody.append(row);
+            });
+
+            obtenerResultados();
+
+        },
+        error: function(error) {
+            console.error('Error al obtener desglose:', error);
+        }
+    });
+}
 
 
 
+function ajustarFilasPorTotal() {
+    let totalDeseado = parseInt($('#total_laminas').val()) || 0;
+    let tablaBody = $('#tabla_body');
+    let filasActuales = tablaBody.find('tr').length;
 
-
-document.addEventListener('DOMContentLoaded', function () {
-
-    //const resultadosEspecie = {};
-
-    const resultadosRV = {};
-    const resultadosRF = {};
-
-
-    const totalLaminasInput = document.getElementById('total_laminas');
-    const tablaBody = document.getElementById('tabla_body');
-    const resultadosContainer = document.getElementById('resultados-container');
-
-    totalLaminasInput.addEventListener('change', function () {
-        const total = parseInt(this.value) || 0;
-
-        // Limpiar antes de agregar nuevas filas e inputs
-        tablaBody.innerHTML = '';
-        resultadosContainer.innerHTML = '';
-
-        for (let i = 1; i <= total; i++) {
-            // Crear la fila de la tabla
-            const row = `
+    if (totalDeseado > filasActuales) {
+        // Agregar filas faltantes
+        for (let i = filasActuales + 1; i <= totalDeseado; i++) {
+            let filaNueva = `
                 <tr>
                     <td><input type="date" id="fecha_${i}" name="fecha_${i}" class="form-control" required></td>
                     <td><input type="text" id="semana_${i}" name="semana_${i}" class="form-control" required></td>
                     <td><input type="text" id="codigo_micro_${i}" name="codigo_micro_${i}" class="form-control" required></td>
                     <td><input type="text" id="num_lamina_${i}" name="num_lamina_${i}" class="form-control" required></td>
+
                     <td>
                         <select name="diagnostico_calidad_${i}" class="form-control single-select">
                             <option value="">Selecciona una Opción</option>
                             <option value="1">F - Falciparum</option>
                             <option value="2">N - Negativo</option>
                             <option value="3">V - Vivax</option>
-                            <option value="4">V/F - Vivax/Falciparum</option>
+                            <option value="4">V - F</option>
                         </select>
                     </td>
-                    <td><input type="text" id="recuento_control_vivax_${i}" name="recuento_control_vivax_${i}" class="form-control" required></td>
-                    <td><input type="text" id="recuento_control_falciparum_${i}" name="recuento_control_falciparum_${i}" class="form-control" required></td>
-                    <td><input type="text" id="presencia_control_${i}" name="presencia_control_${i}" class="form-control" required></td>
+
+                    <td><input type="text" name="recuento_control_vivax_${i}" class="form-control" required></td>
+                    <td><input type="text" name="recuento_control_falciparum_${i}" class="form-control" required></td>
+                    <td><input type="text" name="presencia_control_${i}" class="form-control" required></td>
+
                     <td>
                         <select name="diagnostico_microscopista_${i}" class="form-control single-select">
                             <option value="">Selecciona una Opción</option>
                             <option value="1">F - Falciparum</option>
                             <option value="2">N - Negativo</option>
                             <option value="3">V - Vivax</option>
-                            <option value="4">V/F - Vivax/Falciparum</option>
+                            <option value="4">V - F</option>
                         </select>
                     </td>
-                    <td><input type="text" id="recuento_microscopista_vivax_${i}" name="recuento_microscopista_vivax_${i}" class="form-control" required></td>
-                    <td><input type="text" id="recuento_microscopista_falciparum_${i}" name="recuento_microscopista_falciparum_${i}" class="form-control" required></td>
-                    <td><input type="text" id="presencia_microscopista_${i}" name="presencia_microscopista_${i}" class="form-control" required></td>
+
+                    <td><input type="text" name="recuento_microscopista_vivax_${i}" class="form-control" required></td>
+                    <td><input type="text" name="recuento_microscopista_falciparum_${i}" class="form-control" required></td>
+                    <td><input type="text" name="presencia_microscopista_${i}" class="form-control" required></td>
                 </tr>
             `;
-            tablaBody.insertAdjacentHTML('beforeend', row);
-
+            tablaBody.append(filaNueva);
         }
 
-        // Asociar los eventos a los selects para cálculo dinámico
-        for (let i = 1; i <= total; i++) {
-            let diagControl = document.querySelector(`[name="diagnostico_calidad_${i}"]`);
-            let diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`);
-
-            let fecha                             = document.querySelector(`[name="fecha_${i}"]`);
-            let semana                            = document.querySelector(`[name="semana_${i}"]`);
-            let codigo_micro                      = document.querySelector(`[name="codigo_micro_${i}"]`);
-            let num_lamina                        = document.querySelector(`[name="num_lamina_${i}"]`);
-
-            let recuento_control_vivax            = document.querySelector(`[name="recuento_control_vivax_${i}"]`);
-            let recuento_control_falciparum       = document.querySelector(`[name="recuento_control_falciparum_${i}"]`);
-            let presencia_control                 = document.querySelector(`[name="presencia_control_${i}"]`);
-            let recuento_microscopista_vivax      = document.querySelector(`[name="recuento_microscopista_vivax_${i}"]`);
-            let recuento_microscopista_falciparum = document.querySelector(`[name="recuento_microscopista_falciparum_${i}"]`);
-            let presencia_microscopista           = document.querySelector(`[name="presencia_microscopista_${i}"]`);
-
-            if (diagControl && diagMicro) {
-
-                fecha.addEventListener("change", () => obtenerResultados());
-                semana.addEventListener("change", () => obtenerResultados());
-                codigo_micro.addEventListener("change", () => obtenerResultados());
-                num_lamina.addEventListener("change", () => obtenerResultados());
-
-                recuento_control_vivax.addEventListener("change", () => obtenerResultados());
-                recuento_control_falciparum.addEventListener("change", () => obtenerResultados());
-                presencia_control.addEventListener("change", () => obtenerResultados());
-                recuento_microscopista_vivax.addEventListener("change", () => obtenerResultados());
-                recuento_microscopista_falciparum.addEventListener("change", () => obtenerResultados());
-                presencia_microscopista.addEventListener("change", () => obtenerResultados());
-
-                diagControl.addEventListener("change", () => obtenerResultados());
-                diagMicro.addEventListener("change", () => obtenerResultados());
-
-                diagControl.addEventListener("change", () => calcularResultado(i));
-                diagMicro.addEventListener("change", () => calcularResultado(i));
-
-            }
+    } else if (totalDeseado < filasActuales) {
+        // Quitar filas desde el final
+        for (let i = filasActuales; i > totalDeseado; i--) {
+            tablaBody.find('tr').last().remove();
         }
+    }
 
-        actualizarCodigoMicroscopista();
+    actualizarCodigoMicroscopista();
 
-    });
-    
-
-
-
-
-
-
-});
-
-
-
+}

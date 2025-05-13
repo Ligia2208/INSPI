@@ -430,13 +430,15 @@ Route::middleware(['auth'])->group(function () {
         //bacteriología
         Route::get('/laminas_bacteriologia', 'CentrosLaminasController@laminas_bacteriologia')->name('laminas_bacteriologia'); 
         Route::get('/laminas/agregar_laminas_bact', 'CentrosLaminasController@agregar_laminas_bact')->name('laminas.agregar_laminas_bact');
-        Route::get('/laminas/reporte_control_calidad_bact', 'CentrosLaminasController@reporte_control_calidad_bact')->name('laminas.reporte_control_calidad_bact');
         Route::post('/laminas/guardar_laminas_bact', 'CentrosLaminasController@guardar_laminas_bact')->name('laminas.guardar_laminas_bact');
+        Route::get('/laminas/editar_bact/{id_ingreso}', 'CentrosLaminasController@editar_bact')->name('laminas.editar_bact');
+        Route::get('/laminas/desglose/{id}', 'CentrosLaminasController@obtenerDesglose')->name('laminas.obtenerDesglose');
+        Route::post('/laminas/editar_laminas_bact', 'CentrosLaminasController@editar_laminas_bact')->name('laminas.editar_laminas_bact');
+        Route::get('/laminas/visualizar_bact/{id_ingreso}', 'CentrosLaminasController@visualizar_bact')->name('laminas.visualizar_bact');
+        Route::post('/laminas/eliminar_bact', 'CentrosLaminasController@eliminar_bact')->name('laminas.eliminar_bact');
+        Route::get('/laminas/reporte_control_calidad_indirecto/{id_lamina}', 'CentrosLaminasController@reporte_control_calidad_indirecto')->name('laminas.reporte_control_calidad_indirecto');
 
-        Route::get('/laminas/reporte_control_calidad_indirecto', 'CentrosLaminasController@reporte_control_calidad_indirecto')->name('laminas.reporte_control_calidad_indirecto');
-
-
-
+        Route::get('/laminas/reporte_control_calidad_par', 'CentrosLaminasController@reporte_control_calidad_par')->name('laminas.reporte_control_calidad_par');
 
     });
     /* =========================== LAMINAS =========================== */
