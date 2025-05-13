@@ -106,8 +106,9 @@
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="fecha_recebcion" class="form-label fs-6">Fecha de Recepción de láminas:</label>
-                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="" required>
+                                <label for="fecha_recebcion" class="form-label fs-6">Fecha de Reporte:</label>
+                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" 
+                                    value="{{ \Carbon\Carbon::now()->toDateString() }}" required disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -143,6 +144,18 @@
                             <div class="col-md-4 mt-2">
                                 <label for="fecha_fin" class="form-label fs-6">Fecha Final:</label>
                                 <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="total_laminas_pos" class="form-label fs-6">Total de Láminas Positivas</label>
+                                <input type="number" id="total_laminas_pos" name="total_laminas_pos" class="form-control" required value="">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="total_laminas_neg" class="form-label fs-6">Total de Láminas Negativas</label>
+                                <input type="number" id="total_laminas_neg" name="total_laminas_neg" class="form-control" required value="" readonly>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -197,68 +210,6 @@
                             </tr>
                         </thead>
                         <tbody id="tabla_body">
-                            <tr>
-                                <td>
-                                    <input type="date" id="fecha_${i}" name="fecha_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>   
-                                </td>
-                                <td>
-                                    <input type="text" id="semana_${i}" name="semana_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="codigo_micro_${i}" name="codigo_micro_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="num_lamina_${i}" name="num_lamina_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <select name="diagnostico_calidad_${i}" class="form-control single-select">
-                                        <option value="">Selecciona una Opción</option>
-                                        <option value="1">F - Falciparum</option>
-                                        <option value="2">N - Negativo</option>
-                                        <option value="3">V - Vivax</option>
-                                    </select>
-                                </td>  
-                                <td>
-                                    <input type="text" id="recuento_control_vivax_${i}" name="recuento_control_vivax_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="recuento_control_falciparum_${i}" name="recuento_control_falciparum_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                    
-                                </td>
-                                <td>
-                                    <input type="text" id="presencia_control_${i}" name="presencia_control_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-
-
-                                <td>
-                                    <select name="diagnostico_microscopista_${i}" class="form-control single-select">
-                                        <option value="">Selecciona una Opción</option>
-                                        <option value="1">F - Falciparum</option>
-                                        <option value="2">N - Negativo</option>
-                                        <option value="3">V - Vivax</option>
-                                    </select>
-                                </td>   
-                                <td>
-                                    <input type="text" id="recuento_microscopista_vivax_${i}" name="recuento_microscopista_vivax_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="recuento_microscopista_falciparum_${i}" name="recuento_microscopista_falciparum_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                                <td>
-                                    <input type="text" id="presencia_control_${i}" name="presencia_control_${i}" class="form-control" required autofocus value="" disabled>
-                                    <div class="valid-feedback">Looks good!</div>
-                                </td>
-                            </tr>
-
 
                             <!-- Agregar más filas según sea necesario -->
                         </tbody>
@@ -287,7 +238,7 @@
                     <i class="bi bi-send-check"></i> Guardar
                 </a>
 
-                <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/laminas'">
+                <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/laminas_bacteriologia'">
                 <i class="bi bi-caret-left"></i> Regresar
                 </a>
             </div>
@@ -307,5 +258,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.1')}}"></script>
 @endpush

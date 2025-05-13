@@ -302,7 +302,7 @@
                     <i class="bi bi-send-check"></i> Guardar
                 </a>
 
-                <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/laminas'">
+                <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/laminas_bacteriologia'">
                 <i class="bi bi-caret-left"></i> Regresar
                 </a>
             </div>
@@ -328,5 +328,5 @@
 <script>
     const desgloseData = @json($desglose);
 </script>
-<script src="{{asset('assets/js/Lamina/edit_lamina_bact.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Lamina/edit_lamina_bact.js?v0.0.2')}}"></script>
 @endpush
