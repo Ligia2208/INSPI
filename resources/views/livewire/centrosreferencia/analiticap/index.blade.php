@@ -249,7 +249,7 @@
                                         @endif
                                     </td>
                                     <td align="center">
-                                        @if ($analitica->usuariop_id == 0)
+                                        @if ($analitica->usuariop_id == 0 && $analitica->codigo_secuencial<10)
                                             <i class="navi-item" data-toggle="modal" data-target="_self">
                                                 @if($analitica->crns_id == 1)
                                                 <a href="{{ route('analiticamico.edit', $analitica) }}"
@@ -276,6 +276,17 @@
                                                 </a>
                                                 @endif
                                             </i>
+                                        @endif
+                                        @if ($analitica->usuariop_id == 0 && $analitica->codigo_secuencial>10)
+                                            <i class="navi-item"
+                                            onclick="event.preventDefault(); confirmDestroy({{ $analitica->id }})">
+                                            <a href="#" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-trash-alt" style="color:red"
+                                                        title="Eliminar"></i>
+                                                </span>
+                                            </a>
+                                        </i>
                                         @endif
                                         @if ($analitica->crns_id == 8 && $analitica->evento_id == 104)
                                             @if ($analitica->resultado_id==66 || $analitica->resultado_id==68)

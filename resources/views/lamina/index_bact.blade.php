@@ -122,5 +122,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/index_bact.js?v0.0.1')}}"></script>
+<script src="{{asset('assets/js/Lamina/index_bact.js?v0.0.3')}}"></script>
 @endpush

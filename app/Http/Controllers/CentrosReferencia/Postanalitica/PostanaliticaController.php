@@ -43,7 +43,7 @@ class PostanaliticaController extends Controller
     public function informep($id){
 
         $data = Preanalitica::findOrFail($id);
-        $data_muestras = Analitica::where('preanalitica_id','=',$id)->get();
+        $data_muestras = Analitica::where('preanalitica_id','=',$id)->where('estado','=','A')->get();
         $codigo_muestra = Analitica::where('preanalitica_id','=',$id)->first()->codigo_calidad;
         $codigom = substr($codigo_muestra, 0, -3);
         $laboratorio = Crn::findOrFail($data->crns_id);

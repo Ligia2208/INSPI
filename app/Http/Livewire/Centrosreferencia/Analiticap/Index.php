@@ -105,7 +105,7 @@ class Index extends Component
             if($contcrns==1){
                 $this->claboratorios = $crns_users[0];
             }
-            
+
         }
         if($this->claboratorios){
             $analiticasp = $analiticasp->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
@@ -160,6 +160,51 @@ class Index extends Component
             $Analiticas = Analitica::findOrFail($id);
             $Analiticas->estado = 'I';
             $Analiticas->update();
+
+            $control = $Analiticas->codigo_secuencial;
+            if($control>10 && $control<=20){
+                $control = $control-10;
+                //dd($control); die();
+                $secuencial = 1;
+                $AnaliticaId = Analitica::where('sedes_id','=',$Analiticas->sedes_id)->where('crns_id','=',$Analiticas->crns_id)->where('evento_id','=',$Analiticas->evento_id)->where('codigo_muestra','=',$Analiticas->codigo_muestra)->where('codigo_secuencial','=',$secuencial)->where('estado','=','A')->pluck('id');
+                //dd($AnaliticaId); die();
+                if($control==1){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_segunda_id=0;
+                    $AnaliticaOriginal->resultado_segunda_id=0;
+                    $AnaliticaOriginal->identificado_segunda=null;
+                    $AnaliticaOriginal->update();
+                }
+                if($control==2){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_tercera_id=0;
+                    $AnaliticaOriginal->resultado_tercera_id=0;
+                    $AnaliticaOriginal->identificado_tercera=null;
+                    $AnaliticaOriginal->update();
+                }
+                if($control==3){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_cuarta_id=0;
+                    $AnaliticaOriginal->resultado_cuarta_id=0;
+                    $AnaliticaOriginal->identificado_cuarta=null;
+                    $AnaliticaOriginal->update();
+                }
+                if($control==4){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_quinta_id=0;
+                    $AnaliticaOriginal->resultado_quinta_id=0;
+                    $AnaliticaOriginal->identificado_quinta=null;
+                    $AnaliticaOriginal->update();
+                }
+                if($control==5){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_sexta_id=0;
+                    $AnaliticaOriginal->resultado_sexta_id=0;
+                    $AnaliticaOriginal->identificado_sexta=null;
+                    $AnaliticaOriginal->update();
+                }
+
+            }
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
             $this->alert('error',

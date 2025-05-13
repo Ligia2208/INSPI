@@ -709,7 +709,7 @@
                                                         data-live-search="true"
                                                         data-show-subtext="true"
                                                         required>
-                                                        <option value="">Selecciona una Técnica</option>
+                                                        <option value="0">Selecciona una Técnica</option>
                                                         @if(!is_null($tecnicas))
                                                         @foreach ($tecnicas as $objTecn)
                                                             <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
@@ -733,7 +733,7 @@
                                                         data-live-search="true"
                                                         data-show-subtext="true"
                                                         required>
-                                                        <option value="">Selecciona un Resultado</option>
+                                                        <option value="0">Selecciona un Resultado</option>
                                                         @if(!is_null($reportes))
                                                         @foreach ($reportes as $objRep)
                                                             <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
@@ -775,7 +775,7 @@
                                                         data-live-search="true"
                                                         data-show-subtext="true"
                                                         required>
-                                                        <option value="">Selecciona una Técnica</option>
+                                                        <option value="0">Selecciona una Técnica</option>
                                                         @if(!is_null($tecnicas))
                                                         @foreach ($tecnicas as $objTecn)
                                                             <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
@@ -799,7 +799,7 @@
                                                         data-live-search="true"
                                                         data-show-subtext="true"
                                                         required>
-                                                        <option value="">Selecciona un Resultado</option>
+                                                        <option value="0">Selecciona un Resultado</option>
                                                         @if(!is_null($reportes))
                                                         @foreach ($reportes as $objRep)
                                                             <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
@@ -841,7 +841,7 @@
                                                         data-live-search="true"
                                                         data-show-subtext="true"
                                                         required>
-                                                        <option value="">Selecciona una Técnica</option>
+                                                        <option value="0">Selecciona una Técnica</option>
                                                         @if(!is_null($tecnicas))
                                                         @foreach ($tecnicas as $objTecn)
                                                             <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
@@ -865,7 +865,7 @@
                                                         data-live-search="true"
                                                         data-show-subtext="true"
                                                         required>
-                                                        <option value="">Selecciona un Resultado</option>
+                                                        <option value="0">Selecciona un Resultado</option>
                                                         @if(!is_null($reportes))
                                                         @foreach ($reportes as $objRep)
                                                             <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
@@ -887,6 +887,138 @@
                                                         type="text"
                                                         required
                                                         class="form-control form-control-solid @error('Analiticastoxico.identificado_cuarta') is-invalid @enderror"
+                                                        placeholder="Ej: Otra bacteria" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-5">
+                                                <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-list"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select
+                                                        wire:model.defer="Analiticastoxico.tecnica_quinta_id"
+                                                        class="form-control selectpicker form-control-solid @error('Analiticastoxico.tecnica_quinta_id') is-invalid @enderror"
+                                                        data-size="7"
+                                                        data-live-search="true"
+                                                        data-show-subtext="true"
+                                                        required>
+                                                        <option value="0">Selecciona una Técnica</option>
+                                                        @if(!is_null($tecnicas))
+                                                        @foreach ($tecnicas as $objTecn)
+                                                            <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label class="text-black"><b>Resultado</b><span class="text-danger"></span></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-list"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select
+                                                        wire:model.defer="Analiticastoxico.resultado_quinta_id"
+                                                        class="form-control selectpicker form-control-solid @error('Analiticastoxico.resultado_quinta_id') is-invalid @enderror"
+                                                        data-size="7"
+                                                        data-live-search="true"
+                                                        data-show-subtext="true"
+                                                        required>
+                                                        <option value="0">Selecciona un Resultado</option>
+                                                        @if(!is_null($reportes))
+                                                        @foreach ($reportes as $objRep)
+                                                            <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label class="text-black"><b>Agente identificado</b></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-edit"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input
+                                                        wire:model.defer="Analiticastoxico.identificado_quinta"
+                                                        type="text"
+                                                        required
+                                                        class="form-control form-control-solid @error('Analiticastoxico.identificado_quinta') is-invalid @enderror"
+                                                        placeholder="Ej: Otra bacteria" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-5">
+                                                <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-list"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select
+                                                        wire:model.defer="Analiticastoxico.tecnica_sexta_id"
+                                                        class="form-control selectpicker form-control-solid @error('Analiticastoxico.tecnica_sexta_id') is-invalid @enderror"
+                                                        data-size="7"
+                                                        data-live-search="true"
+                                                        data-show-subtext="true"
+                                                        required>
+                                                        <option value="0">Selecciona una Técnica</option>
+                                                        @if(!is_null($tecnicas))
+                                                        @foreach ($tecnicas as $objTecn)
+                                                            <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label class="text-black"><b>Resultado</b><span class="text-danger"></span></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-list"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select
+                                                        wire:model.defer="Analiticastoxico.resultado_sexta_id"
+                                                        class="form-control selectpicker form-control-solid @error('Analiticastoxico.resultado_sexta_id') is-invalid @enderror"
+                                                        data-size="7"
+                                                        data-live-search="true"
+                                                        data-show-subtext="true"
+                                                        required>
+                                                        <option value="0">Selecciona un Resultado</option>
+                                                        @if(!is_null($reportes))
+                                                        @foreach ($reportes as $objRep)
+                                                            <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label class="text-black"><b>Agente identificado</b></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-edit"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input
+                                                        wire:model.defer="Analiticastoxico.identificado_sexta"
+                                                        type="text"
+                                                        required
+                                                        class="form-control form-control-solid @error('Analiticastoxico.identificado_sexta') is-invalid @enderror"
                                                         placeholder="Ej: Otra bacteria" />
                                                 </div>
                                             </div>

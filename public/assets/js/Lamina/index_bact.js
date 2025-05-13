@@ -428,7 +428,7 @@ $( function () {
 
         $.ajax({
             type: 'GET',
-            url: '/laminas/reporte_control_calidad_indirecto',  
+            url: '/laminas/reporte_control_calidad_indirecto'+id_lamina,  //
             xhrFields: {
                 responseType: 'blob'
             },

@@ -186,14 +186,19 @@
                         </thead>
                         <tbody>
                             @forelse ($analiticas as $postanalitica)
-                                <tr>
-                                    <?php  $codigo = 0; $restec=''; $tecnico='';?>
+
+                                    <?php  $codigo = ''; $restec=''; $tecnico='';?>
                                     @forelse ($postanalitica->analitica as $objPos)
                                         @if($objPos->codigo_secuencial==1)
                                         <?php  $codigo = $objPos->codigo_calidad; if($objPos->usuarior_id>0){ $tecnico = $objPos->usuarior->name;}else{ $tecnico=''; } if($objPos->resultado_id>0){ $restec = $objPos->resultado->descripcion; }else{ $restec=''; }?>
                                         @endif
                                     @empty
                                     @endforelse
+                                    <?php if($tecnico==''){ ?>
+                                        <tr style="background-color:rgb(255, 205, 200)">
+                                    <?php }else{ ?>
+                                        <tr>
+                                    <?php } ?>
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $codigo }}</span>

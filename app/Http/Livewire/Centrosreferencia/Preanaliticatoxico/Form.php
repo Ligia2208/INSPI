@@ -1048,7 +1048,9 @@ class Form extends Component
         try{
             $user = auth()->user()->id;
             $fecha_anio = date("Y");
-            if($this->Preanaliticastoxico->evento_id==95){
+             $this->guardarp($this->Preanaliticastoxico,$this->Preanaliticastoxico->evento_id);
+
+            /* if($this->Preanaliticastoxico->evento_id==95){
                 $codgen = $this->guardart($this->Preanaliticastoxico,95);
                 $this->guardardetallet($this->Preanaliticastoxico,$this->IdPreanalitica,$codgen,168);
                 $this->guardardetallet($this->Preanaliticastoxico,$this->IdPreanalitica,$codgen,169);
@@ -1070,7 +1072,7 @@ class Form extends Component
                 else{
                     $this->guardarp($this->Preanaliticastoxico,$this->Preanaliticastoxico->evento_id);
                 }
-            }
+            } */
 
             DB::commit();
             $this->alert('success', 'Preanalitica agregado con éxito');
