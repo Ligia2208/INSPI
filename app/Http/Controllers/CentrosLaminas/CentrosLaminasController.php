@@ -1055,7 +1055,10 @@ class CentrosLaminasController extends Controller
             'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
             'ingreso_laminas.fecha_fin as fecha_fin'
         )
-        ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+        ->join('inspi_crns.
+        
+        -+
+        as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
         ->where('ingreso_laminas.estado', ['A'])
         ->where('ingreso_laminas.id', $id_ingreso)->first();
 
@@ -1230,9 +1233,8 @@ class CentrosLaminasController extends Controller
     }
 
 
-
-
-    public function visualizar_bact($id_ingreso){
+    public function visualizar_bact($id_ingreso)
+    {
 
         $datos = Lamina::select(
             'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
@@ -1284,16 +1286,46 @@ class CentrosLaminasController extends Controller
     }
 
 
-
-    public function reporte_control_calidad_par(Request $request)
+    public function reporte_control_calidad_par($id)
     {
+        // Utilizando Eloquent para el modelo Lamina
+        $lamina = Lamina::select(
+                'mes_recepcion',
+                'fecha_recep',
+                'total_laminas_recib',
+                'laminas_positivas_rec',
+                'laminas_negativas_rec',
+                'total_laminas',
+                'observaciones'
+            )
+            ->where('id', $id)
+            ->latest('fecha_recep') // u otra columna si aplica
+            ->first();
 
-      
+        // Utilizando Eloquent para el modelo Resultado
+        $resultados = Resultado::select(
+                'laminas_positivas_con',
+                'laminas_positivas_dis',
+                'laminas_negativas_con',
+                'laminas_negativas_dis',
+                'porcentaje_acumulado',
+                'interpretacion',
+                'resultado',
+                'especie',
+                'recuentos',
+            )
+            ->where('id', $id)
+            ->first();
 
-        return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Par') 
-            ->setPaper('A4', 'portrait')
-            ->download('reporte_control calidad_par.pdf');
+        return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Par', [
+            'lamina' => $lamina,
+            'resultados' => $resultados,
+        ])
+        ->setPaper('A4', 'portrait')
+        ->download('reporte_control_calidad_par.pdf');
     }
+
+
 
 
     public function reporte_control_calidad_indirecto($id_lamina)

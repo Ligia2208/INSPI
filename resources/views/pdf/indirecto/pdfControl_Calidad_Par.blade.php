@@ -53,125 +53,138 @@
         <!-- CUERPO1 -->
         <table class="no-border">
             <tr>
-                <td style="border: none;"><strong>EVENTO:</strong> </td>
+                <td style="border: none;">
+                    <strong>EVENTO:</strong> 
+                </td>
             </tr>
             <tr>
-                <td style="border: none;"><strong>Fecha:</strong> </td>
+                <td style="border: none;">
+                    <strong>Fecha:</strong> {{ \Carbon\Carbon::now()->translatedFormat('d \d\e F \d\e Y') }}
+                </td>
             </tr>
             <tr>
-                <td style="border: none;"><strong>Unidad de Aseguramiento de la Calidad:</strong>  </td>
-                <td style="border: none;"><strong>Provincia:</strong>  </td>
-                <td style="border: none;"><strong>Cantón:</strong> </td>
+                <td style="border: none;">
+                    <strong>Unidad de Aseguramiento de la Calidad:</strong> 
+                </td>
+                <td style="border: none;">
+                    <strong>Provincia:</strong> 
+                </td>
+                <td style="border: none;">
+                    <strong>Cantón:</strong> 
+                </td>
             </tr>
             <tr>
-                <td style="border: none;"><strong>Responsable de la UAC:</strong> </td>
+                <td style="border: none;">
+                    <strong>Responsable de la UAC:</strong> 
+                </td>
             </tr>
             <tr>
-                <td style="border: none;"><strong>Semana o mes:</strong> </td>
+                <td style="border: none;">
+                    <strong>Semana o mes:</strong> {{ $lamina->mes_recepcion}}
+                </td>
             </tr>
             <tr>
-                <td style="border: none;"><strong>Fecha de recepción de láminas:</strong> {{ date('d-m-Y') }}</td>
+                <td style="border: none;">
+                    <strong>Fecha de recepción de láminas:</strong> {{ $lamina->fecha_recep}}
+                </td>
             </tr>
-           
         </table>
         <br>
 
         <!-- CUERPO2 -->
-    
         <table class="center" style="width: 100%; border-collapse: collapse;">
-          <thead>
-            <tr>
-              <th colspan="8" style="font-weight: bold; padding-bottom: 10px;">
-                CONTROL DE CALIDAD INDIRECTO REALIZADO POR EL <span class="underline">CRN DE PARASITOLOGÍA Y MICOLOGÍA:</span>
-              </th>
-            </tr>
-            <tr>
-              <th colspan="8" style="text-align: left; padding-bottom: 5px;">
-                Resultado:
-              </th>
-            </tr>
-            <tr>
-              <th># Total Láminas Recibidas en CRN</th>
-              <th># Láminas Positivas Recibidas en CRN</th>
-              <th># Láminas Negativas Recibidas en CRN</th>
-              <th># Láminas Revisadas en el CRN</th>
-              <th># Láminas Positivas Concordantes</th>
-              <th># Láminas Positivas Discordantes</th>
-              <th># Láminas Negativas Concordantes</th>
-              <th># Láminas Negativas Discordantes</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
-          </tbody>
+            <thead>
+                <tr>
+                    <th colspan="8" style="font-weight: bold; padding-bottom: 10px;">
+                        CONTROL DE CALIDAD INDIRECTO REALIZADO POR EL <span class="underline">CRN DE PARASITOLOGÍA Y MICOLOGÍA:</span>
+                    </th>
+                </tr>
+                <tr>
+                    <th colspan="8" style="text-align: left; padding-bottom: 5px;">
+                        Resultado:
+                    </th>
+                </tr>
+                <tr>
+                    <th># Total Láminas Recibidas en CRN</th>
+                    <th># Láminas Positivas Recibidas en CRN</th>
+                    <th># Láminas Negativas Recibidas en CRN</th>
+                    <th># Láminas Revisadas en el CRN</th>
+                    <th># Láminas Positivas Concordantes</th>
+                    <th># Láminas Positivas Discordantes</th>
+                    <th># Láminas Negativas Concordantes</th>
+                    <th># Láminas Negativas Discordantes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>{{ $lamina->total_laminas_recib }}</td>
+                    <td>{{ $lamina->laminas_positivas_rec }}</td>
+                    <td>{{ $lamina->laminas_negativas_rec }}</td>
+                    <td>{{ $lamina->total_laminas}}</td> 
+                    <td>{{ $resultados->laminas_positivas_con }}</td>
+                    <td>{{ $resultados->laminas_positivas_dis }}</td>
+                    <td>{{ $resultados->laminas_negativas_con }}</td>
+                    <td>{{ $resultados->laminas_negativas_dis }}</td>
+
+                </tr>
+            </tbody>
         </table>
         <br>
 
+
         <!-- Tabla der -->
         <table style="width: 49%; float: left; font-size: 14px;">
-          <tr style="height: 35px;">
-            <th class="center">Puntaje Acumulado</th>
-            <th class="center">Interpretación</th>
-          </tr>
-
-          <tr>
-            <td class="center bold" style="font-size: 16px; vertical-align: middle; height: 80px;"> </td>
-            <td class="center" style="font-size: 16px; vertical-align: middle; height: 80px;"> </td>
-          </tr>
-          
+            <tr style="height: 35px;">
+                <th class="center">Puntaje Acumulado</th>
+                <th class="center">Interpretación</th>
+            </tr>
+            <tr>
+                <td class="center bold" style="font-size: 16px; vertical-align: middle; height: 80px;"> {{ $resultados->porcentaje_acumulado }}%</td>
+                <td class="center" style="font-size: 16px; vertical-align: middle; height: 80px;"> {{ $resultados->interpretacion }} </td>
+            </tr>
         </table>
+
         <!-- Tabla izq -->
         <table style="width: 49%; float: right; font-size: 14px;">
-          <tr style="height: 35px;">
-            <td colspan="2" class="italic underline center"><strong>
-              Porcentajes alcanzado por parámetros evaluados</strong>
-            </td>
-          </tr>
-          <tr style="height: 35px;">
-            <td class="italic underline center">Resultado</td>
-            <td class="center"><strong> </strong></td>
-          </tr>
-          <tr style="height: 35px;">
-            <td class="italic underline center">Especie</td>
-            <td class="center"><strong> </strong></td>
-          </tr>
-          <tr style="height: 35px;">
-            <td class="italic underline center">Recuentos</td>
-            <td class="center"> <strong> </strong></td>
-          </tr>
+            <tr style="height: 35px;">
+                <td colspan="2" class="italic underline center"><strong>
+                Porcentajes alcanzados por parámetros evaluados</strong>
+                </td>
+            </tr>
+            <tr style="height: 35px;">
+                <td class="italic underline center">Resultado</td>
+                <td class="center"><strong> </strong>{{ $resultados->resultado }}%</td>
+            </tr>
+            <tr style="height: 35px;">
+                <td class="italic underline center">Especie</td>
+                <td class="center"><strong> </strong>{{ $resultados->especie }}%</td>
+            </tr>
+            <tr style="height: 35px;">
+                <td class="italic underline center">Recuentos</td>
+                <td class="center"> <strong> </strong>{{ $resultados->recuentos }}%</td>
+            </tr>
         </table>
         <div style="clear: both;"></div>
         <br>
         <br>
- 
-    
+
         <!-- CUERPO3 -->
-        <table class= "no-border" style="width: 100%; text-align: left;">
+        <table class="no-border" style="width: 100%; text-align: left;">
             <tr>
-              <td style="width: 60%;">
-                <span class="underline">Responsable del control indirecto del CRN de Parasitología y Micología:</span>
-              </td>
-              <td style="width: 40%;">
-                <strong><span class="underline">Lcd. Marcelo Andrade</span></strong>
-              </td>              
+                <td style="width: 60%;">
+                    <span class="underline">Responsable del control indirecto del CRN de Parasitología y Micología:</span>
+                </td>
+                <td style="width: 40%;">
+                    <strong><span class="underline">Lcd. Marcelo Andrade</span></strong>
+                </td>
             </tr>
 
             <tr>
-              <td colspan="2" style="padding-top: 20px;">
-                <strong>OBSERVACIONES / RECOMENDACIONES:</strong> <br> <br>
-                <hr style="border: 1px solid #000; margin: 12px 0;">
-                <hr style="border: 1px solid #000; margin: 12px 0;">
-               
-              </td>
+                <td colspan="2" style="padding-top: 20px;">
+                    <strong>OBSERVACIONES / RECOMENDACIONES:</strong> <br> <br>
+                    <p>{{ $lamina->observaciones}}</p> 
+                    <hr style="border: 1px solid #000; margin: 12px 0;">
+                </td>
             </tr>
         </table>
         <br>
