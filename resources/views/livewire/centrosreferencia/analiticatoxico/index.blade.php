@@ -254,7 +254,7 @@
                                                 </a>
                                             </i>
                                         @endif
-                                        @if ($analiticatoxico->usuarior_id == 0 && $analiticatoxico->validado == 'N')
+                                        {{-- @if ($analiticatoxico->usuarior_id == 0 && $analiticatoxico->validado == 'N')
                                             <i class="navi-item"
                                                 onclick="event.preventDefault(); confirmDuplicate({{ $analiticatoxico->id }})">
                                                 <a href="#" class="navi-link">
@@ -264,7 +264,7 @@
                                                     </span>
                                                 </a>
                                             </i>
-                                        @endif
+                                        @endif --}}
                                         @if ($analiticatoxico->archivo != null)
                                         <i class="navi-item" data-toggle="modal" data-target="#">
                                             <a href="#" class="navi-link">
@@ -338,7 +338,7 @@
             function confirmDestroy(id) {
                 swal.fire({
                     title: "¿Estas seguro?",
-                    text: "No podrá recuperar este Área/Dirección y los servicios creados con este tipo se quedarán sin vinculación",
+                    text: "No podrá recuperar esta técnica y la información adicional que se registró quedará sin vinculación",
                     icon: "warning",
                     buttonsStyling: false,
                     showCancelButton: true,

@@ -45,7 +45,7 @@ class PostanaliticapController extends Controller
     public function informep($id){
 
         $data = Preanalitica::findOrFail($id);
-        $data_muestras = Analitica::where('preanalitica_id','=',$id)->get();
+        $data_muestras = Analitica::where('preanalitica_id','=',$id)->where('estado','=','A')->get();
         $codigo_muestra = Analitica::where('preanalitica_id','=',$id)->first()->codigo_calidad;
         $codigom = substr($codigo_muestra, 0, -3);
         $laboratorio = Crn::findOrFail($data->crns_id);
@@ -194,10 +194,20 @@ class PostanaliticapController extends Controller
 
 
             if($muestra->crns_id==12){
-                $this->fpdf->Ln(9);
+                $this->fpdf->Ln(3);
                 if($muestra->carga_viral>0){
-                    $this->fpdf->Cell(40,6.5,utf8_decode("DETALLE CARGA VIRAL"),1,0,"C",true);
+                    $this->fpdf->Cell(40,6.5,utf8_decode("Detalle Carga Viral"),1,0,"C",true);
                     $this->fpdf->Cell(40,6.5,utf8_decode("Carga viral: ".$muestra->carga_viral." ".$muestra->unidades->descripcion),1,0,"L");
+                    $this->fpdf->Cell(110,6.5,utf8_decode("Observaciones: ".$muestra->recomendacion_inmuno),1,0,"L");
+                }
+                $this->fpdf->Ln(9);
+            }
+
+            if($muestra->crns_id==7){
+                $this->fpdf->Ln(3);
+                if($muestra->nivel_alcohol>0){
+                    $this->fpdf->Cell(40,6.5,utf8_decode("Detalle Alcohol"),1,0,"C",true);
+                    $this->fpdf->Cell(40,6.5,utf8_decode("Nivel de alcohol: ".$muestra->nivel_alcohol." ".$muestra->unidades->descripcion),1,0,"L");
                     $this->fpdf->Cell(110,6.5,utf8_decode("Observaciones: ".$muestra->recomendacion_inmuno),1,0,"L");
                 }
                 $this->fpdf->Ln(9);

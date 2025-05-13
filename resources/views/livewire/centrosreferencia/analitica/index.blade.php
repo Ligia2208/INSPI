@@ -301,7 +301,7 @@
                                                 @endif
                                             </i>
                                         @endif
-                                        @if ($analitica->usuarior_id == 0 && $analitica->validado == 'N')
+{{--                                         @if ($analitica->usuarior_id == 0 && $analitica->validado == 'N')
                                             <i class="navi-item"
                                                 onclick="event.preventDefault(); confirmDuplicate({{ $analitica->id }})">
                                                 <a href="#" class="navi-link">
@@ -311,7 +311,7 @@
                                                     </span>
                                                 </a>
                                             </i>
-                                        @endif
+                                        @endif --}}
                                         @if ($analitica->archivo != null)
                                         <i class="navi-item" data-toggle="modal" data-target="#">
                                             <a href="#" class="navi-link">

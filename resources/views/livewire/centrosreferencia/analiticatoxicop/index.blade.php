@@ -250,7 +250,7 @@
                                         @endif
                                     </td>
                                     <td align="center">
-                                        @if ($analiticatoxico->usuariop_id == 0)
+                                        @if ($analiticatoxico->usuariop_id == 0 && $analiticatoxico->codigo_secuencial<10)
                                             <i class="navi-item" data-toggle="modal" data-target="_self">
                                                 <a href="{{ route('analiticatoxico.edit', $analiticatoxico) }}"
                                                     class="navi-link">
@@ -260,6 +260,17 @@
                                                     </span>
                                                 </a>
                                             </i>
+                                        @endif
+                                        @if ($analiticatoxico->usuariop_id == 0 && $analiticatoxico->codigo_secuencial>10)
+                                            <i class="navi-item"
+                                            onclick="event.preventDefault(); confirmDestroy({{ $analiticatoxico->id }})">
+                                            <a href="#" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-trash-alt" style="color:red"
+                                                        title="Eliminar"></i>
+                                                </span>
+                                            </a>
+                                        </i>
                                         @endif
                                         @if ($analiticatoxico->usuarior_id == 0 && $analiticatoxico->validado == 'N')
                                             <i class="navi-item"
@@ -317,8 +328,8 @@
             <div class="card-body">
                 <div class="card-px text-center py-5">
                     <h2 class="fs-2x fw-bolder mb-10">Hola!</h2>
-                    <p class="text-gray-400 fs-4 fw-bold mb-10">Al parecer no tienes ningun Área/Dirección.
-                        <br> Ponga en marcha SoftInspi añadiendo su primer Área/Dirección
+                    <p class="text-gray-400 fs-4 fw-bold mb-10">Al parecer no tienes ninguna solicitud de procesamiento.
+                        <br> Ponga en marcha CoreInspi añadiendo su primera solicitud
                     </p>
                     <a data-toggle="modal" data-target=".create" href="#" class="btn btn-primary">Agregar
                         Área/Dirección</a>
@@ -345,7 +356,7 @@
             function confirmDestroy(id) {
                 swal.fire({
                     title: "¿Estas seguro?",
-                    text: "No podrá recuperar este Área/Dirección y los servicios creados con este tipo se quedarán sin vinculación",
+                    text: "No podrá recuperar esta técnica y la información adicional que se registró quedará sin vinculación",
                     icon: "warning",
                     buttonsStyling: false,
                     showCancelButton: true,

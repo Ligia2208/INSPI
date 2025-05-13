@@ -3571,6 +3571,138 @@
                                                 </div>
                                             </div>
                                         </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-5">
+                                                <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-list"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select
+                                                        wire:model.defer="Analiticas.tecnica_quinta_id"
+                                                        class="form-control selectpicker form-control-solid @error('Analiticas.tecnica_quinta_id') is-invalid @enderror"
+                                                        data-size="7"
+                                                        data-live-search="true"
+                                                        data-show-subtext="true"
+                                                        required>
+                                                        <option value="0">Selecciona una Técnica</option>
+                                                        @if(!is_null($tecnicas))
+                                                        @foreach ($tecnicas as $objTecn)
+                                                            <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label class="text-black"><b>Resultado</b><span class="text-danger"></span></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-list"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select
+                                                        wire:model.defer="Analiticas.resultado_quinta_id"
+                                                        class="form-control selectpicker form-control-solid @error('Analiticas.resultado_quinta_id') is-invalid @enderror"
+                                                        data-size="7"
+                                                        data-live-search="true"
+                                                        data-show-subtext="true"
+                                                        required>
+                                                        <option value="0">Selecciona un Resultado</option>
+                                                        @if(!is_null($reportes))
+                                                        @foreach ($reportes as $objRep)
+                                                            <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label class="text-black"><b>Agente identificado</b></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-edit"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input
+                                                        wire:model.defer="Analiticas.identificado_quinta"
+                                                        type="text"
+                                                        required
+                                                        class="form-control form-control-solid @error('Analiticas.identificado_quinta') is-invalid @enderror"
+                                                        placeholder="Ej: Otra bacteria" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-row">
+                                            <div class="form-group col-md-5">
+                                                <label class="text-black"><b>Técnica Aplicada</b><span class="text-danger"></span></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-list"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select
+                                                        wire:model.defer="Analiticas.tecnica_sexta_id"
+                                                        class="form-control selectpicker form-control-solid @error('Analiticas.tecnica_sexta_id') is-invalid @enderror"
+                                                        data-size="7"
+                                                        data-live-search="true"
+                                                        data-show-subtext="true"
+                                                        required>
+                                                        <option value="0">Selecciona una Técnica</option>
+                                                        @if(!is_null($tecnicas))
+                                                        @foreach ($tecnicas as $objTecn)
+                                                            <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-4">
+                                                <label class="text-black"><b>Resultado</b><span class="text-danger"></span></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-list"></i>
+                                                        </span>
+                                                    </div>
+                                                    <select
+                                                        wire:model.defer="Analiticas.resultado_sexta_id"
+                                                        class="form-control selectpicker form-control-solid @error('Analiticas.resultado_sexta_id') is-invalid @enderror"
+                                                        data-size="7"
+                                                        data-live-search="true"
+                                                        data-show-subtext="true"
+                                                        required>
+                                                        <option value="0">Selecciona un Resultado</option>
+                                                        @if(!is_null($reportes))
+                                                        @foreach ($reportes as $objRep)
+                                                            <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>
+                                                        @endforeach
+                                                        @endif
+                                                    </select>
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-3">
+                                                <label class="text-black"><b>Agente identificado</b></label>
+                                                <div class="input-group input-group-solid">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text">
+                                                            <i class="fas fa-edit"></i>
+                                                        </span>
+                                                    </div>
+                                                    <input
+                                                        wire:model.defer="Analiticas.identificado_sexta"
+                                                        type="text"
+                                                        required
+                                                        class="form-control form-control-solid @error('Analiticas.identificado_sexta') is-invalid @enderror"
+                                                        placeholder="Ej: Otra bacteria" />
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

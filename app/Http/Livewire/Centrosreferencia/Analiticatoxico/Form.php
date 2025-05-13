@@ -90,6 +90,14 @@ class Form extends Component
             'Analiticastoxico.resultado_cuarta_id' => 'sometimes|numeric',
             'Analiticastoxico.identificado_cuarta' => 'sometimes|max:200',
 
+            'Analiticastoxico.tecnica_quinta_id' => 'sometimes|numeric',
+            'Analiticastoxico.resultado_quinta_id' => 'sometimes|numeric',
+            'Analiticastoxico.identificado_quinta' => 'sometimes|max:200',
+
+            'Analiticastoxico.tecnica_sexta_id' => 'sometimes|numeric',
+            'Analiticastoxico.resultado_sexta_id' => 'sometimes|numeric',
+            'Analiticastoxico.identificado_sexta' => 'sometimes|max:200',
+
             'Analiticastoxico.germenaislado_mico' => 'sometimes|max:80',
             'Analiticastoxico.directokoh_mico' => 'sometimes|max:80',
             'Analiticastoxico.directoplaca_mico' => 'sometimes|max:80',
@@ -201,6 +209,16 @@ class Form extends Component
         if($this->Analiticastoxico->tecnica_cuarta_id == 0){
             $this->Analiticastoxico->tecnica_cuarta_id = 0;
             $this->Analiticastoxico->resultado_cuarta_id = 0;
+        }
+
+        if($this->Analiticastoxico->tecnica_quinta_id == 0){
+            $this->Analiticastoxico->tecnica_quinta_id = 0;
+            $this->Analiticastoxico->resultado_quinta_id = 0;
+        }
+
+        if($this->Analiticastoxico->tecnica_sexta_id == 0){
+            $this->Analiticastoxico->tecnica_sexta_id = 0;
+            $this->Analiticastoxico->resultado_sexta_id = 0;
         }
 
         if($this->Analiticastoxico->deteccionunomico_id == 0){
@@ -396,9 +414,29 @@ class Form extends Component
             $this->Analiticastoxico->fecha_resultado = date("Y-m-d");
             $this->Analiticastoxico->usuarior_id = $user;
             $this->saveAnalitica();
+            if($this->Analiticastoxico->tecnica_segunda_id==0){
+                $this->Analiticastoxico->tecnica_segunda_id=0;
+                $this->Analiticastoxico->resultado_segunda_id=0;
+            }
+            if($this->Analiticastoxico->tecnica_tercera_id==0){
+                $this->Analiticastoxico->tecnica_tercera_id=0;
+                $this->Analiticastoxico->resultado_tercera_id=0;
+            }
+            if($this->Analiticastoxico->tecnica_cuarta_id==0){
+                $this->Analiticastoxico->tecnica_cuarta_id=0;
+                $this->Analiticastoxico->resultado_cuarta_id=0;
+            }
+            if($this->Analiticastoxico->tecnica_quinta_id==0){
+                $this->Analiticastoxico->tecnica_quinta_id=0;
+                $this->Analiticastoxico->resultado_quinta_id=0;
+            }
+            if($this->Analiticastoxico->tecnica_sexta_id==0){
+                $this->Analiticastoxico->tecnica_sexta_id=0;
+                $this->Analiticastoxico->resultado_sexta_id=0;
+            }
             $this->Analiticastoxico->update();
 
-            if($this->Analiticastoxico->tecnica_segunda_id>0 && $this->Analiticastoxico->adicional==0){
+            if($this->Analiticastoxico->tecnica_segunda_id>0){
                 $newMuestra = new Analiticatoxico();
                 $newMuestra->preanalitica_id = $this->Analiticastoxico->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticastoxico->sedes_id;
@@ -411,7 +449,8 @@ class Form extends Component
                 $newMuestra->anio_registro = $this->Analiticastoxico->anio_registro;
                 $newMuestra->codigo_muestra = $this->Analiticastoxico->codigo_muestra;
                 $newMuestra->codigo_secuencial = $this->Analiticastoxico->codigo_secuencial*10+1;
-                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticastoxico->codigo_muestra;
+                $secuencia = $this->Analiticastoxico->codigo_secuencial*10+1;
+                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticastoxico->codigo_muestra.'-'.$secuencia;
                 $newMuestra->codigo_calidad = $this->Analiticastoxico->codigo_calidad;
                 $newMuestra->tecnica_id = $this->Analiticastoxico->tecnica_segunda_id;
                 $newMuestra->resultado_id = $this->Analiticastoxico->resultado_segunda_id;
@@ -424,12 +463,12 @@ class Form extends Component
                 $newMuestra->usuarior_id = $user;
                 $newMuestra->archivo = $this->Analiticastoxico->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
-                $newMuestra->adicional = 1;
+                $newMuestra->adicional = $secuencia;
                 $newMuestra->save();
                 $control = 1;
             }
 
-            if($this->Analiticastoxico->tecnica_tercera_id>0 && $this->Analiticastoxico->adicional==0){
+            if($this->Analiticastoxico->tecnica_tercera_id>0){
                 $newMuestra = new Analiticatoxico();
                 $newMuestra->preanalitica_id =  $this->Analiticastoxico->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticastoxico->sedes_id;
@@ -443,7 +482,8 @@ class Form extends Component
                 $newMuestra->observacion_muestra = $this->Analiticastoxico->observacion_muestra;
                 $newMuestra->codigo_muestra = $this->Analiticastoxico->codigo_muestra;
                 $newMuestra->codigo_secuencial = $this->Analiticastoxico->codigo_secuencial*10+2;
-                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticastoxico->codigo_muestra;
+                $secuencia = $this->Analiticastoxico->codigo_secuencial*10+2;
+                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticastoxico->codigo_muestra.'-'.$secuencia;
                 $newMuestra->codigo_calidad = $this->Analiticastoxico->codigo_calidad;
                 $newMuestra->tecnica_id = $this->Analiticastoxico->tecnica_tercera_id;
                 $newMuestra->resultado_id = $this->Analiticastoxico->resultado_tercera_id;
@@ -456,13 +496,13 @@ class Form extends Component
                 $newMuestra->archivo = $this->Analiticastoxico->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
-                $newMuestra->adicional = 1;
+                $newMuestra->adicional = $secuencia;
                 $newMuestra->save();
                 $control = 1;
 
             }
 
-            if($this->Analiticastoxico->tecnica_cuarta_id>0 && $this->Analiticastoxico->adicional==0){
+            if($this->Analiticastoxico->tecnica_cuarta_id>0){
                 $newMuestra = new Analiticatoxico();
                 $newMuestra->preanalitica_id =  $this->Analiticastoxico->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticastoxico->sedes_id;
@@ -476,7 +516,8 @@ class Form extends Component
                 $newMuestra->observacion_muestra = $this->Analiticastoxico->observacion_muestra;
                 $newMuestra->codigo_muestra = $this->Analiticastoxico->codigo_muestra;
                 $newMuestra->codigo_secuencial = $this->Analiticastoxico->codigo_secuencial*10+3;
-                $newMuestra->codigo_externo = 'Adicional'.$this->Analiticastoxico->codigo_muestra;
+                $secuencia = $this->Analiticastoxico->codigo_secuencial*10+3;
+                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticastoxico->codigo_muestra.'-'.$secuencia;
                 $newMuestra->codigo_calidad = $this->Analiticastoxico->codigo_calidad;
                 $newMuestra->tecnica_id = $this->Analiticastoxico->tecnica_cuarta_id;
                 $newMuestra->resultado_id = $this->Analiticastoxico->resultado_cuarta_id;
@@ -489,7 +530,73 @@ class Form extends Component
                 $newMuestra->archivo = $this->Analiticastoxico->archivo;
                 $newMuestra->fecha_resultado = date("Y-m-d");
                 $newMuestra->usuarior_id = $user;
-                $newMuestra->adicional = 1;
+                $newMuestra->adicional = $secuencia;
+                $newMuestra->save();
+                $control = 1;
+            }
+
+            if($this->Analiticastoxico->tecnica_quinta_id>0){
+                $newMuestra = new Analiticatoxico();
+                $newMuestra->preanalitica_id =  $this->Analiticastoxico->preanalitica_id;
+                $newMuestra->sedes_id = $this->Analiticastoxico->sedes_id;
+                $newMuestra->crns_id = $this->Analiticastoxico->crns_id;
+                $newMuestra->evento_id = $this->Analiticastoxico->evento_id;
+                $newMuestra->muestra_id = $this->Analiticastoxico->muestra_id;
+                $newMuestra->clase_id = $this->Analiticastoxico->clase_id;
+                $newMuestra->anio_registro = $this->Analiticastoxico->anio_registro;
+                $newMuestra->fecha_toma = $this->Analiticastoxico->fecha_toma;
+                $newMuestra->estado_muestra_id = $this->Analiticastoxico->estado_muestra_id;
+                $newMuestra->observacion_muestra = $this->Analiticastoxico->observacion_muestra;
+                $newMuestra->codigo_muestra = $this->Analiticastoxico->codigo_muestra;
+                $newMuestra->codigo_secuencial = $this->Analiticastoxico->codigo_secuencial*10+4;
+                $secuencia = $this->Analiticastoxico->codigo_secuencial*10+4;
+                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticastoxico->codigo_muestra.'-'.$secuencia;
+                $newMuestra->codigo_calidad = $this->Analiticastoxico->codigo_calidad;
+                $newMuestra->tecnica_id = $this->Analiticastoxico->tecnica_quinta_id;
+                $newMuestra->resultado_id = $this->Analiticastoxico->resultado_quinta_id;
+                $newMuestra->identificado = $this->Analiticastoxico->identificado_quinta;
+                $newMuestra->descripcion = $this->Analiticastoxico->descripcion;
+                $newMuestra->fecha_toma = $this->Analiticastoxico->fecha_toma;
+                $newMuestra->fecha_llegada_lab = $this->Analiticastoxico->fecha_llegada_lab;
+                $newMuestra->fecha_procesamiento = $this->Analiticastoxico->fecha_procesamiento;
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->archivo = $this->Analiticastoxico->archivo;
+                $newMuestra->fecha_resultado = date("Y-m-d");
+                $newMuestra->usuarior_id = $user;
+                $newMuestra->adicional = $secuencia;
+                $newMuestra->save();
+                $control = 1;
+            }
+
+            if($this->Analiticastoxico->tecnica_sexta_id>0){
+                $newMuestra = new Analiticatoxico();
+                $newMuestra->preanalitica_id =  $this->Analiticastoxico->preanalitica_id;
+                $newMuestra->sedes_id = $this->Analiticastoxico->sedes_id;
+                $newMuestra->crns_id = $this->Analiticastoxico->crns_id;
+                $newMuestra->evento_id = $this->Analiticastoxico->evento_id;
+                $newMuestra->muestra_id = $this->Analiticastoxico->muestra_id;
+                $newMuestra->clase_id = $this->Analiticastoxico->clase_id;
+                $newMuestra->anio_registro = $this->Analiticastoxico->anio_registro;
+                $newMuestra->fecha_toma = $this->Analiticastoxico->fecha_toma;
+                $newMuestra->estado_muestra_id = $this->Analiticastoxico->estado_muestra_id;
+                $newMuestra->observacion_muestra = $this->Analiticastoxico->observacion_muestra;
+                $newMuestra->codigo_muestra = $this->Analiticastoxico->codigo_muestra;
+                $newMuestra->codigo_secuencial = $this->Analiticastoxico->codigo_secuencial*10+5;
+                $secuencia = $this->Analiticastoxico->codigo_secuencial*10+5;
+                $newMuestra->codigo_externo = 'Adicional-'.$this->Analiticastoxico->codigo_muestra.'-'.$secuencia;
+                $newMuestra->codigo_calidad = $this->Analiticastoxico->codigo_calidad;
+                $newMuestra->tecnica_id = $this->Analiticastoxico->tecnica_sexta_id;
+                $newMuestra->resultado_id = $this->Analiticastoxico->resultado_sexta_id;
+                $newMuestra->identificado = $this->Analiticastoxico->identificado_sexta;
+                $newMuestra->descripcion = $this->Analiticastoxico->descripcion;
+                $newMuestra->fecha_toma = $this->Analiticastoxico->fecha_toma;
+                $newMuestra->fecha_llegada_lab = $this->Analiticastoxico->fecha_llegada_lab;
+                $newMuestra->fecha_procesamiento = $this->Analiticastoxico->fecha_procesamiento;
+                $newMuestra->usuariot_id = $user;
+                $newMuestra->archivo = $this->Analiticastoxico->archivo;
+                $newMuestra->fecha_resultado = date("Y-m-d");
+                $newMuestra->usuarior_id = $user;
+                $newMuestra->adicional = $secuencia;
                 $newMuestra->save();
                 $control = 1;
             }
