@@ -1043,7 +1043,10 @@ class CentrosLaminasController extends Controller
             'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
             'ingreso_laminas.fecha_fin as fecha_fin', 'ingreso_laminas.laminas_positivas_rec as laminas_positivas_rec', 'ingreso_laminas.laminas_negativas_rec as laminas_negativas_rec'
         )
-        ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+        ->join('inspi_crns.
+        
+        -+
+        as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
         ->where('ingreso_laminas.estado', ['A'])
         ->where('ingreso_laminas.id', $id_ingreso)->first();
 
@@ -1220,9 +1223,8 @@ class CentrosLaminasController extends Controller
     }
 
 
-
-
-    public function visualizar_bact($id_ingreso){
+    public function visualizar_bact($id_ingreso)
+    {
 
         $datos = Lamina::select(
             'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
@@ -1274,17 +1276,97 @@ class CentrosLaminasController extends Controller
     }
 
 
-
-    public function reporte_control_calidad_par(Request $request)
+ 
+    public function reporte_control_calidad_par($id)
     {
+        // Utilizando Eloquent para obtener los datos de Lamina
+        $lamina = Lamina::select(
+                'mes_recepcion',
+                'fecha_recep',
+                'total_laminas_recib',
+                'laminas_positivas_rec',
+                'laminas_negativas_rec',
+                'total_laminas',
+                'observaciones',
+                'id_evento',
+                'id_responsable',
+                'id_unidad_salud',
+                
+            )
+            ->where('id', $id)
+            ->latest('fecha_recep')
+            ->first();
 
-      
+        if (!$lamina) {
+            return response()->json(['message' => 'Lamina no encontrada'], 404);
+        }
 
-        return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Par') 
-            ->setPaper('A4', 'portrait')
-            ->download('reporte_control calidad_par.pdf');
+        // Obtener la descripción del evento
+        $evento = Evento::select('descripcion')
+            ->where('id', $lamina->id_evento)
+            ->first();
+
+        // Obtener el nombre del responsable
+        $responsable = User::select('name')
+            ->where('id', $lamina->id_responsable)
+            ->first();
+
+        // Obtener la descripción de la unidad de salud
+        $unidadSalud = DB::table('inspi_crns.instituciones_salud as ins')
+            ->select('ins.descripcion')
+            ->where('ins.id', $lamina->id_unidad_salud)
+            ->first();
+
+        // Obtener la descripción de la provincia
+        $provincia = DB::table('inspi_crns.provincias as pro')
+            ->select('pro.descripcion')
+            ->where('pro.id', $lamina->provincia_id)
+            ->first();
+
+        // Obtener la descripción del cantón
+        $canton = DB::table('inspi_crns.cantones as can')
+            ->select('can.descripcion')
+            ->where('can.id', $lamina->canton_id)
+            ->first();
+
+        // Asignar valores predeterminados si no se encuentran los registros
+        $eventoDescripcion = $evento ? $evento->descripcion : 'Evento no encontrado';
+        $responsableNombre = $responsable ? $responsable->name : 'Responsable no encontrado';
+        $unidadSaludDescripcion = $unidadSalud ? $unidadSalud->descripcion : 'Unidad de Salud no encontrada';
+        $provinciaDescripcion = $provincia ? $provincia->descripcion : 'Provincia no encontrada';
+        $cantonDescripcion = $canton ? $canton->descripcion : 'Cantón no encontrado';
+
+        // Utilizando Eloquent para el modelo Resultado
+        $resultados = Resultado::select(
+                'laminas_positivas_con',
+                'laminas_positivas_dis',
+                'laminas_negativas_con',
+                'laminas_negativas_dis',
+                'porcentaje_acumulado',
+                'interpretacion',
+                'resultado',
+                'especie',
+                'recuentos',
+            )
+            ->where('id', $id)
+            ->first();
+
+        // Generando el PDF y pasando los datos necesarios
+        return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Par', [
+            'lamina' => $lamina,
+            'eventoDescripcion' => $eventoDescripcion,
+            'responsableNombre' => $responsableNombre,
+            'unidadSaludDescripcion' => $unidadSaludDescripcion,
+            'provinciaDescripcion' => $provinciaDescripcion,
+            'cantonDescripcion' => $cantonDescripcion,
+            'resultados' => $resultados,
+        ])
+        ->setPaper('A4', 'portrait')
+        ->download('reporte_control_calidad_par.pdf');
     }
 
+
+    
 
     public function reporte_control_calidad_indirecto($id_lamina)
     {

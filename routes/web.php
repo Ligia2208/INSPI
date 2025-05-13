@@ -437,8 +437,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas/visualizar_bact/{id_ingreso}', 'CentrosLaminasController@visualizar_bact')->name('laminas.visualizar_bact');
         Route::post('/laminas/eliminar_bact', 'CentrosLaminasController@eliminar_bact')->name('laminas.eliminar_bact');
         Route::get('/laminas/reporte_control_calidad_indirecto/{id_lamina}', 'CentrosLaminasController@reporte_control_calidad_indirecto')->name('laminas.reporte_control_calidad_indirecto');
+        Route::get('/laminas/reporte_control_calidad_par/{id}', 'CentrosLaminasController@reporte_control_calidad_par')->name('laminas.reporte_control_calidad_par');
 
-        Route::get('/laminas/reporte_control_calidad_par', 'CentrosLaminasController@reporte_control_calidad_par')->name('laminas.reporte_control_calidad_par');
+       // Route::get('/laminas/reporte_control_calidad_par', 'CentrosLaminasController@reporte_control_calidad_par')->name('laminas.reporte_control_calidad_par');
 
     });
     /* =========================== LAMINAS =========================== */
