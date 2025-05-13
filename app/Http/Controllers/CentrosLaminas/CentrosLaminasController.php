@@ -1269,9 +1269,9 @@ class CentrosLaminasController extends Controller
     }
 
 
-    public function reporte_control_calidad_par($id)
+ 
+   public function reporte_control_calidad_par($id)
     {
-        // Utilizando Eloquent para el modelo Lamina
         $lamina = Lamina::select(
                 'mes_recepcion',
                 'fecha_recep',
@@ -1279,13 +1279,27 @@ class CentrosLaminasController extends Controller
                 'laminas_positivas_rec',
                 'laminas_negativas_rec',
                 'total_laminas',
-                'observaciones'
+                'observaciones',
+                'id_evento',
+                'id_responsable',
             )
             ->where('id', $id)
-            ->latest('fecha_recep') // u otra columna si aplica
+            ->latest('fecha_recep')
             ->first();
 
-        // Utilizando Eloquent para el modelo Resultado
+        $evento = Evento::select('descripcion')
+            ->where('id', $lamina->id_evento)
+            ->first();
+
+        $responsable = User::select('name')
+            ->where('id', $lamina->id_responsable)
+            ->first();
+
+       
+        $eventoDescripcion = $evento->descripcion;
+        $responsableNombre = $responsable->name;
+      
+
         $resultados = Resultado::select(
                 'laminas_positivas_con',
                 'laminas_positivas_dis',
@@ -1300,13 +1314,22 @@ class CentrosLaminasController extends Controller
             ->where('id', $id)
             ->first();
 
+        // Generando el PDF y pasando los datos necesarios
         return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Par', [
             'lamina' => $lamina,
+            'eventoDescripcion' => $eventoDescripcion,
+            'responsableNombre' => $responsableNombre,
+            'institucionDescripcion' => $institucionDescripcion,
             'resultados' => $resultados,
         ])
         ->setPaper('A4', 'portrait')
         ->download('reporte_control_calidad_par.pdf');
     }
+
+    
+
+
+
 
 
 

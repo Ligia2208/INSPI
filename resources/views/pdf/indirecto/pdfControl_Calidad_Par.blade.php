@@ -54,7 +54,7 @@
         <table class="no-border">
             <tr>
                 <td style="border: none;">
-                    <strong>EVENTO:</strong> 
+                    <strong>EVENTO:</strong> {{ $eventoDescripcion }}
                 </td>
             </tr>
             <tr>
@@ -64,18 +64,18 @@
             </tr>
             <tr>
                 <td style="border: none;">
-                    <strong>Unidad de Aseguramiento de la Calidad:</strong> 
+                    <strong>Unidad de Aseguramiento de la Calidad:</strong> {{ $institucionDescripcion }}
                 </td>
                 <td style="border: none;">
                     <strong>Provincia:</strong> 
                 </td>
                 <td style="border: none;">
-                    <strong>Cantón:</strong> 
+                    <strong>Cantón:</strong>
                 </td>
             </tr>
             <tr>
                 <td style="border: none;">
-                    <strong>Responsable de la UAC:</strong> 
+                    <strong>Responsable de la UAC:</strong> {{ $responsableNombre }}
                 </td>
             </tr>
             <tr>
