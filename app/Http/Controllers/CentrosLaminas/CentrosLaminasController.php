@@ -403,6 +403,8 @@ class CentrosLaminasController extends Controller
         $fecha_inicio        = $request->input('fecha_inicio');
         $fecha_fin           = $request->input('fecha_fin');
         $observacion         = $request->input('observacion');
+        $total_laminas_pos   = $request->input('total_laminas_pos');
+        $total_laminas_neg   = $request->input('total_laminas_neg');
 
         $resultados          = $request->input('resultados');
 
@@ -425,9 +427,12 @@ class CentrosLaminasController extends Controller
             'fecha_fin'           => $fecha_fin,
             'observaciones'       => $observacion,
 
-            'laminas_positivas_rec' => $resultados['resultado']['positivas'],
-            'laminas_negativas_rec' => $resultados['resultado']['negativas'],
-            'id_crn'              => 3,
+            //'laminas_positivas_rec' => $resultados['resultado']['positivas'],
+            //'laminas_negativas_rec' => $resultados['resultado']['negativas'],
+
+            'laminas_positivas_rec' => $total_laminas_pos,
+            'laminas_negativas_rec' => $total_laminas_neg,
+            'id_crn'              => 5,
         ]);
         
         foreach ($datos as $dato) {
@@ -1036,7 +1041,7 @@ class CentrosLaminasController extends Controller
             'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones',
             'ins.id as centro_salud', 'ingreso_laminas.id_evento as id_evento', 'ingreso_laminas.id_responsable as id_responsable',
             'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
-            'ingreso_laminas.fecha_fin as fecha_fin'
+            'ingreso_laminas.fecha_fin as fecha_fin', 'ingreso_laminas.laminas_positivas_rec as laminas_positivas_rec', 'ingreso_laminas.laminas_negativas_rec as laminas_negativas_rec'
         )
         ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
         ->where('ingreso_laminas.estado', ['A'])
@@ -1050,7 +1055,7 @@ class CentrosLaminasController extends Controller
 
         $eventos = Evento::select('id', 'descripcion', 'simplificado')->where('estado', 'A')->where('laminas', true)->where('crns_id', 5)->get();
         $instituciones = Institucion::select('id', 'descripcion', 'unicodigo')->where('estado', 'A')->where('unicodigo', 'like', 'LR%')->get();
-        $responsables = Responsable::where('crns_id', 3)->with('usuario')->get();
+        $responsables = Responsable::where('crns_id', 5)->with('usuario')->get();
 
         return view('lamina.editar_bact', compact('datos', 'eventos', 'instituciones', 'responsables', 'desglose'));
 
@@ -1088,6 +1093,8 @@ class CentrosLaminasController extends Controller
         $fecha_inicio        = $request->input('fecha_inicio');
         $fecha_fin           = $request->input('fecha_fin');
         $observacion         = $request->input('observacion');
+        $total_laminas_pos   = $request->input('total_laminas_pos');
+        $total_laminas_neg   = $request->input('total_laminas_neg');
 
         $resultados          = $request->input('resultados');
 
@@ -1111,8 +1118,8 @@ class CentrosLaminasController extends Controller
             'fecha_fin'           => $request->input('fecha_fin'),
             'observaciones'       => $request->input('observacion'),
     
-            'laminas_positivas_rec' => $resultados['resultado']['positivas'],
-            'laminas_negativas_rec' => $resultados['resultado']['negativas'],
+            'laminas_positivas_rec' => $total_laminas_pos,
+            'laminas_negativas_rec' => $total_laminas_neg,
             'id_crn'              => 5,
         ]);
         

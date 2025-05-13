@@ -38,6 +38,9 @@ $(function () {
                     let fecha_inicio        = document.getElementById('fecha_inicio').value.trim();
                     let fecha_fin           = document.getElementById('fecha_fin').value.trim();
                     let observacion         = document.getElementById('observacion').value.trim();
+
+                    let total_laminas_pos   = document.getElementById('total_laminas_pos').value.trim();
+                    let total_laminas_neg   = document.getElementById('total_laminas_neg').value.trim();
             
                     if (!fecha_recep) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha de Recepción.', showConfirmButton: true });
@@ -63,6 +66,10 @@ $(function () {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha Final.', showConfirmButton: true });
                     } else if (!observacion) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar una Observación.', showConfirmButton: true });
+                    }else if (!total_laminas_pos) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar un Total de Láminas Positivas.', showConfirmButton: true });
+                    }else if (!total_laminas_neg) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar una Total de Láminas Negativas.', showConfirmButton: true });
                     } else {
 
                         let resultados = obtenerResultados();
@@ -87,6 +94,8 @@ $(function () {
                                 'fecha_inicio'        :fecha_inicio       ,  
                                 'fecha_fin'           :fecha_fin          ,  
                                 'observacion'         :observacion        ,  
+                                'total_laminas_pos'   :total_laminas_pos  ,
+                                'total_laminas_neg'   :total_laminas_neg  ,
                                 'resultados'          : resultados,
                             },
                             success: function (response) {
@@ -155,6 +164,30 @@ function validarSoloNumeros(input) {
         }
     });
 }
+
+
+
+function actualizarMesRecepcion() {
+    const inputsSemana = document.querySelectorAll('input[id^="semana_"]');
+    let numeros = [];
+
+    inputsSemana.forEach(input => {
+        const valor = parseInt(input.value);
+        if (!isNaN(valor)) {
+            numeros.push(valor);
+        }
+    });
+
+    if (numeros.length > 0) {
+        const min = Math.min(...numeros);
+        const max = Math.max(...numeros);
+        const texto = (min === max) ? `semana ${min}` : `semana ${min} - ${max}`;
+        document.getElementById('mes_recepcion').value = texto;
+    } else {
+        document.getElementById('mes_recepcion').value = '';
+    }
+}
+
 
 
 function actualizarCodigoMicroscopista() {
@@ -669,7 +702,7 @@ function calcularResultadosRecuento(resultadosEspecie) {
         const suma = rv + rf;
         resultadosRecuento[i] = (suma === 2) ? 2 : suma;
     }
-    console.log(resultadosRecuento);
+    //console.log(resultadosRecuento);
 }
 
 
@@ -737,7 +770,7 @@ function calcularResultadosRecuento2() {
         let suma = result1 + result2;
         resultadosRecuento2[i] = (suma === 2) ? 2 : suma;
     }
-    console.log(resultadosRecuento2);
+    //console.log(resultadosRecuento2);
 }
 
 
@@ -937,6 +970,9 @@ function asignarEventosFila(i) {
     const semanaInput = document.getElementById(`semana_${i}`);
     if (semanaInput) {
         validarSoloNumeros(semanaInput);
+
+        // Actualizar el input "mes_recepcion" al cambiar
+        semanaInput.addEventListener('input', actualizarMesRecepcion);
     }
 
 }

@@ -120,14 +120,14 @@
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="fecha_recebcion" class="form-label fs-6">Fecha de Recepción de láminas:</label>
-                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="{{$datos->fecha_recebcion}}" required> 
+                                <label for="fecha_recebcion" class="form-label fs-6">Fecha de Reporte:</label>
+                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="{{$datos->fecha_recebcion}}" required disabled> 
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="{{$datos->mes_recepcion}}" required>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="{{$datos->mes_recepcion}}" required readonly>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -157,6 +157,18 @@
                             <div class="col-md-4 mt-2">
                                 <label for="fecha_fin" class="form-label fs-6">Fecha Final:</label>
                                 <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="{{$datos->fecha_fin}}" required>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="total_laminas_pos" class="form-label fs-6">Total de Láminas Positivas</label>
+                                <input type="number" id="total_laminas_pos" name="total_laminas_pos" class="form-control" required value="{{$datos->laminas_positivas_rec}}">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="total_laminas_neg" class="form-label fs-6">Total de Láminas Negativas</label>
+                                <input type="number" id="total_laminas_neg" name="total_laminas_neg" class="form-control" required value="{{$datos->laminas_negativas_rec}}" readonly>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -328,5 +340,5 @@
 <script>
     const desgloseData = @json($desglose);
 </script>
-<script src="{{asset('assets/js/Lamina/edit_lamina_bact.js?v0.0.2')}}"></script>
+<script src="{{asset('assets/js/Lamina/edit_lamina_bact.js?v0.0.3')}}"></script>
 @endpush

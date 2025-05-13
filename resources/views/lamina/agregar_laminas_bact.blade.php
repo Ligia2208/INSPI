@@ -114,7 +114,7 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="" required>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="" required readonly>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -258,5 +258,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.1')}}"></script>
+<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.2')}}"></script>
 @endpush
