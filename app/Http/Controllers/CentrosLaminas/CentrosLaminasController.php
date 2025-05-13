@@ -1043,10 +1043,7 @@ class CentrosLaminasController extends Controller
             'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
             'ingreso_laminas.fecha_fin as fecha_fin', 'ingreso_laminas.laminas_positivas_rec as laminas_positivas_rec', 'ingreso_laminas.laminas_negativas_rec as laminas_negativas_rec'
         )
-        ->join('inspi_crns.
-        
-        -+
-        as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+        ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
         ->where('ingreso_laminas.estado', ['A'])
         ->where('ingreso_laminas.id', $id_ingreso)->first();
 
@@ -1313,28 +1310,15 @@ class CentrosLaminasController extends Controller
 
         // Obtener la descripción de la unidad de salud
         $unidadSalud = DB::table('inspi_crns.instituciones_salud as ins')
-            ->select('ins.descripcion')
+            ->select('ins.descripcion as unidad_salud' , 'ins.unicodigo as unicodigo', 'can.descripcion as canton', 'pro.descripcion as provincia')
+            ->join('inspi_crns.cantones as can', 'can.id', '=', 'ins.canton_id')
+            ->join('inspi_crns.provincias as pro', 'pro.id', '=', 'ins.provincia_id')
             ->where('ins.id', $lamina->id_unidad_salud)
-            ->first();
-
-        // Obtener la descripción de la provincia
-        $provincia = DB::table('inspi_crns.provincias as pro')
-            ->select('pro.descripcion')
-            ->where('pro.id', $lamina->provincia_id)
-            ->first();
-
-        // Obtener la descripción del cantón
-        $canton = DB::table('inspi_crns.cantones as can')
-            ->select('can.descripcion')
-            ->where('can.id', $lamina->canton_id)
             ->first();
 
         // Asignar valores predeterminados si no se encuentran los registros
         $eventoDescripcion = $evento ? $evento->descripcion : 'Evento no encontrado';
         $responsableNombre = $responsable ? $responsable->name : 'Responsable no encontrado';
-        $unidadSaludDescripcion = $unidadSalud ? $unidadSalud->descripcion : 'Unidad de Salud no encontrada';
-        $provinciaDescripcion = $provincia ? $provincia->descripcion : 'Provincia no encontrada';
-        $cantonDescripcion = $canton ? $canton->descripcion : 'Cantón no encontrado';
 
         // Utilizando Eloquent para el modelo Resultado
         $resultados = Resultado::select(
@@ -1342,13 +1326,13 @@ class CentrosLaminasController extends Controller
                 'laminas_positivas_dis',
                 'laminas_negativas_con',
                 'laminas_negativas_dis',
-                'porcentaje_acumulado',
+                'porcentaje_laminas',
                 'interpretacion',
                 'resultado',
                 'especie',
                 'recuentos',
             )
-            ->where('id', $id)
+            ->where('id_lamina', $id)
             ->first();
 
         // Generando el PDF y pasando los datos necesarios
@@ -1356,9 +1340,7 @@ class CentrosLaminasController extends Controller
             'lamina' => $lamina,
             'eventoDescripcion' => $eventoDescripcion,
             'responsableNombre' => $responsableNombre,
-            'unidadSaludDescripcion' => $unidadSaludDescripcion,
-            'provinciaDescripcion' => $provinciaDescripcion,
-            'cantonDescripcion' => $cantonDescripcion,
+            'unidadSalud' => $unidadSalud,
             'resultados' => $resultados,
         ])
         ->setPaper('A4', 'portrait')

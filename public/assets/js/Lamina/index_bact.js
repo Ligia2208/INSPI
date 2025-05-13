@@ -390,7 +390,7 @@ $( function () {
 
     // Generar el reporte PDF PAR
     $(document).on('click', '#btnPDF_calidad_bact', function() {
-        var id = $(this).data('id');  // Obtiene el ID del botón
+        var id = $(this).data('id_lamina');  // Obtiene el ID del botón
 
         $.ajax({
             type: 'GET',

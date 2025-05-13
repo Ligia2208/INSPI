@@ -64,13 +64,13 @@
             </tr>
             <tr>
                 <td style="border: none;">
-                    <strong>Unidad de Aseguramiento de la Calidad:</strong> {{ $unidadSaludDescripcion }} 
+                    <strong>Unidad de Aseguramiento de la Calidad:</strong> {{ $unidadSalud->unidad_salud }} 
                 </td>
                 <td style="border: none;">
-                    <strong>Provincia:</strong> {{ $provinciaDescripcion }} 
+                    <strong>Provincia:</strong> {{ $unidadSalud->provincia }} 
                 </td>
                 <td style="border: none;">
-                    <strong>Cantón:</strong> {{ $cantonDescripcion }}
+                    <strong>Cantón:</strong> {{ $unidadSalud->canton }}
                 </td>
             </tr>
             <tr>
@@ -101,7 +101,7 @@
                 </tr>
                 <tr>
                     <th colspan="8" style="text-align: left; padding-bottom: 5px;">
-                        Resultado:
+                        Resultado: {{ $resultados->resultado }}
                     </th>
                 </tr>
                 <tr>
@@ -139,7 +139,7 @@
                 <th class="center">Interpretación</th>
             </tr>
             <tr>
-                <td class="center bold" style="font-size: 16px; vertical-align: middle; height: 80px;"> {{ $resultados->porcentaje_acumulado }}%</td>
+                <td class="center bold" style="font-size: 16px; vertical-align: middle; height: 80px;"> {{ number_format($resultados->porcentaje_laminas, 2) }}%</td>
                 <td class="center" style="font-size: 16px; vertical-align: middle; height: 80px;"> {{ $resultados->interpretacion }} </td>
             </tr>
         </table>
