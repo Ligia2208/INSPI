@@ -388,21 +388,64 @@ $( function () {
         
     });
 
-    // Generar el reporte PDF bact
+    // Generar el reporte PDF PAR
     $(document).on('click', '#btnPDF_calidad_bact', function() {
+        var id = $(this).data('id');  // Obtiene el ID del botón
 
         $.ajax({
             type: 'GET',
-            url: '/laminas/reporte_control_calidad_par',  //
+            url: '/laminas/reporte_control_calidad_par/' + id,  // La URL de la acción que genera el PDF
             xhrFields: {
-                responseType: 'blob'
+                responseType: 'blob'  // Indica que la respuesta será un archivo binario (PDF)
+            },
+            success: function(response) {
+                // Crear un Blob con la respuesta (el archivo PDF)
+                var blob = new Blob([response], { type: 'application/pdf' });
+                var url = window.URL.createObjectURL(blob);  // Crear una URL de objeto para el Blob
+
+                // Crear un enlace para la descarga del archivo
+                var a = document.createElement('a');
+                a.href = url;
+                a.download = 'reporte_control_calidad_par_' + id + '.pdf';  // Nombre del archivo a descargar
+                document.body.appendChild(a);  // Añadir el enlace al DOM
+                a.click();  // Simular un clic en el enlace para descargar el archivo
+
+                // Liberar la URL creada para el Blob
+                window.URL.revokeObjectURL(url);
+                a.remove();  // Eliminar el enlace del DOM
+            },
+            error: function() {
+                // Mostrar un mensaje de error si la solicitud falla
+                Swal.fire({
+                    icon: 'error',
+                    type: 'error',
+                    title: 'CoreInspi',
+                    text: 'Error al generar el PDF',
+                    showConfirmButton: true,
+                });
+            }
+        });
+    });
+
+
+    // Generar el reporte PDF CONTROL_CALIDAD INDIRECTO
+    $(document).on('click', '#btnPDF_calidad_indirecto', function() {
+        var id_lamina = $(this).data('id_lamina');  
+        
+        $.ajax({
+            type: 'GET',
+            url: '/laminas/reporte_control_calidad_indirecto/' + id_lamina,  
+            xhrFields: {
+                responseType: 'blob'  
             },
             success: function(response, _status, _xhr) {
+
                 var blob = new Blob([response], { type: 'application/pdf' });
                 var url = window.URL.createObjectURL(blob);
                 var a = document.createElement('a');
                 a.href = url;
-                a.download = 'reporte_control calidad_par.pdf'; // Nombre del archivo descargado
+
+                a.download = 'reporte_control_calidad_indirecto_' + id_lamina + '.pdf';
                 document.body.appendChild(a);
                 a.click();
                 window.URL.revokeObjectURL(url);
@@ -419,42 +462,6 @@ $( function () {
             }
         });
     });
-    
-
-    // Generar el reporte PDF CONTROL_CALIDAD INDIRECTO
-    $(document).on('click', '#btnPDF_calidad_indirecto', function() {
-
-        var id_lamina = $(this).data('id_lamina');
-
-        $.ajax({
-            type: 'GET',
-            url: '/laminas/reporte_control_calidad_indirecto'+id_lamina,  //
-            xhrFields: {
-                responseType: 'blob'
-            },
-            success: function(response, _status, _xhr) {
-                var blob = new Blob([response], { type: 'application/pdf' });
-                var url = window.URL.createObjectURL(blob);
-                var a = document.createElement('a');
-                a.href = url;
-                a.download = 'reporte_CONTROL DE CALIDAD INDIRECTO.pdf'; // Nombre del archivo descargado
-                document.body.appendChild(a);
-                a.click();
-                window.URL.revokeObjectURL(url);
-                a.remove();
-            },
-            error: function(error) {
-                Swal.fire({
-                    icon: 'error',
-                    type: 'error',
-                    title: 'CoreInspi',
-                    text: 'Error al generar el PDF',
-                    showConfirmButton: true,
-                });
-            }
-        });
-    });
-
 
     
     $(document).on('click', '#btnPDF_ingreso', function() {

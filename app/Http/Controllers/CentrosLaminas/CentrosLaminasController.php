@@ -1270,8 +1270,9 @@ class CentrosLaminasController extends Controller
 
 
  
-   public function reporte_control_calidad_par($id)
+    public function reporte_control_calidad_par($id)
     {
+        // Utilizando Eloquent para obtener los datos de Lamina
         $lamina = Lamina::select(
                 'mes_recepcion',
                 'fecha_recep',
@@ -1282,24 +1283,53 @@ class CentrosLaminasController extends Controller
                 'observaciones',
                 'id_evento',
                 'id_responsable',
+                'id_unidad_salud',
+                
             )
             ->where('id', $id)
             ->latest('fecha_recep')
             ->first();
 
+        if (!$lamina) {
+            return response()->json(['message' => 'Lamina no encontrada'], 404);
+        }
+
+        // Obtener la descripción del evento
         $evento = Evento::select('descripcion')
             ->where('id', $lamina->id_evento)
             ->first();
 
+        // Obtener el nombre del responsable
         $responsable = User::select('name')
             ->where('id', $lamina->id_responsable)
             ->first();
 
-       
-        $eventoDescripcion = $evento->descripcion;
-        $responsableNombre = $responsable->name;
-      
+        // Obtener la descripción de la unidad de salud
+        $unidadSalud = DB::table('inspi_crns.instituciones_salud as ins')
+            ->select('ins.descripcion')
+            ->where('ins.id', $lamina->id_unidad_salud)
+            ->first();
 
+        // Obtener la descripción de la provincia
+        $provincia = DB::table('inspi_crns.provincias as pro')
+            ->select('pro.descripcion')
+            ->where('pro.id', $lamina->provincia_id)
+            ->first();
+
+        // Obtener la descripción del cantón
+        $canton = DB::table('inspi_crns.cantones as can')
+            ->select('can.descripcion')
+            ->where('can.id', $lamina->canton_id)
+            ->first();
+
+        // Asignar valores predeterminados si no se encuentran los registros
+        $eventoDescripcion = $evento ? $evento->descripcion : 'Evento no encontrado';
+        $responsableNombre = $responsable ? $responsable->name : 'Responsable no encontrado';
+        $unidadSaludDescripcion = $unidadSalud ? $unidadSalud->descripcion : 'Unidad de Salud no encontrada';
+        $provinciaDescripcion = $provincia ? $provincia->descripcion : 'Provincia no encontrada';
+        $cantonDescripcion = $canton ? $canton->descripcion : 'Cantón no encontrado';
+
+        // Utilizando Eloquent para el modelo Resultado
         $resultados = Resultado::select(
                 'laminas_positivas_con',
                 'laminas_positivas_dis',
@@ -1319,20 +1349,17 @@ class CentrosLaminasController extends Controller
             'lamina' => $lamina,
             'eventoDescripcion' => $eventoDescripcion,
             'responsableNombre' => $responsableNombre,
-            'institucionDescripcion' => $institucionDescripcion,
+            'unidadSaludDescripcion' => $unidadSaludDescripcion,
+            'provinciaDescripcion' => $provinciaDescripcion,
+            'cantonDescripcion' => $cantonDescripcion,
             'resultados' => $resultados,
         ])
         ->setPaper('A4', 'portrait')
         ->download('reporte_control_calidad_par.pdf');
     }
 
+
     
-
-
-
-
-
-
 
     public function reporte_control_calidad_indirecto($id_lamina)
     {

@@ -64,13 +64,13 @@
             </tr>
             <tr>
                 <td style="border: none;">
-                    <strong>Unidad de Aseguramiento de la Calidad:</strong> {{ $institucionDescripcion }}
+                    <strong>Unidad de Aseguramiento de la Calidad:</strong> {{ $unidadSaludDescripcion }} 
                 </td>
                 <td style="border: none;">
-                    <strong>Provincia:</strong> 
+                    <strong>Provincia:</strong> {{ $provinciaDescripcion }} 
                 </td>
                 <td style="border: none;">
-                    <strong>Cantón:</strong>
+                    <strong>Cantón:</strong> {{ $cantonDescripcion }}
                 </td>
             </tr>
             <tr>
