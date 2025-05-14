@@ -404,8 +404,8 @@ class Form extends Component
             $sedeUser = Responsable::where('estado','=','A')->where('tipo_id','=',3)->where('usuario_id','=',$user)->where('vigente_hasta','=',null)->pluck('sedes_id');
             $total = $sedeUser->count();
             $fecha_anio = date("Y");
-            $absede = Sede::findOrFail(1);
-            $abcrn = Crn::findOrFail(12);
+            $absede = Sede::findOrFail($this->Preanaliticas->sedes_id);
+            $abcrn = Crn::findOrFail($this->Preanaliticas->crns_id);
             $cargapac = Pacientetemp::where('estado','=','A')->orderBy('id','asc')->get();
 
             foreach($cargapac as $pac){
@@ -416,9 +416,15 @@ class Form extends Component
                     $newPac->identidad = $pac->identidad;
                     $newPac->hcu = $pac->identidad;
                     $newPac->fechanacimiento = $pac->fechanacimiento;
-                    $newPac->sexo_id = 1;
-                    $newPac->direccion = '-';
-                    $newPac->telefono = '0000000';
+                    if($pac->sexo=='M'){
+                        $newPac->sexo_id = 1;
+                    }
+                    else{
+                        $newPac->sexo_id = 2;
+                    }
+
+                    $newPac->direccion = $pac->direccion;
+                    $newPac->telefono = $pac->telefono;
                     $newPac->canton_id = 75;
                     $newPac->provincia_id = 9;
                     $newPac->nacionalidad_id = 14;

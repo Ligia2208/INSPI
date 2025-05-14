@@ -22,7 +22,7 @@
                             <span class="navi-icon mr-2">
                                 <i class="fa fa-cogs fa-3x"></i>
                             </span>
-                            <span class="navi-text font-size-xl">Muestras CD4</span>
+                            <span class="navi-text font-size-xl">Carga Masiva</span>
                         </a>
                     </div>
                 </div>

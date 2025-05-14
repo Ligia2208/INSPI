@@ -57,6 +57,9 @@ class PacientesImport implements ToModel
             else{
                 $stu->id_paciente = 0;
             }
+            $stu->sexo = $row[6];
+            $stu->direccion = $row[7];
+            $stu->telefono = $row[8];
             $stu->save();
 
             return $stu;
@@ -66,13 +69,16 @@ class PacientesImport implements ToModel
     public function rules(): array
     {
         return [
-            'identidad' => 'required|max:13',
+            'identidad' => 'required|max:20',
             'apellidos' => 'required|max:75',
             'nombres' => 'required|max:75',
             'fecha_toma' => 'required|max:10',
             'hora_toma' => 'required|max:10',
             'fechanacimiento' => 'required|max:10',
             'id_paciente' => 'required|numeric',
+            'sexo' => 'required|max:1',
+            'direccion' => 'required|max:175',
+            'telefono' => 'required|max:15',
         ];
     }
 
