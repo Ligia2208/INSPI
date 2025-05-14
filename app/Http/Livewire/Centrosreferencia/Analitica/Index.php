@@ -10,6 +10,7 @@ use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Evento;
 use App\Models\CentrosReferencia\Responsable;
 use App\Models\CentrosReferencia\Crn;
+use App\Models\CentrosReferencia\Detallemuestras;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -57,10 +58,8 @@ class Index extends Component
     {
         $iduser = auth()->user()->id;
         $sedes_users = Responsable::where('estado','=','A')->where('tipo_id','=',1)->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('sedes_id')->pluck('sedes_id')->toArray();
-        //dd($sedes_users);
         $crns_users = Responsable::where('estado','=','A')->where('tipo_id','=',1)->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->distinct('crns_id')->pluck('crns_id')->toArray();
         $sedes = Sede::whereIn('id',$sedes_users)->orderBy('id', 'asc')->cursor();
-        //dd($sedes);
         $crns = [];
         $eventos = [];
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
@@ -103,7 +102,6 @@ class Index extends Component
             $analiticas = $analiticas->where('sedes_id', '=', $this->csedes);
             $count = $analiticas->count();
             $crns_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->distinct('crns_id')->pluck('crns_id')->toArray();
-            //dd($iduser);
             $config = SedeCrn::where('sedes_id','=',$this->csedes)->whereIn('crns_id',$crns_users)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
             $contcrns = Crn::whereIn('id',$config)->count();
@@ -298,52 +296,93 @@ class Index extends Component
     public function descargarExcel(){
         try{
 
-         $excel = new Spreadsheet();
+            $excel = new Spreadsheet();
 
-         $hoja = $excel->getActiveSheet();
-         $hoja->setCellValue('A1','Institución Salud');
-         $hoja->setCellValue('B1','Periodo');
-         $hoja->setCellValue('C1','Id. Paciente');
-         $hoja->setCellValue('D1','Identidad');
-         $hoja->setCellValue('E1','Nombres');
-         $hoja->setCellValue('F1','Apellidos');
-         $hoja->setCellValue('G1','Nombres Completos');
-         $hoja->setCellValue('H1','Dirección');
-         $hoja->setCellValue('I1','F.Nacimiento');
-         $hoja->setCellValue('J1','Anios');
-         $hoja->setCellValue('K1','Meses');
-         $hoja->setCellValue('L1','Dias');
-         $hoja->setCellValue('M1','Edad1');
-         $hoja->setCellValue('N1','Sexo');
-         $hoja->setCellValue('O1','Sexo1');
-         $hoja->setCellValue('P1','Cantón');
-         $hoja->setCellValue('Q1','Provincia');
-         $hoja->setCellValue('R1','Sede');
-         $hoja->setCellValue('S1','CRN');
-         $hoja->setCellValue('T1','Evento');
-         $hoja->setCellValue('U1','Clase');
-         $hoja->setCellValue('V1','Tipo');
-         $hoja->setCellValue('W1','No. Muestra');
-         $hoja->setCellValue('X1','Código Muestra');
-         $hoja->setCellValue('Y1','Observación');
-         $hoja->setCellValue('Z1','Secuencia');
-         $hoja->setCellValue('AA1','Fecha inicio sintomas');
-         $hoja->setCellValue('AB1','Fecha toma muestra');
-         $hoja->setCellValue('AC1','Dias evolución');
-         $hoja->setCellValue('AD1','Estado');
-         $hoja->setCellValue('AE1','Ingresa por');
-         $hoja->setCellValue('AF1','F. Recepción');
-         $hoja->setCellValue('AG1','F. Registro');
-         $hoja->setCellValue('AH1','Usuario Registro');
-         $hoja->setCellValue('AI1','Técnica aplicada');
-         $hoja->setCellValue('AJ1','Resultado');
-         $hoja->setCellValue('AK1','Validado');
-         $hoja->setCellValue('AL1','Fecha validación');
-         $hoja->setCellValue('AM1','Agente Identificado');
+            $hoja = $excel->getActiveSheet();
+            $hoja->setCellValue('A1','Institución Salud');
+            $hoja->setCellValue('B1','Periodo');
+            $hoja->setCellValue('C1','Id. Paciente');
+            $hoja->setCellValue('D1','Identidad');
+            $hoja->setCellValue('E1','Nombres');
+            $hoja->setCellValue('F1','Apellidos');
+            $hoja->setCellValue('G1','Nombres Completos');
+            $hoja->setCellValue('H1','Dirección');
+            $hoja->setCellValue('I1','F.Nacimiento');
+            $hoja->setCellValue('J1','Anios');
+            $hoja->setCellValue('K1','Meses');
+            $hoja->setCellValue('L1','Dias');
+            $hoja->setCellValue('M1','Edad1');
+            $hoja->setCellValue('N1','Sexo');
+            $hoja->setCellValue('O1','Sexo1');
+            $hoja->setCellValue('P1','Cantón');
+            $hoja->setCellValue('Q1','Provincia');
+            $hoja->setCellValue('R1','Sede');
+            $hoja->setCellValue('S1','CRN');
+            $hoja->setCellValue('T1','Evento');
+            $hoja->setCellValue('U1','Clase');
+            $hoja->setCellValue('V1','Tipo');
+            $hoja->setCellValue('W1','No. Muestra');
+            $hoja->setCellValue('X1','Código Muestra');
+            $hoja->setCellValue('Y1','Observación');
+            $hoja->setCellValue('Z1','Secuencia');
+            $hoja->setCellValue('AA1','Fecha inicio sintomas');
+            $hoja->setCellValue('AB1','Fecha toma muestra');
+            $hoja->setCellValue('AC1','Dias evolución');
+            $hoja->setCellValue('AD1','Estado');
+            $hoja->setCellValue('AE1','Ingresa por');
+            $hoja->setCellValue('AF1','F. Recepción');
+            $hoja->setCellValue('AG1','F. Registro');
+            $hoja->setCellValue('AH1','Usuario Registro');
+            $hoja->setCellValue('AI1','Técnica aplicada');
+            $hoja->setCellValue('AJ1','Resultado');
+            $hoja->setCellValue('AK1','Validado');
+            $hoja->setCellValue('AL1','Fecha validación');
+            $hoja->setCellValue('AM1','Agente Identificado');
 
-         $fila = 2;
-         $i = 0;
-         if ($this->csedes>0){
+            $fila = 2;
+            $i = 0;
+
+            //$listado = Detallemuestras::select('institucion','periodo','paciente','identidad','nombres','apellidos','nombres_completos','fechanacimiento','anios','meses','dias','edad1','sexo','sexo1','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro','fecha_recepcion','usuario_recepcion','agente_identificado')->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC');
+            $listado = Detallemuestras::orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC');
+
+            if ($this->csedes>0){
+                $sid = $this->csedes;
+                $listado = $listado->where('sedes_id','=',$this->csedes);
+
+            }
+            if ($this->claboratorios>0){
+                $cid = $this->claboratorios;
+                $listado = $listado->where('crns_id','=',$this->claboratorios);
+            }
+            if ($this->ceventos>0){
+                $eid = $this->ceventos;
+                $listado = $listado->where('evento_id','=',$this->ceventos);
+            }
+            if ($this->controlf==0){
+                if($this->fechainicio){
+                    if ($this->fechafin){
+                        if ($this->fechainicio <= $this->fechafin){
+                            $listado = $listado->whereDate('fecha_registro','>=',$this->fechainicio)->whereDate('fecha_registro','<=',$this->fechafin);
+                        }
+                    }
+                }
+            }
+            if ($this->controlf>0){
+                if($this->fechainicio){
+                    if ($this->fechafin){
+                        if ($this->fechainicio <= $this->fechafin){
+                            if($this->controlf==1){
+                                $listado = $listado->whereDate('fecha_recepcion','>=',$this->fechainicio)->whereDate('fecha_recepcion','<=',$this->fechafin);
+                            }
+                            if($this->controlf==2){
+                                $listado = $listado->whereDate('fecha_registro','>=',$this->fechainicio)->whereDate('fecha_registro','<=',$this->fechafin);
+                            }
+                        }
+                    }
+                }
+            }
+
+         /* if ($this->csedes>0){
              $sid = $this->csedes;
          }
          else{
@@ -384,6 +423,7 @@ class Index extends Component
          else{
              $f2 = null;
          }
+
 
          if($sid==0){
              if($tf==1){
@@ -445,50 +485,50 @@ class Index extends Component
                      $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','periodo','paciente','identidad','nombres','apellidos','nombres_completos','direccion','fechanacimiento','anios','meses','dias','edad1','sexo','sexo1','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_muestra','observacion','codigo_secuencial','inicio_sintomas','toma_muestra','evolucion','estado_muestra','ingresa_por','fecha_registro','fecha_recepcion','usuario_recepcion','tecnica','resultado','validado','fecha_validacion','agente_identificado')->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->where('evento_id','=',$eid)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                  }
              }
-         }
+         } */
 
-         $total = $data->count();
-
+         $total = $listado->count();
+         $data = $listado->get()->toArray();
          while($i < $total){
-             $hoja->setCellValue('A'.$fila,$data[$i]->institucion);
-             $hoja->setCellValue('B'.$fila,$data[$i]->periodo);
-             $hoja->setCellValue('C'.$fila,$data[$i]->paciente);
-             $hoja->setCellValue('D'.$fila,$data[$i]->identidad);
-             $hoja->setCellValue('E'.$fila,$data[$i]->nombres);
-             $hoja->setCellValue('F'.$fila,$data[$i]->apellidos);
-             $hoja->setCellValue('G'.$fila,$data[$i]->nombres_completos);
-             $hoja->setCellValue('H'.$fila,$data[$i]->direccion);
-             $hoja->setCellValue('I'.$fila,$data[$i]->fechanacimiento);
-             $hoja->setCellValue('J'.$fila,$data[$i]->anios);
-             $hoja->setCellValue('K'.$fila,$data[$i]->meses);
-             $hoja->setCellValue('L'.$fila,$data[$i]->dias);
-             $hoja->setCellValue('M'.$fila,$data[$i]->edad1);
-             $hoja->setCellValue('N'.$fila,$data[$i]->sexo);
-             $hoja->setCellValue('O'.$fila,$data[$i]->sexo1);
-             $hoja->setCellValue('P'.$fila,$data[$i]->canton);
-             $hoja->setCellValue('Q'.$fila,$data[$i]->provincia);
-             $hoja->setCellValue('R'.$fila,$data[$i]->sede);
-             $hoja->setCellValue('S'.$fila,$data[$i]->crn);
-             $hoja->setCellValue('T'.$fila,$data[$i]->evento);
-             $hoja->setCellValue('U'.$fila,$data[$i]->clase_muestra);
-             $hoja->setCellValue('V'.$fila,$data[$i]->tipo_muestra);
-             $hoja->setCellValue('W'.$fila,$data[$i]->muestra);
-             $hoja->setCellValue('X'.$fila,$data[$i]->codigo_muestra);
-             $hoja->setCellValue('Y'.$fila,$data[$i]->observacion);
-             $hoja->setCellValue('Z'.$fila,$data[$i]->codigo_secuencial);
-             $hoja->setCellValue('AA'.$fila,$data[$i]->inicio_sintomas);
-             $hoja->setCellValue('AB'.$fila,$data[$i]->toma_muestra);
-             $hoja->setCellValue('AC'.$fila,$data[$i]->evolucion);
-             $hoja->setCellValue('AD'.$fila,$data[$i]->estado_muestra);
-             $hoja->setCellValue('AE'.$fila,$data[$i]->ingresa_por);
-             $hoja->setCellValue('AF'.$fila,$data[$i]->fecha_recepcion);
-             $hoja->setCellValue('AG'.$fila,$data[$i]->fecha_registro);
-             $hoja->setCellValue('AH'.$fila,$data[$i]->usuario_recepcion);
-             $hoja->setCellValue('AI'.$fila,$data[$i]->tecnica);
-             $hoja->setCellValue('AJ'.$fila,$data[$i]->resultado);
-             $hoja->setCellValue('AK'.$fila,$data[$i]->validado);
-             $hoja->setCellValue('AL'.$fila,$data[$i]->fecha_validacion);
-             $hoja->setCellValue('AM'.$fila,$data[$i]->agente_identificado);
+             $hoja->setCellValue('A'.$fila,$data[$i]['institucion']);
+             $hoja->setCellValue('B'.$fila,$data[$i]['periodo']);
+             $hoja->setCellValue('C'.$fila,$data[$i]['paciente']);
+             $hoja->setCellValue('D'.$fila,$data[$i]['identidad']);
+             $hoja->setCellValue('E'.$fila,$data[$i]['nombres']);
+             $hoja->setCellValue('F'.$fila,$data[$i]['apellidos']);
+             $hoja->setCellValue('G'.$fila,$data[$i]['nombres_completos']);
+             $hoja->setCellValue('H'.$fila,$data[$i]['direccion']);
+             $hoja->setCellValue('I'.$fila,$data[$i]['fechanacimiento']);
+             $hoja->setCellValue('J'.$fila,$data[$i]['anios']);
+             $hoja->setCellValue('K'.$fila,$data[$i]['meses']);
+             $hoja->setCellValue('L'.$fila,$data[$i]['dias']);
+             $hoja->setCellValue('M'.$fila,$data[$i]['edad1']);
+             $hoja->setCellValue('N'.$fila,$data[$i]['sexo']);
+             $hoja->setCellValue('O'.$fila,$data[$i]['sexo1']);
+             $hoja->setCellValue('P'.$fila,$data[$i]['canton']);
+             $hoja->setCellValue('Q'.$fila,$data[$i]['provincia']);
+             $hoja->setCellValue('R'.$fila,$data[$i]['sede']);
+             $hoja->setCellValue('S'.$fila,$data[$i]['crn']);
+             $hoja->setCellValue('T'.$fila,$data[$i]['evento']);
+             $hoja->setCellValue('U'.$fila,$data[$i]['clase_muestra']);
+             $hoja->setCellValue('V'.$fila,$data[$i]['tipo_muestra']);
+             $hoja->setCellValue('W'.$fila,$data[$i]['muestra']);
+             $hoja->setCellValue('X'.$fila,$data[$i]['codigo_muestra']);
+             $hoja->setCellValue('Y'.$fila,$data[$i]['observacion']);
+             $hoja->setCellValue('Z'.$fila,$data[$i]['codigo_secuencial']);
+             $hoja->setCellValue('AA'.$fila,$data[$i]['inicio_sintomas']);
+             $hoja->setCellValue('AB'.$fila,$data[$i]['toma_muestra']);
+             $hoja->setCellValue('AC'.$fila,$data[$i]['evolucion']);
+             $hoja->setCellValue('AD'.$fila,$data[$i]['estado_muestra']);
+             $hoja->setCellValue('AE'.$fila,$data[$i]['ingresa_por']);
+             $hoja->setCellValue('AF'.$fila,$data[$i]['fecha_recepcion']);
+             $hoja->setCellValue('AG'.$fila,$data[$i]['fecha_registro']);
+             $hoja->setCellValue('AH'.$fila,$data[$i]['usuario_recepcion']);
+             $hoja->setCellValue('AI'.$fila,$data[$i]['tecnica']);
+             $hoja->setCellValue('AJ'.$fila,$data[$i]['resultado']);
+             $hoja->setCellValue('AK'.$fila,$data[$i]['validado']);
+             $hoja->setCellValue('AL'.$fila,$data[$i]['fecha_validacion']);
+             $hoja->setCellValue('AM'.$fila,$data[$i]['agente_identificado']);
 
              $fila = $fila + 1;
              $i = $i + 1;

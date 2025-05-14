@@ -75,7 +75,7 @@
             </tr>
             <tr>
                 <td style="border: none;">
-                    <strong>Responsable de la UAC:</strong> {{ $responsableNombre }}
+                    <strong>Responsable de la UAC:</strong> {{ $unidadSalud->responsable }}
                 </td>
             </tr>
             <tr>
@@ -101,7 +101,7 @@
                 </tr>
                 <tr>
                     <th colspan="8" style="text-align: left; padding-bottom: 5px;">
-                        Resultado: {{ $resultados->resultado }}
+                        Resultado
                     </th>
                 </tr>
                 <tr>
@@ -117,10 +117,10 @@
             </thead>
             <tbody>
                 <tr>
-                    <td>{{ $lamina->total_laminas_recib }}</td>
+                    <td>{{ $lamina->total_laminas }}</td>
                     <td>{{ $lamina->laminas_positivas_rec }}</td>
                     <td>{{ $lamina->laminas_negativas_rec }}</td>
-                    <td>{{ $lamina->total_laminas}}</td> 
+                    <td>{{ $lamina->total_laminas_recib}}</td> 
                     <td>{{ $resultados->laminas_positivas_con }}</td>
                     <td>{{ $resultados->laminas_positivas_dis }}</td>
                     <td>{{ $resultados->laminas_negativas_con }}</td>
@@ -175,7 +175,7 @@
                     <span class="underline">Responsable del control indirecto del CRN de Parasitología y Micología:</span>
                 </td>
                 <td style="width: 40%;">
-                    <strong><span class="underline">Lcd. Marcelo Andrade</span></strong>
+                    <strong><span class="underline">Lcd. {{$responsableNombre}}</span></strong>
                 </td>
             </tr>
 
@@ -203,7 +203,7 @@
         
             <td style="width: 50%; text-align: center;">
               <hr style="width: 70%; margin-bottom: 5px;">
-              <strong>Lcd. Marcelo Andrade Castro</strong><br>
+              <strong>Lcd. {{$responsableNombre}}</strong><br>
               Analista Técnico del Centro de Referencia Nacional de <br>
               Parasitología y Micología - INSPI
             </td>

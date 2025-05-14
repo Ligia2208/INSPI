@@ -52,15 +52,15 @@
               <tr>
                 <td style="width: 30%;">Código de Microscopista Evaluado:</td>
                 <td style="width: 20%;">
-                  <input type="text" value="LR3PA" readonly style="width: 90%; background-color: #f0f0f0d2; border: 1px solid #000; padding: 2px;">
+                  <input type="text" value="{{$codLectura}}" readonly style="width: 90%; background-color: #f0f0f0d2; border: 1px solid #000; padding: 2px;">
                 </td>                
                 <td style="width: 15%; text-align: right;">Fecha Inicial:</td>
                 <td style="width: 15%;">
-                  <input type="text" value="1/1/2025" readonly style="width: 90%; background-color: #f0f0f0d2; border: 1px solid #000; padding: 2px;">
+                  <input type="text" value="" readonly style="width: 90%; background-color: #f0f0f0d2; border: 1px solid #000; padding: 2px;">
                 </td>
                 <td style="width: 10%; text-align: right;">Fecha Final:</td>
                 <td style="width: 10%;">
-                  <input type="text" value="31/12/2025" readonly style="width: 90%; background-color: #f0f0f0d2; border: 1px solid #000; padding: 2px;">
+                  <input type="text" value="" readonly style="width: 90%; background-color: #f0f0f0d2; border: 1px solid #000; padding: 2px;">
                 </td>
               </tr>
             </table>
@@ -144,7 +144,7 @@
             <td>{{$item->vivax_micro}}</td>
             <td>{{$item->falciparum_micro}}</td>
             <td>{{$item->mg_micro}}</td>
-            <td>MA</td>
+            <td>{{$lamina->codigo_lec}}</td>
             <td>{{$item->anio}}</td>
             <td>{{$item->mes}}</td>
           </tr>

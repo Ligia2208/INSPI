@@ -12,6 +12,7 @@ class Lamina extends Model
         'id_unidad_salud',
         'id_analista',
         'id_responsable',
+        'codigo_lec',
         'mes_recepcion',
         'fecha_recep',
         'anio',
