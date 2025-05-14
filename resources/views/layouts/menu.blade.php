@@ -388,14 +388,14 @@
             @endcanany
 
 
-            @canany(['laminas'])
+            @canany(['laminas_parasitologia'])
                 <li class="menu-section">
-                    <h4 class="menu-text">Laminas Bacteriología</h4>
+                    <h4 class="menu-text">Laminas Parasitología</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
 
-                @can('laminas')
-                    <li class="menu-item {{ active('laminas_bacteriologia') }}">
+                @can('laminas_parasitologia')
+                    <li class="menu-item {{ active('laminas_parasitologia') }}">
                         <a href="{{ route('laminas_bacteriologia') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-list-task"></i>
                             <span class="menu-text">Lista de Láminas</span>
