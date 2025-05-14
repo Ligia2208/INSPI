@@ -57,9 +57,27 @@ class PacientesImport implements ToModel
             else{
                 $stu->id_paciente = 0;
             }
-            $stu->sexo = $row[6];
-            $stu->direccion = $row[7];
-            $stu->telefono = $row[8];
+            if($row[6]==""){
+                $stu->sexo = 'F';
+            }
+            else{
+                $stu->sexo = $row[6];
+            }
+
+            if($row[7]==""){
+                $stu->direccion = '';
+            }
+            else{
+                $stu->direccion = $row[7];
+            }
+
+            if($row[8]==""){
+                $stu->telefono = '';
+            }
+            else{
+                $stu->telefono = $row[8];
+            }
+
             $stu->save();
 
             return $stu;
@@ -76,9 +94,9 @@ class PacientesImport implements ToModel
             'hora_toma' => 'required|max:10',
             'fechanacimiento' => 'required|max:10',
             'id_paciente' => 'required|numeric',
-            'sexo' => 'required|max:1',
-            'direccion' => 'required|max:175',
-            'telefono' => 'required|max:15',
+            'sexo' => 'sometimes|max:1',
+            'direccion' => 'sometimes|max:175',
+            'telefono' => 'sometimes|max:15',
         ];
     }
 

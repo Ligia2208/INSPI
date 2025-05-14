@@ -220,8 +220,13 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($Preanaliticastoxico->primera_id>0) 1.-{{ $Preanaliticastoxico->primera->descripcion }} @endif @if($Preanaliticastoxico->segunda_id>0) <br> 2.-{{ $Preanaliticastoxico->segunda->descripcion }} @endif @if($Preanaliticastoxico->tercera_id>0) <br> 3.-{{ $Preanaliticastoxico->tercera->descripcion }} @endif @if($Preanaliticastoxico->cuarta_id>0) <br> 4.-{{ $Preanaliticastoxico->cuarta->descripcion }} @endif @if($Preanaliticastoxico->quinta_id>0) <br> 5.-{{ $Preanaliticastoxico->quinta->descripcion }} @endif</span>
                                     </td>
                                     <td>
+                                        @if($Preanaliticastoxico->tecnico_id>0)
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $Preanaliticastoxico->tecnico->name }}</span>
+                                        @else
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">No hay técnico asignado</span>
+                                        @endif
                                     </td>
                                     <td align="center">
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
