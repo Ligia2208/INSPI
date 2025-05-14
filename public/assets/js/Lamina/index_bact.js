@@ -390,32 +390,28 @@ $( function () {
 
     // Generar el reporte PDF PAR
     $(document).on('click', '#btnPDF_calidad_bact', function() {
-        var id = $(this).data('id_lamina');  // Obtiene el ID del botón
+        var id = $(this).data('id_lamina'); 
 
         $.ajax({
             type: 'GET',
-            url: '/laminas/reporte_control_calidad_par/' + id,  // La URL de la acción que genera el PDF
+            url: '/laminas/reporte_control_calidad_par/' + id,  
             xhrFields: {
-                responseType: 'blob'  // Indica que la respuesta será un archivo binario (PDF)
+                responseType: 'blob'  
             },
             success: function(response) {
-                // Crear un Blob con la respuesta (el archivo PDF)
                 var blob = new Blob([response], { type: 'application/pdf' });
-                var url = window.URL.createObjectURL(blob);  // Crear una URL de objeto para el Blob
+                var url = window.URL.createObjectURL(blob);  
 
-                // Crear un enlace para la descarga del archivo
                 var a = document.createElement('a');
                 a.href = url;
-                a.download = 'reporte_control_calidad_par_' + id + '.pdf';  // Nombre del archivo a descargar
-                document.body.appendChild(a);  // Añadir el enlace al DOM
-                a.click();  // Simular un clic en el enlace para descargar el archivo
+                a.download = 'reporte_control_calidad_par_' + id + '.pdf';  
+                document.body.appendChild(a);  
+                a.click();  
 
-                // Liberar la URL creada para el Blob
                 window.URL.revokeObjectURL(url);
-                a.remove();  // Eliminar el enlace del DOM
+                a.remove();  
             },
             error: function() {
-                // Mostrar un mensaje de error si la solicitud falla
                 Swal.fire({
                     icon: 'error',
                     type: 'error',

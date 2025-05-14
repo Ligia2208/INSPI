@@ -1279,7 +1279,6 @@ class CentrosLaminasController extends Controller
  
     public function reporte_control_calidad_par($id)
     {
-        // Utilizando Eloquent para obtener los datos de Lamina
         $lamina = Lamina::select(
                 'mes_recepcion',
                 'fecha_recep',
@@ -1301,17 +1300,14 @@ class CentrosLaminasController extends Controller
             return response()->json(['message' => 'Lamina no encontrada'], 404);
         }
 
-        // Obtener la descripción del evento
         $evento = Evento::select('descripcion')
             ->where('id', $lamina->id_evento)
             ->first();
 
-        // Obtener el nombre del responsable
         $responsable = User::select('name')
             ->where('id', $lamina->id_responsable)
             ->first();
 
-        // Obtener la descripción de la unidad de salud
         $unidadSalud = DB::table('inspi_crns.instituciones_salud as ins')
             ->select('ins.descripcion as unidad_salud' , 'ins.unicodigo as unicodigo', 'can.descripcion as canton', 'pro.descripcion as provincia', 'ins.responsable')
             ->join('inspi_crns.cantones as can', 'can.id', '=', 'ins.canton_id')
@@ -1319,11 +1315,9 @@ class CentrosLaminasController extends Controller
             ->where('ins.id', $lamina->id_unidad_salud)
             ->first();
 
-        // Asignar valores predeterminados si no se encuentran los registros
         $eventoDescripcion = $evento ? $evento->descripcion : 'Evento no encontrado';
         $responsableNombre = $responsable ? $responsable->name : 'Responsable no encontrado';
 
-        // Utilizando Eloquent para el modelo Resultado
         $resultados = Resultado::select(
                 'laminas_positivas_con',
                 'laminas_positivas_dis',
@@ -1338,7 +1332,6 @@ class CentrosLaminasController extends Controller
             ->where('id_lamina', $id)
             ->first();
 
-        // Generando el PDF y pasando los datos necesarios
         return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Par', [
             'lamina' => $lamina,
             'eventoDescripcion' => $eventoDescripcion,
