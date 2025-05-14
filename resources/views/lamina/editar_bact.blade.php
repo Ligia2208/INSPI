@@ -148,7 +148,7 @@
                                 <input type="text" id="codigo" name="codigo" class="form-control" required disabled value="{{$datos->unicodigo}}">
                             </div>
 
-                            <div class="col-md-4 mt-2">
+                            <!-- <div class="col-md-4 mt-2">
                                 <label for="fecha_inicio" class="form-label fs-6">Fecha Inicial:</label>
                                 <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{$datos->fecha_ini}}" required>
                                 <div class="valid-feedback">Looks good!</div>
@@ -158,7 +158,7 @@
                                 <label for="fecha_fin" class="form-label fs-6">Fecha Final:</label>
                                 <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="{{$datos->fecha_fin}}" required>
                                 <div class="valid-feedback">Looks good!</div>
-                            </div>
+                            </div> -->
 
                             <div class="col-md-4 mt-2">
                                 <label for="total_laminas_pos" class="form-label fs-6">Total de Láminas Positivas</label>

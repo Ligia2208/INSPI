@@ -93,6 +93,9 @@
                                 <th>Apellidos</th>
                                 <th>Nombres</th>
                                 <th>Fecha nacimiento</th>
+                                <th>Sexo</th>
+                                <th>Direccion</th>
+                                <th>Teléfono</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -129,6 +132,18 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objPac->fechanacimiento }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objPac->sexo }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objPac->direccion }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $objPac->telefono }}</span>
                                     </td>
                                 </tr>
                             @empty
