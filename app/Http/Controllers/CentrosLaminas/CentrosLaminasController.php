@@ -1276,26 +1276,11 @@ class CentrosLaminasController extends Controller
  
     public function reporte_control_calidad_par($id)
     {
-        $lamina = Lamina::select(
-                'mes_recepcion',
-                'fecha_recep',
-                'total_laminas_recib',
-                'laminas_positivas_rec',
-                'laminas_negativas_rec',
-                'total_laminas',
-                'observaciones',
-                'id_evento',
-                'id_responsable',
-                'id_unidad_salud',
-                
-            )
+        $lamina = Lamina::select('mes_recepcion','fecha_recep','total_laminas_recib','laminas_positivas_rec',
+                'laminas_negativas_rec','total_laminas','observaciones', 'id_evento', 'id_responsable','id_unidad_salud',)
             ->where('id', $id)
             ->latest('fecha_recep')
             ->first();
-
-        if (!$lamina) {
-            return response()->json(['message' => 'Lamina no encontrada'], 404);
-        }
 
         $evento = Evento::select('descripcion')
             ->where('id', $lamina->id_evento)
@@ -1315,17 +1300,8 @@ class CentrosLaminasController extends Controller
         $eventoDescripcion = $evento ? $evento->descripcion : 'Evento no encontrado';
         $responsableNombre = $responsable ? $responsable->name : 'Responsable no encontrado';
 
-        $resultados = Resultado::select(
-                'laminas_positivas_con',
-                'laminas_positivas_dis',
-                'laminas_negativas_con',
-                'laminas_negativas_dis',
-                'porcentaje_laminas',
-                'interpretacion',
-                'resultado',
-                'especie',
-                'recuentos',
-            )
+        $resultados = Resultado::select('laminas_positivas_con','laminas_positivas_dis','laminas_negativas_con',
+                'laminas_negativas_dis','porcentaje_laminas','interpretacion','resultado','especie','recuentos',)
             ->where('id_lamina', $id)
             ->first();
 
