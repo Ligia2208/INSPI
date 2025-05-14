@@ -263,5 +263,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.3')}}"></script>
+<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.4')}}"></script>
 @endpush

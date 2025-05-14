@@ -1229,10 +1229,10 @@ class CentrosLaminasController extends Controller
         $datos = Lamina::select(
             'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
             'ingreso_laminas.total_laminas_recib as total_laminas_recib', DB::raw("DATE_FORMAT(ingreso_laminas.created_at, '%Y-%m-%d') as fecha_recebcion"),
-            'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones',
+            'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones', 'ingreso_laminas.codigo_lec as codigo_lec',
             'ins.id as centro_salud', 'ingreso_laminas.id_evento as id_evento', 'ingreso_laminas.id_responsable as id_responsable',
             'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
-            'ingreso_laminas.fecha_fin as fecha_fin'
+            'ingreso_laminas.fecha_fin as fecha_fin', 'ingreso_laminas.laminas_positivas_rec as laminas_positivas_rec', 'ingreso_laminas.laminas_negativas_rec as laminas_negativas_rec'
         )
         ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
         ->where('ingreso_laminas.estado', ['A'])

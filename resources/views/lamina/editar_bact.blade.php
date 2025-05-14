@@ -347,5 +347,5 @@
 <script>
     const desgloseData = @json($desglose);
 </script>
-<script src="{{asset('assets/js/Lamina/edit_lamina_bact.js?v0.0.5')}}"></script>
+<script src="{{asset('assets/js/Lamina/edit_lamina_bact.js?v0.0.7')}}"></script>
 @endpush

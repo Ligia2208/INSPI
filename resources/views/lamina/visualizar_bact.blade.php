@@ -125,21 +125,28 @@
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-                            <div class="col-md-4 mt-2">
-                                <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="{{$datos->mes_recepcion}}" required disabled>
-                                <div class="valid-feedback">Looks good!</div>
-                            </div>
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
                                 <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="{{$datos->total_laminas_recib}}" required disabled> 
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
                                 <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="{{$datos->total_laminas}}" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="total_laminas_pos" class="form-label fs-6">Total de Láminas Positivas</label>
+                                <input type="number" id="total_laminas_pos" name="total_laminas_pos" class="form-control" required value="{{$datos->laminas_positivas_rec}}" disabled>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="total_laminas_neg" class="form-label fs-6">Total de Láminas Negativas</label>
+                                <input type="number" id="total_laminas_neg" name="total_laminas_neg" class="form-control" required value="{{$datos->laminas_negativas_rec}}" disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -149,14 +156,13 @@
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="fecha_inicio" class="form-label fs-6">Fecha Inicial:</label>
-                                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{$datos->fecha_ini}}" required disabled>
-                                <div class="valid-feedback">Looks good!</div>
+                                <label for="codigo_lec" class="form-label fs-6">Código del Lector:</label>
+                                <input type="text" id="codigo_lec" name="codigo_lec" class="form-control" required disabled value="{{$datos->codigo_lec}}">
                             </div>
 
                             <div class="col-md-4 mt-2">
-                                <label for="fecha_fin" class="form-label fs-6">Fecha Final:</label>
-                                <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="{{$datos->fecha_fin}}" required disabled>
+                                <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="{{$datos->mes_recepcion}}" required disabled>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -261,8 +267,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script>
-    const desgloseData = @json($desglose);
-</script>
-<script src="{{asset('assets/js/Lamina/visualizar_bact.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Lamina/visualizar_bact.js?v0.0.1')}}"></script>
 @endpush

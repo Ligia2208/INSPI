@@ -1051,7 +1051,8 @@ function asignarEventosFila(i) {
         `fecha_${i}`, `semana_${i}`, `codigo_micro_${i}`, `num_lamina_${i}`,
         `recuento_control_vivax_${i}`, `recuento_control_falciparum_${i}`,
         `presencia_control_${i}`, `recuento_microscopista_vivax_${i}`,
-        `recuento_microscopista_falciparum_${i}`, `presencia_microscopista_${i}`
+        `recuento_microscopista_falciparum_${i}`, `presencia_microscopista_${i}`,
+        `diagnostico_calidad_${i}`, `diagnostico_microscopista_${i}`
     ];
 
     elementos.forEach(id => {
