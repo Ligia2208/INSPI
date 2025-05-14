@@ -35,8 +35,8 @@ $(function () {
                     let total_laminas       = document.getElementById('total_laminas').value.trim();
                     let total_laminas_super = document.getElementById('total_laminas_super').value.trim();
                     let codigo              = document.getElementById('codigo').value.trim();
-                    let fecha_inicio        = document.getElementById('fecha_inicio').value.trim();
-                    let fecha_fin           = document.getElementById('fecha_fin').value.trim();
+                    //let fecha_inicio        = document.getElementById('fecha_inicio').value.trim();
+                    //let fecha_fin           = document.getElementById('fecha_fin').value.trim();
                     let observacion         = document.getElementById('observacion').value.trim();
 
                     let total_laminas_pos   = document.getElementById('total_laminas_pos').value.trim();
@@ -60,11 +60,11 @@ $(function () {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar el Total de Láminas Recibidas.', showConfirmButton: true });
                     } else if (!codigo) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe seleccionar un Código de Microscopista.', showConfirmButton: true });
-                    } else if (!fecha_inicio) {
+                    } /*else if (!fecha_inicio) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha Inicial.', showConfirmButton: true });
                     } else if (!fecha_fin) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha Final.', showConfirmButton: true });
-                    } else if (!observacion) {
+                    }*/ else if (!observacion) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar una Observación.', showConfirmButton: true });
                     }else if (!total_laminas_pos) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar un Total de Láminas Positivas.', showConfirmButton: true });
@@ -91,8 +91,8 @@ $(function () {
                                 'total_laminas'       :total_laminas      ,  
                                 'total_laminas_super' :total_laminas_super,  
                                 'codigo'              :codigo             ,  
-                                'fecha_inicio'        :fecha_inicio       ,  
-                                'fecha_fin'           :fecha_fin          ,  
+                                //'fecha_inicio'        :fecha_inicio       ,  
+                                //'fecha_fin'           :fecha_fin          ,  
                                 'observacion'         :observacion        ,  
                                 'total_laminas_pos'   :total_laminas_pos  ,
                                 'total_laminas_neg'   :total_laminas_neg  ,
@@ -340,7 +340,7 @@ function calcularResultado(i) {
 }
 
 
-
+/*
 function calcularSumaFiltrada(areaFiltro, fechaInicio, fechaFin) {
     const total = parseInt(document.getElementById("total_laminas").value) || 0;
     let sumaTotal = 0;
@@ -368,12 +368,39 @@ function calcularSumaFiltrada(areaFiltro, fechaInicio, fechaFin) {
 
     return sumaTotal;
 }
+*/
+
+
+
+function calcularSumaFiltrada(areaFiltro) {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+    let sumaTotal = 0;
+
+    for (let i = 1; i <= total; i++) {
+        const semanaElem = document.getElementById(`codigo_micro_${i}`);
+        //const fechaElem = document.getElementById(`fecha_${i}`); // ya no se usa
+        //const resultadoElem = document.getElementById(`resultado_${i}`);
+
+        if (!semanaElem) continue;
+
+        const semana = semanaElem.value.trim();
+        const resultado = resultados[i] || 0;
+
+        // Solo se filtra por área
+        if (semana === areaFiltro) {
+            sumaTotal += resultado;
+        }
+    }
+
+    return sumaTotal;
+}
+
 
 
 function obtenerResultados() {
     const area = document.getElementById("codigo").value; // equivalente a F9
-    const desde = document.getElementById("fecha_inicio").value; // equivalente a M9
-    const hasta = document.getElementById("fecha_fin").value; // equivalente a S9
+    //const desde = document.getElementById("fecha_inicio").value; // equivalente a M9
+    //const hasta = document.getElementById("fecha_fin").value; // equivalente a S9
     let total_laminas = document.getElementById("total_laminas").value;
 
     let resultadosEspecie = calcularResultadoEspecie();
@@ -381,9 +408,9 @@ function obtenerResultados() {
 
     
 
-    const total = calcularSumaFiltrada(area, desde, hasta);
-    const totalEspecie = calcularSumaEspecieFiltrada(area, desde, hasta, resultadosEspecie); // nuevo total
-    const totalRecuento = calcularSumaRecuentoFiltrada(area, desde, hasta); // nuevo
+    const total = calcularSumaFiltrada(area);
+    const totalEspecie = calcularSumaEspecieFiltrada(area, resultadosEspecie); // nuevo total
+    const totalRecuento = calcularSumaRecuentoFiltrada(area); // nuevo
 
     const totalResultados = calcularResultadoControlMicroscopia();
     const totalValorResultados = calcularValorResultado();
@@ -434,8 +461,8 @@ function obtenerResultados() {
 
     return {
         area,
-        desde,
-        hasta,
+        //desde,
+        //hasta,
         total_laminas,
         total,
         totalEspecie,
@@ -522,7 +549,7 @@ function calcularResultadoEspecie() {
     
 }
 
-
+/*
 function calcularSumaEspecieFiltrada(areaFiltro, fechaInicio, fechaFin, resultadosEspecie) {
     const total = parseInt(document.getElementById("total_laminas").value) || 0;
     let sumaTotal = 0;
@@ -546,6 +573,29 @@ function calcularSumaEspecieFiltrada(areaFiltro, fechaInicio, fechaFin, resultad
 
     return sumaTotal;
 }
+*/
+
+
+function calcularSumaEspecieFiltrada(areaFiltro, resultadosEspecie) {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+    let sumaTotal = 0;
+
+    for (let i = 1; i <= total; i++) {
+        const semanaElem = document.getElementById(`codigo_micro_${i}`);
+
+        if (!semanaElem || !(i in resultadosEspecie)) continue;
+
+        const semana = semanaElem.value.trim();
+        const resultado = parseFloat(resultadosEspecie[i]) || 0;
+
+        if (semana === areaFiltro) {
+            sumaTotal += resultado;
+        }
+    }
+
+    return sumaTotal;
+}
+
 
 
 // ========================= calcular resultados RV
@@ -706,7 +756,7 @@ function calcularResultadosRecuento(resultadosEspecie) {
 }
 
 
-
+/*
 function calcularSumaRecuentoFiltrada(areaFiltro, fechaInicio, fechaFin) {
     const total = parseInt(document.getElementById("total_laminas").value) || 0;
     let sumaTotal = 0;
@@ -724,6 +774,30 @@ function calcularSumaRecuentoFiltrada(areaFiltro, fechaInicio, fechaFin) {
         const resultado = parseFloat(resultadosRecuento[i]) || 0;
 
         if (codigo === areaFiltro && fecha >= fechaIni && fecha <= fechaFinD) {
+            sumaTotal += resultado;
+        }
+    }
+
+    return sumaTotal;
+}
+*/
+
+
+
+
+function calcularSumaRecuentoFiltrada(areaFiltro) {
+    const total = parseInt(document.getElementById("total_laminas").value) || 0;
+    let sumaTotal = 0;
+
+    for (let i = 1; i <= total; i++) {
+        const areaElem = document.getElementById(`codigo_micro_${i}`);
+
+        if (!areaElem || !(i in resultadosRecuento)) continue;
+
+        const codigo = areaElem.value.trim();
+        const resultado = parseFloat(resultadosRecuento[i]) || 0;
+
+        if (codigo === areaFiltro) {
             sumaTotal += resultado;
         }
     }

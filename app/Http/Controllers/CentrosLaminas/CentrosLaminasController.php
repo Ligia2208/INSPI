@@ -400,8 +400,8 @@ class CentrosLaminasController extends Controller
         $total_laminas       = $request->input('total_laminas');
         $total_laminas_super = $request->input('total_laminas_super');
         $codigo              = $request->input('codigo');
-        $fecha_inicio        = $request->input('fecha_inicio');
-        $fecha_fin           = $request->input('fecha_fin');
+        //$fecha_inicio        = $request->input('fecha_inicio');
+        //$fecha_fin           = $request->input('fecha_fin');
         $observacion         = $request->input('observacion');
         $total_laminas_pos   = $request->input('total_laminas_pos');
         $total_laminas_neg   = $request->input('total_laminas_neg');
@@ -423,8 +423,8 @@ class CentrosLaminasController extends Controller
             'total_laminas'       => $total_laminas_super,
             'total_laminas_recib' => $total_laminas,
             'cod_microscopia'     => $codigo,
-            'fecha_ini'           => $fecha_inicio,
-            'fecha_fin'           => $fecha_fin,
+            //'fecha_ini'           => $fecha_inicio,
+            //'fecha_fin'           => $fecha_fin,
             'observaciones'       => $observacion,
 
             //'laminas_positivas_rec' => $resultados['resultado']['positivas'],
@@ -1090,8 +1090,8 @@ class CentrosLaminasController extends Controller
         $total_laminas       = $request->input('total_laminas');
         $total_laminas_super = $request->input('total_laminas_super');
         $codigo              = $request->input('codigo');
-        $fecha_inicio        = $request->input('fecha_inicio');
-        $fecha_fin           = $request->input('fecha_fin');
+        //$fecha_inicio        = $request->input('fecha_inicio');
+        //$fecha_fin           = $request->input('fecha_fin');
         $observacion         = $request->input('observacion');
         $total_laminas_pos   = $request->input('total_laminas_pos');
         $total_laminas_neg   = $request->input('total_laminas_neg');
@@ -1114,8 +1114,8 @@ class CentrosLaminasController extends Controller
             'total_laminas'       => $request->input('total_laminas_super'),
             'total_laminas_recib' => $request->input('total_laminas'),
             'cod_microscopia'     => $request->input('codigo'),
-            'fecha_ini'           => $request->input('fecha_inicio'),
-            'fecha_fin'           => $request->input('fecha_fin'),
+            //'fecha_ini'           => $request->input('fecha_inicio'),
+            //'fecha_fin'           => $request->input('fecha_fin'),
             'observaciones'       => $request->input('observacion'),
     
             'laminas_positivas_rec' => $total_laminas_pos,
