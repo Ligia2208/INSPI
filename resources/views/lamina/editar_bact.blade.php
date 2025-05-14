@@ -44,9 +44,9 @@
 
 <div id="kt_content" class="content d-flex flex-column flex-column-fluid">
 
-    <div class="container2">
+    <div class="container2 mt-5">
         <div class="page-content mb-5">
-            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus titulo-grande"></i> Ingreso de Láminas </h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus titulo-grande"></i>Editar Ingreso de Láminas </h2>
 
             <hr/>
 
@@ -125,27 +125,18 @@
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-                            <div class="col-md-4 mt-2">
-                                <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="{{$datos->mes_recepcion}}" required readonly>
-                                <div class="valid-feedback">Looks good!</div>
-                            </div>
 
-                            <div class="col-md-4 mt-2">
+
+                            <div class="col-md-3 mt-2">
                                 <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
                                 <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="{{$datos->total_laminas_recib}}" required> 
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
                                 <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="{{$datos->total_laminas}}">
                                 <div class="valid-feedback">Looks good!</div>
-                            </div>
-
-                            <div class="col-md-4 mt-2">
-                                <label for="codigo" class="form-label fs-6">Código Microscopista Evaluado:</label>
-                                <input type="text" id="codigo" name="codigo" class="form-control" required disabled value="{{$datos->unicodigo}}">
                             </div>
 
                             <!-- <div class="col-md-4 mt-2">
@@ -160,16 +151,32 @@
                                 <div class="valid-feedback">Looks good!</div>
                             </div> -->
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <label for="total_laminas_pos" class="form-label fs-6">Total de Láminas Positivas</label>
                                 <input type="number" id="total_laminas_pos" name="total_laminas_pos" class="form-control" required value="{{$datos->laminas_positivas_rec}}">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <label for="total_laminas_neg" class="form-label fs-6">Total de Láminas Negativas</label>
                                 <input type="number" id="total_laminas_neg" name="total_laminas_neg" class="form-control" required value="{{$datos->laminas_negativas_rec}}" readonly>
                                 <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="codigo" class="form-label fs-6">Código Microscopista Evaluado:</label>
+                                <input type="text" id="codigo" name="codigo" class="form-control" required disabled value="{{$datos->unicodigo}}">
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="{{$datos->mes_recepcion}}" required readonly>
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="codigo_lec" class="form-label fs-6">Código del Lector:</label>
+                                <input type="text" id="codigo_lec" name="codigo_lec" class="form-control" required value="{{$datos->codigo_lec}}">
                             </div>
 
                             <div class="col-md-12 mt-2 mb-2">
@@ -340,5 +347,5 @@
 <script>
     const desgloseData = @json($desglose);
 </script>
-<script src="{{asset('assets/js/Lamina/edit_lamina_bact.js?v0.0.3')}}"></script>
+<script src="{{asset('assets/js/Lamina/edit_lamina_bact.js?v0.0.5')}}"></script>
 @endpush

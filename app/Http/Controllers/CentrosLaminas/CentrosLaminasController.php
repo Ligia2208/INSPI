@@ -405,6 +405,7 @@ class CentrosLaminasController extends Controller
         $observacion         = $request->input('observacion');
         $total_laminas_pos   = $request->input('total_laminas_pos');
         $total_laminas_neg   = $request->input('total_laminas_neg');
+        $codigo_lec          = $request->input('codigo_lec');
 
         $resultados          = $request->input('resultados');
 
@@ -426,6 +427,7 @@ class CentrosLaminasController extends Controller
             //'fecha_ini'           => $fecha_inicio,
             //'fecha_fin'           => $fecha_fin,
             'observaciones'       => $observacion,
+            'codigo_lec'          => $codigo_lec,
 
             //'laminas_positivas_rec' => $resultados['resultado']['positivas'],
             //'laminas_negativas_rec' => $resultados['resultado']['negativas'],
@@ -441,13 +443,13 @@ class CentrosLaminasController extends Controller
                 'fecha'               => $dato['fecha'],
                 'semana'              => $dato['semana'],
                 'diagnostico_control' => $dato['diagnostico_calidad'],
-                'vivax_control'       => $dato['recuento_control_vivax'] ?? 0,
-                'falciparum_control'  => $dato['recuento_control_falciparum'] ?? 0,
-                'fg_control'          => $dato['presencia_control'] ?? 0,
+                'vivax_control'       => $dato['recuento_control_vivax'] ?? '',
+                'falciparum_control'  => $dato['recuento_control_falciparum'] ?? '',
+                'fg_control'          => $dato['presencia_control'] ?? '',
                 'diagnostico_micro'   => $dato['diagnostico_microscopista'],
-                'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? 0,
-                'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? 0,
-                'mg_micro'            => $dato['presencia_microscopista'] ?? 0,
+                'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? '',
+                'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? '',
+                'mg_micro'            => $dato['presencia_microscopista'] ?? '',
                 'cod_lectura'         => $dato['codigo_micro'],
                 'nro_lamina'          => $dato['num_lamina'],
 
@@ -1038,7 +1040,7 @@ class CentrosLaminasController extends Controller
         $datos = Lamina::select(
             'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
             'ingreso_laminas.total_laminas_recib as total_laminas_recib', DB::raw("DATE_FORMAT(ingreso_laminas.created_at, '%Y-%m-%d') as fecha_recebcion"),
-            'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones',
+            'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones', 'ingreso_laminas.codigo_lec as codigo_lec',
             'ins.id as centro_salud', 'ingreso_laminas.id_evento as id_evento', 'ingreso_laminas.id_responsable as id_responsable',
             'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
             'ingreso_laminas.fecha_fin as fecha_fin', 'ingreso_laminas.laminas_positivas_rec as laminas_positivas_rec', 'ingreso_laminas.laminas_negativas_rec as laminas_negativas_rec'
@@ -1095,6 +1097,7 @@ class CentrosLaminasController extends Controller
         $observacion         = $request->input('observacion');
         $total_laminas_pos   = $request->input('total_laminas_pos');
         $total_laminas_neg   = $request->input('total_laminas_neg');
+        $codigo_lec          = $request->input('codigo_lec');
 
         $resultados          = $request->input('resultados');
 
@@ -1139,13 +1142,13 @@ class CentrosLaminasController extends Controller
                     'fecha'               => $dato['fecha'],
                     'semana'              => $dato['semana'],
                     'diagnostico_control' => $dato['diagnostico_calidad'],
-                    'vivax_control'       => $dato['recuento_control_vivax'] ?? 0,
-                    'falciparum_control'  => $dato['recuento_control_falciparum'] ?? 0,
-                    'fg_control'          => $dato['presencia_control'] ?? 0,
+                    'vivax_control'       => $dato['recuento_control_vivax'] ?? '',
+                    'falciparum_control'  => $dato['recuento_control_falciparum'] ?? '',
+                    'fg_control'          => $dato['presencia_control'] ?? '',
                     'diagnostico_micro'   => $dato['diagnostico_microscopista'],
-                    'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? 0,
-                    'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? 0,
-                    'mg_micro'            => $dato['presencia_microscopista'] ?? 0,
+                    'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? '',
+                    'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? '',
+                    'mg_micro'            => $dato['presencia_microscopista'] ?? '',
                     'cod_lectura'         => $dato['codigo_micro'],
                     'nro_lamina'          => $dato['num_lamina'],
                     'lectura'             => '',
@@ -1160,13 +1163,13 @@ class CentrosLaminasController extends Controller
                     'fecha'               => $dato['fecha'],
                     'semana'              => $dato['semana'],
                     'diagnostico_control' => $dato['diagnostico_calidad'],
-                    'vivax_control'       => $dato['recuento_control_vivax'] ?? 0,
-                    'falciparum_control'  => $dato['recuento_control_falciparum'] ?? 0,
-                    'fg_control'          => $dato['presencia_control'] ?? 0,
+                    'vivax_control'       => $dato['recuento_control_vivax'] ?? '',
+                    'falciparum_control'  => $dato['recuento_control_falciparum'] ?? '',
+                    'fg_control'          => $dato['presencia_control'] ?? '',
                     'diagnostico_micro'   => $dato['diagnostico_microscopista'],
-                    'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? 0,
-                    'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? 0,
-                    'mg_micro'            => $dato['presencia_microscopista'] ?? 0,
+                    'vivax_micro'         => $dato['recuento_microscopista_vivax'] ?? '',
+                    'falciparum_micro'    => $dato['recuento_microscopista_falciparum'] ?? '',
+                    'mg_micro'            => $dato['presencia_microscopista'] ?? '',
                     'cod_lectura'         => $dato['codigo_micro'],
                     'nro_lamina'          => $dato['num_lamina'],
                     'lectura'             => '',
@@ -1310,7 +1313,7 @@ class CentrosLaminasController extends Controller
 
         // Obtener la descripción de la unidad de salud
         $unidadSalud = DB::table('inspi_crns.instituciones_salud as ins')
-            ->select('ins.descripcion as unidad_salud' , 'ins.unicodigo as unicodigo', 'can.descripcion as canton', 'pro.descripcion as provincia')
+            ->select('ins.descripcion as unidad_salud' , 'ins.unicodigo as unicodigo', 'can.descripcion as canton', 'pro.descripcion as provincia', 'ins.responsable')
             ->join('inspi_crns.cantones as can', 'can.id', '=', 'ins.canton_id')
             ->join('inspi_crns.provincias as pro', 'pro.id', '=', 'ins.provincia_id')
             ->where('ins.id', $lamina->id_unidad_salud)
@@ -1360,6 +1363,12 @@ class CentrosLaminasController extends Controller
             '4' => 'V/F - Vivax/Falciparum',
         ];
 
+        $lamina = Lamina::select(
+            'codigo_lec',            
+        )
+        ->where('id', $id_lamina)
+        ->first();
+
         $datos = Desglose::select(
             'fecha',
             DB::raw('YEAR(fecha) as anio'),
@@ -1380,12 +1389,15 @@ class CentrosLaminasController extends Controller
         ->where('estado', 'A')
         ->get();
     
+        $codLectura = $datos->first()->cod_lectura ?? null;
 
         //return response()->json($id_lamina);
         return \PDF::loadView('pdf.indirecto.pdfControl_Calidad_Indirecto', 
             [
                 'datos' => $datos, 
-                'diagnosticos' => $diagnosticos,]) 
+                'diagnosticos' => $diagnosticos,
+                'lamina' => $lamina,
+                'codLectura' => $codLectura,]) 
             ->setPaper('A4', 'landscape')
             ->download('reporte_CONTROL DE CALIDAD INDIRECTO.pdf');
         

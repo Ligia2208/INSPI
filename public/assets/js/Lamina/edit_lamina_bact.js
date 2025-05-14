@@ -42,6 +42,7 @@ $(function () {
                     let total_laminas       = document.getElementById('total_laminas').value.trim();
                     let total_laminas_super = document.getElementById('total_laminas_super').value.trim();
                     let codigo              = document.getElementById('codigo').value.trim();
+                    let codigo_lec          = document.getElementById('codigo_lec').value.trim();
                     //let fecha_inicio        = document.getElementById('fecha_inicio').value.trim();
                     //let fecha_fin           = document.getElementById('fecha_fin').value.trim();
                     let observacion         = document.getElementById('observacion').value.trim();
@@ -67,7 +68,9 @@ $(function () {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar el Total de Láminas Recibidas.', showConfirmButton: true });
                     } else if (!codigo) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe seleccionar un Código de Microscopista.', showConfirmButton: true });
-                    } /*else if (!fecha_inicio) {
+                    } else if (!codigo_lec) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe seleccionar un Código del Lector.', showConfirmButton: true });
+                    }  /*else if (!fecha_inicio) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha Inicial.', showConfirmButton: true });
                     } else if (!fecha_fin) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha Final.', showConfirmButton: true });
@@ -103,7 +106,8 @@ $(function () {
                                 'observacion'         :observacion        ,  
                                 'total_laminas_pos'   :total_laminas_pos  ,
                                 'total_laminas_neg'   :total_laminas_neg  ,
-                                'resultados'          : resultados,
+                                'resultados'          :resultados,
+                                'codigo_lec'          :codigo_lec,
                             },
                             success: function (response) {
                                 Swal.fire({
@@ -934,8 +938,8 @@ function contarDiagnosticos(total) {
     const positivos = ["1", "3", "4"];
 
     for (let i = 1; i <= total; i++) {
-        const diagCalidad = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value;
-        const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value;
+        const diagMicro = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value;
+        const diagCalidad = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value;
 
         // Contar positivas y negativas (basado solo en calidad)
         if (diagCalidad === "2") {

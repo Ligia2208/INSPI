@@ -38,7 +38,8 @@ $(function () {
                     //let fecha_inicio        = document.getElementById('fecha_inicio').value.trim();
                     //let fecha_fin           = document.getElementById('fecha_fin').value.trim();
                     let observacion         = document.getElementById('observacion').value.trim();
-
+                    let codigo_lec          = document.getElementById('codigo_lec').value.trim();
+                    
                     let total_laminas_pos   = document.getElementById('total_laminas_pos').value.trim();
                     let total_laminas_neg   = document.getElementById('total_laminas_neg').value.trim();
             
@@ -60,6 +61,8 @@ $(function () {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar el Total de Láminas Recibidas.', showConfirmButton: true });
                     } else if (!codigo) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe seleccionar un Código de Microscopista.', showConfirmButton: true });
+                    } else if (!codigo_lec) {
+                        Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe seleccionar un Código del Lector.', showConfirmButton: true });
                     } /*else if (!fecha_inicio) {
                         Swal.fire({ icon: 'warning', title: 'CoreInspi', text: 'Debe ingresar la Fecha Inicial.', showConfirmButton: true });
                     } else if (!fecha_fin) {
@@ -97,6 +100,7 @@ $(function () {
                                 'total_laminas_pos'   :total_laminas_pos  ,
                                 'total_laminas_neg'   :total_laminas_neg  ,
                                 'resultados'          : resultados,
+                                'codigo_lec'          :codigo_lec,
                             },
                             success: function (response) {
                                 Swal.fire({
@@ -972,8 +976,8 @@ function contarDiagnosticos(total) {
     const positivos = ["1", "3", "4"];
 
     for (let i = 1; i <= total; i++) {
-        const diagCalidad = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value;
-        const diagMicro = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value;
+        const diagMicro = document.querySelector(`[name="diagnostico_calidad_${i}"]`)?.value;
+        const diagCalidad = document.querySelector(`[name="diagnostico_microscopista_${i}"]`)?.value;
 
         // Contar positivas y negativas (basado solo en calidad)
         if (diagCalidad === "2") {
@@ -1017,7 +1021,8 @@ function asignarEventosFila(i) {
         `fecha_${i}`, `semana_${i}`, `codigo_micro_${i}`, `num_lamina_${i}`,
         `recuento_control_vivax_${i}`, `recuento_control_falciparum_${i}`,
         `presencia_control_${i}`, `recuento_microscopista_vivax_${i}`,
-        `recuento_microscopista_falciparum_${i}`, `presencia_microscopista_${i}`
+        `recuento_microscopista_falciparum_${i}`, `presencia_microscopista_${i}`,
+        `diagnostico_calidad_${i}`, `diagnostico_microscopista_${i}`
     ];
 
     elementos.forEach(id => {

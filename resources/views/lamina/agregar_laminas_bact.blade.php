@@ -112,27 +112,39 @@
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-                            <div class="col-md-4 mt-2">
-                                <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="" required readonly>
-                                <div class="valid-feedback">Looks good!</div>
-                            </div>
-
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
                                 <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="" required>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
-                            <div class="col-md-4 mt-2">
+                            <div class="col-md-3 mt-2">
                                 <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
                                 <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="total_laminas_pos" class="form-label fs-6">Total de Láminas Positivas</label>
+                                <input type="number" id="total_laminas_pos" name="total_laminas_pos" class="form-control" required value="">
+                                <div class="valid-feedback">Looks good!</div>
+                            </div>
+
+                            <div class="col-md-3 mt-2">
+                                <label for="total_laminas_neg" class="form-label fs-6">Total de Láminas Negativas</label>
+                                <input type="number" id="total_laminas_neg" name="total_laminas_neg" class="form-control" required value="" readonly>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="codigo" class="form-label fs-6">Código Microscopista Evaluado:</label>
                                 <input type="text" id="codigo" name="codigo" class="form-control" required disabled value="">
+                            </div>
+
+                            <div class="col-md-4 mt-2">
+                                <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="" required readonly>
+                                <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <!-- <div class="col-md-4 mt-2">
@@ -148,15 +160,8 @@
                             </div> -->
 
                             <div class="col-md-4 mt-2">
-                                <label for="total_laminas_pos" class="form-label fs-6">Total de Láminas Positivas</label>
-                                <input type="number" id="total_laminas_pos" name="total_laminas_pos" class="form-control" required value="">
-                                <div class="valid-feedback">Looks good!</div>
-                            </div>
-
-                            <div class="col-md-4 mt-2">
-                                <label for="total_laminas_neg" class="form-label fs-6">Total de Láminas Negativas</label>
-                                <input type="number" id="total_laminas_neg" name="total_laminas_neg" class="form-control" required value="" readonly>
-                                <div class="valid-feedback">Looks good!</div>
+                                <label for="codigo_lec" class="form-label fs-6">Código del Lector:</label>
+                                <input type="text" id="codigo_lec" name="codigo_lec" class="form-control" required value="">
                             </div>
 
                             <div class="col-md-12 mt-2 mb-2">
@@ -258,5 +263,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.2')}}"></script>
+<script src="{{asset('assets/js/Lamina/agregar_lamina_bact.js?v0.0.3')}}"></script>
 @endpush
