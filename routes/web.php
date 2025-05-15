@@ -439,6 +439,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/laminas/reporte_control_calidad_indirecto/{id_lamina}', 'CentrosLaminasController@reporte_control_calidad_indirecto')->name('laminas.reporte_control_calidad_indirecto');
         Route::get('/laminas/reporte_control_calidad_par/{id}', 'CentrosLaminasController@reporte_control_calidad_par')->name('laminas.reporte_control_calidad_par');
 
+        Route::get('/laminas_parasitologia_procesadas', 'CentrosLaminasController@laminas_parasitologia_procesadas')->name('laminas_parasitologia_procesadas'); 
         Route::get('/laminas_parasitologia_validar', 'CentrosLaminasController@laminas_parasitologia_validar')->name('laminas_parasitologia_validar'); 
         Route::get('/laminas/validar_parasito/{id_ingreso}', 'CentrosLaminasController@validar_parasito')->name('laminas.validar_parasito');
 
