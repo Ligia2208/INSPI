@@ -1412,7 +1412,42 @@ class CentrosLaminasController extends Controller
 
     }
 
+    public function laminas_parasitologia_procesadas(Request $request){
 
+
+            if (request()->ajax()) {
+                $query = Lamina::select(
+                    'ingreso_laminas.id as id',
+                    'ingreso_laminas.mes_recepcion as mes_recepcion',
+                    'ingreso_laminas.fecha_recep as fecha_recep',
+                    'ingreso_laminas.total_laminas as total_laminas',
+                    'ins.descripcion as instituto',
+                    'recep.name as recepta',
+                    'anali.name as analita',
+                    'ins.unicodigo as unicodigo',
+                    DB::raw('EXISTS (
+                        SELECT 1 FROM desglose_lamina 
+                        WHERE desglose_lamina.id_lamina = ingreso_laminas.id 
+                        AND desglose_lamina.estado = \'A\'
+                    ) as tiene_desglose'),
+                    'resul.porcentaje_laminas as porcentaje_laminas',
+                    'resul.interpretacion as interpretacion'
+                )
+                ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
+                ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+                ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
+                ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
+                ->join('inspi_crns.resultado_laminas as resul', 'resul.id_lamina', '=', 'ingreso_laminas.id')
+                ->whereIn('ingreso_laminas.estado', ['V' ,'R'])
+                ->where('ingreso_laminas.id_crn', 5);
+            
+                return datatables()->of($query)->addIndexColumn()->make(true);
+            }
+
+            //respuesta para la vista
+            return view('lamina.index_parasito_pro');
+
+    }
 
     public function validar_parasito($id_ingreso){
 
