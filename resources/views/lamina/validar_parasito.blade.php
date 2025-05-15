@@ -46,13 +46,13 @@
 
                             <div class="col-md-4">
                                 <label for="fecha_recep" class="form-label fs-6">Fecha de Recepción</label>
-                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required autofocus value="{{$datos->fecha_recep}}" >
+                                <input type="date" id="fecha_recep" name="fecha_recep" class="form-control" required readonly value="{{$datos->fecha_recep}}" >
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-8">
                                 <label for="centro_salud" class="form-label fs-6">Nombre del Laboratorio Supervisado</label>
-                                <select name="centro_salud" class="form-control single-select" id="centro_salud" onchange="actualizarCodigoMicroscopista()">
+                                <select name="centro_salud" class="form-control single-select" id="centro_salud" onchange="actualizarCodigoMicroscopista()" readonly>
                                     <option value="">Selecciona una Opción</option>
                                     @foreach($instituciones as $institucion)
                                     @if($institucion->id == $datos->centro_salud)
@@ -70,7 +70,7 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="evento" class="form-label fs-6">Evento</label>
-                                <select name="evento" class="form-control single-select" id="evento">
+                                <select name="evento" class="form-control single-select" id="evento" readonly>
                                     <option value="">Selecciona una Opción</option>
                                     @foreach($eventos as $evento)
                                         @if($evento->id == $datos->id_evento)
@@ -84,7 +84,7 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="responsable" class="form-label fs-6">Responsable Recepción</label>
-                                <select name="responsable" class="form-control single-select" id="responsable">
+                                <select name="responsable" class="form-control single-select" id="responsable" readonly>
                                     <option value="">Selecciona una Opción</option>
                                     @foreach($responsables as $responsable)
                                         @if($responsable->usuario) {{-- Validamos que tenga usuario relacionado --}}
@@ -100,7 +100,7 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="fecha_recebcion" class="form-label fs-6">Fecha de Reporte:</label>
-                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="{{$datos->fecha_recebcion}}" required disabled> 
+                                <input type="date" id="fecha_recebcion" name="fecha_recebcion" class="form-control" value="{{$datos->fecha_recebcion}}" required readonly> 
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -108,31 +108,19 @@
 
                             <div class="col-md-3 mt-2">
                                 <label for="total_laminas" class="form-label fs-6">Total de Láminas</label>
-                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="{{$datos->total_laminas_recib}}" required> 
+                                <input type="number" id="total_laminas" name="total_laminas" class="form-control" value="{{$datos->total_laminas_recib}}" required readonly> 
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-3 mt-2">
                                 <label for="total_laminas_super" class="form-label fs-6">Total de Láminas Recibidas</label>
-                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="{{$datos->total_laminas}}">
+                                <input type="number" id="total_laminas_super" name="total_laminas_super" class="form-control" required value="{{$datos->total_laminas}}" readonly>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
-
-                            <!-- <div class="col-md-4 mt-2">
-                                <label for="fecha_inicio" class="form-label fs-6">Fecha Inicial:</label>
-                                <input type="date" id="fecha_inicio" name="fecha_inicio" class="form-control" value="{{$datos->fecha_ini}}" required>
-                                <div class="valid-feedback">Looks good!</div>
-                            </div>
-
-                            <div class="col-md-4 mt-2">
-                                <label for="fecha_fin" class="form-label fs-6">Fecha Final:</label>
-                                <input type="date" id="fecha_fin" name="fecha_fin" class="form-control" value="{{$datos->fecha_fin}}" required>
-                                <div class="valid-feedback">Looks good!</div>
-                            </div> -->
 
                             <div class="col-md-3 mt-2">
                                 <label for="total_laminas_pos" class="form-label fs-6">Total de Láminas Positivas</label>
-                                <input type="number" id="total_laminas_pos" name="total_laminas_pos" class="form-control" required value="{{$datos->laminas_positivas_rec}}">
+                                <input type="number" id="total_laminas_pos" name="total_laminas_pos" class="form-control" required readonly value="{{$datos->laminas_positivas_rec}}">
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
@@ -144,33 +132,25 @@
 
                             <div class="col-md-4 mt-2">
                                 <label for="codigo" class="form-label fs-6">Código Microscopista Evaluado:</label>
-                                <input type="text" id="codigo" name="codigo" class="form-control" required disabled value="{{$datos->unicodigo}}">
+                                <input type="text" id="codigo" name="codigo" class="form-control" required readonly value="{{$datos->unicodigo}}">
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="mes_recepcion" class="form-label fs-6">Semana o Mes</label>
-                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" value="{{$datos->mes_recepcion}}" required readonly>
+                                <input type="text" id="mes_recepcion" name="mes_recepcion" class="form-control" readonly value="{{$datos->mes_recepcion}}" required >
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
 
                             <div class="col-md-4 mt-2">
                                 <label for="codigo_lec" class="form-label fs-6">Código del Lector:</label>
-                                <input type="text" id="codigo_lec" name="codigo_lec" class="form-control" required value="{{$datos->codigo_lec}}">
+                                <input type="text" id="codigo_lec" name="codigo_lec" class="form-control" readonly required value="{{$datos->codigo_lec}}">
                             </div>
 
                             <div class="col-md-12 mt-2 mb-2">
                                 <label for="observacion" class="form-label fs-6">Observación:</label>
-                                <textarea id="observacion" name="observacion" class="form-control" rows="3" required>{{$datos->observaciones}}</textarea>
+                                <textarea id="observacion" name="observacion" class="form-control" rows="3" readonly required>{{$datos->observaciones}}</textarea>
                                 <div class="valid-feedback">Looks good!</div>
                             </div>
-
-                            <input type="text" id="resultado_total" class="form-control" disabled placeholder="Total Resultado" hidden>
-                            <input type="text" id="resultado_especie" class="form-control" disabled placeholder="Total Resultado Especie" hidden> 
-                            <input type="text" id="resultado_recuento" class="form-control" disabled placeholder="Total Resultado Recuento" hidden>
-                            <input type="text" id="resultado_recuento_total" class="form-control" disabled placeholder="Total Resultado Recuento Total" hidden>
-                            <input type="text" id="resultado_recuento_total_valor" class="form-control" disabled placeholder="Total Resultado Recuento Valor" hidden>
-                            <input type="text" id="resultado_recuento_total_especie" class="form-control" disabled placeholder="Total Resultado Recuento Especie" hidden>
-                            <input type="text" id="resultado_total_sumatoria" class="form-control" disabled placeholder="Total Resultado Sumatoria" hidden>
                             
                         </div>
                     </div>
@@ -179,29 +159,30 @@
 
                 <div class="card shadow-sm border-0">
                     <div class="card-header bg-info text-white">
-                        <h5 class="mb-0">Resultados del control de Laminas</h5>
+                        <h5 class="mb-0">Resultados del control de Láminas</h5>
                     </div>
                     <div class="card-body">
+
                         <div class="row">
                             <div class="mb-2 col-lg-2">
                                 <label for="puntuacion" class="form-label">Puntuación</label>
-                                <input type="text" id="puntuacion" class="form-control" disabled="" readonly="">
+                                <input type="text" id="puntuacion" class="form-control" disabled readonly value="{{ number_format($datos->porcentaje_laminas, 2) }}%">
                             </div>
                             <div class="mb-2 col-lg-4">
                                 <label for="interpretacion" class="form-label">Interpretación</label>
-                                <input type="text" id="interpretacion" class="form-control" disabled="" readonly="">
+                                <input type="text" id="interpretacion" class="form-control" disabled readonly value="{{ $datos->interpretacion }}">
                             </div>
                             <div class="mb-2 col-lg-2">
                                 <label for="porcentajeResult" class="form-label">Porcentaje Resultado</label>
-                                <input type="text" id="porcentajeResult" class="form-control" disabled="" readonly="">
+                                <input type="text" id="porcentajeResult" class="form-control" disabled readonly value="{{ number_format($datos->resultado, 2) }}%">
                             </div>
                             <div class="mb-2 col-lg-2">
                                 <label for="porcentajeEspe" class="form-label">Porcentaje Especie</label>
-                                <input type="text" id="porcentajeEspe" class="form-control" disabled="" readonly="">
+                                <input type="text" id="porcentajeEspe" class="form-control" disabled readonly value="{{ number_format($datos->especie, 2) }}%">
                             </div>
                             <div class="mb-2 col-lg-2">
                                 <label for="porcentajeRecuen" class="form-label">Porcentaje Recuento</label>
-                                <input type="text" id="porcentajeRecuen" class="form-control" disabled="" readonly="">
+                                <input type="text" id="porcentajeRecuen" class="form-control" disabled readonly value="{{ number_format($datos->recuentos, 2) }}%">
                             </div>
                         </div>
 
@@ -209,8 +190,30 @@
                 </div>
 
 
-                <div id="resultados-container" class="mt-4">
-                    <!-- Aquí se agregarán los inputs resultado dinámicamente -->
+                <div id="resultados-container" class="mt-4 card">
+                    <div class="row card-body">
+
+                        <div class="col-md-4 mt-2">
+                            <label for="id_resultado" class="form-label fs-6">Resultado Cierre Caso<span class="text-danger">*</span></label>
+                            <select name="id_resultado" class="form-control single-select" id="id_resultado">
+                                <option value="">Selecciona una Opción</option>
+                                @foreach($resultados as $resultado)
+                                    <option value="{{ $resultado->id }}">{{ $resultado->descripcion }}</option>
+                                @endforeach
+
+                            </select>
+                        </div>
+
+                        <div class="form-group col-md-12 mt-4">
+                            <label class="text-black"><b>Observación Responsable de la validación</b></label>
+                            <div class="input-group input-group-solid">
+                                <textarea id="observacion" class="form-control form-control-solid" placeholder="Ej: Datos relevantes a reportar" cols="30" rows="3"
+                                ></textarea>
+                            </div>
+                        </div>
+
+
+                    </div>
                 </div>
 
 
@@ -225,7 +228,7 @@
                     <i class="bi bi-send-check"></i> Guardar
                 </a>
 
-                <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/laminas_bacteriologia'">
+                <a class="col-2 btn btn-danger px-1 p mb-5" type="button" onclick="window.location.href='/laminas_parasitologia_validar'">
                 <i class="bi bi-caret-left"></i> Regresar
                 </a>
             </div>

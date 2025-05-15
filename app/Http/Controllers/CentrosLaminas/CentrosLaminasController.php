@@ -39,6 +39,7 @@ use App\Models\CentrosReferencia\Tecnica;
 use App\Models\CentrosReferencia\Evento;
 use App\Models\CentrosReferencia\Institucion;
 use App\Models\CentrosReferencia\Responsable;
+use App\Models\CentrosReferencia\Reporte as ResultadoCRN;
 
 
 use App\Models\Lamina\Lamina\Lamina;
@@ -1422,11 +1423,20 @@ class CentrosLaminasController extends Controller
             'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones', 'ingreso_laminas.codigo_lec as codigo_lec',
             'ins.id as centro_salud', 'ingreso_laminas.id_evento as id_evento', 'ingreso_laminas.id_responsable as id_responsable',
             'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
-            'ingreso_laminas.fecha_fin as fecha_fin', 'ingreso_laminas.laminas_positivas_rec as laminas_positivas_rec', 'ingreso_laminas.laminas_negativas_rec as laminas_negativas_rec'
+            'ingreso_laminas.fecha_fin as fecha_fin', 'ingreso_laminas.laminas_positivas_rec as laminas_positivas_rec', 
+            'ingreso_laminas.laminas_negativas_rec as laminas_negativas_rec', 'resul.interpretacion as interpretacion',
+            'resul.porcentaje_laminas as porcentaje_laminas', 'resul.resultado as resultado', 'resul.especie as especie', 'resul.recuentos as recuentos'
         )
         ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+        ->join('inspi_crns.resultado_laminas as resul', 'resul.id_lamina', '=', 'ingreso_laminas.id')
         ->where('ingreso_laminas.estado', ['A'])
         ->where('ingreso_laminas.id', $id_ingreso)->first();
+
+        $resultados = ResultadoCRN::select('descripcion', 'id')
+            ->where('crns_id', 5)
+            ->where('estado', 'A')
+            ->whereIn('descripcion', ['Aprobado', 'Rechazado'])
+            ->get();
 
         //falta el desglose
         $desglose = Desglose::select('fecha', 'semana', 'diagnostico_control', 'vivax_control',
@@ -1438,9 +1448,45 @@ class CentrosLaminasController extends Controller
         $instituciones = Institucion::select('id', 'descripcion', 'unicodigo')->where('estado', 'A')->where('unicodigo', 'like', 'LR%')->get();
         $responsables = Responsable::where('crns_id', 5)->with('usuario')->get();
 
-        return view('lamina.validar_parasito', compact('datos', 'eventos', 'instituciones', 'responsables', 'desglose'));
+        return view('lamina.validar_parasito', compact('datos', 'eventos', 'instituciones', 'responsables', 'desglose', 'resultados'));
 
     }
+
+
+
+    public function guardar_laminas_validacion(Request $request)
+    {
+        $request->validate([
+            'id_resultado' => 'required|integer',
+            'id_ingreso'   => 'required|integer',
+            'observacion'  => 'nullable|string|max:1000',
+        ]);
+    
+        $id_resultado = $request->input('id_resultado');
+        $id_ingreso   = $request->input('id_ingreso');
+        $observacion  = $request->input('observacion');
+    
+        $resultados = ResultadoCRN::find($id_resultado);
+        $lamina = Lamina::findOrFail($id_ingreso);
+    
+        $lamina->update([
+            'estado' => $resultados->descripcion == 'Aprobado' ? 'V' : 'R',
+        ]);
+    
+        $resultado = Resultado::where('id_lamina', $id_ingreso)->first();
+    
+        if ($resultado) {
+            $resultado->update([
+                'observaciones' => $observacion,
+                'id_resultado'  => $id_resultado,
+            ]);
+    
+            return response()->json(['success' => true, 'message' => 'Láminas evaluadas correctamente'], 200);
+        } else {
+            return response()->json(['success' => false, 'message' => 'Resultado no encontrado'], 404);
+        }
+    }
+    
     
     
     
