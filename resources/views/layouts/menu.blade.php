@@ -412,6 +412,15 @@
                     </li>
                 @endcan
 
+                @can('laminas_parasitologia_pro')
+                    <li class="menu-item {{ active('laminas_parasitologia_pro') }}">
+                        <a href="{{ route('laminas_parasitologia_procesadas') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-list-task"></i>
+                            <span class="menu-text">Lista de Láminas Procesadas</span>
+                        </a>
+                    </li>
+                @endcan
+
             @endcanany
 
 

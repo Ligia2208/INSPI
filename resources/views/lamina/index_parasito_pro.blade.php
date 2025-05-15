@@ -133,7 +133,7 @@ control
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Lamina/index_parasito_val.js?v0.0.0')}}"></script>
+<script src="{{asset('assets/js/Lamina/index_parasito_pro.js?v0.0.0')}}"></script>
 @endpush
 
 
