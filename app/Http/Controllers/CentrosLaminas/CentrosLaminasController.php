@@ -1426,13 +1426,9 @@ class CentrosLaminasController extends Controller
                     'recep.name as recepta',
                     'anali.name as analita',
                     'ins.unicodigo as unicodigo',
-                    DB::raw('EXISTS (
-                        SELECT 1 FROM desglose_lamina 
-                        WHERE desglose_lamina.id_lamina = ingreso_laminas.id 
-                        AND desglose_lamina.estado = \'A\'
-                    ) as tiene_desglose'),
                     'resul.porcentaje_laminas as porcentaje_laminas',
-                    'resul.interpretacion as interpretacion'
+                    'resul.interpretacion as interpretacion',
+                    'ingreso_laminas.estado as estado'
                 )
                 ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
                 ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
@@ -1523,7 +1519,27 @@ class CentrosLaminasController extends Controller
     }
     
     
-    
+    public function eliminar_parasito_val(Request $request)
+    {
+
+        $id_ingreso = $request->input('id'); 
+
+        $ingreso = Lamina::find($id_ingreso);
+        $ingreso->estado = 'A';
+
+        $ingreso->save();
+
+        if ($ingreso) {
+
+            return response()->json(['message' => 'Se elimino la validación de las Láminas .', 'data' => true], 200);
+
+        } else {
+
+            return response()->json(['message' => 'Error al eliminar la validación de las láminas', 'data' => false], 500);
+
+        }
+
+    }
     
 
 }

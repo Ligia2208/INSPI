@@ -388,14 +388,14 @@
             @endcanany
 
 
-            @canany(['laminas_parasitologia', 'laminas_parasitologia_val'])
+            @canany(['laminas_parasitologia', 'laminas_parasitologia_val', 'laminas_parasitologia_val'])
                 <li class="menu-section">
                     <h4 class="menu-text">Laminas Parasitología</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
                 </li>
 
                 @can('laminas_parasitologia')
-                    <li class="menu-item {{ active('laminas_parasitologia') }}">
+                    <li class="menu-item {{ active('laminas_bacteriologia') }}">
                         <a href="{{ route('laminas_bacteriologia') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-list-task"></i>
                             <span class="menu-text">Lista de Láminas</span>
@@ -404,8 +404,8 @@
                 @endcan
 
                 @can('laminas_parasitologia_val')
-                    <li class="menu-item {{ active('laminas_parasitologia_val') }}">
-                        <a href="{{ route('laminas_parasitologia_validar') }}" class="menu-link">
+                    <li class="menu-item {{ active('laminas.laminas_parasitologia_validar') }}">
+                        <a href="{{ route('laminas.laminas_parasitologia_validar') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-list-task"></i>
                             <span class="menu-text">Lista de Láminas por Validar</span>
                         </a>
@@ -413,8 +413,8 @@
                 @endcan
 
                 @can('laminas_parasitologia_pro')
-                    <li class="menu-item {{ active('laminas_parasitologia_pro') }}">
-                        <a href="{{ route('laminas_parasitologia_procesadas') }}" class="menu-link">
+                    <li class="menu-item {{ active('laminas.laminas_parasitologia_procesadas') }}">
+                        <a href="{{ route('laminas.laminas_parasitologia_procesadas') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-list-task"></i>
                             <span class="menu-text">Lista de Láminas Procesadas</span>
                         </a>

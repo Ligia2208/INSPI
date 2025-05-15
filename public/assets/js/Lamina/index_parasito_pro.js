@@ -155,14 +155,36 @@ $( function () {
             { data: 'fecha_recep',   name: 'fecha_recep' },
             {
                 data: null,
+                searchable: false ,
+                render: function (data, type, full, meta) {
+                var array = "";
+                let estado = full.estado;
+
+                    if(estado == 'V'){
+
+                        array =`
+                            <div class="center"><span class="badge badge-success text-bg-success">Validado</span></div>
+                        `;
+                    }else{
+                        array =`
+                            <div class="center"><span class="badge badge-warning text-bg-success">Rechazado</span></div>
+                        `;
+                    }
+
+                return array;
+
+                }
+            },
+            {
+                data: null,
                 render: function (data, type, full, meta) {
 
                     return `
 
                         <div class="action-buttons">
 
-                            <a id="" class="ml-1" data-id_editar="${full.id}" href="/laminas/validar_parasito/${full.id}" title="Validar Láminas" data-title="Validar Láminas">
-                                <i class="bi bi-clipboard2-check icon-ingreso"></i>
+                            <a id="btnEliminarIngreso" class="ml-1" data-id_borrar="${full.id}" title="Eliminar Validación Láminas" data-title="Eliminar Validación Láminas">
+                                <i class="bi bi-clipboard2-x text-danger"></i>
                             </a>
 
                             <a id="btnPDF_calidad_bact" class="ml-1" data-id_lamina="${full.id}" title="Generar PDF Control Calidad Bact" data-title="Generar PDF Control Calidad Bact">
@@ -216,7 +238,7 @@ $( function () {
             icon: 'warning',
             type:  'warning',
             title: 'CoreInspi',
-            text: '¿Seguro que quiere eliminar este Ingreso?',
+            text: '¿Seguro que quiere eliminar esta Validación?',
             showConfirmButton: true,
             showCancelButton: true,
         }).then((result) => {
@@ -226,7 +248,7 @@ $( function () {
 
                     type: 'POST',
                     //url: '{{ route("encuesta.saveEncuesta") }}',
-                    url: '/laminas/eliminar_bact',
+                    url: '/laminas/eliminar_parasito_val',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },

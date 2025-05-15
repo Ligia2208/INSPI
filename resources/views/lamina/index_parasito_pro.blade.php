@@ -22,7 +22,7 @@ control
             <div class="row align-items-center">
 
                 <div class="col-md-3 " align="center">
-                <a href="http://127.0.0.1:8000/laminas_parasitologia_validar" class="navi-link py-4 menu-item-active active d-block">
+                <a href="{{ route('laminas.laminas_parasitologia_validar') }}" class="navi-link py-4 menu-item-active active d-block">
                     <span class="navi-icon d-block mb-2">
                     <i class="fa fa-tags fa-3x"></i>
                     </span>
@@ -31,7 +31,7 @@ control
                 </div>
                 
                 <div class="col-md-3 " align="center">
-                <a href="http://127.0.0.1:8000/laminas_parasitologia_procesadas" class="navi-link py-4 d-block">
+                <a href="{{ route('laminas.laminas_parasitologia_procesadas') }}" class="navi-link py-4 d-block">
                     <span class="navi-icon d-block mb-2">
                     <i class="fa fa-cogs fa-3x"></i>
                     </span>
@@ -91,6 +91,7 @@ control
                                     <th>Interpretación</th>
                                     <th>Mes</th>
                                     <th>Fecha</th>
+                                    <th>Estado</th>
                                     <th>Opciones</th>
                                 </tr>
                             </thead>
@@ -107,6 +108,7 @@ control
                                     <th>Interpretación</th>
                                     <th>Mes</th>
                                     <th>Fecha</th>
+                                    <th>Estado</th>
                                     <th>Opciones</th>
                                 </tr>
                             </tfoot>
