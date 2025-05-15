@@ -388,7 +388,7 @@
             @endcanany
 
 
-            @canany(['laminas_parasitologia'])
+            @canany(['laminas_parasitologia', 'laminas_parasitologia_val'])
                 <li class="menu-section">
                     <h4 class="menu-text">Laminas Parasitología</h4>
                     <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
@@ -399,6 +399,15 @@
                         <a href="{{ route('laminas_bacteriologia') }}" class="menu-link">
                             <i class="menu-icon text-dark bi bi-list-task"></i>
                             <span class="menu-text">Lista de Láminas</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('laminas_parasitologia_val')
+                    <li class="menu-item {{ active('laminas_parasitologia_val') }}">
+                        <a href="{{ route('laminas_parasitologia_validar') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-list-task"></i>
+                            <span class="menu-text">Lista de Láminas por Validar</span>
                         </a>
                     </li>
                 @endcan

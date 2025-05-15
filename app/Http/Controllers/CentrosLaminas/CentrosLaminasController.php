@@ -1395,6 +1395,76 @@ class CentrosLaminasController extends Controller
             ->download('reporte_CONTROL DE CALIDAD INDIRECTO.pdf');
         
     }
+
+
+
+    public function laminas_parasitologia_validar(Request $request){
+
+        //$estado = $request->input('estado');
+
+        if (request()->ajax()) {
+            $query = Lamina::select(
+                'ingreso_laminas.id as id',
+                'ingreso_laminas.mes_recepcion as mes_recepcion',
+                'ingreso_laminas.fecha_recep as fecha_recep',
+                'ingreso_laminas.total_laminas as total_laminas',
+                'ins.descripcion as instituto',
+                'recep.name as recepta',
+                'anali.name as analita',
+                'ins.unicodigo as unicodigo',
+                DB::raw('EXISTS (
+                    SELECT 1 FROM desglose_lamina 
+                    WHERE desglose_lamina.id_lamina = ingreso_laminas.id 
+                      AND desglose_lamina.estado = \'A\'
+                ) as tiene_desglose'),
+                'resul.porcentaje_laminas as porcentaje_laminas',
+                'resul.interpretacion as interpretacion'
+            )
+            ->join('inspi_crns.tecnicas as tec', 'tec.id', '=', 'ingreso_laminas.id_tecnica')
+            ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+            ->join('bdcoreinspi.users as recep', 'recep.id', '=', 'ingreso_laminas.id_responsable')
+            ->join('bdcoreinspi.users as anali', 'anali.id', '=', 'ingreso_laminas.id_analista')
+            ->join('inspi_crns.resultado_laminas as resul', 'resul.id_lamina', '=', 'ingreso_laminas.id')
+            ->where('ingreso_laminas.estado', 'A')
+            ->where('ingreso_laminas.id_crn', 5);
+        
+            return datatables()->of($query)->addIndexColumn()->make(true);
+        }
+
+        //respuesta para la vista
+        return view('lamina.index_parasito_val');
+
+    }
+
+
+
+    public function validar_parasito($id_ingreso){
+
+        $datos = Lamina::select(
+            'ingreso_laminas.id as id', 'ingreso_laminas.mes_recepcion as mes_recepcion', 'ingreso_laminas.fecha_recep as fecha_recep',
+            'ingreso_laminas.total_laminas_recib as total_laminas_recib', DB::raw("DATE_FORMAT(ingreso_laminas.created_at, '%Y-%m-%d') as fecha_recebcion"),
+            'ins.unicodigo as unicodigo', 'ingreso_laminas.observaciones as observaciones', 'ingreso_laminas.codigo_lec as codigo_lec',
+            'ins.id as centro_salud', 'ingreso_laminas.id_evento as id_evento', 'ingreso_laminas.id_responsable as id_responsable',
+            'ingreso_laminas.director_us', 'ingreso_laminas.total_laminas', 'ingreso_laminas.fecha_ini as fecha_ini',
+            'ingreso_laminas.fecha_fin as fecha_fin', 'ingreso_laminas.laminas_positivas_rec as laminas_positivas_rec', 'ingreso_laminas.laminas_negativas_rec as laminas_negativas_rec'
+        )
+        ->join('inspi_crns.instituciones_salud as ins', 'ins.id', '=', 'ingreso_laminas.id_unidad_salud')
+        ->where('ingreso_laminas.estado', ['A'])
+        ->where('ingreso_laminas.id', $id_ingreso)->first();
+
+        //falta el desglose
+        $desglose = Desglose::select('fecha', 'semana', 'diagnostico_control', 'vivax_control',
+            'falciparum_control', 'fg_control', 'diagnostico_micro', 'vivax_micro', 'falciparum_micro',
+            'mg_micro', 'cod_lectura', 'nro_lamina')
+            ->where('id_lamina', $id_ingreso)->where('estado', 'A')->get();
+
+        $eventos = Evento::select('id', 'descripcion', 'simplificado')->where('estado', 'A')->where('laminas', true)->where('crns_id', 5)->get();
+        $instituciones = Institucion::select('id', 'descripcion', 'unicodigo')->where('estado', 'A')->where('unicodigo', 'like', 'LR%')->get();
+        $responsables = Responsable::where('crns_id', 5)->with('usuario')->get();
+
+        return view('lamina.validar_parasito', compact('datos', 'eventos', 'instituciones', 'responsables', 'desglose'));
+
+    }
     
     
     
