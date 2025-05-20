@@ -105,8 +105,7 @@
                         </table>
                 </div>
                     <!--end::Table-->
-
-                    {{ $areas->links() }}
+                    {{ $areas->links('pagination::bootstrap-4') }}
             </div>
                 <!--end::Body-->
         </div>

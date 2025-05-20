@@ -131,8 +131,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
-                {{ $cargos->links() }}
+                {{ $cargos->links('pagination::bootstrap-4') }}
 
             </div>
             <!--end::Body-->
