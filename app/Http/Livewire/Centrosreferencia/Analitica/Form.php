@@ -617,7 +617,7 @@ class Form extends Component
 
             }
 
-            if($this->Analiticas->tecnica_sexta_id>0 && $this->Analiticas->resultado_sexta_id>0{
+            if($this->Analiticas->tecnica_sexta_id>0 && $this->Analiticas->resultado_sexta_id>0){
                 $newMuestra = new Analitica();
                 $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticas->sedes_id;
