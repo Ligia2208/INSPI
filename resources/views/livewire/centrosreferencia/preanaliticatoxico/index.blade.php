@@ -287,16 +287,16 @@
                             @endforelse
                         </tbody>
                     </table>
+                    @if($preanaliticas->count())
+                        {{ $preanaliticas->links() }}
+                    @endif
                 </div>
                 <!--end::Table-->
-
-                @if($preanaliticas->count())
-                    {{ $preanaliticas->links('pagination::bootstrap-4') }}
-                @endif
-
             </div>
             <!--end::Body-->
         </div>
+
+
     @else
         <div class="card">
             <div class="card-body">

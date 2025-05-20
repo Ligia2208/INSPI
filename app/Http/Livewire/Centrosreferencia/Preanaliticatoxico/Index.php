@@ -42,11 +42,12 @@ class Index extends Component
 
     //Theme
     protected $paginationTheme = 'bootstrap';
-
-    public function updatingSearch()
+    
+    public function updating($name, $value)
     {
         $this->resetPage();
     }
+    
 
     public function render()
     {

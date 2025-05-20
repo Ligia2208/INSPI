@@ -314,14 +314,8 @@
                     </table>
                 </div>
                 <!--end::Table-->
-<<<<<<< HEAD
-                {{ $preanaliticas->links('pagination::bootstrap-4') }}
-
-                </div>
-=======
                 {{ $preanaliticas->links() }}
             </div>
->>>>>>> 9ff79d268f77c729858cb871678b997c7b81fc7c
             <!--end::Body-->
         </div>
     @else
