@@ -162,7 +162,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-                {{ $cargapacientes->links('pagination::bootstrap-4') }}
+                {{ $cargapacientes->links() }}
             </div>
             <!--end::Body-->
         </div>
