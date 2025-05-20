@@ -537,7 +537,7 @@
                             <div class="form-row">
 
                                 <div class="form-group col-md-4">
-                                    <label>Cod. Muestra Hospitalaria<span class="text-danger"></span></label>
+                                    <label>Código Externo<span class="text-danger"></span></label>
                                     <div class="input-group input-group-solid">
                                         <div class="input-group-prepend">
                                             <span class="input-group-text">

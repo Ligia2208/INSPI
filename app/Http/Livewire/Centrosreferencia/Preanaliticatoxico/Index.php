@@ -38,7 +38,7 @@ class Index extends Component
     public $fechafin;
     public $controlf;
 
-    protected $queryString = ['search' => ['except' => ''],'searchc' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ceventos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
+    protected $queryString = ['page' => ['except' => ''],'search' => ['except' => ''],'searchc' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ceventos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
 
     //Theme
     protected $paginationTheme = 'bootstrap';

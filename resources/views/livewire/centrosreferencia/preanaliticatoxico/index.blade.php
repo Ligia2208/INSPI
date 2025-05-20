@@ -290,7 +290,9 @@
                 </div>
                 <!--end::Table-->
 
-                {{ $preanaliticas->links('pagination::bootstrap-4') }}
+                @if($preanaliticas->count())
+                    {{ $preanaliticas->links('pagination::bootstrap-4') }}
+                @endif
 
             </div>
             <!--end::Body-->

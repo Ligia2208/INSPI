@@ -315,7 +315,8 @@
                 </div>
                 <!--end::Table-->
                 {{ $preanaliticas->links('pagination::bootstrap-4') }}
-            </div>
+
+                </div>
             <!--end::Body-->
         </div>
     @else

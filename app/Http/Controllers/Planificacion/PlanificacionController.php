@@ -685,11 +685,14 @@ class PlanificacionController extends Controller
         $poa = Poa::find($request->id); //Busca el registro por el ID
         $calendario = Calendario::where('id_poa', $poa->id)->first();
 
+        //se guarda el ultimo numero de poa
+        $nro_poa = $poa->nro_poa;
+
         if ($poa) {
 
             $historial = PoaHistorial::create([
                 'id_poa'         => $poa->id,
-                'nro_poa'        => $poa->nro_poa,
+                'nro_poa'        => $nro_poa,
                 'comentario'     => $calendario->justificacion_area,
                 'fecha_registro' => $fecha,
                 'estado_poa'     => $justificacionPoa
@@ -704,9 +707,10 @@ class PlanificacionController extends Controller
             $comentario = Comentario::create($datos);
 
             $poa->update([
-                'estado' => 'A', //Asigna el estado "E" para no mostrarlo en la tabla
+                'estado'     => 'A', //Asigna el estado "E" para no mostrarlo en la tabla
                 'descargado' => 0,
-                'nro_poa' => null,
+                'nro_poa'    => null,
+                'nro_poa_anterior' => $nro_poa,
             ]);
 
 
@@ -1140,7 +1144,16 @@ class PlanificacionController extends Controller
                     $id_consumo = $consumo->id;
                 }
     
-                $nuevoNroPoa = $this->actualizarContador($zonal);
+                //si el objeto de contratacion ya tenía un numero poa, se utiliza el mismo número
+                if(!$Poa->nro_poa_anterior){
+
+                    //si no, se genera un nuevo número poa
+                    $nuevoNroPoa = $this->actualizarContador($zonal);
+
+                }else{
+                    $nuevoNroPoa = $Poa->nro_poa_anterior;
+                }
+
                 //$ultimoNroPoa = Poa::where('estado', 'O')->max('nro_poa');
                 //$nuevoNroPoa = $ultimoNroPoa ? $ultimoNroPoa + 1 : 1;
                 $Poa->update([
