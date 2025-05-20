@@ -274,7 +274,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-                {{ $analiticas->links('pagination::bootstrap-4') }}
+                {{ $analiticas->links() }}
             </div>
             <!--end::Body-->
         </div>

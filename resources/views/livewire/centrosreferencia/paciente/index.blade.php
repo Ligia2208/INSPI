@@ -124,7 +124,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-                {{ $Pacientes->links('pagination::bootstrap-4') }}
+                {{ $Pacientes->links() }}
 
             </div>
             <!--end::Body-->

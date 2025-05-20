@@ -388,7 +388,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-                {{ $analiticasp->links('pagination::bootstrap-4') }}
+                {{ $analiticasp->links() }}
             </div>
             <!--end::Body-->
         </div>
