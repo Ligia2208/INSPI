@@ -14,12 +14,11 @@
                 <th>Sub Actividad</th>
                 <th>Número de POA</th>
 
-                <th>Motivo</th>
-                <th>Estado</th>
                 <th>Fecha</th>
 
                 <th>Tipo POA</th>
                 <th>Proceso</th>
+                <th>Monto</th>
             </tr>
         </thead>
         <tbody>
@@ -30,12 +29,11 @@
                     <td>{{ $actividad->sub_actividad }}</td>
                     <td>{{ $actividad->nro_poa }}</td>
 
-                    <td>{{ $actividad->comentario }}</td>
-                    <td>{{ $actividad->estado_poa }}</td>
-                    <td>{{ $actividad->fecha_registro }}</td>
+                    <td>{{ $actividad->fecha }}</td>
 
                     <td>{{ $actividad->tipoPoa }}</td>
                     <td>{{ $actividad->proceso }}</td>
+                    <td>{{ $actividad->monto }}</td>
                 </tr>
             @endforeach
         </tbody>
