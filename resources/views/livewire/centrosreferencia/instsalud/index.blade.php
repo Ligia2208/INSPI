@@ -132,8 +132,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
-                {{ $Instituciones->links() }}
+                {{ $Instituciones->links('pagination::bootstrap-4') }}
 
             </div>
             <!--end::Body-->

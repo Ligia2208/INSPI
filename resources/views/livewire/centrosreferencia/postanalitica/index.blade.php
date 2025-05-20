@@ -299,8 +299,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
-                {{ $analiticas->links() }}
+                {{ $analiticas->links('pagination::bootstrap-4') }}
             </div>
             <!--end::Body-->
         </div>

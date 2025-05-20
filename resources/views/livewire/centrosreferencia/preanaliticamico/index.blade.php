@@ -9,7 +9,7 @@
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span></span>
                 </h3>
                 <a href="{{ route('preanaliticamico.create') }}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i
-                        class="fa fa-sticky-note"></i> Agregar</a>  
+                        class="fa fa-sticky-note"></i> Agregar</a>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -280,8 +280,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
-                {{ $preanaliticas->links() }}
+                {{ $preanaliticas->links('pagination::bootstrap-4') }}
             </div>
             <!--end::Body-->
         </div>

@@ -592,8 +592,7 @@
                         </table>
                     </div>
                     <!--end::Table-->
-
-                    {{ $resultados->links() }}
+                    {{ $resultados->links('pagination::bootstrap-4') }}
                 </div>
                 <!--end::Body-->
             </div>

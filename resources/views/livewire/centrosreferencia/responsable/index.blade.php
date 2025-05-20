@@ -133,8 +133,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
-                {{ $responsables->links() }}
+                {{ $responsables->links('pagination::bootstrap-4') }}
             </div>
             <!--end::Body-->
         </div>

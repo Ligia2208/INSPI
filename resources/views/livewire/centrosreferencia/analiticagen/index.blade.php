@@ -307,8 +307,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
-                {{ $analiticastoxico->links() }}
+                {{ $analiticastoxico->links('pagination::bootstrap-4') }}
             </div>
             <!--end::Body-->
         </div>
