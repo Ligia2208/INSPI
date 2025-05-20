@@ -9,6 +9,7 @@ use App\Models\CentrosReferencia\Preanalitica;
 use App\Models\CentrosReferencia\Sede;
 use App\Models\CentrosReferencia\SedeCrn;
 use App\Models\CentrosReferencia\Paciente;
+use App\Models\CentrosReferencia\Detallemuestras;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -209,7 +210,46 @@ class Index extends Component
             $f2 = null;
         }
 
-        if($sid==0){
+        $listado = Detallemuestras::where('ingresa_por','>',0)->where('codigo_secuencial','<',10)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC');
+
+        if ($this->csedes>0){
+                $sid = $this->csedes;
+                $listado = $listado->where('sedes_id','=',$this->csedes);
+
+            }
+            if ($this->claboratorios>0){
+                $cid = $this->claboratorios;
+                $listado = $listado->where('crns_id','=',$this->claboratorios);
+            }
+            if ($this->ceventos>0){
+                $eid = $this->ceventos;
+                $listado = $listado->where('evento_id','=',$this->ceventos);
+            }
+            if ($this->controlf==0){
+                if($this->fechainicio){
+                    if ($this->fechafin){
+                        if ($this->fechainicio <= $this->fechafin){
+                            $listado = $listado->whereDate('fecha_registro','>=',$this->fechainicio)->whereDate('fecha_registro','<=',$this->fechafin);
+                        }
+                    }
+                }
+            }
+            if ($this->controlf>0){
+                if($this->fechainicio){
+                    if ($this->fechafin){
+                        if ($this->fechainicio <= $this->fechafin){
+                            if($this->controlf==1){
+                                $listado = $listado->whereDate('fecha_recepcion','>=',$this->fechainicio)->whereDate('fecha_recepcion','<=',$this->fechafin);
+                            }
+                            if($this->controlf==2){
+                                $listado = $listado->whereDate('fecha_registro','>=',$this->fechainicio)->whereDate('fecha_registro','<=',$this->fechafin);
+                            }
+                        }
+                    }
+                }
+            }
+
+        /* if($sid==0){
             if($tf==1){
                 $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','periodo','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro','fecha_recepcion','usuario_recepcion')->where('ingresa_por','>',0)->where('codigo_secuencial','<',10)->whereDate('fecha_recepcion','>=',$f1)->whereDate('fecha_recepcion','<=',$f2)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
             }
@@ -269,37 +309,37 @@ class Index extends Component
                     $data = DB::table('inspi_crns.detalle_muestras')->select('institucion','periodo','paciente','identidad','nombres','apellidos','fechanacimiento','anios','meses','dias','sexo','canton','provincia','sede','crn','evento','clase_muestra','tipo_muestra','muestra','codigo_muestra','codigo_secuencial','estado_muestra','observacion','fecha_registro','fecha_recepcion','usuario_recepcion')->where('ingresa_por','>',0)->where('sedes_id','=',$sid)->where('crns_id','=',$cid)->where('evento_id','=',$eid)->where('codigo_secuencial','<',10)->orderBy('sedes_id','ASC')->orderBy('crns_id','ASC')->orderBy('evento_id','ASC')->orderBy('muestra','ASC')->orderBy('codigo_secuencial','ASC')->get();
                 }
             }
-        }
-
-        $total = $data->count();
+        } */
+        $total = $listado->count();
+        $data = $listado->get()->toArray();
 
         while($i < $total){
-            $hoja->setCellValue('A'.$fila,$data[$i]->institucion);
-            $hoja->setCellValue('B'.$fila,$data[$i]->periodo);
-            $hoja->setCellValue('C'.$fila,$data[$i]->paciente);
-            $hoja->setCellValue('D'.$fila,$data[$i]->identidad);
-            $hoja->setCellValue('E'.$fila,$data[$i]->nombres);
-            $hoja->setCellValue('F'.$fila,$data[$i]->apellidos);
-            $hoja->setCellValue('G'.$fila,$data[$i]->fechanacimiento);
-            $hoja->setCellValue('H'.$fila,$data[$i]->anios);
-            $hoja->setCellValue('I'.$fila,$data[$i]->meses);
-            $hoja->setCellValue('J'.$fila,$data[$i]->dias);
-            $hoja->setCellValue('K'.$fila,$data[$i]->sexo);
-            $hoja->setCellValue('L'.$fila,$data[$i]->canton);
-            $hoja->setCellValue('M'.$fila,$data[$i]->provincia);
-            $hoja->setCellValue('N'.$fila,$data[$i]->sede);
-            $hoja->setCellValue('O'.$fila,$data[$i]->crn);
-            $hoja->setCellValue('P'.$fila,$data[$i]->evento);
-            $hoja->setCellValue('Q'.$fila,$data[$i]->clase_muestra);
-            $hoja->setCellValue('R'.$fila,$data[$i]->tipo_muestra);
-            $hoja->setCellValue('S'.$fila,$data[$i]->muestra);
-            $hoja->setCellValue('T'.$fila,$data[$i]->codigo_muestra);
-            $hoja->setCellValue('U'.$fila,$data[$i]->observacion);
-            $hoja->setCellValue('V'.$fila,$data[$i]->codigo_secuencial);
-            $hoja->setCellValue('W'.$fila,$data[$i]->estado_muestra);
-            $hoja->setCellValue('X'.$fila,$data[$i]->fecha_recepcion);
-            $hoja->setCellValue('Y'.$fila,$data[$i]->fecha_registro);
-            $hoja->setCellValue('Z'.$fila,$data[$i]->usuario_recepcion);
+            $hoja->setCellValue('A'.$fila,$data[$i]['institucion']);
+            $hoja->setCellValue('B'.$fila,$data[$i]['periodo']);
+            $hoja->setCellValue('C'.$fila,$data[$i]['paciente']);
+            $hoja->setCellValue('D'.$fila,$data[$i]['identidad']);
+            $hoja->setCellValue('E'.$fila,$data[$i]['nombres']);
+            $hoja->setCellValue('F'.$fila,$data[$i]['apellidos']);
+            $hoja->setCellValue('G'.$fila,$data[$i]['fechanacimiento']);
+            $hoja->setCellValue('H'.$fila,$data[$i]['anios']);
+            $hoja->setCellValue('I'.$fila,$data[$i]['meses']);
+            $hoja->setCellValue('J'.$fila,$data[$i]['dias']);
+            $hoja->setCellValue('K'.$fila,$data[$i]['sexo']);
+            $hoja->setCellValue('L'.$fila,$data[$i]['canton']);
+            $hoja->setCellValue('M'.$fila,$data[$i]['provincia']);
+            $hoja->setCellValue('N'.$fila,$data[$i]['sede']);
+            $hoja->setCellValue('O'.$fila,$data[$i]['crn']);
+            $hoja->setCellValue('P'.$fila,$data[$i]['evento']);
+            $hoja->setCellValue('Q'.$fila,$data[$i]['clase_muestra']);
+            $hoja->setCellValue('R'.$fila,$data[$i]['tipo_muestra']);
+            $hoja->setCellValue('S'.$fila,$data[$i]['muestra']);
+            $hoja->setCellValue('T'.$fila,$data[$i]['codigo_muestra']);
+            $hoja->setCellValue('U'.$fila,$data[$i]['observacion']);
+            $hoja->setCellValue('V'.$fila,$data[$i]['codigo_secuencial']);
+            $hoja->setCellValue('W'.$fila,$data[$i]['estado_muestra']);
+            $hoja->setCellValue('X'.$fila,$data[$i]['fecha_recepcion']);
+            $hoja->setCellValue('Y'.$fila,$data[$i]['fecha_registro']);
+            $hoja->setCellValue('Z'.$fila,$data[$i]['usuario_recepcion']);
             $fila = $fila + 1;
             $i = $i + 1;
         }

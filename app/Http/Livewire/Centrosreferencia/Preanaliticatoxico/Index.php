@@ -54,8 +54,8 @@ class Index extends Component
         $crns = [];
         $eventos = [];
 
-        $count = Preanalitica::where('estado','=','A')->where('cdiferencial','=',0)->where('campliada','=',0)->count();
-        $preanaliticas = Preanalitica::where('estado','=','A')->where('crns_id','=',7)->where('cdiferencial','=',0)->where('campliada','=',0)->orderBy('id', 'desc');
+        $count = Preanalitica::where('estado','=','A')->where('crns_id','=',7)->where('cdiferencial','=',0)->where('campliada','=',0)->count();
+        $preanaliticas = Preanalitica::where('estado','=','A')->where('crns_id','=',7)->where('cdiferencial','=',0)->where('campliada','=',0)->orderBy('id', 'asc');
 
         if($this->searchc){
             $pacientes = Paciente::where(function ($query){

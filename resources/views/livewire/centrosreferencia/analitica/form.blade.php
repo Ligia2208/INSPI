@@ -739,7 +739,7 @@
                                             data-live-search="true"
                                             data-show-subtext="true"
                                             required>
-                                            <option value="">Selecciona una Técnica</option>
+                                            <option value="0">Selecciona una Técnica</option>
                                             @if(!is_null($tecnicas))
                                             @foreach ($tecnicas as $objTecn)
                                                 <option data-subtext="" value="{{ $objTecn->id }}">{{ $objTecn->descripcion }}</option>
@@ -763,7 +763,7 @@
                                             data-live-search="true"
                                             data-show-subtext="true"
                                             required>
-                                            <option value="">Selecciona un Resultado</option>
+                                            <option value="0">Selecciona un Resultado</option>
                                             @if(!is_null($reportes))
                                             @foreach ($reportes as $objRep)
                                                 <option data-subtext="" value="{{ $objRep->id }}">{{ $objRep->descripcion }}</option>

@@ -1175,6 +1175,8 @@ class Form extends Component
             $updatePre->observacion_quinta = $this->Preanaliticastoxico->observacion_quinta;
             $this->savePreanalitica();
             $updatePre->archivo = $this->Preanaliticastoxico->archivo;
+            $updatePre->motivo_id = $this->Preanaliticastoxico->motivo_id;
+            $updatePre->tecnico_id = $this->Preanaliticastoxico->tecnico_id;
             $updatePre->update();
 
             $tipogenera = $this->tipo_generacion($this->Preanaliticastoxico->sedes_id,$this->Preanaliticastoxico->crns_id);
@@ -1411,7 +1413,7 @@ class Form extends Component
             DB::commit();
             $this->alert('success', 'Preanalitica actualizado con éxito');
             $this->emit('closeModal');
-            return redirect()->route('preanalitica.index');
+            return redirect()->route('preanaliticatoxico.index');
         }
         catch (\Exception $e) {
             DB::rollback();
