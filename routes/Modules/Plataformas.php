@@ -24,6 +24,7 @@ use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController
 use App\Http\Controllers\CentrosReferencia\Postanaliticagen\PostanaliticagenController;
 use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapController;
 use App\Http\Controllers\CentrosReferencia\Postanaliticaadm\PostanaliticaadmController;
+use App\Http\Controllers\CentrosReferencia\Postanaliticatoxico\PostanaliticatoxicoController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
 use App\Http\Controllers\CentrosReferencia\Resultadomspindividual\ResultadomspindividualController;
@@ -135,9 +136,11 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Gensbio Analitica de Resultados Pendientes
         Route::resource('analiticasgen', AnaliticagenController::class)->parameters(['analiticasgen' => 'analiticasgen'])->names('analiticasgen');
 
-
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');
+
+        //CRNs Plataformas Analitica de Resultados Resonsable
+        Route::resource('postanaliticastoxico', PostanaliticatoxicoController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticatoxico');
 
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticasgen', PostanaliticagenController::class)->parameters(['postanaliticasgen' => 'postanalitica'])->names('postanaliticagen');
