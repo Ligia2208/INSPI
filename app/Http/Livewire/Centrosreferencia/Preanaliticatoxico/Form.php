@@ -1148,30 +1148,35 @@ class Form extends Component
             $updatePre->clase_primera_id = $this->Preanaliticastoxico->clase_primera_id;
             $updatePre->primera_id = $this->Preanaliticastoxico->primera_id;
             $updatePre->fecha_toma_primera = $this->Preanaliticastoxico->fecha_toma_primera;
+            $updatePre->hora_toma_primera = $this->Preanaliticastoxico->hora_toma_primera;
             $updatePre->observacion_primera = $this->Preanaliticastoxico->observacion_primera;
 
             $updatePre->segunda_id = $this->Preanaliticastoxico->segunda_id;
             $updatePre->clase_segunda_id = $this->Preanaliticastoxico->clase_segunda_id;
             $updatePre->segunda_id = $this->Preanaliticastoxico->segunda_id;
             $updatePre->fecha_toma_segunda = $this->Preanaliticastoxico->fecha_toma_segunda;
+            $updatePre->hora_toma_segunda = $this->Preanaliticastoxico->hora_toma_segunda;
             $updatePre->observacion_segunda = $this->Preanaliticastoxico->observacion_segunda;
 
             $updatePre->tercera_id = $this->Preanaliticastoxico->tercera_id;
             $updatePre->clase_tercera_id = $this->Preanaliticastoxico->clase_tercera_id;
             $updatePre->tercera_id = $this->Preanaliticastoxico->tercera_id;
             $updatePre->fecha_toma_tercera = $this->Preanaliticastoxico->fecha_toma_tercera;
+            $updatePre->hora_toma_tercera = $this->Preanaliticastoxico->hora_toma_tercera;
             $updatePre->observacion_tercera = $this->Preanaliticastoxico->observacion_tercera;
 
             $updatePre->cuarta_id = $this->Preanaliticastoxico->cuarta_id;
             $updatePre->clase_cuarta_id = $this->Preanaliticastoxico->clase_cuarta_id;
             $updatePre->cuarta_id = $this->Preanaliticastoxico->cuarta_id;
             $updatePre->fecha_toma_cuarta = $this->Preanaliticastoxico->fecha_toma_cuarta;
+            $updatePre->hora_toma_cuarta = $this->Preanaliticastoxico->hora_toma_cuarta;
             $updatePre->observacion_cuarta = $this->Preanaliticastoxico->observacion_cuarta;
 
             $updatePre->quinta_id = $this->Preanaliticastoxico->quinta_id;
             $updatePre->clase_quinta_id = $this->Preanaliticastoxico->clase_quinta_id;
             $updatePre->quinta_id = $this->Preanaliticastoxico->quinta_id;
             $updatePre->fecha_toma_quinta = $this->Preanaliticastoxico->fecha_toma_quinta;
+            $updatePre->hora_toma_quinta = $this->Preanaliticastoxico->hora_toma_quinta;
             $updatePre->observacion_quinta = $this->Preanaliticastoxico->observacion_quinta;
             $this->savePreanalitica();
             $updatePre->archivo = $this->Preanaliticastoxico->archivo;
