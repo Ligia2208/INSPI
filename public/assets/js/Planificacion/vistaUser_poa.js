@@ -49,6 +49,8 @@ $( function () {
                         array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span>';
                     }else if(full.estado == 'S'){
                         array = '<div class="center"><span class="badge badge-info text-bg-info">Solicitado</span>';
+                     }else if(full.estado == 'U'){
+                        array = '<div class="center"><span class="badge badge-info text-bg-info">Actualizado</span>';
                     }else if(full.estado == 'X'){
                         array = '<div class="center"><span class="badge badge-danger text-bg-danger">Eliminación POA</span>';
                     }else{

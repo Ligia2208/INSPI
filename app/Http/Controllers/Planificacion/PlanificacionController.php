@@ -1059,6 +1059,7 @@ class PlanificacionController extends Controller
             'R' => 'Rechazado',
             'O' => 'Aprobado',
             'C' => 'Corregido',
+            'U' => 'Actualizado',
         ];
     
         $estadoTexto = $estados[$estadoPoa] ?? 'Desconocido';
@@ -1164,7 +1165,7 @@ class PlanificacionController extends Controller
 
             } else {
                 $Poa->update([
-                    'estado' => $estadoPoa,
+                    'estado' => $estadoPoa = 'U',
                 ]);
             }
     
