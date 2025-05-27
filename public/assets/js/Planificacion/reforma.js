@@ -66,7 +66,7 @@ $( function () {
                         btnPDF = `
                             <a id="btnPDF_reforma" data-id_reforma="${full.id_reforma}" title="PDF REFORMA" class="show-tooltip" data-title="PDF REFORMA">
                                 <i class="font-22 bi bi-filetype-pdf text-primary"></i>
-                            </a>`;
+                            </a> `;
                     }else{
                         btnPDF = "";
                     }
@@ -83,7 +83,9 @@ $( function () {
                             <a id="btnEliminarReformaPre" data-id_borrar="${full.id_reforma}" title="Eliminar reforma" class="red show-tooltip" data-title="Eliminar reforma">
                                 <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
-
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
+                            </a>
                         </div>
                         `;
                     }else if( full.estado == 'V' ){
@@ -97,6 +99,9 @@ $( function () {
 
                             <a id="btnEliminarReformaPre" data-id_borrar="${full.id_reforma}" title="Eliminar reforma" class="red show-tooltip" data-title="Eliminar reforma">
                                 <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
+                            </a>
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
                             </a>
 
                         </div>
@@ -132,6 +137,9 @@ $( function () {
                             </a>
                             <a id="btnEliminarReforma" data-id_borrar="${full.id_reforma}" title="Eliminar reforma" class="red show-tooltip" data-title="Eliminar reforma">
                                 <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
+                            </a>
+                            <a id="btnVerReforma" data-id_editar="${full.id_reforma}" data-nombre="${full.nombre}" title="Ver Reforma" class="show-tooltip ml-1" data-title="Ver Reforma">
+                                <i class="font-22 fadeIn bi bi-eye" ></i>
                             </a>
                         </div>
                         `;
@@ -325,6 +333,16 @@ $(function(){
     });
     
 
+})
+
+//CÓDIGO PARA REDIRIGIR AL FORMULARIO PARA VISUALIZAR LA REFORMA
+$(function(){
+    $(document).on('click', '#btnVerReforma', function(){
+        let id_reforma = $(this).data('id_editar');
+
+        window.location.href = '/planificacion/verReforma/'+ id_reforma;
+
+    });
 })
 
 
