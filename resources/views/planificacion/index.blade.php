@@ -312,6 +312,6 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.23')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.24')}}"></script>
 <script src="{{asset('assets/js/Planificacion/calculadora.js?v0.0.0')}}"></script>
 @endpush

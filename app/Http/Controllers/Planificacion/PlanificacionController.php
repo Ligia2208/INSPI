@@ -2067,7 +2067,7 @@ class PlanificacionController extends Controller
                 //->where('pla_poa1.id_area', '=', $area_id)
                 ->where('pla_poa1.id', '=', $id_poa)
                 //->where('pla_poa1.año', '=', $anio)
-                ->whereNotIn('pla_poa1.estado', ['E', 'O', 'X'])
+                ->whereNotIn('pla_poa1.estado', ['E', 'O', 'X' , 'U'])
                 //->whereNotIn('pla_poa1.estado', ['E'])
                 ->first();
 
@@ -2096,7 +2096,7 @@ class PlanificacionController extends Controller
                 ->join('db_inspi_planificacion.pla_item_presupuestario', 'pla_poa1.id_item', '=', 'pla_item_presupuestario.id')
                 ->where('pla_poa1.id_area', '=', $area_id)
                 //->where('pla_poa1.año', '=', $anio)
-                ->whereNotIn('pla_poa1.estado', ['E', 'O', 'X']);
+                ->whereNotIn('pla_poa1.estado', ['E', 'O', 'X' , 'U']);
                 //->whereNotIn('pla_poa1.estado', ['E']);
 
             if (!empty($id_sub)) {

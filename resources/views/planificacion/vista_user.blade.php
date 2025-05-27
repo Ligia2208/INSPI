@@ -496,5 +496,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.41')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.42')}}"></script>
 @endpush
