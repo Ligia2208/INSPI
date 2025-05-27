@@ -24,6 +24,17 @@ use App\Models\CentrosReferencia\Tipo_Organismo;
 use App\Models\CentrosReferencia\Micobacteria;
 use App\Models\CentrosReferencia\Genotificacion;
 
+use App\Models\CentrosReferencia\Result_Evento;
+use App\Models\CentrosReferencia\Result_Clado;
+use App\Models\CentrosReferencia\Result_Clasificacion;
+use App\Models\CentrosReferencia\Result_Genotipo;
+use App\Models\CentrosReferencia\Result_Linaje;
+use App\Models\CentrosReferencia\Result_Resistencia;
+use App\Models\CentrosReferencia\Result_Subclado;
+use App\Models\CentrosReferencia\Result_Sublinaje;
+use App\Models\CentrosReferencia\Result_Subvariante;
+use App\Models\CentrosReferencia\Result_Variante;
+
 use App\Models\CentrosReferencia\Paciente;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -59,6 +70,14 @@ class Form extends Component
     public $tipo = 1;
     public $id_tipo_organismo;
     public $OrganismoTmp;
+
+    //para los resultados de genotificacion
+    public $resul_eventos = [];
+    public $resul_subvariantes = [];
+    public $resul_variantes = [];
+    public $res_evento_id = null; // <- Para el select principal
+    public $subvariante_id = null; // <- Para el select dependiente
+    public $variante_id = null;
 
     protected $listeners = ['render'];
 
@@ -489,6 +508,51 @@ class Form extends Component
 
         }
 
+        $this->resul_eventos = Result_Evento::where('estado', 'A')->get();
+
+    }
+
+
+    public function updatedResEventoId($value)
+    {
+        if($value == 1){
+            $this->resul_subvariantes = Result_Subvariante::where('estado', 'A')
+            ->where('id_resul_evento', $value)
+            ->get();
+        
+            //dd($this->resul_subvariantes);
+
+            $this->subvariante_id = null; // Limpia el segundo select al cambiar el primero
+            $this->emit('renderJs');
+
+        }else if($value == 2){
+
+            $this->resul_variantes = Result_Variante::where('estado', 'A')
+            ->where('id_resul_evento', $value)
+            ->get();
+
+            $this->variante_id = null;
+            $this->emit('renderJs');
+        }
+
+    }
+
+    public function updatedVarianteId($value)
+    {
+
+        $this->resul_variantes = Result_Genotipo::where('estado', 'A')
+        ->where('id_resul_evento', $value)
+        ->get();
+
+    }
+
+    public function updatedLinajeId($value)
+    {
+
+        $this->resul_variantes = Result_Linaje::where('estado', 'A')
+        ->where('id_resul_evento', $value)
+        ->get();
+
     }
 
 
@@ -528,10 +592,12 @@ class Form extends Component
 
         $datosMico = Micobacteria::where('pre_analitica_id', $this->Analiticastoxico->preanalitica_id)->first();
 
+        $resul_eventos = Result_Evento::where('estado', 'A')->get();
+
         $tipo_organismos = Tipo_Organismo::where('estado','=','A')->orderBy('id', 'asc')->get();
 
         return view('livewire.centrosreferencia.analiticagen.form', compact('sedes','muestras','instituciones','paramicrobianos','paradifusion','parabiograma',
-            'bacteantibioticomic','bacteantibioticokb','preanalitica','estados','unidades','clases', 'datosMico', 'tipo_organismos'));
+            'bacteantibioticomic','bacteantibioticokb','preanalitica','estados','unidades','clases', 'datosMico', 'tipo_organismos', 'resul_eventos'));
     }
 
 
