@@ -388,7 +388,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $analiticasp->links() }}
             </div>
             <!--end::Body-->

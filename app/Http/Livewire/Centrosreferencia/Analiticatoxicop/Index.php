@@ -62,7 +62,7 @@ class Index extends Component
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
 
         $count = Analiticatoxico::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','>',0)->count();
-        $analiticastoxico = Analiticatoxico::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','>',0)->orderBy('codigo_calidad', 'desc');
+        $analiticastoxico = Analiticatoxico::where('estado','=','A')->where('usuarior_id','>',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','>',0)->orderBy('codigo_calidad', 'asc');
 
         if($this->searchm){
             $analiticastoxico = $analiticastoxico->where('codigo_muestra', 'LIKE', "%{$this->searchm}%");

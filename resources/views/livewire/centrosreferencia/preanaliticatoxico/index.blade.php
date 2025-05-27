@@ -186,10 +186,19 @@
                         </thead>
                         <tbody>
                             @forelse ($preanaliticas as $Preanaliticastoxico)
+                                <?php $codigo = 0; ?>
                                 <tr>
+                                    <?php  $codigo = 0; ?>
+                                    @forelse ($Preanaliticastoxico->analitica as $objPos)
+
+                                        @if($objPos->codigo_secuencial==1)
+                                        <?php $codigo = $objPos->codigo_calidad; ?>
+                                        @endif
+                                    @empty
+                                    @endforelse
                                     <td>
                                         <span
-                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $Preanaliticastoxico->id }}</span>
+                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $codigo }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -287,13 +296,16 @@
                             @endforelse
                         </tbody>
                     </table>
+                    @if($preanaliticas->count())
+                        {{ $preanaliticas->links() }}
+                    @endif
                 </div>
                 <!--end::Table-->
-
-                {{ $preanaliticas->links() }}
             </div>
             <!--end::Body-->
         </div>
+
+
     @else
         <div class="card">
             <div class="card-body">

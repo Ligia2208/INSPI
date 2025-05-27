@@ -578,7 +578,6 @@
                         </table>
                     </div>
                     <!--end::Table-->
-
                     {{ $resultados->links() }}
                 </div>
                 <!--end::Body-->

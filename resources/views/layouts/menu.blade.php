@@ -117,7 +117,7 @@
             @endcanany
 
 
-            @canany(['preanaliticatoxico','analiticastoxico'])
+            @canany(['preanaliticatoxico','analiticastoxico','postanaliticastoxico'])
             <div class="my-5"></div>
                 <li class="menu-section">
                     <h4 class="menu-text">CRN Toxicología</h4>
@@ -136,6 +136,14 @@
                         <a href="{{ route('analiticatoxico.index') }}" class="menu-link">
                             <i class="menu-icon text-dark fa fa-spinner"></i>
                             <span class="menu-text">Analitica Resultados CRN</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('postanaliticastoxico')
+                    <li class="menu-item {{ active('postanaliticatoxico.*') }}">
+                        <a href="{{ route('postanaliticatoxico.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-spinner"></i>
+                            <span class="menu-text">Postanalitica Resultados CRN</span>
                         </a>
                     </li>
                 @endcan

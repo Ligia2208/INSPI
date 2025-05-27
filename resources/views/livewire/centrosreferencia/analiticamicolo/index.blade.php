@@ -307,7 +307,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $analiticastoxico->links() }}
             </div>
             <!--end::Body-->

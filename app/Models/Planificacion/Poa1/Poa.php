@@ -38,6 +38,7 @@ class Poa extends Model
                             'planificada',
                             'fecha',
                             'nro_poa',
+                            'nro_poa_anterior',
                             'año',
                             'monto_item',
                             'estado',

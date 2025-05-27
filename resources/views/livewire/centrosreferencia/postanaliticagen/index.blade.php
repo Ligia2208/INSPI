@@ -245,7 +245,7 @@
                                     </td>
                                     <td align="center">
                                         @if($postanalitica->usuarior_id==0)
-                                        
+
                                         @if($postanalitica->crns_id == 9)
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
                                                 <a href="{{ route('postanaliticagen.edit', $postanalitica) }}" class="navi-link">
@@ -293,7 +293,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $analiticas->links() }}
             </div>
             <!--end::Body-->

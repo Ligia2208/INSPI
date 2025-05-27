@@ -513,6 +513,79 @@
                                 </div>
                             </div>
 
+                            <div class="form-row">
+
+                                {{-- Select de Evento Infectológico --}}
+                                <div class="form-group col-md-4 mt-3">
+                                    <label class="text-black"><b>Evento Infectológico</b><span class="text-danger">*</span></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-list"></i></span>
+                                        </div>
+                                        <select
+                                            wire:model="res_evento_id"
+                                            class="form-control selectpicker form-control-solid"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">Selecciona un Evento</option>
+                                            @foreach ($resul_eventos as $evento)
+                                                <option value="{{ $evento->id }}">{{ $evento->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                @if($res_evento_id == 1)
+                                {{-- Select de Subvariante --}}
+                                <div class="form-group col-md-4 mt-3">
+                                    <label class="text-black"><b>Subvariante/Subtipo</b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-code-branch"></i></span>
+                                        </div>
+                                        <select
+                                            wire:model="subvariante_id"
+                                            class="form-control selectpicker form-control-solid"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true">
+                                            <option value="">Selecciona una Subvariante</option>
+                                            @foreach ($resul_subvariantes as $subvariante)
+                                                <option value="{{ $subvariante->id }}">{{ $subvariante->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                @elseif($res_evento_id == 2)
+                                {{-- Select de Variante --}}
+                                <div class="form-group col-md-4 mt-3">
+                                    <label class="text-black"><b>Variante/Tipo</b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-code-branch"></i></span>
+                                        </div>
+                                        <select
+                                            wire:model="variante_id"
+                                            class="form-control selectpicker form-control-solid"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true">
+                                            <option value="">Selecciona una Variante</option>
+                                            @foreach ($resul_variantes as $variante)
+                                                <option value="{{ $variante->id }}">{{ $variante->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+                                @endif
+
+
+                            </div>
+
+
                             @if($Analiticastoxico->crns_id==3)
                                 <ul class="nav nav-tabs nav-justified" role="tablist">
                                     <li role="presentation" class="active" wire:ignore>

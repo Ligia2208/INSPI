@@ -73,8 +73,7 @@
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
                                                 <option data-subtext="" value="1">Fecha recepcion</option>
-                                                <option data-subtext="" value="2">Fecha inicio sintomas</option>
-                                                <option data-subtext="" value="3">Fecha de registro</option>
+                                                <option data-subtext="" value="2">Fecha de registro</option>
                                             </select>
                                         </div>
                                     </div>
@@ -187,13 +186,13 @@
                             </tr>
                         </thead>
                         <tbody>
-                        
+
                             @forelse ($preanaliticas as $preanalitica)
                                 <?php $codigo = 0; ?>
                                 <tr>
                                     <?php  $codigo = 0; ?>
                                     @forelse ($preanalitica->analitica as $objPos)
-                                        
+
                                         @if($objPos->codigo_secuencial==1)
                                         <?php $codigo = $objPos->codigo_calidad; ?>
                                         @endif
@@ -315,7 +314,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $preanaliticas->links() }}
             </div>
             <!--end::Body-->

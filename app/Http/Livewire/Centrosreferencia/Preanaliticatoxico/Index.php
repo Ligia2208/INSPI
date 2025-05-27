@@ -38,15 +38,16 @@ class Index extends Component
     public $fechafin;
     public $controlf;
 
-    protected $queryString = ['search' => ['except' => ''],'searchc' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ceventos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
+    protected $queryString = ['page' => ['except' => ''],'search' => ['except' => ''],'searchc' => ['except' => ''], 'csedes' => ['except' => ''], 'claboratorios' => ['except' => ''], 'ceventos' => ['except' => ''], 'fechainicio' => ['except' => ''], 'fechafin' => ['except' => ''], 'controlf' => ['except' => '']];
 
     //Theme
     protected $paginationTheme = 'bootstrap';
-
-    public function updatingSearch()
+    
+    public function updating($name, $value)
     {
         $this->resetPage();
     }
+    
 
     public function render()
     {
@@ -54,8 +55,8 @@ class Index extends Component
         $crns = [];
         $eventos = [];
 
-        $count = Preanalitica::where('estado','=','A')->where('cdiferencial','=',0)->where('campliada','=',0)->count();
-        $preanaliticas = Preanalitica::where('estado','=','A')->where('crns_id','=',7)->where('cdiferencial','=',0)->where('campliada','=',0)->orderBy('id', 'desc');
+        $count = Preanalitica::where('estado','=','A')->where('cdiferencial','=',0)->where('crns_id','=',7)->where('campliada','=',0)->count();
+        $preanaliticas = Preanalitica::where('estado','=','A')->where('crns_id','=',7)->where('cdiferencial','=',0)->where('campliada','=',0)->orderBy('id', 'asc');
 
         if($this->searchc){
             $pacientes = Paciente::where(function ($query){

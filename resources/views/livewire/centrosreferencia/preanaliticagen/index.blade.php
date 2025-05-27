@@ -9,7 +9,7 @@
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span></span>
                 </h3>
                 <a href="{{ route('preanaliticagen.create') }}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i
-                        class="fa fa-sticky-note"></i> Agregar</a>  
+                        class="fa fa-sticky-note"></i> Agregar</a>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -223,7 +223,7 @@
                                     </td>
                                     <td align="center">
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
-                                            
+
                                             <a href="{{ route('preanaliticagen.edit', $Preanaliticastoxico) }}" class="navi-link">
                                                 <span class="navi-icon">
                                                     <i class="ace-icon fa fa-pen" style="color:lightblue"
@@ -300,7 +300,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $preanaliticas->links() }}
             </div>
             <!--end::Body-->

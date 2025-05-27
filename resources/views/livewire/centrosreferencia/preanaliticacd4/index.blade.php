@@ -162,7 +162,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $cargapacientes->links() }}
             </div>
             <!--end::Body-->

@@ -450,10 +450,10 @@ class Form extends Component
     }
 
     public function update(){
-        $this->validate();
+
         DB::beginTransaction();
         try{
-
+            $this->validate();
             $user = auth()->user()->id;
             $this->Analiticas->fecha_resultado = date("Y-m-d");
             $this->Analiticas->usuarior_id = $user;
@@ -479,10 +479,11 @@ class Form extends Component
                 $this->Analiticas->tecnica_sexta_id=0;
                 $this->Analiticas->resultado_sexta_id=0;
             }
+
             $this->Analiticas->update();
 
             $cont = 0;
-            if($this->Analiticas->tecnica_segunda_id>0){
+            if($this->Analiticas->tecnica_segunda_id>0 && $this->Analiticas->resultado_segunda_id>0){
                 $newMuestra = new Analitica();
                 $newMuestra->preanalitica_id = $this->Analiticas->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticas->sedes_id;
@@ -514,7 +515,7 @@ class Form extends Component
                 $cont = $cont + 1;
             }
 
-            if($this->Analiticas->tecnica_tercera_id>0){
+            if($this->Analiticas->tecnica_tercera_id>0 && $this->Analiticas->resultado_tercera_id>0){
                 $newMuestra = new Analitica();
                 $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticas->sedes_id;
@@ -548,7 +549,7 @@ class Form extends Component
 
             }
 
-            if($this->Analiticas->tecnica_cuarta_id>0){
+            if($this->Analiticas->tecnica_cuarta_id>0 && $this->Analiticas->resultado_cuarta_id>0){
                 $newMuestra = new Analitica();
                 $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticas->sedes_id;
@@ -582,7 +583,7 @@ class Form extends Component
 
             }
 
-            if($this->Analiticas->tecnica_quinta_id>0){
+            if($this->Analiticas->tecnica_quinta_id>0 && $this->Analiticas->resultado_quinta_id>0){
                 $newMuestra = new Analitica();
                 $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticas->sedes_id;
@@ -616,7 +617,7 @@ class Form extends Component
 
             }
 
-            if($this->Analiticas->tecnica_sexta_id>0){
+            if($this->Analiticas->tecnica_sexta_id>0 && $this->Analiticas->resultado_sexta_id>0){
                 $newMuestra = new Analitica();
                 $newMuestra->preanalitica_id =  $this->Analiticas->preanalitica_id;
                 $newMuestra->sedes_id = $this->Analiticas->sedes_id;

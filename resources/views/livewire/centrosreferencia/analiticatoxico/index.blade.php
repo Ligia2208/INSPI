@@ -214,8 +214,13 @@
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analiticatoxico->muestra->descripcion }}</span>
                                     </td>
                                     <td>
+                                         @if ($analiticatoxico->preanalitica->tecnico_id > 0)
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analiticatoxico->preanalitica->tecnico->name }}</span>
+                                        @else
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">Sin técnico asignado</span>
+                                        @endif
                                     </td>
                                     <td>
                                         @if ($analiticatoxico->tecnica_id > 0)
@@ -300,7 +305,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $analiticastoxico->links() }}
             </div>
             <!--end::Body-->

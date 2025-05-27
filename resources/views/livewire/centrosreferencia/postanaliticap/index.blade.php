@@ -293,7 +293,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $analiticas->links() }}
             </div>
             <!--end::Body-->

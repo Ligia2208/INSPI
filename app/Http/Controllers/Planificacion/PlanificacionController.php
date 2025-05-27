@@ -685,11 +685,14 @@ class PlanificacionController extends Controller
         $poa = Poa::find($request->id); //Busca el registro por el ID
         $calendario = Calendario::where('id_poa', $poa->id)->first();
 
+        //se guarda el ultimo numero de poa
+        $nro_poa = $poa->nro_poa;
+
         if ($poa) {
 
             $historial = PoaHistorial::create([
                 'id_poa'         => $poa->id,
-                'nro_poa'        => $poa->nro_poa,
+                'nro_poa'        => $nro_poa,
                 'comentario'     => $calendario->justificacion_area,
                 'fecha_registro' => $fecha,
                 'estado_poa'     => $justificacionPoa
@@ -704,9 +707,10 @@ class PlanificacionController extends Controller
             $comentario = Comentario::create($datos);
 
             $poa->update([
-                'estado' => 'A', //Asigna el estado "E" para no mostrarlo en la tabla
+                'estado'     => 'A', //Asigna el estado "E" para no mostrarlo en la tabla
                 'descargado' => 0,
-                'nro_poa' => null,
+                'nro_poa'    => null,
+                'nro_poa_anterior' => $nro_poa,
             ]);
 
 
@@ -1141,7 +1145,16 @@ class PlanificacionController extends Controller
                     $id_consumo = $consumo->id;
                 }
     
-                $nuevoNroPoa = $this->actualizarContador($zonal);
+                //si el objeto de contratacion ya tenía un numero poa, se utiliza el mismo número
+                if(!$Poa->nro_poa_anterior){
+
+                    //si no, se genera un nuevo número poa
+                    $nuevoNroPoa = $this->actualizarContador($zonal);
+
+                }else{
+                    $nuevoNroPoa = $Poa->nro_poa_anterior;
+                }
+
                 //$ultimoNroPoa = Poa::where('estado', 'O')->max('nro_poa');
                 //$nuevoNroPoa = $ultimoNroPoa ? $ultimoNroPoa + 1 : 1;
                 $Poa->update([
@@ -4445,9 +4458,10 @@ class PlanificacionController extends Controller
             ->where('pla_poa1.estado', ['O']);
             */
             ->select(
-                'pla_poa1.id as id', 'pla_actividad_operativa.nombre as actividad_operativa', 'his.estado_poa',
-                'pla_sub_actividad.nombre as sub_actividad', 'his.nro_poa', 'his.comentario', 'his.fecha_registro',
-                'pla_tipo_poa.nombre as tipoPoa', 'pro.nombre as proceso', 'area.nombre as direccion', 'pla_poa1.plurianual'
+                'pla_poa1.id as id', 'pla_actividad_operativa.nombre as actividad_operativa',
+                'pla_sub_actividad.nombre as sub_actividad', 'pla_poa1.nro_poa', 
+                'pla_tipo_poa.nombre as tipoPoa', 'pro.nombre as proceso', 'area.nombre as direccion', 'pla_poa1.plurianual',
+                'pla_poa1.monto', 'pla_poa1.fecha'
             )
             ->join('db_inspi_planificacion.pla_tipo_poa', 'pla_poa1.id_tipo_poa', '=', 'pla_tipo_poa.id')
             ->join('db_inspi_planificacion.pla_direcciones as area', 'area.id', '=', 'pla_poa1.id_area')
@@ -4461,9 +4475,9 @@ class PlanificacionController extends Controller
             //->join('db_inspi_planificacion.pla_item_presupuestario', 'pla_poa1.id_item', '=', 'pla_item_presupuestario.id')
             //->join('db_inspi_planificacion.pla_obj_operativo', 'pla_poa1.id_obj_operativo', '=', 'pla_obj_operativo.id')
             ->join('db_inspi_planificacion.pla_tipo_proceso as pro', 'pro.id', '=', 'pla_poa1.id_proceso')
-            ->join('db_inspi_planificacion.pla_poa_historial as his', 'his.id_poa', '=', 'pla_poa1.id')
-            ->whereNotIn('pla_poa1.id_area', [17, 18]);
-            //->where('pla_poa1.estado', ['O']);
+            //->join('db_inspi_planificacion.pla_poa_historial as his', 'his.id_poa', '=', 'pla_poa1.id')
+            ->whereNotIn('pla_poa1.id_area', [17, 18])
+            ->where('pla_poa1.estado', ['O']);
 
         // Aplicar los filtros condicionalmente
         if (!empty($filterAnio)) {
