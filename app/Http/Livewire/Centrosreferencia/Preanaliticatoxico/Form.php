@@ -1205,6 +1205,7 @@ class Form extends Component
                     $newMuestra->clase_id = $this->Preanaliticastoxico->clase_primera_id;
                     $newMuestra->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $newMuestra->fecha_toma = $this->Preanaliticastoxico->fecha_toma_primera;
+                    $newMuestra->hora_toma = $this->Preanaliticastoxico->hora_toma_primera;
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_primera_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_primera;
                     $newMuestra->codigo_muestra = $codigo;
@@ -1227,6 +1228,7 @@ class Form extends Component
                     $updateAnalitica->clase_id = $this->Preanaliticastoxico->clase_primera_id;
                     $updateAnalitica->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $updateAnalitica->fecha_toma = $this->Preanaliticastoxico->fecha_toma_primera;
+                    $updateAnalitica->hora_toma = $this->Preanaliticastoxico->hora_toma_primera;
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_primera_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_primera;
                     $muestra = $updateAnalitica->codigo_muestra;
@@ -1250,6 +1252,7 @@ class Form extends Component
                     $newMuestra->clase_id = $this->Preanaliticastoxico->clase_segunda_id;
                     $newMuestra->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $newMuestra->fecha_toma = $this->Preanaliticastoxico->fecha_toma_segunda;
+                    $newMuestra->hora_toma = $this->Preanaliticastoxico->hora_toma_segunda;
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_segunda_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_segunda;
                     $newMuestra->codigo_muestra = $muestra;
@@ -1272,6 +1275,7 @@ class Form extends Component
                     $updateAnalitica->clase_id = $this->Preanaliticastoxico->clase_segunda_id;
                     $updateAnalitica->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $updateAnalitica->fecha_toma = $this->Preanaliticastoxico->fecha_toma_segunda;
+                    $updateAnalitica->hora_toma = $this->Preanaliticastoxico->hora_toma_segunda;
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_segunda_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_segunda;
                     $updateAnalitica->codigo_muestra = $muestra;
@@ -1295,6 +1299,7 @@ class Form extends Component
                     $newMuestra->clase_id = $this->Preanaliticastoxico->clase_tercera_id;
                     $newMuestra->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $newMuestra->fecha_toma = $this->Preanaliticastoxico->fecha_toma_tercera;
+                    $newMuestra->hora_toma = $this->Preanaliticastoxico->hora_toma_tercera;
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_tercera_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_tercera;
                     $newMuestra->codigo_muestra = $muestra;
@@ -1317,6 +1322,7 @@ class Form extends Component
                     $updateAnalitica->clase_id = $this->Preanaliticastoxico->clase_tercera_id;
                     $updateAnalitica->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $updateAnalitica->fecha_toma = $this->Preanaliticastoxico->fecha_toma_tercera;
+                    $updateAnalitica->hora_toma = $this->Preanaliticastoxico->hora_toma_tercera;
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_tercera_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_tercera;
                     $updateAnalitica->codigo_muestra = $muestra;
@@ -1340,6 +1346,7 @@ class Form extends Component
                     $newMuestra->clase_id = $this->Preanaliticastoxico->clase_cuarta_id;
                     $newMuestra->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $newMuestra->fecha_toma = $this->Preanaliticastoxico->fecha_toma_cuarta;
+                    $newMuestra->hora_toma = $this->Preanaliticastoxico->hora_toma_cuarta;
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_cuarta_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_cuarta;
                     $newMuestra->codigo_muestra = $muestra;
@@ -1362,6 +1369,7 @@ class Form extends Component
                     $updateAnalitica->clase_id = $this->Preanaliticastoxico->clase_cuarta_id;
                     $updateAnalitica->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $updateAnalitica->fecha_toma = $this->Preanaliticastoxico->fecha_toma_cuarta;
+                    $updateAnalitica->hora_toma = $this->Preanaliticastoxico->hora_toma_cuarta;
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_cuarta_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_cuarta;
                     $updateAnalitica->codigo_muestra = $muestra;
@@ -1385,6 +1393,7 @@ class Form extends Component
                     $newMuestra->clase_id = $this->Preanaliticastoxico->clase_quinta_id;
                     $newMuestra->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $newMuestra->fecha_toma = $this->Preanaliticastoxico->fecha_toma_quinta;
+                    $newMuestra->hora_toma = $this->Preanaliticastoxico->hora_toma_quinta;
                     $newMuestra->estado_muestra_id = $this->Preanaliticastoxico->estado_quinta_id;
                     $newMuestra->observacion_muestra = $this->Preanaliticastoxico->observacion_quinta;
                     $newMuestra->codigo_muestra = $muestra;
@@ -1407,6 +1416,7 @@ class Form extends Component
                     $updateAnalitica->clase_id = $this->Preanaliticastoxico->clase_quinta_id;
                     $updateAnalitica->anio_registro = $this->Preanaliticastoxico->anio_registro;
                     $updateAnalitica->fecha_toma = $this->Preanaliticastoxico->fecha_toma_quinta;
+                    $updateAnalitica->hora_toma = $this->Preanaliticastoxico->hora_toma_quinta;
                     $updateAnalitica->estado_muestra_id = $this->Preanaliticastoxico->estado_quinta_id;
                     $updateAnalitica->observacion_muestra = $this->Preanaliticastoxico->observacion_quinta;
                     $updateAnalitica->codigo_muestra = $muestra;
