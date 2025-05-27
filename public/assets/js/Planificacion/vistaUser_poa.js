@@ -36,7 +36,7 @@ $( function () {
             {
                 data: null,
                 searchable: false ,
-                render: function (data, type, full, meta) {
+                render: function (_data, _type, full, _meta) {
 
                     var array = "";
                     if(full.estado == 'A' ){

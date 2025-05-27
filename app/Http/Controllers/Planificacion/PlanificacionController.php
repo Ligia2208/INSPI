@@ -1153,6 +1153,7 @@ class PlanificacionController extends Controller
 
                 }else{
                     $nuevoNroPoa = $Poa->nro_poa_anterior;
+                    $estadoPoa = 'U'; //si ya tenía un número poa, se mantiene el estado en "U" (Actualizado)
                 }
 
                 //$ultimoNroPoa = Poa::where('estado', 'O')->max('nro_poa');
@@ -1178,7 +1179,7 @@ class PlanificacionController extends Controller
 
             } else {
                 $Poa->update([
-                    'estado' => $estadoPoa = 'U',
+                    'estado' => $estadoPoa,
                 ]);
             }
     
