@@ -580,6 +580,49 @@
                                         </select>
                                     </div>
                                 </div>
+
+                                {{-- Select de Genotipos --}}
+                                <div class="form-group col-md-4 mt-3">
+                                    <label class="text-black"><b>Genotipos</b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-code-branch"></i></span>
+                                        </div>
+                                        <select
+                                            wire:model="genotipo_id"
+                                            class="form-control selectpicker form-control-solid"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true">
+                                            <option value="">Selecciona una Variante</option>
+                                            @foreach ($resul_genotipos as $genotipo)
+                                                <option value="{{ $genotipo->id }}">{{ $genotipo->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
+                                {{-- Select de Linaje --}}
+                                <div class="form-group col-md-4 mt-3">
+                                    <label class="text-black"><b>Linaje</b></label>
+                                    <div class="input-group input-group-solid">
+                                        <div class="input-group-prepend">
+                                            <span class="input-group-text"><i class="fas fa-code-branch"></i></span>
+                                        </div>
+                                        <select
+                                            wire:model="linaje_id"
+                                            class="form-control selectpicker form-control-solid"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true">
+                                            <option value="">Selecciona una Variante</option>
+                                            @foreach ($resul_linajes as $linaje)
+                                                <option value="{{ $linaje->id }}">{{ $linaje->nombre }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
+
                                 @endif
 
 

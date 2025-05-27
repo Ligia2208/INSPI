@@ -75,9 +75,14 @@ class Form extends Component
     public $resul_eventos = [];
     public $resul_subvariantes = [];
     public $resul_variantes = [];
+    public $resul_genotipos = [];
+    public $resul_linajes = [];
+
     public $res_evento_id = null; // <- Para el select principal
     public $subvariante_id = null; // <- Para el select dependiente
     public $variante_id = null;
+    public $genotipo_id = null;
+    public $linaje_id = null;
 
     protected $listeners = ['render'];
 
@@ -540,18 +545,24 @@ class Form extends Component
     public function updatedVarianteId($value)
     {
 
-        $this->resul_variantes = Result_Genotipo::where('estado', 'A')
-        ->where('id_resul_evento', $value)
+        $this->resul_genotipos = Result_Genotipo::where('estado', 'A')
+        ->where('id_result_variante', $value)
         ->get();
+
+        $this->genotipo_id = null;
+        $this->emit('renderJs');
 
     }
 
-    public function updatedLinajeId($value)
+    public function updatedGenotipoId($value)
     {
 
-        $this->resul_variantes = Result_Linaje::where('estado', 'A')
-        ->where('id_resul_evento', $value)
+        $this->resul_linajes = Result_Linaje::where('estado', 'A')
+        ->where('id_result_genotipo', $value)
         ->get();
+
+        $this->linaje_id = null;
+        $this->emit('renderJs');
 
     }
 
