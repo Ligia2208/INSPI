@@ -38,6 +38,7 @@ $( function () {
                         'R': 'badge-warning text-bg-warning',
                         'C': 'badge-info text-bg-info',
                         'S': 'badge-info text-bg-info',
+                        'U': 'badge-info text-bg-info',
                         'X': 'badge-danger text-bg-danger'
                     }[data] || 'badge-secondary';
     
@@ -47,6 +48,7 @@ $( function () {
                         'R': 'Rechazado',
                         'C': 'Corregido',
                         'S': 'Solicitado',
+                        'U': 'Actualizado',
                         'X': 'Eliminación POA'
                     }[data] || 'badge-secondary';
     
