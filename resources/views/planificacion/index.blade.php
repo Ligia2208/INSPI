@@ -116,7 +116,8 @@
                             </select>
                         </div>
 
-                        <div class="col-lg-4 mt-4 mb-5">
+        
+                        <div class="col-lg-2 mt-4 mb-5">
                             <label for="filterPrograma" class="form-label">Filtrar por Programa:</label>
                             <select id="filterPrograma" class="js-example-basic-single filter">
                                 <option value="">Todos</option>
@@ -126,6 +127,17 @@
                             </select>
                         </div>
 
+                        <div class="col-lg-2 mt-4 mb-5">
+                            <label for="filterSede" class="form-label">Filtrar por Sede:</label>
+                            <select id="filterSede" class="js-example-basic-single filter">
+                                <option value="">Todos</option>
+                                @foreach($sedes as $sede)
+                                    <option value="{{ $sede->id }}">{{ $sede->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+    
                         <div class="col-lg-2 mt-4 mb-5">
                             <label for="filterAnio" class="form-label">Filtrar por Año:</label>
                             <select id="filterAnio" class="js-example-basic-single filter">
@@ -312,6 +324,6 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.24')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.25')}}"></script>
 <script src="{{asset('assets/js/Planificacion/calculadora.js?v0.0.0')}}"></script>
 @endpush

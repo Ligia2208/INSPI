@@ -15,6 +15,7 @@ $( function () {
                 d.direccion = $('#filterDireccion').val();
                 d.item = $('#filterItem').val();
                 d.programa = $('#filterPrograma').val();
+                d.sede = $('#filterSede').val();
                 //d.subactividad = $('#filterTipoSub').val();
             }
         },
@@ -161,7 +162,7 @@ $( function () {
     });
     
     // **Actualizar la tabla cuando cambien los filtros**
-    $('#filterEstado, #filterDireccion, #filterItem, #filterPrograma').on('change', function () {
+    $('#filterEstado, #filterDireccion, #filterItem, #filterPrograma, #filterSede').on('change', function () {
         table.ajax.reload();
     });
     

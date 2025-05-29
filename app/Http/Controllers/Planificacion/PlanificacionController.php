@@ -107,6 +107,7 @@ class PlanificacionController extends Controller
             $direccion = request()->get('direccion');
             $item      = request()->get('item');
             $programa  = request()->get('programa');
+            $sede      = request()->get('sede');
             //$subactividad  = request()->get('subactividad');
 
             if ($programa) {
@@ -114,6 +115,12 @@ class PlanificacionController extends Controller
             } else {
                 $programaIds = null;
             }
+
+            $sedeMap = [
+                17 => 'Cuenca',
+                18 => 'Quito',
+                0  => 'Central'
+            ];
 
             $query = Poa::select(
                 'pla_poa1.id as id',
@@ -161,6 +168,35 @@ class PlanificacionController extends Controller
                 $query->whereIn('pla_poa1.programa', $programaIds);
             }
 
+            /*if (!empty($sede)) {
+                if ($sede == 0) {
+                    $query->where(function($q) {
+                        $q->where('pla_poa1.id_area', '<>', 17)
+                        ->where('pla_poa1.id_area', '<>', 18);
+                    });
+                } elseif (in_array($sede, [17, 18])) {
+                    $query->where('pla_poa1.id_area', $sede);
+                } else {
+                    $query->where('pla_poa1.id_area', $sede);
+                }
+            }*/
+
+            if (isset($sede)) {
+                if ($sede == 0) {
+                    $query->where(function($q) {
+                        $q->where('pla_poa1.id_area', '<>', 17)
+                        ->where('pla_poa1.id_area', '<>', 18);
+                    });
+                } elseif (in_array($sede, [17, 18])) {
+                    $query->where('pla_poa1.id_area', $sede);
+                } else {
+                    $query->where('pla_poa1.id_area', $sede);
+                }
+            }
+
+
+          
+
             /*
             if (!empty($subactividad)) {
                 $query->where('pla_poa1.id_tipo_sub', $subactividad);
@@ -194,10 +230,16 @@ class PlanificacionController extends Controller
             ->get();
 
         $programas = Programa::select('nombre')->distinct()->get();
+        $sedes = [
+            17 => (object)['id' => 17, 'nombre' => 'Coordinación Zonal 6 - Cuenca'],
+            18 => (object)['id' => 18, 'nombre' => 'Coordinación Zonal 9 - Quito'],
+            0 => (object)['id' => 0, 'nombre' => 'Planta Central']
+        ];
+
 
         //respuesta para la vista
         return view('planificacion.index', compact('tipo_Poa','obj_Operativo', 'direcciones', 'items',
-            'act_Operativa','sub_Act', 'programas', 'tipo_subAct', 'totalCertificado', 'totalMonto'));
+            'act_Operativa','sub_Act', 'programas', 'sedes','tipo_subAct', 'totalCertificado', 'totalMonto'));
 
     }
 
@@ -3895,7 +3937,7 @@ class PlanificacionController extends Controller
         }
                 
         $id_dirección = $reforma->area_id;
-        
+
         if($id_dirección == 17 || $id_dirección == 18){
             $fecha = date('d-m-Y');
         }else{
