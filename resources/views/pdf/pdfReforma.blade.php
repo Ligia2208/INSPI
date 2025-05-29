@@ -246,15 +246,15 @@
         </tr>
         <tr>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{ $fechaActual }}></td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{ $fechaActual }}></td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{ $fechaActual }}></td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td> {{ $fechaUno }} </td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td> {{ $fechaDos }} </td>
         </tr>
     </table>
 </body>

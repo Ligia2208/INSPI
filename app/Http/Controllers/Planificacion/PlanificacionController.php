@@ -1825,6 +1825,18 @@ class PlanificacionController extends Controller
     //trae el siguiente día hábil
 
 
+    //trae los siguiente DOS días hábil
+    public function siguientesDosDiasHabiles($fecha) {
+        $dias_habiles = 0;
+        while ($dias_habiles < 2) {
+            $fecha = strtotime("+1 day", $fecha);
+            if (date('N', $fecha) < 6) { // 6 = Sábado, 7 = Domingo
+                $dias_habiles++;
+            }
+        }
+        return date('d-m-Y', $fecha);
+    }
+    //trae los siguiente DOS días hábil
 
 
 
@@ -3881,15 +3893,25 @@ class PlanificacionController extends Controller
                 ->get();
 
         }
-
+                
+        $id_dirección = $reforma->area_id;
         
-        $pdf = \PDF::loadView('pdf.pdfReforma', ['usuarios' => $usuarios, 'atributos' => $atributos, 
-                            'actividades' => $actividades, 'comentario' => $comentario])->setPaper('A3', 'landscape');
+        if($id_dirección == 17 || $id_dirección == 18){
+            $fecha = date('d-m-Y');
+        }else{
+            $fechaUno = $this->siguienteDiaHabil(time());
+            $fechaDos = $this->siguientesDosDiasHabiles(time());
+        }
+
+        $fechaActual = date('d-m-Y');
+
+
+        $pdf = \PDF::loadView('pdf.pdfReforma', ['usuarios' => $usuarios, 'atributos' => $atributos,
+                            'actividades' => $actividades, 'comentario' => $comentario, 'fechaActual' => $fechaActual,
+                            'fechaUno' => $fechaUno, 'fechaDos' => $fechaDos])->setPaper('A3', 'landscape');
 
         $pdfFileName = 'pdf_' . time() . '.pdf';
-
         $pdf->save(public_path("pdf/{$pdfFileName}"));
-
         $pdfUrl = asset("pdf/{$pdfFileName}");
 
         // return response()->json(['pdf_url' => $pdfUrl]);
