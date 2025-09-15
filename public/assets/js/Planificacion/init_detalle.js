@@ -36,7 +36,7 @@ $( function () {
             { data: 'sub_actividad', name: 'sub_actividad' },
 
             { data: 'item', name: 'item' },
-            { data: 'monto_item', name: 'monto_item' },
+            //{ data: 'monto_item', name: 'monto_item' },
 
             { data: 'monto', name: 'monto' },
             { data: 'enero', name: 'enero' },

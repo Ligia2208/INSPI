@@ -189,6 +189,10 @@
                 <th style="text-align: center; vertical-align: middle;" colspan="5">Justificación del área requirente:</th>
                 <td colspan="18">{{$atributos->justificacion_area}}</td>
             </tr>
+            <tr>
+                <th style="text-align: center; vertical-align: middle;" colspan="5">Justificación/Observación de la Dirección de Planificación:</th>
+                <td colspan="18">{{$comentario}}</td>
+            </tr>
         </tbody>
     </table> <br>
 
@@ -242,15 +246,15 @@
         </tr>
         <tr>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{ $fechaActual }}></td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{ $fechaActual }}></td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{ $fechaActual }}></td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td> {{ $fechaUno }} </td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td> {{ $fechaDos }} </td>
         </tr>
     </table>
 </body>

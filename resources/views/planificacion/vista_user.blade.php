@@ -85,7 +85,7 @@
 
 
             <div class="row mb-4 mt-4">
-                
+
                 <div class="col-lg-12">
                     <h2 class="mb-0 text-uppercase text-center mt-5"> <i class='font-32 text-success bx bx-table'></i> ACTIVIDADES - {{$area}}</h2>
                 </div>
@@ -96,14 +96,14 @@
                         <i class="lni lni-circle-plus"></i> Crear Actividad
                     </a>
                     @else
-                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center mr-3" href="{{ route('planificacion.nuevaPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
-                        <i class="lni lni-circle-plus"></i> Crear Actividad con monto 0
+                    <a class="col-2 btn btn-info px-1 d-flex align-items-center justify-content-center mr-3" href="{{ route('planificacion.nuevaPlanificacion', ['id_direccion' => $id_direccion]) }}" type="button" >
+                        <i class="lni lni-circle-plus"></i> Inclusión PAPP
                     </a>
                     @endif
 
-                    <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
+                    <!-- <a class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" href="{{ route('planificacion.reformaIndex') }}" type="button" >
                         <i class="lni lni-circle-plus"></i> Reformas
-                    </a>
+                    </a> -->
                 </div>
             
             </div>
@@ -136,6 +136,7 @@
                                 <option value="R">Rechazado</option>
                                 <!-- <option value="C">Corregido</option> -->
                                 <option value="S">Solicitado</option>
+                                <option value="X">Eliminación POA</option>
                             </select>
                         </div>
                     </div>
@@ -153,6 +154,8 @@
                                     <th>Item</th>
                                     <th>Monto</th>
                                     <th>Proceso</th>
+                                    <th>Tipo Actividad</th>
+                                    <th>N° POA</th>
                                     <th>Fecha</th>
                                     <th> <center> Estado </center></th>
                                     <th> <center> Solicitado </center></th>
@@ -166,7 +169,7 @@
                                 <tr>
                                     <th colspan="6" style="text-align:right">Total:</th>
                                     <th></th> <!-- Aquí se mostrará el total -->
-                                    <th colspan="5"></th>
+                                    <th colspan="6"></th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -243,7 +246,8 @@
                             <div class="col-md-6 mt-1">
                                 <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA " placeholder="Ingrese nombre de usuario" required>
+                                <!-- <input type="text" id="areaReq" name="areaReq" class="form-control" value="ING. JOHANNA MARIELA SANCHEZ TORBAY" placeholder="Ingrese nombre de usuario" required> -->
+                                <input type="text" id="areaReq" name="areaReq" class="form-control" value="LCDA. ERICKA BEATRIZ CEVALLOS MEJIA" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
@@ -344,24 +348,24 @@
                             <div class="col-md-6 mt-1">
                                 <label for="areaReq" class="form-label fs-6">Usuario que valida</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <input type="text" id="areaReq2" name="areaReq2" class="form-control" value="ING. JONATHAN TRUJILLO CERÓN" placeholder="Ingrese nombre de usuario" required>
+                                <input type="text" id="areaReq2" name="areaReq2" class="form-control" value="TLGA. TANYA PORTUGUÉZ PILCO" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_areaReq" class="form-label fs-6 mt-2">Cargo</label>
                                 <!-- Input para ingresar el cargo -->
-                                <input type="text" id="cargo_areaReq2" name="cargo_areaReq2" class="form-control" value="PLANIFICADOR INSTITUCIONAL" placeholder="Ingrese el cargo" required>
+                                <input type="text" id="cargo_areaReq2" name="cargo_areaReq2" class="form-control" value="ANALISTA ZONAL ADMINISTRATIVA FINANCIERA" placeholder="Ingrese el cargo" required>
                                 <div class="invalid-feedback">Por favor ingrese el cargo.</div>
                             </div>
 
                             <div class="col-md-6 mt-1">
                                 <label for="planificacionYG" class="form-label fs-6">Usuario que aprueba</label>
                                 <!-- Input para ingresar el nombre manualmente -->
-                                <input type="text" id="planificacionYG2" name="planificacionYG2" class="form-control" value="TLGA. TANYA PORTUGUÉZ PILCO" placeholder="Ingrese nombre de usuario" required>
+                                <input type="text" id="planificacionYG2" name="planificacionYG2" class="form-control" value="ING. JONATHAN TRUJILLO CERÓN" placeholder="Ingrese nombre de usuario" required>
                                 <div class="invalid-feedback">Por favor ingrese el nombre.</div>
 
                                 <label for="cargo_planificacionYG" class="form-label fs-6 mt-2">Cargo</label>
                                 <!-- Input para ingresar el cargo -->
-                                <input type="text" id="cargo_planificacionYG2" name="cargo_planificacionYG2" class="form-control" value="ANALISTA ZONAL ADMINISTRATIVA FINANCIERA" placeholder="Ingrese el cargo" required>
+                                <input type="text" id="cargo_planificacionYG2" name="cargo_planificacionYG2" class="form-control" value="PLANIFICADOR INSTITUCIONAL" placeholder="Ingrese el cargo" required>
                                 <div class="invalid-feedback">Por favor ingrese el cargo.</div>
                             </div>
 
@@ -408,8 +412,8 @@
                                         <th>Item</th>
                                         <th>Tipo</th>
                                         <th>Disponible</th>
-                                        <th>Disminuye</th>
                                         <th>Aumenta</th>
+                                        <th>Disminuye</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -444,9 +448,53 @@
         </div>
     </div>
 
+
+
+    <!--- SOLICITUD DE ELIMINACION POA -->
+    <a id="btndeletePoaModal" data-toggle="modal" data-target="#deletePoaModal" class="d-none"></a>
+
+    <div class="modal fade" id="deletePoaModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Generar Solicitud de Eliminación de Certificción POA</h5>
+                    <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <!-- Aquí se mostrarán los datos traidos desde el controlador -->
+                    <div id="modalContent">
+                        <!-- Aquí se mostrarán los datos -->
+                        <div class="row">
+
+                            <input type="hidden" id="id_poaEli" name="id_poaEli" required="" autofocus="" value="">
+
+                            <div class="col-md-12 mt-5">
+                                <label for="justifiEli" class="form-label fs-6">Justificación de eliminación</label>
+                                <textarea id="justifiEli" name="justifiEli" class="form-control" required="" autofocus="" rows="4"></textarea>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btnEnviarSolicitud"><i class="bi bi-send"></i>Enviar</button>
+                    <button type="button" class="btn btn-secondary" id="btnCerrarModalEli" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--- SOLICITUD DE ELIMINACION POA -->
+
+
+
 @endsection
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.30')}}"></script>
+<script src="{{asset('assets/js/Planificacion/vistaUser_poa.js?v0.0.42')}}"></script>
 @endpush

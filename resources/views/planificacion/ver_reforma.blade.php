@@ -75,6 +75,8 @@
                             <th>ACTIVIDAD</th>
                             <th>FUENTE</th>
                             <th style="min-width: 250px;">DIRECCIÓN</th>
+                            <th style="min-width: 120px;">TIPO PROCESO</th>
+                            <th style="min-width: 120px;">TIPO SUBACTIVIDAD</th>
                             <th style="min-width: 300px;">SUB-ACTIVIDAD/OBJETO DE CONTRATACIÓN</th>
                             <th style="min-width: 300px;">SUB-ACTIVIDAD/MODIFICADA</th>
                             <th>ITEM PRESUPUESTARIO</th>
@@ -95,6 +97,8 @@
                             <td>{{ $atributo->fuente}}</td>
 
                             <td>{{ $atributo->direccion}}</td>
+                            <td>{{ $atributo->proceso}}</td>
+                            <td>{{ $atributo->tipo_sub}}</td>
                             <td>{{ $atributo->nombreSubActividad }}</td>
                             <td class="text-warning">{{ $atributo->sub_actividad }}</td>
                             <td>{{ $atributo->nombreItem }}</td>
@@ -144,13 +148,13 @@
             </div>
 
             <div class="col-md-3">
-                <label for="ajuTotal" class="form-label fs-6">Total Ajuste</label>
+                <label for="ajuTotal" class="form-label fs-6">Total Ajuste(-)</label>
                 <input type="text" id="ajuTotal" name="ajuTotal" class="form-control" required="" autofocus="" value="" disabled="">
                 <div class="valid-feedback">Looks good!</div>
             </div>
 
             <div class="col-md-3">
-                <label for="ampTotal" class="form-label fs-6">Total Ampliación</label>
+                <label for="ampTotal" class="form-label fs-6">Total Ampliación(+)</label>
                 <input type="text" id="ampTotal" name="ampTotal" class="form-control" required="" autofocus="" value="" disabled="">
                 <div class="valid-feedback">Looks good!</div>
             </div>
@@ -189,6 +193,8 @@
                                         <span class="m-2 mb-3 badge bg-success fs-6">{{ $comentario->estado_planificacion }}</span>
                                     @elseif($comentario->estado_planificacion == 'Corregido')
                                         <span class="m-2 mb-3 badge bg-info fs-6">{{ $comentario->estado_planificacion }}</span>
+                                    @elseif($comentario->estado_planificacion == 'Eliminado')
+                                        <span class="m-2 mb-3 badge bg-danger fs-6">{{ $comentario->estado_planificacion }}</span>
                                     @else
                                         <!-- <p class="m-2 mb-3 badge"><strong>Estado de la planificación:</strong> {{ $comentario->estado_planificacion }}</p> -->
                                     @endif

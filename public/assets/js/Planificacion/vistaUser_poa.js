@@ -30,11 +30,13 @@ $( function () {
             { data: 'item',                name: 'item' },
             { data: 'monto',               name: 'monto' },
             { data: 'proceso',             name: 'proceso' },
+            { data: 'tipoSub',             name: 'tipoSub' },
+            { data: 'numero',              name: 'numero' },
             { data: 'fecha',               name: 'fecha' },
             {
                 data: null,
                 searchable: false ,
-                render: function (data, type, full, meta) {
+                render: function (_data, _type, full, _meta) {
 
                     var array = "";
                     if(full.estado == 'A' ){
@@ -47,6 +49,10 @@ $( function () {
                         array = '<div class="center"><span class="badge badge-info text-bg-info">Corregido</span>';
                     }else if(full.estado == 'S'){
                         array = '<div class="center"><span class="badge badge-info text-bg-info">Solicitado</span>';
+                     }else if(full.estado == 'U'){
+                        array = '<div class="center"><span class="badge badge-info text-bg-info">Actualizado</span>';
+                    }else if(full.estado == 'X'){
+                        array = '<div class="center"><span class="badge badge-danger text-bg-danger">Eliminación POA</span>';
                     }else{
                         array = '<div class="center"><span class="badge badge-warning text-bg-warning">Indefinido</span>';
                     }
@@ -83,15 +89,23 @@ $( function () {
                 render: function (data, type, full, meta) {
 
                     let btnCancelarPoa = '';
-                    if( full.estado == 'O' && (full.id_area == 17 || full.id_area == 18)){
+                    let montoT= parseFloat(full.monto);
 
-                        btnCancelarPoa = `
+                    
+                    if( full.estado == 'X' && (full.id_area == 17 || full.id_area == 18)){
+
+                        /*btnCancelarPoa = `
                             <a id="btnEliminarCerti" data-id_borrar="${full.id}" title="Eliminar certificación" class="red show-tooltip ml-1" data-title="Eliminar certificación">
                                 <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
                             </a>
-                        `;
-                        
+                        `;*/
+
+                        btnCancelarPoa = `
+                            <a id="btnEliminarCerti" data-id_borrar="${full.id}" data-motivo="${full.motivo}" title="Eliminar certificación" class="red show-tooltip mr-1" data-title="Eliminar certificación">
+                                <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
+                            </a>`;
                     }
+                    
 
                     let btnEditar = '';
                     if(!full.estado_pro){
@@ -104,6 +118,13 @@ $( function () {
                                 <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
                             </a>
                         `;
+                    }else if(full.estado_pro && montoT === 0){
+
+                        btnEditar = `
+                            <a id="btnEliminarPOA" data-id_borrar="${full.id}" title="Eliminar registro" class="red show-tooltip" data-title="Eliminar registro">
+                                <i class="font-22 fadeIn animated bi bi-trash" style="color:indianred"></i>
+                            </a>
+                        `;
                     }
 
                     if(!full.descargado){
@@ -111,16 +132,16 @@ $( function () {
                         if(full.id_area == 17 || full.id_area == 18){
 
                             btnDescarga = `
-                            <a id="btnPDF_POAZonal" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
-                                <i class="font-22 bi bi-filetype-pdf"></i>
+                            <a id="btnPDF_POAZonal" data-id_POA="${full.id}" title="PDF POA" class="show-tooltip" data-title="PDF POA">
+                                <i class="font-22 bi bi-filetype-pdf text-warning"></i>
                             </a>
                             `;
 
                         }else{
 
                             btnDescarga = `
-                            <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="text-secondary show-tooltip" data-title="PDF POA">
-                                <i class="font-22 bi bi-filetype-pdf"></i>
+                            <a id="btnPDF_POA" data-id_POA="${full.id}" title="PDF POA" class="show-tooltip" data-title="PDF POA">
+                                <i class="font-22 bi bi-filetype-pdf text-warning"></i>
                             </a>
                             `;
 
@@ -128,7 +149,7 @@ $( function () {
 
                     }else{
                         btnDescarga = `
-                            <a id="btnPDF_descargado" data-id_POA="${full.id}" title="PDF Descargado" class="show-tooltip" data-title="PDF Descargado">
+                            <a id="btnPDF_descargado" data-id_POA="${full.id}" title="PDF Descargado" class="show-tooltip mr-1" data-title="PDF Descargado">
                                 <i class="font-22 bi bi-check2-circle text-success"></i>
                             </a>
                             `;
@@ -158,9 +179,15 @@ $( function () {
                             <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Visualizar" class="show-tooltip mr-1" data-title="Visualizar">
                                 <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
                             </a>
+                            <a id="btnEliminarCertiNuevo" data-id_borrar="${full.id}" title="Solicitud de Eliminación POA" class="red show-tooltip mr-1" data-title="Solicitud de Eliminación POA" data-toggle="modal" data-target="#deletePoaModal">
+                                <i class="font-22 fadeIn animated bi bi-file-earmark-x text-danger"></i>
+                            </a>
                             ${btnDescarga}
-                            ${btnCancelarPoa}
+                            <a id="btnLiquidar" data-id_liquidar="${full.id}" data-monto="${full.monto}" title="Liquidación POA" class="red show-tooltip mr-1" data-title="Liquidación POA">
+                                <i class="font-22 fadeIn animated bi bi-arrow-counterclockwise text-blue_navy"></i>
+                            </a>
                         `;
+                        /*${btnCancelarPoa}*/
                     }else if(full.estado == 'S'){
 
                         array += `
@@ -197,6 +224,24 @@ $( function () {
                         `;
 
 
+                    }else if(full.estado == 'X'){
+
+                        array += `
+                            <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
+                                <i class="font-22 fadeIn animated bi bi-journal-text" style="color:green"></i>
+                            </a>
+
+                            <a id="btnVisualizaPOA" data-id_editar="${full.id}" data-nombre="${full.nombre}" title="Visualizar" class="show-tooltip mr-1" data-title="Visualizar">
+                                <i class="font-22 fadeIn animated bi bi-eye" style="color:black"></i>
+                            </a>
+
+                            ${btnCancelarPoa}
+
+                            ${btnEditar}
+
+                        `;
+
+
                     }else {
                         array += `
                             <a id="btnComentarios" data-id_comentario="${full.id}" title="Comentarios" class="red show-tooltip mr-1" data-title="Comentarios">
@@ -223,7 +268,7 @@ $( function () {
             },
         ],
         order: [
-            [8, 'desc']
+            [10, 'desc']
         ],
 
         footerCallback: function (row, data, start, end, display) {
@@ -468,8 +513,7 @@ $( function () {
     });
 
 
-     /* ==================== SOLICITAR POA ==================== */
-
+    /* ==================== MODAL SOLICITAR POA ==================== */
     $(document).on('click','#btnSolicitarPOA', function(){
 
         let id_Poa = $(this).data('id_actividad');
@@ -555,7 +599,107 @@ $( function () {
         });
 
     });
-    /* ==================== SOLICITAR POA ==================== */
+    /* ==================== MODAL SOLICITAR POA ==================== */
+
+
+
+    /* ==================== MODAL SOLICITAR ELIMINAR POA  ==================== */
+    $(document).on('click','#btnEliminarCertiNuevo', function(){
+
+        let id_Poa = $(this).data('id_borrar');
+        $('#id_poaEli').val(id_Poa);
+
+    });
+    /* ==================== MODAL SOLICITAR ELIMINAR POA ==================== */
+
+
+
+   /* ==================== VALIDACIONES SOLICITAR ELIMINAR POA ==================== */
+    $(document).on('click', '#btnEnviarSolicitud', function(){
+
+        let solicitud_id = $('#id_poaEli').val();
+        let justifi      = $('#justifiEli').val();
+
+        if(justifi == ''){
+
+            Swal.fire({
+                icon:  'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text:  'Debe de agregar un justificación para la eliminación.',
+                showConfirmButton: true,
+            });
+
+        }else{
+
+            Swal.fire({
+                icon:  'warning',
+                type:  'warning',
+                title: 'CoreInspi',
+                text:  'Seguro que quiere realizar la solicitud de Eliminación de POA',
+                showConfirmButton: true,
+                showCancelButton: true,
+            }).then((result) => {
+                if (result.value == true) {
+    
+                    $.ajax({
+    
+                        type: 'POST',
+                        url: '/planificacion/solicitaEliminacionPOA',
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        data: {
+                            'solicitud_id': solicitud_id,
+                            'justifi'     : justifi,
+                        },
+                        success: function(response) {
+    
+                            if(response.data){
+
+                                document.getElementById('btnCerrarModalEli').click();         
+                                table.ajax.reload();
+                                Swal.fire({
+                                    icon: 'success',
+                                    type: 'success',
+                                    title: 'SoftInspi',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                });
+
+                            }else{
+
+                                Swal.fire({
+                                    icon: 'error',
+                                    type:  'error',
+                                    title: 'SoftInspi',
+                                    text: response.message,
+                                    showConfirmButton: true,
+                                });
+                                
+                            }
+                        },
+                        error: function(error) {
+                            var response = error.responseJSON;                
+                            Swal.fire({
+                                icon:  'error',
+                                title: 'SoftInspi',
+                                type:  'error',
+                                text:   response.message,
+                                showConfirmButton: true,
+                            });
+                        }
+                    });
+                }
+            });
+
+        }
+
+    });
+   /* ==================== VALIDACIONES SOLICITAR ELIMINAR POA ==================== */
+
+
+
 
 
     /* CERRAR EL MODAL DE MANERA MANUAL */
@@ -701,6 +845,100 @@ $( function () {
 //CÓDIGO PARA BOTÓN DE BORRAR
 $(function(){
 
+    /* PARA LA LIQUIDACIÓN DE UNA CERTIFICACION POA */
+    $(document).on('click', '#btnLiquidar', function(){
+        let id_POA = $(this).data('id_liquidar');
+        let monto = parseFloat($(this).data('monto')); // Convertir a número
+    
+        Swal.fire({
+            icon: 'warning',
+            title: 'SoftInspi',
+            text: 'Monto a liquidar de la certficación.',
+            showConfirmButton: true,
+            showCancelButton: true,
+            input: 'text',
+            inputPlaceholder: 'Ingrese el monto a liquidar',
+            preConfirm: (montoIngresado) => {
+                // Convertir el valor ingresado a número
+                let montoNum = parseFloat(montoIngresado);
+    
+                if (!montoIngresado) {
+                    Swal.showValidationMessage('Debe ingresar un monto.');
+                } else if (isNaN(montoNum)) {
+                    Swal.showValidationMessage('Debe ingresar un número válido.');
+                } else if (montoNum <= 0) {
+                    Swal.showValidationMessage('El monto debe ser mayor a 0.');
+                } else if (!/^\d+(\.\d{1,2})?$/.test(montoIngresado)) {
+                    Swal.showValidationMessage('El monto solo puede tener hasta dos decimales.');
+                } else if (montoNum > (monto * 0.98)) {
+                    Swal.showValidationMessage('El monto a liquidar no puede ser mayor de la mitad del monto certificado.');
+                } else {
+                    return montoNum; // Devuelve el monto validado
+                }
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+
+                let montoIngresado = result.value;
+
+                $.ajax({
+
+                    type: 'POST',
+                    //url: '{{ route("encuesta.saveEncuesta") }}',
+                    url: '/planificacion/liquidarPoa',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    data: {
+                        'id': id_POA,
+                        'montoIngresado': montoIngresado,
+                    },
+                    success: function(response) {
+
+                        //console.log(response.data['id_chat'])
+                        if(response.data){
+
+                            if(response['data'] == true){
+                                Swal.fire({
+                                    icon: 'success',
+                                    type: 'success',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                }).then((result) => {
+                                    if (result.value == true) {
+                                        table.ajax.reload(); //actualiza la tabla
+                                    }
+                                });
+
+                            }else{
+                                Swal.fire({
+                                    icon: 'error',
+                                    type:  'error',
+                                    title: 'SoftInspi',
+                                    text: response['message'],
+                                    showConfirmButton: true,
+                                });
+                            }
+                        }
+                    },
+                    error: function(error) {
+                        Swal.fire({
+                            icon:  'success',
+                            title: 'SoftInspi',
+                            type:  'success',
+                            text:   error,
+                            showConfirmButton: true,
+                        });
+                    }
+                });
+            }
+        });
+
+    });
+    /* PARA LA LIQUIDACIÓN DE UNA CERTIFICACION POA */
+
+
     $(document).on('click', '#btnEliminarPOA', function(){
         //alert('funciona');
 
@@ -713,8 +951,18 @@ $(function(){
             text: 'Seguro quiere eliminar este registro.',
             showConfirmButton: true,
             showCancelButton: true,
+            input: 'text',
+            inputPlaceholder: 'Ingrese el motivo de eliminación',
+            preConfirm: (comentario) => {
+                if (!comentario) {
+                    Swal.showValidationMessage('Debe ingresar un motivo.');
+                }
+                return comentario; // Devuelve el comentario para usarlo luego
+            }
         }).then((result) => {
-            if (result.value == true) {
+            if (result.isConfirmed == true) {
+
+                let comentario = result.value;
 
                 $.ajax({
 
@@ -726,6 +974,7 @@ $(function(){
                     },
                     data: {
                         'id': id_POA,
+                        'comentario': comentario,
                     },
                     success: function(response) {
 
@@ -771,16 +1020,22 @@ $(function(){
 
     });
 
+
+    /* ELIMINAR CERTIFICACIÓN POA */
     $(document).on('click', '#btnEliminarCerti', function(){
-        //alert('funciona');
 
         let id_POA = $(this).data('id_borrar');
+        let motivo = $(this).data('motivo');
 
         Swal.fire({
             icon: 'warning',
             type:  'warning',
-            title: 'SoftInspi',
-            text: 'Seguro quiere anular esta Certificación.',
+            title: 'CoreInspi',
+            html: `
+                    <p class="mb-0"><span>Motivo de la anulación</span></p>
+                    <textarea class="swal2-textarea mt-0" readonly disabled>${motivo}</textarea>
+                    <p class="mb-0"><strong>Seguro quiere anular esta Certificación?</strong></p>`,
+            //text: 'Seguro quiere anular esta Certificación.',
             showConfirmButton: true,
             showCancelButton: true,
         }).then((result) => {
@@ -806,12 +1061,12 @@ $(function(){
                                 Swal.fire({
                                     icon: 'success',
                                     type: 'success',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 }).then((result) => {
                                     if (result.value == true) {
-                                        table.ajax.reload(); //actualiza la tabla
+                                        $('#tblPlanificacionVistaUser').DataTable().ajax.reload();
                                     }
                                 });
 
@@ -819,7 +1074,7 @@ $(function(){
                                 Swal.fire({
                                     icon: 'error',
                                     type:  'error',
-                                    title: 'SoftInspi',
+                                    title: 'CoreInspi',
                                     text: response['message'],
                                     showConfirmButton: true,
                                 });
@@ -829,7 +1084,7 @@ $(function(){
                     error: function(error) {
                         Swal.fire({
                             icon:  'success',
-                            title: 'SoftInspi',
+                            title: 'CoreInspi',
                             type:  'success',
                             text:   error,
                             showConfirmButton: true,
@@ -840,6 +1095,7 @@ $(function(){
         });
 
     });
+    /* ELIMINAR CERTIFICACIÓN POA */
 
     var table = $('#tblPlanificacionVistaUser').DataTable();
 

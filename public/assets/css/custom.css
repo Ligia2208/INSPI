@@ -348,6 +348,10 @@ input:checked + .slider:before {
     color: green;
 }
 
+.text-blue_navy {
+    color: #000080;
+}
+
 
 
 .btn-floating {
@@ -367,5 +371,27 @@ input:checked + .slider:before {
 
 .fila-seleccionada {
     background-color: #d4edda !important; /* Verde claro */
+}
+
+
+
+.icon-ingreso {
+    color: #4DA6FF;
+}
+
+.icon-desglose {
+    color: #FFA726;
+}
+
+.icon-resultados {
+    color: #66BB6A;
+}
+
+
+
+.resultados-flotantes {
+    position: fixed;
+    top: 0; /* Puedes ajustar esta distancia según la altura de tu header */
+    z-index: 1030; /* Asegúrate que esté por encima del resto del contenido */
 }
 

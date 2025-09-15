@@ -59,12 +59,18 @@ class Index extends Component
         $eventos = [];
         $sedes_up = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->where('vigente_hasta','=',null)->count();
 
+        $contsedes = Sede::whereIn('id',$sedes_users)->count();
+        if($contsedes==1)
+        {
+            $this->csedes=$sedes_users[0];
+        }
+
         $count = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','>',0)->count();
-        $analiticas = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','>',0)->orderBy('codigo_calidad', 'desc');
+        $analiticasp = Analitica::where('estado','=','A')->where('usuarior_id','>=',0)->whereIn('sedes_id',$sedes_users)->whereIn('crns_id',$crns_users)->where('resultado_id','>',0)->orderBy('codigo_calidad', 'desc');
 
         if($this->searchm){
-            $analiticas = $analiticas->where('codigo_muestra', 'LIKE', "%{$this->searchm}%");
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->where('codigo_muestra', 'LIKE', "%{$this->searchm}%");
+            $count = $analiticasp->count();
 
         }
         if($this->searchc){
@@ -73,8 +79,8 @@ class Index extends Component
             })->orderBy('id', 'asc')->pluck('id')->toArray();
 
             $preanaliticas = Preanalitica::whereIn('paciente_id',$pacientes)->pluck('id')->toArray();
-            $analiticas = $analiticas->whereIn('preanalitica_id',$preanaliticas);
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->whereIn('preanalitica_id',$preanaliticas);
+            $count = $analiticasp->count();
 
         }
         if($this->searchp){
@@ -84,26 +90,32 @@ class Index extends Component
             })->orderBy('id', 'asc')->pluck('id')->toArray();
 
             $preanaliticas = Preanalitica::whereIn('paciente_id',$pacientes)->pluck('id')->toArray();
-            $analiticas = $analiticas->whereIn('preanalitica_id',$preanaliticas);
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->whereIn('preanalitica_id',$preanaliticas);
+            $count = $analiticasp->count();
 
         }
         if($this->csedes){
-            $analiticas = $analiticas->where('sedes_id', '=', $this->csedes);
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->where('sedes_id', '=', $this->csedes);
+            $count = $analiticasp->count();
             $crns_users = Responsable::where('estado','=','A')->where('usuario_id','=',$iduser)->distinct('crns_id')->pluck('crns_id')->toArray();
             $config = SedeCrn::where('sedes_id','=',$this->csedes)->whereIn('crns_id',$crns_users)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
+
+            $contcrns = Crn::whereIn('id',$config)->count();
+            if($contcrns==1){
+                $this->claboratorios = $crns_users[0];
+            }
+
         }
         if($this->claboratorios){
-            $analiticas = $analiticas->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
-            $count = $analiticas->count();
-            $eventos = Evento::where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
+            $analiticasp = $analiticasp->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios);
+            $count = $analiticasp->count();
+            $eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->claboratorios)->orderBy('id', 'asc')->get();
         }
 
         if($this->ceventos){
-            $analiticas = $analiticas->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos);
-            $count = $analiticas->count();
+            $analiticasp = $analiticasp->where('sedes_id', '=', $this->csedes)->where('crns_id','=',$this->claboratorios)->where('evento_id','=',$this->ceventos);
+            $count = $analiticasp->count();
         }
 
         if($this->fechainicio){
@@ -114,17 +126,17 @@ class Index extends Component
                         $this->fechafin='';
                     }
                     if($this->controlf==1){
-                        $analiticas = $analiticas->where('fecha_toma', '>=', $this->fechainicio)->where('fecha_toma','<=',$this->fechafin);
-                        $count = $analiticas->count();
-
+                        $pre = Preanalitica::where('fecha_recepcion','>=',$this->fechainicio)->where('fecha_recepcion','<=',$this->fechafin)->pluck('id')->toArray();
+                        $analiticasp = $analiticasp->whereIn('preanalitica_id',$pre);
+                        $count = $analiticasp->count();
                     }
                     if($this->controlf==2){
-                        $analiticas = $analiticas->where('fecha_llegada_lab', '>=', $this->fechainicio)->where('fecha_llegada_lab','<=',$this->fechafin);
-                        $count = $analiticas->count();
+                        $analiticasp = $analiticasp->where('fecha_llegada_lab', '>=', $this->fechainicio)->where('fecha_llegada_lab','<=',$this->fechafin);
+                        $count = $analiticasp->count();
                     }
                     if($this->controlf==3){
-                        $analiticas = $analiticas->where('fecha_procesamiento', '>=', $this->fechainicio)->where('fecha_procesamiento','<=',$this->fechafin);
-                        $count = $analiticas->count();
+                        $analiticasp = $analiticasp->where('fecha_procesamiento', '>=', $this->fechainicio)->where('fecha_procesamiento','<=',$this->fechafin);
+                        $count = $analiticasp->count();
                     }
                 }
                 else{
@@ -136,10 +148,10 @@ class Index extends Component
             }
         }
 
-        $analiticas = $analiticas->paginate($this->perPage);
+        $analiticasp = $analiticasp->paginate($this->perPage);
         $this->emit('renderJs');
 
-        return view('livewire.centrosreferencia.analiticap.index', compact('count', 'analiticas','sedes','crns','eventos'));
+        return view('livewire.centrosreferencia.analiticap.index', compact('count', 'analiticasp','sedes','crns','eventos'));
     }
 
     public function destroy($id)
@@ -148,6 +160,51 @@ class Index extends Component
             $Analiticas = Analitica::findOrFail($id);
             $Analiticas->estado = 'I';
             $Analiticas->update();
+
+            $control = $Analiticas->codigo_secuencial;
+            if($control>10 && $control<=20){
+                $control = $control-10;
+                //dd($control); die();
+                $secuencial = 1;
+                $AnaliticaId = Analitica::where('sedes_id','=',$Analiticas->sedes_id)->where('crns_id','=',$Analiticas->crns_id)->where('evento_id','=',$Analiticas->evento_id)->where('codigo_muestra','=',$Analiticas->codigo_muestra)->where('codigo_secuencial','=',$secuencial)->where('estado','=','A')->pluck('id');
+                //dd($AnaliticaId); die();
+                if($control==1){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_segunda_id=0;
+                    $AnaliticaOriginal->resultado_segunda_id=0;
+                    $AnaliticaOriginal->identificado_segunda=null;
+                    $AnaliticaOriginal->update();
+                }
+                if($control==2){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_tercera_id=0;
+                    $AnaliticaOriginal->resultado_tercera_id=0;
+                    $AnaliticaOriginal->identificado_tercera=null;
+                    $AnaliticaOriginal->update();
+                }
+                if($control==3){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_cuarta_id=0;
+                    $AnaliticaOriginal->resultado_cuarta_id=0;
+                    $AnaliticaOriginal->identificado_cuarta=null;
+                    $AnaliticaOriginal->update();
+                }
+                if($control==4){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_quinta_id=0;
+                    $AnaliticaOriginal->resultado_quinta_id=0;
+                    $AnaliticaOriginal->identificado_quinta=null;
+                    $AnaliticaOriginal->update();
+                }
+                if($control==5){
+                    $AnaliticaOriginal = Analitica::findOrFail($AnaliticaId[0]);
+                    $AnaliticaOriginal->tecnica_sexta_id=0;
+                    $AnaliticaOriginal->resultado_sexta_id=0;
+                    $AnaliticaOriginal->identificado_sexta=null;
+                    $AnaliticaOriginal->update();
+                }
+
+            }
             $this->alert('success', 'Eliminación con exito');
         }catch(Exception $e){
             $this->alert('error',
@@ -234,5 +291,334 @@ class Index extends Component
             $this->alert('warning', 'Ocurrió un error al duplicar la Pre - Analitica'.$e->getMessage());
             return $e->getMessage();
         }
+    }
+
+    public function diferencial01($id)
+    {   //ELISA RUBEOLA-SARAMPION (POSITIVO O INDETERMINADO)
+        try{
+                $user = auth()->user()->id;
+                $Analiticas = Analitica::findOrFail($id);
+                $objPreanalitica = Preanalitica::findOrFail($Analiticas->preanalitica_id);
+                $muestraorigen = $Analiticas->codigo_muestra;
+                $absede = Sede::findOrFail($objPreanalitica->sedes_id);
+                $abcrn = Crn::findOrFail(12);
+
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 149;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->cdiferencial = $muestraorigen;
+                $newPreanalitica->fecha_recepcion = $objPreanalitica->fecha_recepcion;
+                $newPreanalitica->usuariot_id = $user;
+                $newPreanalitica->save();
+
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 149;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
+                $newAnalitica->codigo_secuencial = 1;
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$muestraorigen;
+                $newAnalitica->usuariot_id = $user;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->cdiferencial = $muestraorigen;
+                $newAnalitica->save();
+
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 150;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->cdiferencial = $muestraorigen;
+                $newPreanalitica->fecha_recepcion = $objPreanalitica->fecha_recepcion;
+                $newPreanalitica->usuariot_id = $user;
+                $newPreanalitica->save();
+
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 150;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
+                $newAnalitica->codigo_secuencial = 1;
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$muestraorigen;
+                $newAnalitica->usuariot_id = $user;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->cdiferencial = $muestraorigen;
+                $newAnalitica->save();
+
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 151;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->cdiferencial = $muestraorigen;
+                $newPreanalitica->fecha_recepcion = $objPreanalitica->fecha_recepcion;
+                $newPreanalitica->usuariot_id = $user;
+                $newPreanalitica->save();
+
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 151;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
+                $newAnalitica->codigo_secuencial = 1;
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$muestraorigen;
+                $newAnalitica->usuariot_id = $user;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->cdiferencial = $muestraorigen;
+                $newAnalitica->save();
+
+                $Analiticas->cdiferencial = $muestraorigen;
+                $Analiticas->update();
+                $objPreanalitica->cdiferencial = $muestraorigen;
+                $objPreanalitica->update();
+
+            $this->alert('success', 'Solicitud de pruebas diferenciales generada con exito');
+        }catch(Exception $e){
+            $this->alert('error',
+                'Ocurrio un error en la generación: '.$e->getMessage(),
+                [
+                    'showConfirmButton' => true,
+                    'confirmButtonText' => 'Entiendo',
+                    'timer' => null,
+                ]);
+        }
+    }
+
+    public function diferencial02($id)
+    {   //ELISA VIRUELA DEL MONO (NEGATIVO)
+        try{
+                $user = auth()->user()->id;
+                $Analiticas = Analitica::findOrFail($id);
+                $objPreanalitica = Preanalitica::findOrFail($Analiticas->preanalitica_id);
+                $muestraorigen = $Analiticas->codigo_muestra;
+                $absede = Sede::findOrFail($objPreanalitica->sedes_id);
+                $abcrn = Crn::findOrFail(12);
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 146;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->cdiferencial = $muestraorigen;
+                $newPreanalitica->fecha_recepcion = $objPreanalitica->fecha_recepcion;
+                $newPreanalitica->usuariot_id = $user;
+                $newPreanalitica->save();
+
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 146;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
+                $newAnalitica->codigo_secuencial = 1;
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$muestraorigen;
+                $newAnalitica->usuariot_id = $user;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->cdiferencial = $muestraorigen;
+                $newAnalitica->save();
+
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 147;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->cdiferencial = $muestraorigen;
+                $newPreanalitica->fecha_recepcion = $objPreanalitica->fecha_recepcion;
+                $newPreanalitica->usuariot_id = $user;
+                $newPreanalitica->save();
+
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 147;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
+                $newAnalitica->codigo_secuencial = 1;
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$muestraorigen;
+                $newAnalitica->usuariot_id = $user;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->cdiferencial = $muestraorigen;
+                $newAnalitica->save();
+
+                $newPreanalitica = new Preanalitica();
+                $newPreanalitica->instituciones_id =  $objPreanalitica->instituciones_id;
+                $newPreanalitica->fecha_atencion = $objPreanalitica->fecha_atencion;
+	            $newPreanalitica->quien_notifica = $objPreanalitica->quien_notifica;
+                $newPreanalitica->paciente_id = $objPreanalitica->paciente_id;
+                $newPreanalitica->probable_infeccion = $objPreanalitica->probable_infeccion;
+                $newPreanalitica->fecha_sintomas = $objPreanalitica->fecha_sintomas;
+                $newPreanalitica->embarazo = $objPreanalitica->embarazo;
+                $newPreanalitica->gestacion = $objPreanalitica->gestacion;
+                $newPreanalitica->laboratorio = $objPreanalitica->laboratorio;
+                $newPreanalitica->nombre_laboratorio = $objPreanalitica->nombre_laboratorio;
+                $newPreanalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newPreanalitica->crns_id = 12;
+                $newPreanalitica->evento_id = 148;
+                $newPreanalitica->anio_registro = $objPreanalitica->anio_registro;
+                $newPreanalitica->primera_id = $objPreanalitica->primera_id;
+                $newPreanalitica->clase_primera_id = $objPreanalitica->clase_primera_id;
+                $newPreanalitica->fecha_toma_primera = $objPreanalitica->fecha_toma_primera;
+                $newPreanalitica->estado_primera_id = $objPreanalitica->estado_primera_id;
+	            $newPreanalitica->observacion_primera = $objPreanalitica->observacion_primera;
+                $newPreanalitica->cdiferencial = $muestraorigen;
+                $newPreanalitica->fecha_recepcion = $objPreanalitica->fecha_recepcion;
+                $newPreanalitica->usuariot_id = $user;
+                $newPreanalitica->save();
+
+                $newAnalitica = new Analitica();
+                $newAnalitica->preanalitica_id = $newPreanalitica->id;
+                $newAnalitica->sedes_id = $objPreanalitica->sedes_id;
+                $newAnalitica->crns_id = 12;
+                $newAnalitica->evento_id = 148;
+                $newAnalitica->muestra_id = $objPreanalitica->primera_id;
+                $newAnalitica->anio_registro = $objPreanalitica->anio_registro;
+                $cmuestra = $this->sgte_codigomuestra($objPreanalitica->anio_registro,$objPreanalitica->sedes_id,12);
+                $newAnalitica->codigo_muestra = $cmuestra;
+                $newAnalitica->codigo_secuencial = 1;
+                $fechacomoentero = strtotime($objPreanalitica->fecha_toma_primera);
+                $anio = date("Y", $fechacomoentero)-2000;
+                $mes = date("m", $fechacomoentero);
+                $newAnalitica->codigo_calidad = str_pad($cmuestra, 5, '0', STR_PAD_LEFT).'-'.str_pad($mes,2,0,STR_PAD_LEFT).str_pad($anio,2,0,STR_PAD_LEFT).'-'.$abcrn->abreviatura.'-'.$absede->abreviatura.'-'.str_pad(1, 2, '0', STR_PAD_LEFT);
+                $newAnalitica->codigo_externo = 'EXANT-DIF-'.$muestraorigen;
+                $newAnalitica->usuariot_id = $user;
+                $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
+                $newAnalitica->cdiferencial = $muestraorigen;
+                $newAnalitica->save();
+
+                $Analiticas->cdiferencial = $muestraorigen;
+                $Analiticas->update();
+                $objPreanalitica->cdiferencial = $muestraorigen;
+                $objPreanalitica->update();
+
+
+            $this->alert('success', 'Solicitud de pruebas diferenciales generada con exito');
+        }catch(Exception $e){
+            $this->alert('error',
+                'Ocurrio un error en la generación: '.$e->getMessage(),
+                [
+                    'showConfirmButton' => true,
+                    'confirmButtonText' => 'Entiendo',
+                    'timer' => null,
+                ]);
+        }
+    }
+
+    public function sgte_codigomuestra($anio, $sede, $crn){
+        $max = Analitica::where('estado','=','A')->where('anio_registro','=',$anio)->where('sedes_id','=',$sede)->where('crns_id','=',$crn)->max('codigo_muestra');
+        return $max+1;
     }
 }

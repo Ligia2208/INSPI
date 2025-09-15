@@ -20,17 +20,19 @@ trait GetDireccionTrait
         $direccion_id = $filiacion->direccion_id;
 
         $direccion = ($id_area == 7)
-            ? MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre')->where('id_dir_tec', $direccion_id)->first()
-            : MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre')->where('id_dir', $id_area)->first();
+            ? MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre', 'proceso_estado')->where('id_dir_tec', $direccion_id)->first()
+            : MontoDireccion::select('id', 'monto', 'id_fuente', 'nombre', 'proceso_estado')->where('id_dir', $id_area)->first();
 
         if (!$direccion) {
             return null; // Retorna null si no encuentra la dirección
         }
 
         return [
-            'id_direccion' => $direccion->id,
-            'id_fuente'    => $direccion->id_fuente,
-            'nombre'       => $direccion->nombre
+            'id_direccion'   => $direccion->id,
+            'id_fuente'      => $direccion->id_fuente,
+            'nombre'         => $direccion->nombre,
+            'monto'          => $direccion->monto,
+            'proceso_estado' => $direccion->proceso_estado
         ];
     }
 }

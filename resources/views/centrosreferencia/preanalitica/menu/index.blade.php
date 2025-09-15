@@ -6,23 +6,31 @@
         <div class="card-body pt-0 pb-3">
             <div class="mb-5 ">
                 <div class="row align-items-center">
-                <!--begin::Nav-->
-                        <div class="col-md-3 " align="center">
-                            <a href="{{ route('resultado.index') }}" class="navi-link py-4 {{ active('resultado.index') }}">
-                                <span class="navi-icon mr-2">
-                                    <i class="fa fa-tags fa-3x"></i>
-                                </span>
-                                <span class="navi-text font-size-xl">Muestras registrados</span>
-                            </a>
-                        </div>
+                    <!--begin::Nav-->
+                    <div class="col-md-3 " align="center">
+                        <a href="{{ route('preanalitica.index') }}"
+                            class="navi-link py-4 {{ active('preanalitica.index') }}">
+                            <span class="navi-icon mr-2">
+                                <i class="fa fa-tags fa-3x"></i>
+                            </span>
+                            <span class="navi-text font-size-xl">Muestras registrados</span>
+                        </a>
+                    </div>
+                    <div class="col-md-3 " align="center">
+                        <a href="{{ route('preanaliticacd4.index') }}"
+                            class="navi-link py-4 {{ active('preanaliticacd4.index') }}">
+                            <span class="navi-icon mr-2">
+                                <i class="fa fa-cogs fa-3x"></i>
+                            </span>
+                            <span class="navi-text font-size-xl">Carga Masiva</span>
+                        </a>
                     </div>
                 </div>
-                <!--end::Nav-->
+            </div>
+            <!--end::Nav-->
             <!--end::Body-->
         </div>
-<!--end::Profile Card-->
-<!--end::Aside-->
+        <!--end::Profile Card-->
+        <!--end::Aside-->
     </div>
 </div>
-
-

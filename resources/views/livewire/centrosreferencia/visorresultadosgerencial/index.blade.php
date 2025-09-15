@@ -129,6 +129,67 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
+                                            <select
+                                            wire:model="ctecnicas"
+                                            class="form-control"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">{{ __("Seleccione una Técnica") }}</option>
+                                            @if(!is_null($tecnicas))
+                                            @foreach ($tecnicas as $objTec)
+                                                <option data-subtext="" value="{{ $objTec->id }}">{{ $objTec->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <select
+                                            wire:model="cresultados"
+                                            class="form-control"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">{{ __("Seleccione un Resultado") }}</option>
+                                            @if(!is_null($reportes))
+                                            @foreach ($reportes as $objRes)
+                                                <option data-subtext="" value="{{ $objRes->id }}">{{ $objRes->descripcion }}</option>
+                                            @endforeach
+                                            @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <select
+                                            wire:model="ctecnicos"
+                                            class="form-control"
+                                            data-size="7"
+                                            data-live-search="true"
+                                            data-show-subtext="true"
+                                            required>
+                                            <option value="">{{ __("Seleccione un Técnico") }}</option>
+                                            @if(!is_null($usuarios))
+                                            @foreach ($usuarios as $objTec)
+                                                <option data-subtext="" value="{{ $objTec->id }}">{{ $objTec->name }}</option>
+                                            @endforeach
+                                            @endif
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-xl-12">
+                                <br>
+                            </div>
+                            <div class="col-lg-12 col-xl-12">
+                                <div class="row align-items-center">
+                                    <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
                                             <select wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>

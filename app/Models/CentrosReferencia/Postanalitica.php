@@ -21,7 +21,7 @@ class Postanalitica extends Model
     protected static $logOnlyDirty = true;
     protected static $submitEmptyLogs = false;
     protected $connection = 'crns';
-    public $table = 'analiticas';
+    public $table = 'pre_analitica';
 
     public function getDescriptionForEvent(string $eventName)
     {

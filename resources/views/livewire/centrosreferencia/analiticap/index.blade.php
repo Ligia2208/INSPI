@@ -9,11 +9,6 @@
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span>
                         </span>
                 </h3>
-                <button class="btn btn-success font-weight-bold mr-2"
-                                onclick="exportToExcel('data', 'analiticas-data')"><i
-                                class="fa fa-file-excel" aria-hidden="true"></i>
-                                {{ __('Exportar a Excel') }}
-                            </button>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -76,7 +71,7 @@
                                             <select wire:model="controlf" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha toma de muestra</option>
+                                                <option data-subtext="" value="1">Fecha recepción</option>
                                                 <option data-subtext="" value="2">Fecha llegada al CRN</option>
                                                 <option data-subtext="" value="3">Fecha procesamiento</option>
                                             </select>
@@ -176,7 +171,9 @@
                                 <th>Fecha Recepción</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
+                                @if($this->claboratorios != 9)
                                 <th>Paciente</th>
+                                @endif
                                 <th>Referencia</th>
                                 <th>Muestra</th>
                                 <th>Técnica</th>
@@ -187,7 +184,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @forelse ($analiticas as $analitica)
+                            @forelse ($analiticasp as $analitica)
                                 <tr>
                                     <td>
                                         <span
@@ -195,7 +192,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->fecha_recepcion }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->fecha_recepcion }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -205,10 +202,12 @@
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->evento->simplificado }}</span>
                                     </td>
+                                    @if($this->claboratorios != 9)
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">({{ $analitica->preanalitica->paciente->identidad }}) {{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
                                     </td>
+                                    @endif
                                     @if ($analitica->codigo_externo == '')
                                         <td>
                                             <span
@@ -250,8 +249,24 @@
                                         @endif
                                     </td>
                                     <td align="center">
-                                        @if ($analitica->usuariop_id == 0)
+                                        @if ($analitica->usuariop_id == 0 && $analitica->codigo_secuencial<10)
                                             <i class="navi-item" data-toggle="modal" data-target="_self">
+                                                @if($analitica->crns_id == 1)
+                                                <a href="{{ route('analiticamico.edit', $analitica) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="ace-icon fa fa-pen" style="color:lightblue"
+                                                            title="Editar"></i>
+                                                    </span>
+                                                </a>
+                                                @elseif($analitica->crns_id == 9)
+                                                <a href="{{ route('analiticasgen.edit', $analitica) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="ace-icon fa fa-pen" style="color:lightblue"
+                                                            title="Editar"></i>
+                                                    </span>
+                                                @else
                                                 <a href="{{ route('analitica.edit', $analitica) }}"
                                                     class="navi-link">
                                                     <span class="navi-icon">
@@ -259,19 +274,85 @@
                                                             title="Editar"></i>
                                                     </span>
                                                 </a>
+                                                @endif
                                             </i>
                                         @endif
-                                        @if ($analitica->usuarior_id == 0 && $analitica->validado == 'N')
+                                        @if ($analitica->usuariop_id == 0 && $analitica->codigo_secuencial>10)
                                             <i class="navi-item"
-                                                onclick="event.preventDefault(); confirmDuplicate({{ $analitica->id }})">
-                                                <a href="#" class="navi-link">
-                                                    <span class="navi-icon">
-                                                        <i class="ace-icon fa fa-plus"
-                                                            style="color:rgb(139, 139, 139)" title="Duplicar"></i>
-                                                    </span>
-                                                </a>
-                                            </i>
+                                            onclick="event.preventDefault(); confirmDestroy({{ $analitica->id }})">
+                                            <a href="#" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-trash-alt" style="color:red"
+                                                        title="Eliminar"></i>
+                                                </span>
+                                            </a>
+                                        </i>
                                         @endif
+                                        @if ($analitica->crns_id == 8 && $analitica->evento_id == 104)
+                                            @if ($analitica->resultado_id==66 || $analitica->resultado_id==68)
+                                                @if($analitica->cdiferencial==0)
+                                                    <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial01({{ $analitica->id }})">
+                                                    <a href="" target="_blank" class="navi-link">
+                                                        <span class="navi-icon">
+                                                            <i class="fa fa-toggle-on" style="color:rgb(216, 20, 20)" Title="Generar_Diferencial"></i>
+                                                        </span>
+                                                    </a>
+                                                    </i>
+                                                @else
+                                                    <i class="navi-item" onclick="event.preventDefault(); confirmGeneradodif({{ $analitica->id }})">
+                                                    <a href="" target="_blank" class="navi-link">
+                                                        <span class="navi-icon">
+                                                            <i class="fa fa-toggle-off" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
+                                                        </span>
+                                                    </a>
+                                                    </i>
+                                                @endif
+                                            @endif
+                                        @endif
+                                        @if ($analitica->crns_id == 8 && $analitica->evento_id == 106)
+                                        @if ($analitica->resultado_id==67)
+                                            @if($analitica->cdiferencial==0)
+                                                <i class="navi-item" onclick="event.preventDefault(); confirmDiferencial02({{ $analitica->id }})">
+                                                    <a href="" target="_blank" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fa fa-toggle-on" style="color:rgb(216, 20, 20)" Title="Generar_Diferencial"></i>
+                                                    </span>
+                                                    </a>
+                                                </i>
+                                            @else
+                                                <i class="navi-item" onclick="event.preventDefault(); confirmGeneradodif({{ $analitica->id }})">
+                                                    <a href="" target="_blank" class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="fa fa-toggle-off" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
+                                                    </span>
+                                                    </a>
+                                                </i>
+                                            @endif
+                                        @endif
+                                        @endif
+                                        @if($analitica->crns_id==8 && $analitica->resultado_id==67)
+                                            @if ($analitica->evento_id==116 || $analitica->evento_id==117 || $analitica->evento_id==118 || $analitica->evento_id==119 || $analitica->evento_id==120 || $analitica->evento_id==125)
+                                                @if($analitica->campliada==0)
+                                                <i class="navi-item" data-toggle="modal" data-target="_self">
+                                                    <a href="{{ route('analiticap.edit', $analitica) }}" class="navi-link">
+                                                        <span class="navi-icon">
+                                                            <i class="ace-icon fa fa-bookmark" style="color:rgb(216, 20, 20)"
+                                                                title="Generar_Ampliada"></i>
+                                                        </span>
+                                                    </a>
+                                                </i>
+                                                @else
+                                                    <i class="navi-item" onclick="event.preventDefault(); confirmGeneradoamp({{ $analitica->id }})">
+                                                        <a href="" target="_blank" class="navi-link">
+                                                        <span class="navi-icon">
+                                                            <i class="fa fa-bookmark" style="color:rgb(153, 149, 149)" Title="Generado" enable="false"></i>
+                                                        </span>
+                                                        </a>
+                                                    </i>
+                                                @endif
+                                            @endif
+                                        @endif
+
                                         @if ($analitica->archivo != null)
                                         <i class="navi-item" data-toggle="modal" data-target="#">
                                             <a href="#" class="navi-link">
@@ -307,8 +388,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
-                {{ $analiticas->links() }}
+                {{ $analiticasp->links() }}
             </div>
             <!--end::Body-->
         </div>
@@ -410,6 +490,98 @@
                     URL.revokeObjectURL(a.href)
                     a.remove();
                 }
+            }
+
+            function confirmAmpliada01(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas ampliadas de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('ampliada01', id);
+                    }
+                });
+            }
+
+            function confirmDiferencial01(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas diferenciales de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('diferencial01', id);
+                    }
+                });
+            }
+
+            function confirmDiferencial02(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas diferenciales de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('diferencial02', id);
+                    }
+                });
+            }
+
+            function confirmGeneradodif(id) {
+                swal.fire({
+                    title: "Pruebas Diferenciales",
+                    text: "Las pruebas diferenciales fueron generadas y remitidas al CRN correspondiente",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: false,
+                    confirmButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-white'>Ok, Cerrar</span>",
+                    reverseButtons: true,
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function() {
+
+                });
+            }
+
+            function confirmGeneradoamp(id) {
+                swal.fire({
+                    title: "Pruebas Ampliadas",
+                    text: "Las pruebas ampliadas fueron generadas y remitidas al CRN correspondiente",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: false,
+                    confirmButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-white'>Ok, Cerrar</span>",
+                    reverseButtons: true,
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function() {
+
+                });
             }
         </script>
     @endsection

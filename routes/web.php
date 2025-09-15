@@ -131,6 +131,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('planificacion/nuevaPlanificacion/{id_direccion}', 'PlanificacionController@nuevaPlanificacion')->name('planificacion.nuevaPlanificacion');
         Route::post('planificacion/savePlanificacion', 'PlanificacionController@savePlanificacion')->name('planificacion.savePlanificacion');
         Route::post('/planificacion/deletePoa', 'PlanificacionController@deletePoa')->name('planificacion.deletePoa'); //Eliminar registro
+        Route::post('/planificacion/liquidarPoa', 'PlanificacionController@liquidarPoa')->name('planificacion.liquidarPoa');
+        Route::post('/planificacion/cerrarConvenio', 'PlanificacionController@cerrarConvenio')->name('planificacion.cerrarConvenio');
         Route::post('/planificacion/deleteCertificacion', 'PlanificacionController@deleteCertificacion')->name('planificacion.deleteCertificacion');
         Route::get('/planificacion/detalle', 'PlanificacionController@detalle')->middleware('permission:pladetalle')->name('planificacion.detalle');
         Route::get('/planificacion/detalleUser', 'PlanificacionController@detalleUser')->middleware('permission:pladetalleuser')->name('planificacion.detalleUser'); 
@@ -164,6 +166,7 @@ Route::middleware(['auth'])->group(function () {
     
         Route::get('/planificacion/crearReforma', 'PlanificacionController@crearReforma')->name('planificacion.crearReforma');
         Route::post('planificacion/saveReforma', 'PlanificacionController@saveReforma')->name('planificacion.saveReforma');
+        Route::post('planificacion/safeReforma', 'PlanificacionController@safeReforma')->name('planificacion.safeReforma');
     
         Route::get('/planificacion/editarReforma/{id}', 'PlanificacionController@editarReforma')->name('planificacion.editarReforma');
         Route::put('/planificacion/actualizarReforma/{id}', 'PlanificacionController@actualizarReforma')->name('planificacion.actualizarReforma');
@@ -177,6 +180,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/planificacion/crearActArea', 'PlanificacionController@crearActArea')->name('planificacion.crearActArea'); //Crea una nueva actividad de otra área en la ventana de editar
     
         Route::post('/planificacion/deleteReforma', 'PlanificacionController@deleteReforma')->name('planificacion.deleteReforma'); //Eliminar registro
+        Route::post('/planificacion/deleteReformaPre', 'PlanificacionController@deleteReformaPre')->name('planificacion.deleteReformaPre');
     
         //ESTRUCTUTA PRESUPUESTARIA
         Route::get('/planificacion/get_unidad', 'PlanificacionController@get_unidad')->name('planificacion.get_unidad');
@@ -189,6 +193,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/planificacion/aproSolicitud', 'PlanificacionController@aproSolicitud')->name('planificacion.aproSolicitud'); //Aprobar o Rechazar solicitud
         Route::get('/planificacion/obtenerpoa/{id}', 'PlanificacionController@obtenerPoa')->name('planificacion.obtenerPoa');
         Route::post('/planificacion/solicitadPOA', 'PlanificacionController@solicitadPOA')->name('planificacion.solicitadPOA');
+        Route::post('/planificacion/solicitaEliminacionPOA', 'PlanificacionController@solicitaEliminacionPOA')->name('planificacion.solicitaEliminacionPOA');
     
         Route::get('planificacion/reportDetalle', 'PlanificacionController@reportDetalle')->name('planificacion.reportDetalle');
         Route::get('planificacion/reportDetalleUser', 'PlanificacionController@reportDetalleUser')->name('planificacion.reportDetalleUser');
@@ -254,6 +259,11 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/itemPresupuestario/get_montos/{id?}', 'ItemPresupuestarioController@get_montos')->name('itemPresupuestario.get_montos');
         Route::get('/itemPresupuestario/list_items/{id?}', 'ItemPresupuestarioController@list_items')->name('itemPresupuestario.list_items');
 
+        //OBJETIVOS OPERATIVOS
+        //Route::get('/itemPresupuestario/objetivos', 'ItemPresupuestarioController@objetivos')->name('itemPresupuestario.objetivos'); 
+        Route::post('/itemPresupuestario/guardarObjetivo', 'ItemPresupuestarioController@guardarObjetivo')->name('itemPresupuestario.guardarObjetivo');
+        Route::post('/itemPresupuestario/crearObjetivo', 'ItemPresupuestarioController@crearObjetivo')->name('itemPresupuestario.crearObjetivo');
+        
     });
     /* =========================== ITEM PRESUPUESTARIO =========================== */
 
@@ -390,6 +400,58 @@ Route::middleware(['auth'])->group(function () {
     /* =========================== INVENTARIO =========================== */
 
 
+    /* =========================== LAMINAS =========================== */
+    Route::group(['namespace' => 'App\Http\Controllers\CentrosLaminas'], function(){
+
+        Route::get('/laminas', 'CentrosLaminasController@index')->name('laminas'); //vista principal
+        Route::get('/laminas/crear', 'CentrosLaminasController@crear')->name('laminas.crear');
+        Route::post('/laminas/guardar', 'CentrosLaminasController@guardar')->name('laminas.guardar');
+        Route::get('/laminas/editar/{id_ingreso}', 'CentrosLaminasController@editar')->name('laminas.editar');
+        Route::post('/laminas/guardar_edicion', 'CentrosLaminasController@guardar_edicion')->name('laminas.guardar_edicion');
+        Route::post('/laminas/eliminar', 'CentrosLaminasController@eliminar')->name('laminas.eliminar');
+        Route::get('/laminas/agregar_laminas/{id}', 'CentrosLaminasController@agregar_laminas')->name('laminas.agregar_laminas');
+        Route::get('/laminas/editar_laminas/{id}', 'CentrosLaminasController@editar_laminas')->name('laminas.editar_laminas');
+        Route::post('/laminas/guardar_laminas', 'CentrosLaminasController@guardar_laminas')->name('laminas.guardar_laminas');
+        Route::post('/laminas/guardar_laminas_editadas', 'CentrosLaminasController@guardar_laminas_editadas')->name('laminas.guardar_laminas_editadas');
+        Route::post('/laminas/eliminar_desglose', 'CentrosLaminasController@eliminar_desglose')->name('laminas.eliminar_desglose');
+        Route::get('/laminas/control_calidad/{id}', 'CentrosLaminasController@control_calidad')->name('laminas.control_calidad');
+
+        Route::post('/laminas/resultados_laminas', 'CentrosLaminasController@resultados_laminas')->name('laminas.resultados_laminas');
+        Route::get('/laminas/reporteResultadosCompleto', 'CentrosLaminasController@reporteResultadosCompleto')->name('laminas.reporteResultadosCompleto');
+        Route::get('/laminas/reporte_control_calidad', 'CentrosLaminasController@reporte_control_calidad')->name('laminas.reporte_control_calidad');
+        Route::get('/laminas/reporte_ingreso', 'CentrosLaminasController@reporte_ingreso')->name('laminas.reporte_ingreso');
+        Route::get('/laminas/reporte_desglose', 'CentrosLaminasController@reporte_desglose')->name('laminas.reporte_desglose');
+        
+        //REGISTROS
+        Route::get('/laminas/resgitro_muestra', 'CentrosLaminasController@registro_muestra')->name('laminas.registro_muestra');
+        Route::get('/laminas/registro_solicitud', 'CentrosLaminasController@registro_solicitud')->name('laminas.registro_solicitud');
+
+
+        //bacteriología
+        Route::get('/laminas_bacteriologia', 'CentrosLaminasController@laminas_bacteriologia')->name('laminas_bacteriologia'); 
+        Route::get('/laminas/agregar_laminas_bact', 'CentrosLaminasController@agregar_laminas_bact')->name('laminas.agregar_laminas_bact');
+        Route::post('/laminas/guardar_laminas_bact', 'CentrosLaminasController@guardar_laminas_bact')->name('laminas.guardar_laminas_bact');
+        Route::get('/laminas/editar_bact/{id_ingreso}', 'CentrosLaminasController@editar_bact')->name('laminas.editar_bact');
+        Route::get('/laminas/desglose/{id}', 'CentrosLaminasController@obtenerDesglose')->name('laminas.obtenerDesglose');
+        Route::post('/laminas/editar_laminas_bact', 'CentrosLaminasController@editar_laminas_bact')->name('laminas.editar_laminas_bact');
+        Route::get('/laminas/visualizar_bact/{id_ingreso}', 'CentrosLaminasController@visualizar_bact')->name('laminas.visualizar_bact');
+        Route::post('/laminas/eliminar_bact', 'CentrosLaminasController@eliminar_bact')->name('laminas.eliminar_bact');
+        Route::get('/laminas/reporte_control_calidad_indirecto/{id_lamina}', 'CentrosLaminasController@reporte_control_calidad_indirecto')->name('laminas.reporte_control_calidad_indirecto');
+        Route::get('/laminas/reporte_control_calidad_par/{id}', 'CentrosLaminasController@reporte_control_calidad_par')->name('laminas.reporte_control_calidad_par');
+
+        Route::get('/laminas_parasitologia_procesadas', 'CentrosLaminasController@laminas_parasitologia_procesadas')->name('laminas.laminas_parasitologia_procesadas'); 
+        Route::get('/laminas_parasitologia_validar', 'CentrosLaminasController@laminas_parasitologia_validar')->name('laminas.laminas_parasitologia_validar'); 
+        Route::get('/laminas/validar_parasito/{id_ingreso}', 'CentrosLaminasController@validar_parasito')->name('laminas.validar_parasito');
+        Route::post('/laminas/guardar_laminas_validacion', 'CentrosLaminasController@guardar_laminas_validacion')->name('laminas.guardar_laminas_validacion');
+        Route::post('/laminas/eliminar_parasito_val', 'CentrosLaminasController@eliminar_parasito_val')->name('laminas.eliminar_parasito_val');
+    });
+    /* =========================== LAMINAS =========================== */
+
+    // GENOMICA
+    Route::group(['namespace' => 'App\Http\Controllers\CentrosReferencia\Preanaliticagen'], function () {
+        Route::get('{Preanaliticastoxico}/registro-muestra', 'PreanaliticagenController@registro_muestra')->name('preanaliticagen.registro_muestra');
+        Route::get('{Preanaliticastoxico}/registro-solicitud', 'PreanaliticagenController@registro_solicitud')->name('preanaliticagen.registro_solicitud');
+    });
 
 
     /* =========================== ENCUESTAS =========================== */

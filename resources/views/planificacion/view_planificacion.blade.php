@@ -24,7 +24,7 @@
     <div class="container2">
         <div class="page-content mb-5">
 
-            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus"></i> Editar actividad </h2>
+            <h2 class="mb-0 text-uppercase text-center mt-5"><i class="font-32 text-success bi bi-window-plus"></i> Visualizar Actividad </h2>
 
             <hr/>
 
@@ -120,32 +120,33 @@
                 <div class="card-body">
                     <div class="row p-2">
 
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <label for="obOpera" class="form-label fs-6">Objetivo Operativo</label>
-                            <input type="text" id="obOpera" name="obOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreObjOperativo}}" disabled>
+                            <textarea id="obOpera" name="obOpera" class="form-control" rows="3" required autofocus disabled>{{$atributos->nombreObjOperativo}}</textarea>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
-                        <div class="col-md-6">
+                        <div class="col-md-6 mt-2">
                             <label for="actOpera" class="form-label fs-6">Actividad Operativa</label>
-                            <input type="text" id="actOpera" name="actOpera" class="form-control" required="" autofocus="" value="{{$atributos->nombreActividadOperativa}}" disabled>
+                            <textarea id="actOpera" name="actOpera" class="form-control" rows="5" required autofocus disabled>{{$atributos->nombreActividadOperativa}}</textarea>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
 
-                        <div class="col-md-4 mt-2">
+                        <div class="col-md-6 mt-2">
                             <label for="subActi" class="form-label fs-6">Sub Actividad / Objeto de Contratación / Convenio</label>
-                            <input type="text" id="subActi" name="subActi" class="form-control" required="" autofocus="" value="{{$atributos->nombreSubActividad}}" disabled>
+                            <textarea id="subActi" name="subActi" class="form-control" rows="5" required autofocus disabled>{{$atributos->nombreSubActividad}}</textarea>
                             <div class="valid-feedback">Looks good!</div>
                         </div>
+
 
                         <div class="col-md-4 mt-2">
                             <label for="item" class="form-label fs-6">Item presupuestario</label>
                             <select id="item_presupuestario" name="item_presupuestario" class="form-control single-select" required onchange="fetchItemData(this.value)" disabled>
                                 @foreach($item_presupuestario as $item)
                                 @if($item->id == $atributos->id_item)
-                                    <option value="{{$item->id}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
+                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}" selected>{{$item->nombre}} - {{$item->descripcion}}</option>
                                 @else
-                                    <option value="{{$item->id}}">{{$item->nombre}} - {{$item->descripcion}}</option>
+                                    <option value="{{$item->id}}" data-id_item="{{$item->id_item}}">{{$item->nombre}} - {{$item->descripcion}}</option>
                                 @endif
                                 @endforeach
                             </select>
@@ -158,16 +159,24 @@
                         </div>
 
                         <div class="col-md-4 mt-2">
-                            <label for="desItem" class="form-label fs-6">Descripción del Item Presupuestario</label>
-                            <input type="text" id="desItem" name="desItem" class="form-control" required="" autofocus="" value="{{$atributos->descripcionItem}}" disabled>
-                            <div class="valid-feedback">Looks good!</div>
-                        </div>
-
-                        <div class="col-md-4 mt-2">
                             <label for="monto" class="form-label fs-6">Monto</label>
                             <input type="number" id="monto" name="monto" class="form-control" required="" autofocus="" value="{{intval($atributos->monto)}}" disabled>
                             <div class="valid-feedback">¡Se ve bien!</div>
                             <div class="invalid-feedback">Ingrese solo números</div>
+                        </div>
+
+                        <div class="col-md-4 mt-2">
+                            <label for="proceso" class="form-label fs-6">Tipo de Proceso</label>
+                            <select id="proceso" name="proceso" class="form-control single-select" required disabled>
+                                <option value="0">Seleccione Opción</option>
+                                @foreach($proceso as $tipo)
+                                @if($atributos->id_proceso == $tipo->id)
+                                <option value="{{$tipo->id}}" selected> {{$tipo->nombre}} </option>
+                                @else
+                                <option value="{{$tipo->id}}"> {{$tipo->nombre}} </option>
+                                @endif
+                                @endforeach
+                            </select>
                         </div>
 
                     </div>
@@ -376,7 +385,7 @@
                                             @elseif($comentario->estado_planificacion == 'Corregido')
                                                 <span class="m-2 mb-3 badge bg-info fs-6">{{ $comentario->estado_planificacion }}</span>
                                             @else
-                                                <!-- <p class="m-2 mb-3 badge"><strong>Estado de la planificación:</strong> {{ $comentario->estado_planificacion }}</p> -->
+                                                <span class="m-2 mb-3 badge bg-info fs-6">{{ $comentario->estado_planificacion }}</span>
                                             @endif
                                         </p>
                                     </div>

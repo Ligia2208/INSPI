@@ -24,7 +24,7 @@
                             </a>
                         </div>
                         <div class="col-md-3 navi-item" align="center">
-                            <a href="{{ route('visorresultadogerencial.index') }}" class="navi-link py-4 {{ active('visorresultadogeoreferencia.index') }}">
+                            <a href="{{ route('georefresultadogerencial.index') }}" class="navi-link py-4 {{ active('georefresultadogeoreferencia.index') }}">
                                 <span class="navi-icon mr-2">
                                     <i class="fa fa-spinner fa-3x"></i>
                                 </span>

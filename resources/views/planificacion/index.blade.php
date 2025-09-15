@@ -25,10 +25,50 @@
     <div class="container2">
         <div class="page-content">
 
+            <div class="row">
+
+                <div class="col">
+                    <div class="card radius-10 border border-1 border-primary position-relative">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+
+                                <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-cash py-3 px-2 titulo-grande"></i>
+                                </div>
+
+                                <div>
+                                    <span>Monto de la dirección</span>
+                                    <h4 class="my-1 text-primary ms-auto" id="monto_total">{{$totalMonto}}</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col">
+                    <div class="card radius-10 border border-1 border-primary position-relative">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center">
+
+                                <div class="bg-primary text-white mr-2 rounded-circle fs-1"><i class="bi bi-patch-check py-3 px-2 titulo-grande"></i>
+                                </div>
+
+                                <div>
+                                    <span>Total de Certificaciones POA</span>
+                                    <h4 class="my-1 text-primary ms-auto" id="">{{$totalCertificado}}</h4>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
             <div class="row row-cols-1 row-cols-md-2 row-cols-xl-4">
                 <div class="col">
                     <label class="form-label fs-6">&nbsp;</label>
-                    <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar POA Excel</button>
+                    <button id="btnGenerateExcel" class="btn btn-primary form-control"><i class="bi bi-file-earmark-spreadsheet mr-1"></i>Generar Historial POA Excel</button>
                 </div>
             </div>
 
@@ -61,7 +101,7 @@
                             <select id="filterDireccion" class="form-control js-example-basic-single mt-2">
                                 <option value="">Todas las Direcciones</option>
                                 @foreach($direcciones as $direccion)
-                                    <option value="{{ $direccion->departamento }}">{{ $direccion->departamento }}</option>
+                                    <option value="{{ $direccion->id }}">{{ $direccion->departamento }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -76,7 +116,8 @@
                             </select>
                         </div>
 
-                        <div class="col-lg-6 mt-4 mb-5">
+        
+                        <div class="col-lg-2 mt-4 mb-5">
                             <label for="filterPrograma" class="form-label">Filtrar por Programa:</label>
                             <select id="filterPrograma" class="js-example-basic-single filter">
                                 <option value="">Todos</option>
@@ -86,6 +127,25 @@
                             </select>
                         </div>
 
+                        <div class="col-lg-2 mt-4 mb-5">
+                            <label for="filterSede" class="form-label">Filtrar por Sede:</label>
+                            <select id="filterSede" class="js-example-basic-single filter">
+                                <option value="">Todos</option>
+                                @foreach($sedes as $sede)
+                                    <option value="{{ $sede->id }}">{{ $sede->nombre }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+    
+                        <div class="col-lg-2 mt-4 mb-5">
+                            <label for="filterAnio" class="form-label">Filtrar por Año:</label>
+                            <select id="filterAnio" class="js-example-basic-single filter">
+                                @for($i = date('Y'); $i >= date('Y') - 2; $i--)
+                                    <option value="{{ $i }}">{{ $i }}</option>
+                                @endfor
+                            </select>
+                        </div>
 
                     </div>
 
@@ -100,6 +160,7 @@
                                     <th>Actividad Operativa</th>
                                     <th>Sub actividad</th>
                                     <th>Tipo de Proceso</th>
+                                    <th>Tipo de Sub_Actividad</th>
                                     <th>Monto</th>
                                     <th>N° POA</th>
                                     <th>Fecha</th>
@@ -112,7 +173,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <th colspan="6" class="text-end">Total:</th>
+                                    <th colspan="7" class="text-end">Total:</th>
                                     <th id="totalMonto"></th>
                                     <th colspan="4"></th>
                                 </tr>
@@ -193,6 +254,53 @@
 
 
 
+        <!-- Botón para abrir el modal de convenio -->
+        <button type="button" class="btn btn-primary btn-floating" data-toggle="modal" data-target="#miConvenio" id="btConvenio">
+            <i class="bi bi-calculator titulo-grande p-0"></i>
+        </button>
+
+        <!-- Modal del convenio -->
+        <div class="modal fade" id="miConvenio" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Convenios</h5>
+                        <button type="button" class="close btn btn-danger" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="modalContent">
+                            <div class="container">
+                                <input type="hidden" id="id_convenio" class="form-control mb-2 text-right" disabled>
+                            </div>
+
+                            <div class="col-md-12 mt-2">
+                                <label for="justifica" class="form-label fs-6">Justificación</label>
+                                <textarea id="justifica" name="justifica" class="form-control" required="" autofocus="" rows="4"></textarea>
+                            </div>
+
+                            <div class="col-md-12 mt-4 text-center">
+                                <label for="estadoConv" class="form-label fs-6">Quiere cerrar el convenio?</label>
+                                <select id="estadoConv" name="estadoConv" class="form-control js-example-basic-single" required="" >
+                                    <option value="0" selected="">Seleccione el estado</option>
+                                    <option value="aprobado"> SI </option>
+                                    <option value="rechazado"> NO </option>
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="btnGuardarConvenio">Guardar</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal" id="btnCerrarConvenio">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
 @endsection
 
 <script>
@@ -216,6 +324,6 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.12')}}"></script>
+<script src="{{asset('assets/js/Planificacion/init_poa.js?v0.0.25')}}"></script>
 <script src="{{asset('assets/js/Planificacion/calculadora.js?v0.0.0')}}"></script>
 @endpush

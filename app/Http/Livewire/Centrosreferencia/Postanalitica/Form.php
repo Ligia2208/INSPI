@@ -15,14 +15,19 @@ use App\Models\CentrosReferencia\Provincia;
 use App\Models\CentrosReferencia\Canton;
 use App\Models\CentrosReferencia\Reporte;
 use App\Models\CentrosReferencia\Tecnica;
+use App\Models\CentrosReferencia\Estadomuestra;
+use App\Models\CentrosReferencia\Unidades;
+use App\Models\CentrosReferencia\Clase;
+use App\Models\CentrosReferencia\Tipoparametros;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 use Spatie\Permission\Models\Permission;
 use Symfony\Component\CssSelector\Node\FunctionNode;
-
 use Jantinnerezo\LivewireAlert\LivewireAlert;
+use DB;
+use Datetime;
 
 class Form extends Component
 {
@@ -67,18 +72,29 @@ class Form extends Component
     }
 
     public function mount(Postanalitica $Analiticas, $method){
+
         $data = Preanalitica::findOrFail($Analiticas->id);
+
         $muestra = Analitica::where('preanalitica_id','=',$data->id)->pluck('codigo_muestra')->first();
+        $resMuestra = Analitica::where('preanalitica_id','=',$data->id)->pluck('resultado_id')->first();
+        $descMuestra = Analitica::where('preanalitica_id','=',$data->id)->pluck('descripcion')->first();
 
         $this->Analiticas = $data;
         $this->Analiticas->codigo_muestra = str_pad($muestra, 6, "0", STR_PAD_LEFT);
         $this->method = $method;
+
+        //dd($this->Analiticas->crns_id);
+
         if($method=='update'){
             $config = SedeCrn::where('sedes_id','=',$this->Analiticas->sedes_id)->orderBy('id', 'asc')->pluck('crns_id')->toArray();
             $this->crns = Crn::whereIn('id',$config)->orderBy('id', 'asc')->get();
             $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
-            $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
-            $this->eventos = Evento::whereIn('estado',['A','M'])->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
+            $this->reportes = Reporte::where('estado','=','R')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
+            $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$this->Analiticas->crns_id)->orderBy('id', 'asc')->get();
+            if ($this->Analiticas->resultado_id==0){
+                $this->Analiticas->resultado_id = $resMuestra;
+                $this->Analiticas->descripcion = $descMuestra;
+            }
 
         }
 
@@ -91,9 +107,9 @@ class Form extends Component
     }
 
     public function updatedselectedCrn($crns_id){
-        $this->eventos = Evento::whereIn('estado',['A','M'])->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->eventos = Evento::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->tecnicas = Tecnica::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
-        $this->reportes = Reporte::where('estado','=','A')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
+        $this->reportes = Reporte::where('estado','=','R')->where('crns_id','=',$crns_id)->orderBy('id', 'asc')->get();
         $this->emit('renderJs');
     }
 
@@ -104,9 +120,18 @@ class Form extends Component
 
     public function render()
     {
+        $data = Preanalitica::findOrFail($this->Analiticas->id);
+        $detalles = Analitica::where('estado','=','A')->where('preanalitica_id','=',$this->Analiticas->id)->get();
         $sedes = Sede::where('estado','=','A')->orderBy('id', 'asc')->cursor();
         $muestras = Muestra::where('estado','=','A')->orderBy('id','asc')->cursor();
-        return view('livewire.centrosreferencia.postanalitica.form', compact('sedes','muestras'));
+        $estados = Estadomuestra::orderBy('id', 'asc')->cursor();
+        $unidades = Unidades::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        $clases = Clase::where('estado','=','A')->orderBy('id', 'asc')->cursor();
+        $medicamentopi = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-PI')->orderBy('id','asc')->cursor();
+        $medicamentonrti = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-NRTI')->orderBy('id','asc')->cursor();
+        $medicamentonnrti = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-NNRTI')->orderBy('id','asc')->cursor();
+        $medicamentoini = Tipoparametros::where('estado','=','A')->where('crns_id','=',12)->where('tipo','=','Medicamento-INI')->orderBy('id','asc')->cursor();
+        return view('livewire.centrosreferencia.postanalitica.form', compact('sedes','muestras','detalles','data','estados','unidades','clases','medicamentopi','medicamentonrti','medicamentonnrti','medicamentoini'));
     }
 
     public function store(){
@@ -122,13 +147,19 @@ class Form extends Component
     }
 
     public function update(){
+        DB::beginTransaction();
+        try{
+            if($this->Analiticas->resultado_id>0){
+                $analiticas = Analitica::where('preanalitica_id','=',$this->Analiticas->id)->get();
+                $user = auth()->user()->id;
+                $i=0;
 
         $analiticas = Analitica::where('preanalitica_id','=',$this->Analiticas->id)->get();
         $user = auth()->user()->id;
         $i=0;
         $preanalitica = Preanalitica::findOrFail($this->Analiticas->id);
         $absede = Sede::findOrFail($preanalitica->sedes_id);
-        $abcrn = Crn::findOrFail(8);
+        $abcrn = Crn::findOrFail($preanalitica->crns_id);
         if($preanalitica->resultado_id==67 && ($preanalitica->evento_id==116 || $preanalitica->evento_id==117 || $preanalitica->evento_id==118 || $preanalitica->evento_id==119 || $preanalitica->evento_id==120 || $preanalitica->evento_id==125)){
                 $lista = $this->Analiticas->eventosav_id;
                 $total = count($lista);
@@ -178,54 +209,71 @@ class Form extends Component
                             $newAnalitica->fecha_toma = $objPreanalitica->fecha_toma_primera;
                             $newAnalitica->save();
 
-                            $newPreanalitica->campliada=$Analiticas->codigo_muestra;
-                            $newPreanalitica->update();
+                                    $newPreanalitica->campliada=$Analiticas->codigo_muestra;
+                                    $newPreanalitica->update();
 
-                            $objPreanalitica->campliada=$newPreanalitica->id;
-                            $objPreanalitica->update();
+                                    $objPreanalitica->campliada=$newPreanalitica->id;
+                                    $objPreanalitica->update();
+
+                                }
+                                catch(Exception $e){
+                                    $this->alert('error',
+                                        'Ocurrio un error en la generación: '.$e->getMessage(),
+                                        [
+                                            'showConfirmButton' => true,
+                                            'confirmButtonText' => 'Entiendo',
+                                            'timer' => null,
+                                        ]);
+                                }
+                                $i=$i+1;
+                            }
+                            $preanalitica->campliada=$analiticas[0]->codigo_muestra;
+                            $preanalitica->update();
+                            $this->alert('success', 'Eventos para investigación ampliada generados con éxito');
+                            $this->emit('closeModal');
+                        }
+                        else{
 
                         }
-                        catch(Exception $e){
-                            $this->alert('error',
-                                'Ocurrio un error en la generación: '.$e->getMessage(),
-                                [
-                                    'showConfirmButton' => true,
-                                    'confirmButtonText' => 'Entiendo',
-                                    'timer' => null,
-                                ]);
-                        }
-                        $i=$i+1;
-                    }
-                    $preanalitica->campliada=$analiticas[0]->codigo_muestra;
-                    $preanalitica->update();
-                    $this->alert('success', 'Eventos para investigación ampliada generados con éxito');
-                    $this->emit('closeModal');
                 }
                 else{
+                    foreach($analiticas as $ana){
+                        $ana->descripcion_responsable = $this->Analiticas->descripcion;
+                        $ana->usuariop_id = $user;
+                        $ana->fecha_publicacion = date("Y-m-d");
+                        $ana->validado = 'S';
+                        $ana->update();
+                    }
 
+                    $preanalitica_update = Preanalitica::findOrFail($this->Analiticas->id);
+                    $preanalitica_update->resultado_id=$this->Analiticas->resultado_id;
+                    $preanalitica_update->descripcion=$this->Analiticas->descripcion;
+                    $preanalitica_update->fecha_resultado = date("Y-m-d");
+                    $preanalitica_update->usuarior_id = $user;
+                    $preanalitica_update->validado = 'S';
+                    $preanalitica_update->update();
+
+                    DB::commit();
+                    $this->alert('success', 'Analitica actualizado con éxito');
+                    $this->emit('closeModal');
+                    return redirect()->route('postanaliticap.index');
                 }
-        }
-        else{
-            foreach($analiticas as $ana){
-                $ana->descripcion_responsable = $this->Analiticas->descripcion;
-                $ana->usuariop_id = $user;
-                $ana->fecha_publicacion = date("Y-m-d");
-                $ana->validado = 'S';
-                $ana->update();
+            }
+            else{
+                DB::rollback();
+                $this->alert('warning', 'Debe elegir un resultado'.$e->getMessage());
+                $this->emit('renderJs');
             }
 
-            $preanalitica_update = Preanalitica::findOrFail($this->Analiticas->id);
-            $preanalitica_update->resultado_id=$this->Analiticas->resultado_id;
-            $preanalitica_update->descripcion=$this->Analiticas->descripcion_responsable;
-            $preanalitica_update->fecha_resultado = date("Y-m-d");
-            $preanalitica_update->usuarior_id = $user;
-            $preanalitica_update->validado = 'S';
-            $preanalitica_update->update();
-
-            $this->alert('success', 'Analitica actualizado con éxito');
-            $this->emit('closeModal');
         }
-        return redirect()->route('postanalitica.index');
+        catch (\Exception $e) {
+            DB::rollback();
+            $this->alert('warning', 'Ocurrió un error al agregar la Preanalitica '.$e->getMessage());
+            $this->emit('renderJs');
+            return $e->getMessage();
+        }
+
+
     }
 
     public function sgte_codigomuestra($anio, $sede, $crn){

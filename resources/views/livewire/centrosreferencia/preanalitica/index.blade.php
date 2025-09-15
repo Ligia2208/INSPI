@@ -73,8 +73,7 @@
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
                                                 <option data-subtext="" value="1">Fecha recepcion</option>
-                                                <option data-subtext="" value="2">Fecha inicio sintomas</option>
-                                                <option data-subtext="" value="3">Fecha de registro</option>
+                                                <option data-subtext="" value="2">Fecha de registro</option>
                                             </select>
                                         </div>
                                     </div>
@@ -172,7 +171,7 @@
                         class="table table-head-custom table-head-bg table-borderless table-vertical-center">
                         <thead>
                             <tr class="text-uppercase">
-                                <th>Id</th>
+                                <th>Código muestra</th>
                                 <th>Fecha Recepción</th>
                                 <th>Institución Salud</th>
                                 <th>Paciente</th>
@@ -180,15 +179,28 @@
                                 <th>Crn-Laboratorio</th>
                                 <th>Evento</th>
                                 <th>Muestras Recibidas</th>
+                                <th>Ingresa por</th>
+                                <th>Usuario registro</th>
+                                <th>Fecha registro</th>
                                 <th> Acciones </th>
                             </tr>
                         </thead>
                         <tbody>
+
                             @forelse ($preanaliticas as $preanalitica)
+                                <?php $codigo = 0; ?>
                                 <tr>
+                                    <?php  $codigo = 0; ?>
+                                    @forelse ($preanalitica->analitica as $objPos)
+
+                                        @if($objPos->codigo_secuencial==1)
+                                        <?php $codigo = $objPos->codigo_calidad; ?>
+                                        @endif
+                                    @empty
+                                    @endforelse
                                     <td>
                                         <span
-                                            class="text-dark-75 font-weight-bolder d-block font-size-lg">{{ $preanalitica->id }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $codigo }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -218,7 +230,29 @@
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($preanalitica->primera_id>0) 1.-{{ $preanalitica->primera->descripcion }} @endif @if($preanalitica->segunda_id>0) <br> 2.-{{ $preanalitica->segunda->descripcion }} @endif @if($preanalitica->tercera_id>0) <br> 3.-{{ $preanalitica->tercera->descripcion }} @endif @if($preanalitica->cuarta_id>0) <br> 4.-{{ $preanalitica->cuarta->descripcion }} @endif @if($preanalitica->quinta_id>0) <br> 5.-{{ $preanalitica->quinta->descripcion }} @endif</span>
                                     </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($preanalitica->ingresa_por==1) Sede Central - Guayaquil @endif @if($preanalitica->ingresa_por==2) CZ6 - Cuenca @endif @if($preanalitica->ingresa_por==3) CZ9 - Quito @endif @if($preanalitica->ingresa_por==4) OFTEC - Tena @endif</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $preanalitica->usuariot->name }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $preanalitica->created_at }}</span>
+                                    </td>
                                     <td align="center">
+                                        @if($preanalitica->crns_id==7)
+                                        <i class="navi-item" data-toggle="modal" data-target="_self">
+                                            <a href="{{ route('preanalitica.show', $preanalitica) }}" class="navi-link">
+                                                <span class="navi-icon">
+                                                    <i class="ace-icon fa fa-eye" style="color:rgb(122, 122, 122)"
+                                                        title="Mostrar"></i>
+                                                </span>
+                                            </a>
+                                        </i>
+                                        @else
                                         <i class="navi-item" data-toggle="modal" data-target="_self">
                                             <a href="{{ route('preanalitica.edit', $preanalitica) }}" class="navi-link">
                                                 <span class="navi-icon">
@@ -261,6 +295,7 @@
                                             </a>
                                         </i>
                                         @endif
+                                        @endif
                                     </td>
                                 </tr>
                             @empty
@@ -279,7 +314,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $preanaliticas->links() }}
             </div>
             <!--end::Body-->

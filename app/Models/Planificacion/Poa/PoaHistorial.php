@@ -9,17 +9,11 @@ class PoaHistorial extends Model
     protected $fillable = [
                             'id',
                             'id_poa',
-                            'comentario_requirente',
-                            'validacion',
-                            'comentario_validacion',
+                            'nro_poa',
+                            'comentario',
                             'fecha_registro',
+                            'estado_poa',
                             'estado',
-                            'operador_ing',
-                            'operador_act',
-                            'terminal_ing',
-                            'terminal_act',
-                            'ip_ing',
-                            'ip_act',
                             'created_at',
                             'updated_at'
                           ];

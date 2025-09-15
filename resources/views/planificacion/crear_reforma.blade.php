@@ -61,9 +61,9 @@
 
                 <div class="row col-lg-12 mb-5" id="contenedorBotonAgregarActividad">
                     <hr type="hidden"/>
-                    <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormularioActividad()" type="button">
+                    <!-- <a style= "margin-left: 1%; margin-right: 1%" class="col-2 btn btn-primary px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormularioActividad()" type="button">
                         <i class="lni lni-circle-plus" id="btnActividad"></i> Crear Actividad
-                    </a>
+                    </a> -->
                     <a class="col-2 btn btn-success px-1 d-flex align-items-center justify-content-center" onclick="mostrarFormActArea()" type="button">
                         <i class="lni lni-circle-plus" id="btnActividadArea"></i> Actividad Externa
                     </a>
@@ -85,6 +85,7 @@
                             <th>ITEM PRESUPUESTARIO</th>
                             <th>DESCRIPCIÓN DEL ITEM PRESUPUESTARIO</th>
                             <th style="min-width: 125px;">TIPO DE INGRESO</th>
+                            <th>TOTAL</th>
                             <th >ENERO</th>
                             <th >FEBRERO</th>
                             <th >MARZO</th>
@@ -97,7 +98,6 @@
                             <th >OCTUBRE</th>
                             <th >NOVIEMBRE</th>
                             <th>DICIEMBRE</th>
-                            <th>TOTAL</th>
                         </tr>
                     </thead>
                     <tbody class="width">
@@ -384,13 +384,13 @@
                 </div>
 
                 <div class="col-md-6">
-                    <label for="ajuTotal" class="form-label fs-6">Total Ajuste</label>
+                    <label for="ajuTotal" class="form-label fs-6">Total Ajuste(-)</label>
                     <input type="text" id="ajuTotal" name="ajuTotal" class="form-control" required="" autofocus="" value="" disabled="">
                     <div class="valid-feedback">Looks good!</div>
                 </div>
 
                 <div class="col-md-6">
-                    <label for="ampTotal" class="form-label fs-6">Total Ampliación</label>
+                    <label for="ampTotal" class="form-label fs-6">Total Ampliación(+)</label>
                     <input type="text" id="ampTotal" name="ampTotal" class="form-control" required="" autofocus="" value="" disabled="">
                     <div class="valid-feedback">Looks good!</div>
                 </div>
@@ -408,6 +408,11 @@
         -->
 
             <div class="col-lg-12 d-flex align-items-center justify-content-center">
+
+                <a class="col-2 btn btn-warning px-1 mb-5" type="button" onclick="salvarReforma()" style="margin-right: 2%">
+                    <i class="bi bi-box-arrow-down"></i> Guardar Borrador
+                </a>
+
                 <a class="col-2 btn btn-primary px-1 mb-5" type="button" onclick="guardarReforma()" style="margin-right: 2%">
                     <i class="bi bi-send-check"></i> Registrar
                 </a>
@@ -426,5 +431,5 @@
 
 @push('scripts')
 <!-- Script personalizado -->
-<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.20')}}"></script>
+<script src="{{asset('assets/js/Planificacion/create_reforma.js?v0.0.26')}}"></script>
 @endpush

@@ -32,6 +32,8 @@ use Illuminate\Support\Facades\Storage;
 use App\Models\ItemPresupuestario\ItemPresupuestario;
 use App\Models\Planificacion\MontoDireccion\MontoDireccion;
 use App\Models\Planificacion\ItemDireccion\ItemDireccion;
+use App\Models\Planificacion\ObjetivoOperativo\ObjetivoOperativo;
+
 
 use App\Models\Planificacion\Poa1\Poa;
 
@@ -394,9 +396,16 @@ class ItemPresupuestarioController extends Controller{
             ->addIndexColumn()
             ->make(true);
         }
+
+        // Obtener objetivos activos asociados al área del usuario
+        $objetivos = ObjetivoOperativo::select('id', 'id_area', 'nombre', 'estado')
+                                      ->where('estado', 'A')
+                                      ->where('id_area', $id_direccion)
+                                      ->get();
+    
         //respuesta para la vista
         return view('item_presupuestario.monto_item', compact('items', 'id_area', 'direccion_id', 'id_user', 'id_direccion', 'monto', 'id_fuente', 'nombreDir',
-                    'proestado'));
+                    'proestado','objetivos'));
     }
 
 
@@ -664,6 +673,39 @@ class ItemPresupuestarioController extends Controller{
 
     /* ============================================ MONTO DIRECCION ITEM ============================================ */
 
+    public function guardarObjetivo(Request $request)
+    {
+        $validated = $request->validate([
+            'id_objetivo'  => 'required|integer',
+        ]);
+
+        $objetivo = ObjetivoOperativo::find($validated['id_objetivo']);
+
+        if (!$objetivo) {
+            return response()->json(['error' => true, 'message' => 'Objetivo no encontrado'], 404);
+        }
+
+        // No se modifica nada del objetivo, solo se valida
+        return response()->json(['error' => false, 'message' => 'Objetivo guardado correctamente']);
+    }
+
+        public function crearObjetivo(Request $request)
+    {
+        $validated = $request->validate([
+            'nombre'       => 'required|string',
+            'id_area'      => 'required|integer',
+        ]);
+
+        $nuevo = new ObjetivoOperativo();
+        $nuevo->nombre = $validated['nombre'];
+        $nuevo->id_area = $validated['id_area'];
+        $nuevo->estado = 'A';
+
+        $nuevo->save();
+
+        return response()->json(['error' => false, 'message' => 'Objetivo creado exitosamente']);
+    }
 
 
 }
+

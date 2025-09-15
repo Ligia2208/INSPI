@@ -36,6 +36,9 @@
                 <th>Frecuencia</th>
                 <th>Tipo POA</th>
                 <th>Proceso</th>
+                <th>Tipo Sub_Actividad</th>
+                <th>Número POA</th>
+                <th>Fecha Solicitud POA</th>
                 <th>Plurianual</th>
             </tr>
         </thead>
@@ -69,6 +72,9 @@
                     <td>{{ $actividad->frecuencia }}</td>
                     <td>{{ $actividad->tipoPoa }}</td>
                     <td>{{ $actividad->proceso }}</td>
+                    <td>{{ $actividad->tipo_sub }}</td>
+                    <td>{{ $actividad->nro_poa }}</td>
+                    <td>{{ $actividad->fecha }}</td>
                     <td>{{ $actividad->plurianual ? 'SI' : 'NO' }}</td>
                 </tr>
             @endforeach

@@ -26,19 +26,27 @@
         <div class="d-flex flex-column-fluid">
             <!--begin::Container-->
             <div class="container-fluid">
-            <!--begin::Dashboard-->
+                <!--begin::Dashboard-->
                 <div class="row">
                     <div class="card-body">
                         <div class="text-center px-4 ">
-                            <h3 class="fs-2x fw-bolder mb-10">Hola {{ Auth::user()->name }} ... Buen dia!</h3>
-                            <img class="img-fluid col-12" alt="" src="{{ asset('assets/media/ilustrations/inspi.jpg') }}">
+                            <h3 class="fs-2x fw-bolder mb-10">Sistema Integrado Institucional - CoreINSPI</h3>
+                            <h4 class="fs-2x fw-bolder mb-10">Hola {{ Auth::user()->name }} ... Buen dia!</h4>
+                            <img class="img-fluid col-12" alt=""
+                                src="{{ asset('assets/media/ilustrations/inspi.jpg') }}">
                         </div>
                         <div class="card-px text-center py-8">
-                            <p class="text-gray-600 fs-4x fw-bold mb-6">El Instituto Nacional de Investigación en Salud Pública,
-                             es una institución ejecutora de la investigación, ciencia,<br> tecnología e innovación en el área de la Salud Humana y Laboratorio de Referencia Nacional de la RED de Salud Pública del país.<br>
-                             Con el objetivo de promover la investigación en servicios sanitarios, en articulación con el Sistema de Vigilancia epidemiológica, <br>que permita la detección oportuna de patologías, virus y
-                             demás enfermedades; asi como la identificación de mecanismos<br> y acciones para contrarestar una posible propagación de epidemias y cubrir eficientemente las demandas <br>
-                             del Ministerio de Salud Pública - MSP.
+                            <p class="text-gray-600 fs-4x fw-bold mb-6">El Instituto Nacional de Investigación en Salud
+                                Pública,
+                                es una institución ejecutora de la investigación, ciencia,<br> tecnología e innovación en el
+                                área de la Salud Humana y Laboratorio de Referencia Nacional de la RED de Salud Pública del
+                                país.<br>
+                                Con el objetivo de promover la investigación en servicios sanitarios, en articulación con el
+                                Sistema de Vigilancia epidemiológica, <br>que permita la detección oportuna de patologías,
+                                virus y
+                                demás enfermedades; asi como la identificación de mecanismos<br> y acciones para
+                                contrarestar una posible propagación de epidemias y cubrir eficientemente las demandas <br>
+                                del Ministerio de Salud Pública - MSP.
                             </p>
                         </div>
                     </div>

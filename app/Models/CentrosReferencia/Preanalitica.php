@@ -102,4 +102,9 @@ class Preanalitica extends Model
         return $this->hasMany(Analitica::class);
     }
 
+    public function tecnico()
+    {
+        return $this->belongsTo(User::class);
+    }
+
 }

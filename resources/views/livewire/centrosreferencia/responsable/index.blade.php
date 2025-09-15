@@ -133,7 +133,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $responsables->links() }}
             </div>
             <!--end::Body-->

@@ -116,8 +116,75 @@
 
             @endcanany
 
+
+            @canany(['preanaliticatoxico','analiticastoxico','postanaliticastoxico'])
+            <div class="my-5"></div>
+                <li class="menu-section">
+                    <h4 class="menu-text">CRN Toxicología</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+                @can('preanaliticatoxico')
+                    <li class="menu-item {{ active('preanaliticatoxico.*') }}">
+                        <a href="{{ route('preanaliticatoxico.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-cogs"></i>
+                            <span class="menu-text">Muestras - Preanalítica</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('analiticastoxico')
+                    <li class="menu-item {{ active('analiticatoxico.*') }}">
+                        <a href="{{ route('analiticatoxico.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-spinner"></i>
+                            <span class="menu-text">Analitica Resultados CRN</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('postanaliticastoxico')
+                    <li class="menu-item {{ active('postanaliticatoxico.*') }}">
+                        <a href="{{ route('postanaliticatoxico.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-spinner"></i>
+                            <span class="menu-text">Postanalitica Resultados CRN</span>
+                        </a>
+                    </li>
+                @endcan
+            @endcanany
+
+
+            @canany(['preanaliticamico'])
+            <div class="my-5"></div>
+                <li class="menu-section">
+                    <h4 class="menu-text">CRN Micobacterías</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+                @can('preanaliticamico')
+                    <li class="menu-item {{ active('preanaliticamico.*') }}">
+                        <a href="{{ route('preanaliticamico.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-cogs"></i>
+                            <span class="menu-text">Muestras - Preanalítica</span>
+                        </a>
+                    </li>
+                @endcan
+            @endcanany
+
+            @canany(['preanaliticagen'])
+            <div class="my-5"></div>
+                <li class="menu-section">
+                    <h4 class="menu-text">CRN Genómica</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+                @can('preanaliticagen')
+                    <li class="menu-item {{ active('preanaliticagen.*') }}">
+                        <a href="{{ route('preanaliticagen.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-cogs"></i>
+                            <span class="menu-text">Muestras - Preanalítica</span>
+                        </a>
+                    </li>
+                @endcan
+            @endcanany
+
+
             @canany(['pacientes', 'resultados', 'instituciones', 'visorresultados', 'resultadosmsp', 'resultadoscrn', 'resultadosgerencial',
-                'preanalitica', 'postanaliticas', 'analiticas'])
+                'preanalitica', 'postanaliticas', 'analiticas','postanaliticasadm'])
                 <div class="my-5"></div>
                 <li class="menu-section">
                     <h4 class="menu-text">Resultados CRNs</h4>
@@ -163,6 +230,14 @@
                         </a>
                     </li>
                 @endcan
+                @can('resultadosmsp')
+                    <li class="menu-item {{ active('resultadomspindividual.*') }}">
+                        <a href="{{ route('resultadomspindividual.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-search"></i>
+                            <span class="menu-text">Búsqueda de casos</span>
+                        </a>
+                    </li>
+                @endcan
                 @can('resultadosgerencial')
                     <li class="menu-item {{ active('resultadogerencial.*') }}">
                         <a href="{{ route('resultadogerencial.index') }}" class="menu-link">
@@ -192,6 +267,14 @@
                         <a href="{{ route('postanalitica.index') }}" class="menu-link">
                             <i class="menu-icon text-dark fa fa-spinner"></i>
                             <span class="menu-text">Postanalitica Resultados CRN</span>
+                        </a>
+                    </li>
+                @endcan
+                @can('postanaliticasadm')
+                    <li class="menu-item {{ active('postanaliticaadm.*') }}">
+                        <a href="{{ route('postanaliticaadm.index') }}" class="menu-link">
+                            <i class="menu-icon text-dark fa fa-print"></i>
+                            <span class="menu-text">Impresión Resultados</span>
                         </a>
                     </li>
                 @endcan
@@ -293,6 +376,61 @@
                 @endcan
 
             @endcanany
+
+
+            @canany(['laminas'])
+                <li class="menu-section">
+                    <h4 class="menu-text">Laminas</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+
+                @can('laminas')
+                    <li class="menu-item {{ active('laminas') }}">
+                        <a href="{{ route('laminas') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-list-task"></i>
+                            <span class="menu-text">Lista de Láminas</span>
+                        </a>
+                    </li>
+                @endcan
+
+            @endcanany
+
+
+            @canany(['laminas_parasitologia', 'laminas_parasitologia_val', 'laminas_parasitologia_val'])
+                <li class="menu-section">
+                    <h4 class="menu-text">Laminas Parasitología</h4>
+                    <i class="menu-icon ki ki-bold-more-hor icon-md"></i>
+                </li>
+
+                @can('laminas_parasitologia')
+                    <li class="menu-item {{ active('laminas_bacteriologia') }}">
+                        <a href="{{ route('laminas_bacteriologia') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-list-task"></i>
+                            <span class="menu-text">Lista de Láminas</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('laminas_parasitologia_val')
+                    <li class="menu-item {{ active('laminas.laminas_parasitologia_validar') }}">
+                        <a href="{{ route('laminas.laminas_parasitologia_validar') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-list-task"></i>
+                            <span class="menu-text">Lista de Láminas por Validar</span>
+                        </a>
+                    </li>
+                @endcan
+
+                @can('laminas_parasitologia_pro')
+                    <li class="menu-item {{ active('laminas.laminas_parasitologia_procesadas') }}">
+                        <a href="{{ route('laminas.laminas_parasitologia_procesadas') }}" class="menu-link">
+                            <i class="menu-icon text-dark bi bi-list-task"></i>
+                            <span class="menu-text">Lista de Láminas Procesadas</span>
+                        </a>
+                    </li>
+                @endcan
+
+            @endcanany
+
 
             @canany(['plamontoitem', 'plaactividadesitems', 'plareformauser', 'pladetalleuser'])
                 <li class="menu-section">

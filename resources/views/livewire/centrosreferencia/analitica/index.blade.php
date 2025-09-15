@@ -9,11 +9,7 @@
                             class="text-muted mt-3 font-weight-bold font-size-sm"> ({{ $count }})</span>
                         </span>
                 </h3>
-                <button class="btn btn-success font-weight-bold mr-2"
-                                onclick="exportToExcel('data', 'analiticas-data')"><i
-                                class="fa fa-file-excel" aria-hidden="true"></i>
-                                {{ __('Exportar a Excel') }}
-                            </button>
+                <a href="{{ route('analiticacd4.index')}}" class="btn btn-primary btn-shadow font-weight-bold mr-2 "><i class="fa fa-sticky-note"></i> Registrar resultados CD4</a>
             </div>
             <!--end::Header-->
             <!--begin::Body-->
@@ -25,7 +21,7 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <select wire:model="csedes" class="form-control" data-size="7"
+                                            <select id="idsede" wire:model="csedes" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="">{{ __('Seleccione una Sede') }}</option>
                                                 @foreach ($sedes as $objSede)
@@ -37,7 +33,7 @@
                                     </div>
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <select wire:model="claboratorios" class="form-control" data-size="7"
+                                            <select id="idcrn" wire:model="claboratorios" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="">{{ __('Seleccione un CRN - Laboratorio') }}
                                                 </option>
@@ -52,7 +48,7 @@
                                     </div>
                                     <div class="col-md-4 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <select wire:model="ceventos" class="form-control" data-size="7"
+                                            <select id="idevn" wire:model="ceventos" class="form-control" data-size="7"
                                                 data-live-search="true" data-show-subtext="true" required>
                                                 <option value="">{{ __('Seleccione un Evento') }}</option>
                                                 @if (!is_null($eventos))
@@ -71,18 +67,26 @@
                             </div>
                             <div class="col-lg-12 col-xl-12">
                                 <div class="row align-items-center">
-                                    <div class="col-md-4 my-2 my-md-0">
+                                    <div class="col-md-2 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <select wire:model="controlf" class="form-control" data-size="7"
-                                                data-live-search="true" data-show-subtext="true" required>
-                                                <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
-                                                <option data-subtext="" value="1">Fecha toma de muestra</option>
-                                                <option data-subtext="" value="2">Fecha llegada al CRN</option>
-                                                <option data-subtext="" value="3">Fecha procesamiento</option>
-                                            </select>
+                                            <input wire:model="searchm" type="search" class="form-control"
+                                                placeholder="Muestra...">
+                                            <span>
+                                                <i class="flaticon2-search-1 text-muted"></i>
+                                            </span>
                                         </div>
                                     </div>
                                     <div class="col-md-4 my-2 my-md-0">
+                                        <div class="input-icon">
+                                            <select id="idtipo" wire:model="controlf" class="form-control" data-size="7"
+                                                data-live-search="true" data-show-subtext="true" required>
+                                                <option value="0">{{ __('Seleccione Tipo fecha') }}</option>
+                                                <option data-subtext="" value="1">Fecha recepción</option>
+                                                <option data-subtext="" value="2">Fecha registro</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">{{ __('Inicio') }}:</label>
                                             <div class="input-group input-group-solid">
@@ -91,13 +95,13 @@
                                                         <i class="fas fa-calendar"></i>
                                                     </span>
                                                 </div>
-                                                <input wire:model="fechainicio" type="date"
+                                                <input id="idfinicio" wire:model="fechainicio" type="date"
                                                     class="form-control form-control-solid @error('fechainicio') is-invalid @enderror"
                                                     placeholder="Ej: 17/04/2024" />
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 my-2 my-md-0">
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">{{ __('Fin') }}:</label>
                                             <div class="input-group input-group-solid">
@@ -106,7 +110,7 @@
                                                         <i class="fas fa-calendar"></i>
                                                     </span>
                                                 </div>
-                                                <input wire:model="fechafin" type="date"
+                                                <input id="idffin" wire:model="fechafin" type="date"
                                                     class="form-control form-control-solid @error('fechafin') is-invalid @enderror"
                                                     placeholder="Ej: 27/06/2024" />
                                             </div>
@@ -121,15 +125,6 @@
                                 <div class="row align-items-center">
                                     <div class="col-md-2 my-2 my-md-0">
                                         <div class="input-icon">
-                                            <input wire:model="searchm" type="search" class="form-control"
-                                                placeholder="Muestra...">
-                                            <span>
-                                                <i class="flaticon2-search-1 text-muted"></i>
-                                            </span>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-2 my-2 my-md-0">
-                                        <div class="input-icon">
                                             <input wire:model="searchc" type="search" class="form-control"
                                                 placeholder="Cédula...">
                                             <span>
@@ -137,7 +132,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 my-2 my-md-0">
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="input-icon">
                                             <input wire:model="searchp" type="search" class="form-control"
                                                 placeholder="Apellidos o Nombres...">
@@ -146,7 +141,7 @@
                                             </span>
                                         </div>
                                     </div>
-                                    <div class="col-md-4 my-2 my-md-0">
+                                    <div class="col-md-3 my-2 my-md-0">
                                         <div class="d-flex align-items-center">
                                             <label class="mr-3 mb-0 d-none d-md-block">Mostrar:</label>
                                             <select class="form-control" wire:model="perPage">
@@ -157,6 +152,19 @@
                                                 <option value="500">500 Entradas</option>
                                                 <option value="1000">1000 Entradas</option>
                                             </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-danger font-weight-bold mr-2"
+                                                onclick="generarExcel()"><i
+                                                    class="fa fa-file-excel" aria-hidden="true"></i>
+                                                {{ __('Genera archivo xlsx') }}</button>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2 my-2 my-md-0">
+                                        <div class="d-flex align-items-center">
+                                            <a target="_blank" class="btn btn-success font-weight-bold mr-2 dropdown-item" href="{{ Storage::url('descargas/'.$csedes.'/'.$claboratorios.'/descarga_muestras.xlsx') }}"><i class="fas fa-download mr-2"></i> Descarga archivo</a>
                                         </div>
                                     </div>
                                 </div>
@@ -176,9 +184,13 @@
                                 <th>Fecha Recepción</th>
                                 <th>CRN - Laboratorio</th>
                                 <th>Evento</th>
+                                @if($this->claboratorios != 9)
+                                <th>Cédula</th>
                                 <th>Paciente</th>
+                                @endif
                                 <th>Referencia</th>
                                 <th>Muestra</th>
+                                <th>Ingreso por</th>
                                 <th>Técnica</th>
                                 <th>Resultado</th>
                                 <th>Fecha Resultado</th>
@@ -195,7 +207,7 @@
                                     </td>
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->fecha_recepcion }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->fecha_recepcion }}</span>
                                     </td>
                                     <td>
                                         <span
@@ -205,10 +217,16 @@
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->evento->simplificado }}</span>
                                     </td>
+                                    @if($this->claboratorios != 9)
                                     <td>
                                         <span
-                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">({{ $analitica->preanalitica->paciente->identidad }}) {{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->paciente->identidad }}</span>
                                     </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->preanalitica->paciente->apellidos }} {{ $analitica->preanalitica->paciente->nombres }}</span>
+                                    </td>
+                                    @endif
                                     @if ($analitica->codigo_externo == '')
                                         <td>
                                             <span
@@ -223,6 +241,10 @@
                                     <td>
                                         <span
                                             class="text-dark-50 font-weight-bolder d-block font-size-lg">{{ $analitica->muestra->descripcion }}</span>
+                                    </td>
+                                    <td>
+                                        <span
+                                            class="text-dark-50 font-weight-bolder d-block font-size-lg">@if($analitica->preanalitica->ingresa_por==1) Sede Central - Guayaquil @endif @if($analitica->preanalitica->ingresa_por==2) CZ6 - Cuenca @endif @if($analitica->preanalitica->ingresa_por==3) CZ9 - Quito @endif @if($analitica->preanalitica->ingresa_por==4) OFTEC - Tena @endif @if($analitica->preanalitica->ingresa_por==0) Autogenerada @endif</span>
                                     </td>
                                     <td>
                                         @if ($analitica->tecnica_id > 0)
@@ -252,6 +274,23 @@
                                     <td align="center">
                                         @if ($analitica->usuariop_id == 0)
                                             <i class="navi-item" data-toggle="modal" data-target="_self">
+                                                @if($analitica->crns_id == 1)
+                                                <a href="{{ route('analiticasmicolo.edit', $analitica) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="ace-icon fa fa-pen" style="color:lightblue"
+                                                            title="Editar"></i>
+                                                    </span>
+                                                </a>
+                                                @elseif($analitica->crns_id == 9)
+                                                <a href="{{ route('analiticasgen.edit', $analitica) }}"
+                                                    class="navi-link">
+                                                    <span class="navi-icon">
+                                                        <i class="ace-icon fa fa-pen" style="color:lightblue"
+                                                            title="Editar"></i>
+                                                    </span>
+                                                </a>
+                                                @else
                                                 <a href="{{ route('analitica.edit', $analitica) }}"
                                                     class="navi-link">
                                                     <span class="navi-icon">
@@ -259,9 +298,10 @@
                                                             title="Editar"></i>
                                                     </span>
                                                 </a>
+                                                @endif
                                             </i>
                                         @endif
-                                        @if ($analitica->usuarior_id == 0 && $analitica->validado == 'N')
+{{--                                         @if ($analitica->usuarior_id == 0 && $analitica->validado == 'N')
                                             <i class="navi-item"
                                                 onclick="event.preventDefault(); confirmDuplicate({{ $analitica->id }})">
                                                 <a href="#" class="navi-link">
@@ -271,7 +311,7 @@
                                                     </span>
                                                 </a>
                                             </i>
-                                        @endif
+                                        @endif --}}
                                         @if ($analitica->archivo != null)
                                         <i class="navi-item" data-toggle="modal" data-target="#">
                                             <a href="#" class="navi-link">
@@ -307,7 +347,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $analiticas->links() }}
             </div>
             <!--end::Body-->
@@ -410,6 +449,124 @@
                     URL.revokeObjectURL(a.href)
                     a.remove();
                 }
+            }
+
+            function confirmAmpliada01(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas ampliadas de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('ampliada01', id);
+                    }
+                });
+            }
+
+            function confirmDiferencial01(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas diferenciales de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('diferencial01', id);
+                    }
+                });
+            }
+
+            function confirmDiferencial02(id) {
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se solicitará se efectúen pruebas diferenciales de acuerdo al EVENTO y al RESULTADO obtenido, la información del caso se remitirá al CRN pertinente",
+                    icon: "warning",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-trash'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('diferencial02', id);
+                    }
+                });
+            }
+
+            function confirmGeneradodif(id) {
+                swal.fire({
+                    title: "Pruebas Diferenciales",
+                    text: "Las pruebas diferenciales fueron generadas y remitidas al CRN correspondiente",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: false,
+                    confirmButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-white'>Ok, Cerrar</span>",
+                    reverseButtons: true,
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function() {
+
+                });
+            }
+
+            function confirmGeneradoamp(id) {
+                swal.fire({
+                    title: "Pruebas Ampliadas",
+                    text: "Las pruebas ampliadas fueron generadas y remitidas al CRN correspondiente",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: false,
+                    confirmButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-white'>Ok, Cerrar</span>",
+                    reverseButtons: true,
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function() {
+
+                });
+            }
+
+            function generarExcel() {
+                var idsede = document.getElementById('idsede');
+                var idcrn = document.getElementById('idcrn');
+                var idevn = document.getElementById('idevn');
+                var idtipo = document.getElementById('idtipo');
+                var idfinicio = document.getElementById('idfinicio');
+                var idffin = document.getElementById('idffin');
+                swal.fire({
+                    title: "¿Estas seguro?",
+                    text: "Se generará un archivo con formato excel con los parámetros selecionados",
+                    icon: "info",
+                    buttonsStyling: false,
+                    showCancelButton: true,
+                    confirmButtonText: "<i class='fa fa-check'></i> <span class='text-white'>Si, generar</span>",
+                    cancelButtonText: "<i class='fas fa-arrow-circle-left'></i> <span class='text-dark'>No, cancelar</span>",
+                    reverseButtons: true,
+                    cancelButtonClass: "btn btn-light-secondary font-weight-bold",
+                    confirmButtonClass: "btn btn-danger",
+                    showLoaderOnConfirm: true,
+                }).then(function(result) {
+                    if (result.isConfirmed) {
+                        @this.call('descargarExcel', idsede.value,idcrn.value,idevn.value,idtipo.value,idfinicio.value,idffin.value);
+                    }
+                });
             }
         </script>
     @endsection

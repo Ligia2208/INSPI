@@ -299,7 +299,7 @@ function actualizarReforma() {
                 let noviembre    = $(this).find('input[name="noviembre1[]"]').val();
                 let diciembre    = $(this).find('input[name="diciembre1[]"]').val();
                 let total        = $(this).find('input[name="total1[]"]').val();
-                let subActividad = $(this).find('input[name="subActividad[]"]').val();
+                let subActividad = $(this).find('textarea[name="subActividad[]"]').val();
 
 
                 formData.push({
@@ -352,7 +352,7 @@ function actualizarReforma() {
                 let noviembre    = $(this).find('input[name="noviembre1[]"]').val();
                 let diciembre    = $(this).find('input[name="diciembre1[]"]').val();
                 let total        = $(this).find('input[name="total1[]"]').val();
-                let subActividad = $(this).find('input[name="subActividad[]"]').val();
+                let subActividad = $(this).find('textarea[name="subActividad[]"]').val();
 
                 formData.push({
                     id_actividad: id_actividad,
@@ -694,7 +694,7 @@ function agregarFilaTabla(actividad) {
             </td>
             <td>${actividad.nombreActividadOperativa}</td>
             <td>
-                <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="${(actividad.nombreSubActividad)}">
+                <textarea class="form-control" style="width: 350px;" rows="5" name="subActividad[]">${actividad.nombreSubActividad}</textarea>
             </td>
             <td>${actividad.nombreItem}</td>
             <td>${actividad.descripcionItem}</td>
@@ -708,6 +708,7 @@ function agregarFilaTabla(actividad) {
                     <option value="AMPLIA">Amplia</option>
                 </select>
             </td>
+            <td><input class="form-control" style="width: 125px;" type="text" name="total1[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="enero1[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="febrero1[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="marzo1[]" value="0"></td>
@@ -720,7 +721,6 @@ function agregarFilaTabla(actividad) {
             <td><input class="form-control" style="width: 125px;" type="text" name="octubre1[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="noviembre1[]" value="0"></td>
             <td><input class="form-control" style="width: 125px;" type="text" name="diciembre1[]" value="0"></td>
-            <td><input class="form-control" style="width: 125px;" type="text" name="total1[]" value="0"></td>
         </tr>
     `;
     $('#tblActividadesEditar tbody').append(nuevaFila);
@@ -849,11 +849,15 @@ function cambioSelect(selectElement) {
                 if (formText && formText.classList.contains('form-text')) {
                     var value = parseFloat(formText.textContent.trim());
                     // Si el valor es diferente de 0.00, habilitar el input
-                    if (value !== 0.00 && index < inputs.length - 1) {
-                        input.removeAttribute('disabled');
-                    } else if (index < inputs.length - 1) {
+                    if (value === 0.00 && index > 0) {
+                        //input.removeAttribute('disabled');
+                        input.setAttribute('disabled', 'disabled');
+
+                    } else if (index == 0) {
                         // Si es 0.00 y no es el último input, deshabilitarlo
                         input.setAttribute('disabled', 'disabled');
+                    }else{
+                        input.removeAttribute('disabled');
                     }
                 }
             });
@@ -869,7 +873,8 @@ function cambioSelect(selectElement) {
         } else {
             // Si no es "DISMINUYE", deshabilitar todos los inputs en la fila excepto el último
             inputs.forEach(function(input, index) {
-                if (index < inputs.length - 1) {
+                //if (index < inputs.length - 1) {
+                if (index !== 0) {
                     //input.setAttribute('disabled', 'disabled');
                     input.removeAttribute('disabled');
                 }
@@ -1083,7 +1088,7 @@ function CrearActArea(element){
         success: function(response) {
             if (response.success) {
 
-                console.log(response.poa); // Muestra el objeto Poa en la consola
+                //console.log(response.poa); // Muestra el objeto Poa en la consola
                 agregarActAreaFila(response.actividadPoa);
                 //$('#formularioActArea').hide();
                 // limpiarFormulario();
@@ -1122,12 +1127,12 @@ function agregarActAreaFila(actividadPoa) {
             <input type="hidden" name="solicitud[]" value="${( actividadPoa.id_areaS == id_direccion ? 'true' : 'false')}">
             <input type="hidden" name="id_area_soli[]" value="${(actividadPoa.id_areaS)}">
             <input type="hidden" name="id_poa[]" value="${(actividadPoa.id_poa)}">
-            <td class="d-flex justify-content-center align-items-center">
+            <td class="text-center align-middle">
                 <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)">
             </td>
             <td>${(actividadPoa.nombreActividadOperativa)}</td>
             <td>
-                <input class ="form-control" style="width: 350px;" type="text" name="subActividad[]" value="${(actividadPoa.nombreSubActividad)}">
+                <textarea class="form-control" style="width: 350px;" rows="5" name="subActividad[]">${actividadPoa.nombreSubActividad}</textarea>
             </td>
             <td>${(actividadPoa.nombreItem)}</td>
             <td>${(actividadPoa.descripcionItem)}</td>
@@ -1140,6 +1145,10 @@ function agregarActAreaFila(actividadPoa) {
                     <option value="AJUSTE">Ajuste</option>
                     <option value="AMPLIA">Amplia</option>
                 </select>
+            </td>
+            <td>
+                <input class ="form-control" style="width: 125px;" type="text" name="total1[]" value="0.00">
+                <div class="form-text">${actividadPoa.total}</div></td>
             </td>
             <td>
                 <input class ="form-control" style="width: 125px;" type="text" name="enero1[]" value="0">
@@ -1188,10 +1197,6 @@ function agregarActAreaFila(actividadPoa) {
             <td>
                 <input class ="form-control" style="width: 125px;" type="text" name="diciembre1[]" value="0">
                 <div class="form-text">${actividadPoa.diciembre}</div></td>
-            </td>
-            <td>
-                <input class ="form-control" style="width: 125px;" type="text" name="total1[]" value="0.00">
-                <div class="form-text">${actividadPoa.total}</div></td>
             </td>
         </tr>`
     ;
@@ -1323,4 +1328,164 @@ function actualizarTotales() {
     $('#disTotal').val(totalDisminuye);
     $('#ajuTotal').val(totalAjuste);
     $('#ampTotal').val(totalAmplia);
+}
+
+
+
+
+
+
+function selectItem(itemId) {
+    $.ajax({
+        type: 'GET',
+        url: '/planificacion/obtenerObjetoContratacion/' + itemId,
+        success: function(response) {
+ 
+            if (response.atributos.length > 0) {
+                var options = '<option value="">Seleccione una Sub_Actividad/Objeto de Contratación</option>';
+                response.atributos.forEach(function(item) {
+                    options += `<option value="${item.id}" 
+                                    data-nombre-item="${item.nombreItem}" 
+                                    data-descripcion-item="${item.descripcionItem}">
+                                    ${item.nombreSubActividad} - (${item.monto})
+                                </option>`;
+                });
+                $('#select_idpoa').html(options);
+            } else {
+                $('#select_idpoa').html('<option value="">No hay datos disponibles</option>');
+            }
+
+        },
+        error: function(error) {
+            console.error('Error al obtener datos del item: ', error);
+        }
+    });
+}
+
+
+
+function agregarActividad() {
+
+    let id_poa = $('#select_idpoa').val();
+    let id_direccion = $('#id_direccion').val();
+
+    if(id_poa != ''){
+
+        $.ajax({
+            type: 'GET', // O el método que estés utilizando en tu ruta
+            url: '/planificacion/TblActArea', // Ruta en tu servidor para obtener los datos de la tabla
+            data: { id_poa: id_poa },
+            success: function(datos) {
+    
+                let data = datos.data;
+                //console.log(data);
+
+                if(data == null){
+
+                    Swal.fire({
+                        icon: 'warning',
+                        type: 'warning',
+                        title: 'CoreInspi',
+                        text: 'El Objeto de Contratación actualmente esta en Certificación POA',
+                    });
+
+                }else{
+
+                    var tableBody = $('#tblActividadesEditar tbody');
+                    var rows = '';
+    
+                    let subActividad = data.nombreSubActividad;
+                    subActividad = subActividad.replace(/^['"]|['"]$/g, '');
+        
+                    // Agrega nuevas filas basadas en la respuesta del servidor
+                        rows +=`
+                        <tr>
+                            <td class="text-center align-middle">
+                                <i type="button" class="font-22 fadeIn animated bi bi-trash text-danger" title="Eliminar actividad" onclick="eliminarFila(this)"></i>
+                                <input type="hidden" name="id_actividad[]" value="0">
+                                <input type="hidden" name="id_poa[]" value="${(data.id)}">
+                                <input type="hidden" name="solicitud[]" value="${( data.id_areaS == id_direccion ? 'true' : 'false')}">
+                                <input type="hidden" name="id_area_soli[]" value="${(data.id_areaS)}">
+                            </td>
+                            <td>${(data.nombreActividadOperativa)}</td>
+                            <td>
+                                <textarea class="form-control" style="width: 350px;" rows="5" name="subActividad[]">${subActividad}</textarea>
+                            </td>
+                            <td>${(data.nombreItem)}</td>
+                            <td>${(data.descripcionItem)}</td>
+                            <td class="width">
+                                <select class="form-control" name="tipo[]" onchange="cambioSelect(this)">
+                                    <option value="" selected disabled>Seleccionar tipo...</option>
+                                    <option value="DISMINUYE">Disminuye</option>
+                                    <option value="AUMENTA">Aumenta</option>
+                                    <option value="IGUAL">Igual</option>
+                                    <option value="AJUSTE">Ajuste</option>
+                                    <option value="AMPLIA">Amplia</option>
+                                </select>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="total1[]" value="0.00">
+                                <div class="form-text">${data.total}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="enero1[]" value="0">
+                                <div class="form-text">${data.enero}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="febrero1[]" value="0">
+                                <div class="form-text">${data.febrero}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="marzo1[]" value="0">
+                                <div class="form-text">${data.marzo}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="abril1[]" value="0">
+                                <div class="form-text">${data.abril}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="mayo1[]" value="0">
+                                <div class="form-text">${data.mayo}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="junio1[]" value="0">
+                                <div class="form-text">${data.junio}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="julio1[]" value="0">
+                                <div class="form-text">${data.julio}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="agosto1[]" value="0">
+                                <div class="form-text">${data.agosto}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="septiembre1[]" value="0">
+                                <div class="form-text">${data.septiembre}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="octubre1[]" value="0">
+                                <div class="form-text">${data.octubre}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="noviembre1[]" value="0">
+                                <div class="form-text">${data.noviembre}</div></td>
+                            </td>
+                            <td>
+                                <input class ="form-control" style="width: 125px;" type="text" name="diciembre1[]" value="0">
+                                <div class="form-text">${data.diciembre}</div></td>
+                            </td>
+                        </tr>`;
+                    tableBody.append(rows);
+
+                }
+    
+            },
+            error: function(error) {
+                console.error('Error al obtener los datos de la tabla', error);
+            }
+        });
+
+    }
+
 }

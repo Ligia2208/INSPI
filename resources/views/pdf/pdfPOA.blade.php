@@ -41,7 +41,7 @@
     }
 
     .letra{
-        font-size: 11px;
+        font-size: 10px;
     }
 
 </style>
@@ -274,15 +274,15 @@
         </tr>
         <tr>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha2}}</td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha2}}</td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha2}}</td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha2}}</td>
             <th>Fecha: </th>
-            <td><?php echo date('d-m-Y'); ?></td>
+            <td>{{$fecha}}</td>
         </tr>
         <tr>
             <th colspan="2">Elaborado</th>

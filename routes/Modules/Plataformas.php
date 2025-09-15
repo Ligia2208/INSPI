@@ -9,16 +9,31 @@ use App\Http\Controllers\Plataformas\Tratamiento\TratamientoController;
 use App\Http\Controllers\Plataformas\Anamnesis\AnamnesisController;
 use App\Http\Controllers\Plataformas\Constante\ConstanteController;
 use App\Http\Controllers\CentrosReferencia\Preanalitica\PreanaliticaController;
+use App\Http\Controllers\CentrosReferencia\Preanaliticatoxico\PreanaliticatoxicoController;
+use App\Http\Controllers\CentrosReferencia\Preanaliticamico\PreanaliticamicoController;
+use App\Http\Controllers\CentrosReferencia\Preanaliticacd4\Preanaliticacd4Controller;
 use App\Http\Controllers\CentrosReferencia\Analitica\AnaliticaController;
+use App\Http\Controllers\CentrosReferencia\Analiticacd4\Analiticacd4Controller;
 use App\Http\Controllers\CentrosReferencia\Analiticap\AnaliticapController;
+use App\Http\Controllers\CentrosReferencia\Analiticatoxico\AnaliticatoxicoController;
+use App\Http\Controllers\CentrosReferencia\Analiticamicolo\AnaliticamicoloController;
+use App\Http\Controllers\CentrosReferencia\Analiticagen\AnaliticagenController;
+use App\Http\Controllers\CentrosReferencia\Preanaliticagen\PreanaliticagenController;
+use App\Http\Controllers\CentrosReferencia\Analiticatoxicop\AnaliticatoxicopController;
 use App\Http\Controllers\CentrosReferencia\Postanalitica\PostanaliticaController;
+use App\Http\Controllers\CentrosReferencia\Postanaliticagen\PostanaliticagenController;
+use App\Http\Controllers\CentrosReferencia\Postanaliticap\PostanaliticapController;
+use App\Http\Controllers\CentrosReferencia\Postanaliticaadm\PostanaliticaadmController;
+use App\Http\Controllers\CentrosReferencia\Postanaliticatoxico\PostanaliticatoxicoController;
 use App\Http\Controllers\CentrosReferencia\Resultado\ResultadoController;
 use App\Http\Controllers\CentrosReferencia\Resultadomsp\ResultadomspController;
+use App\Http\Controllers\CentrosReferencia\Resultadomspindividual\ResultadomspindividualController;
 use App\Http\Controllers\CentrosReferencia\Resultadocrn\ResultadocrnController;
 use App\Http\Controllers\CentrosReferencia\Resultadogerencial\ResultadogerencialController;
 use App\Http\Controllers\CentrosReferencia\VisorResultados\VisorResultadosController;
 use App\Http\Controllers\CentrosReferencia\VisorResultadoscrn\VisorResultadoscrnController;
 use App\Http\Controllers\CentrosReferencia\VisorResultadosgerencial\VisorResultadosgerencialController;
+use App\Http\Controllers\CentrosReferencia\GeorefResultadosgerencial\GeorefResultadosgerencialController;
 use App\Http\Controllers\CentrosReferencia\Responsable\ResponsableController;
 use App\Http\Controllers\CentrosReferencia\Paciente\PacienteController;
 use App\Http\Controllers\CentrosReferencia\Instsalud\InstsaludController;
@@ -67,11 +82,29 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Preanalitica
         Route::resource('preanaliticas', PreanaliticaController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanalitica');
 
+        //CRNs Plataformas Preanalitica
+        Route::resource('preanaliticastoxico', PreanaliticatoxicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticatoxico');
+
+        //CRNs Plataformas Preanalitica Micologia
+        Route::resource('preanaliticasmico', PreanaliticamicoController::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticamico');
+
+        //CRNs Plataformas Preanalitica Gebsbio
+        Route::resource('preanaliticagen', PreanaliticagenController::class)->parameters(['preanaliticagen' => 'Preanaliticastoxico'])->names('preanaliticagen');
+        Route::get('preanaliticagen/{dato}/registro-muestra-general', [PreanaliticagenController::class, 'registro_muestra_general'])
+        ->name('preanaliticagen.registro_muestra_general');
+
+
+        //CRNs Plataformas Preanalitica CD4
+        Route::resource('preanaliticascd4', Preanaliticacd4Controller::class)->parameters(['preanaliticas' => 'preanalitica'])->names('preanaliticacd4');
+
         //CRNs Plataformas Resultados
         Route::resource('resultados', ResultadoController::class)->parameters(['resultados' => 'resultado'])->names('resultado');
 
         //CRNs Plataformas Resultados
         Route::resource('resultadosmsp', ResultadomspController::class)->parameters(['resultados' => 'resultado'])->names('resultadomsp');
+
+        //CRNs Plataformas Resultados
+        Route::resource('resultadosmspindividual', ResultadomspindividualController::class)->parameters(['resultados' => 'resultado'])->names('resultadomspindividual');
 
         //CRNs Plataformas Resultados
         Route::resource('resultadoscrn', ResultadocrnController::class)->parameters(['resultados' => 'resultado'])->names('resultadocrn');
@@ -82,11 +115,41 @@ Route::middleware(['auth'])->group(function () {
         //CRNs Plataformas Analitica de Resultados Pendientes
         Route::resource('analiticas', AnaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('analitica');
 
+        //CRNs Plataformas Analitica de Resultados Pendientes
+        Route::resource('analiticascd4', Analiticacd4Controller::class)->parameters(['analiticas' => 'analitica'])->names('analiticacd4');
+
+        Route::post('/guardar_validar_cd4',[Analiticacd4Controller::class,
+            'guardar_validar'])->name('guardar_validar_cd4');
+
         //CRNs Plataformas Analitica de Resultados Procesados
         Route::resource('analiticasp', AnaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('analiticap');
 
+        //CRNs Toxicología Analitica de Resultados Pendientes
+        Route::resource('analiticastoxico', AnaliticatoxicoController::class)->parameters(['analiticastoxico' => 'analiticatoxico'])->names('analiticatoxico');
+
+        //CRNs Toxicología Analitica de Resultados Pendientes
+        Route::resource('analiticastoxicop', AnaliticatoxicopController::class)->parameters(['analiticastoxico' => 'analiticatoxico'])->names('analiticatoxicop');
+
+        //CRNs Micología Analitica de Resultados Pendientes
+        Route::resource('analiticasmicolo', AnaliticamicoloController::class)->parameters(['analiticasmicolo' => 'analiticasmicolo'])->names('analiticasmicolo');
+
+        //CRNs Gensbio Analitica de Resultados Pendientes
+        Route::resource('analiticasgen', AnaliticagenController::class)->parameters(['analiticasgen' => 'analiticasgen'])->names('analiticasgen');
+
         //CRNs Plataformas Analitica de Resultados Resonsable
         Route::resource('postanaliticas', PostanaliticaController::class)->parameters(['analiticas' => 'analitica'])->names('postanalitica');
+
+        //CRNs Plataformas Analitica de Resultados Resonsable
+        Route::resource('postanaliticastoxico', PostanaliticatoxicoController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticatoxico');
+
+        //CRNs Plataformas Analitica de Resultados Resonsable
+        Route::resource('postanaliticasgen', PostanaliticagenController::class)->parameters(['postanaliticasgen' => 'postanalitica'])->names('postanaliticagen');
+
+        //CRNs Plataformas Analitica de Resultados Resonsable
+        Route::resource('postanaliticasp', PostanaliticapController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticap');
+
+        //CRNs Plataformas Analitica de Resultados Resonsable
+        Route::resource('postanaliticasadm', PostanaliticaadmController::class)->parameters(['analiticas' => 'analitica'])->names('postanaliticaadm');
 
         //CRNs Plataformas Resultados
         Route::resource('visorresultadoscrn', VisorResultadoscrnController::class)->parameters(['resultados' => 'resultado'])->names('visorresultadocrn');
@@ -95,12 +158,23 @@ Route::middleware(['auth'])->group(function () {
         Route::resource('visorresultadosgerencial', VisorResultadosgerencialController::class)->parameters(['resultados' => 'resultado'])->names('visorresultadogerencial');
 
         //CRNs Plataformas Resultados
+        Route::resource('georefresultadosgerencial', GeorefResultadosgerencialController::class)->parameters(['resultados' => 'resultado'])->names('georefresultadogerencial');
+
+        Route::post('/importar',[Preanaliticacd4Controller::class,
+            'importar'])->name('importar');
+
+        Route::get('/eliminar',[Preanaliticacd4Controller::class,
+            'eliminar'])->name('eliminar');
+
+        //CRNs Plataformas Resultados
         Route::resource('visorresultados', VisorResultadosController::class)->parameters(['resultados' => 'resultado'])->names('visorresultado');
 
         //CRNs Responsables Resultados
         Route::resource('responsables', ResponsableController::class)->parameters(['responsables' => 'responsable'])->names('responsable');
 
-        Route::get('/informefinal/informep/{id}', [PostanaliticaController::class, 'informep'])->name('informep');
+        Route::get('/informefinal/informep/{id}', [PostanaliticapController::class, 'informep'])->name('informep');
+
+        Route::get('/informefinal/informeadm/{id}', [PostanaliticaadmController::class, 'informeadm'])->name('informeadm');
 
         Route::get('/informefinal/informer/{id}', [AnaliticaController::class, 'informer'])->name('informer');
 

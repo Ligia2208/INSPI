@@ -132,7 +132,6 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
                 {{ $Instituciones->links() }}
 
             </div>

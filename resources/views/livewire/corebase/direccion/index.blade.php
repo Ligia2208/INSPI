@@ -119,8 +119,7 @@
                     </table>
                 </div>
                 <!--end::Table-->
-
-                {{ $direcciones->links() }}
+                {{ $direcciones->links('pagination::bootstrap-4') }}
 
             </div>
             <!--end::Body-->
